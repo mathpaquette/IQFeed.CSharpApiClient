@@ -1,4 +1,6 @@
 # IQFeed CSharp Api Client #
+[![Build status](https://ci.appveyor.com/api/projects/status/6u1f245xxvkri7s2/branch/master?svg=true)](https://ci.appveyor.com/project/mathpaquette/iqfeed-csharpapiclient/branch/master) [![NuGet Version and Downloads count](https://buildstats.info/nuget/IQFeed.CSharpApiClient)](https://www.nuget.org/packages/IQFeed.CSharpApiClient) 
+
 IQFeed.CSharpApiClient is fastest and the most well designed C# DTN IQFeed socket API connector available to the open source community! Currently supporting the latest stable IQFeed protocol version 5.2.
 
 IQFeed is an affordable and reputable Internet market data provider. For more [info](http://www.iqfeed.net/index.cfm?displayaction=developer&section=main).
