@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3AB9DC99-742D-40B6-9B87-5F03DE2C19E9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IQFeed.CSharpApiClient</RootNamespace>
+    <AssemblyName>IQFeed.CSharpApiClient</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\IRequestFormatter.cs" />
+    <Compile Include="Common\RawMessageHandler.cs" />
+    <Compile Include="Common\RequestFormatter.cs" />
+    <Compile Include="Extensions\ByteExtensions.cs" />
+    <Compile Include="Extensions\EventExtentions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="IQFeedDefault.cs" />
+    <Compile Include="IQFeedLauncher.cs" />
+    <Compile Include="Lookup\Historical\HistoricalRawFacade.cs" />
+    <Compile Include="Lookup\Historical\IHistoricalFacade.cs" />
+    <Compile Include="Streaming\Level1\EventArgs\ErrorEventArgs.cs" />
+    <Compile Include="Streaming\Level1\EventArgs\FundamentalEventArgs.cs" />
+    <Compile Include="Streaming\Level1\EventArgs\NewsEventArgs.cs" />
+    <Compile Include="Streaming\Level1\EventArgs\SymbolNotFoundEventArgs.cs" />
+    <Compile Include="Streaming\Level1\EventArgs\RegionalUpdateEventArgs.cs" />
+    <Compile Include="Streaming\Level1\EventArgs\SystemEventArgs.cs" />
+    <Compile Include="Streaming\Level1\EventArgs\TimestampEventArgs.cs" />
+    <Compile Include="Streaming\Level1\EventArgs\UpdateSummaryEventArgs.cs" />
+    <Compile Include="Streaming\Level1\ILevel1Client.cs" />
+    <Compile Include="Streaming\Level1\ILevel1EventHandler.cs" />
+    <Compile Include="Streaming\Level1\Level1Client.cs" />
+    <Compile Include="Lookup\Chains\ChainsFacade.cs" />
+    <Compile Include="Lookup\Historical\HistoricalIntervalType.cs" />
+    <Compile Include="Lookup\Historical\HistoricalFacade.cs" />
+    <Compile Include="Lookup\LookupClient.cs" />
+    <Compile Include="Lookup\LookupClientFactory.cs" />
+    <Compile Include="Lookup\LookupDispatcher.cs" />
+    <Compile Include="Lookup\Historical\HistoricalRequestFormatter.cs" />
+    <Compile Include="Lookup\Historical\HistoricalMessageHandler.cs" />
+    <Compile Include="Streaming\Level1\Level1ClientFactory.cs" />
+    <Compile Include="Streaming\Level1\Level1MessageHandler.cs" />
+    <Compile Include="Streaming\Level1\Level1RequestFormatter.cs" />
+    <Compile Include="Streaming\Level1\Messages\ErrorMessage.cs" />
+    <Compile Include="Streaming\Level1\Messages\FundamentalMessage.cs" />
+    <Compile Include="Streaming\Level1\Messages\NewsMessage.cs" />
+    <Compile Include="Streaming\Level1\Messages\RegionalUpdateMessage.cs" />
+    <Compile Include="Streaming\Level1\Messages\UpdateSummaryMessage.cs" />
+    <Compile Include="Streaming\Level1\Messages\SymbolNotFoundMessage.cs" />
+    <Compile Include="Streaming\Level1\Messages\SystemMessage.cs" />
+    <Compile Include="Streaming\Level1\Messages\TimestampMessage.cs" />
+    <Compile Include="Lookup\News\NewsFacade.cs" />
+    <Compile Include="Lookup\Symbol\SymbolFacade.cs" />
+    <Compile Include="Socket\SocketMessageHandler.cs" />
+    <Compile Include="Lookup\Historical\Messages\DailyWeeklyMonthlyMessage.cs" />
+    <Compile Include="Lookup\Historical\Messages\IntervalMessage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Lookup\Historical\Messages\TickMessage.cs" />
+    <Compile Include="Socket\SocketMessageEventArgs.cs" />
+    <Compile Include="Socket\SocketClient.cs" />
+    <Compile Include="Lookup\Historical\HistoricalMessageContainer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Streaming\Admin\" />
+    <Folder Include="Streaming\Derivative\" />
+    <Folder Include="Streaming\Level2\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

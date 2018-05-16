@@ -1,0 +1,53 @@
+image: Visual Studio 2017
+
+# version format
+version: 1.0.0-build{build}
+
+artifacts:
+  - path: '**\AssemblyInfo.*'
+
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: "{version}"
+  assembly_file_version: "{version}"
+  assembly_informational_version: "{version}"
+
+configuration: Release
+
+before_build:
+  - nuget restore
+
+test:
+  assemblies:
+    only:
+      - '**\*.Tests.dll'  
+  
+build:
+  project: IQFeed.CSharpApiClient.sln
+  publish_nuget: true
+  publish_nuget_symbols: true
+  verbosity: normal
+
+deploy:
+  # Deploying to NuGet feed (MyGet.org)
+  - provider: NuGet
+    name: MyGet
+    server: https://www.myget.org/F/inovitex/api/v2/package
+    api_key:
+      secure: UBKXVuF4UwMea9mcl8hGLaHxOTBu3GNgzPvuEUWIzU+Nf6a8eTtBRyKITBepZl6i
+    skip_symbols: false
+    symbol_server: https://www.myget.org/F/inovitex/symbols/api/v2/package
+    artifact: /.*\.nupkg/
+
+  # Deploying to NuGet feed (NuGet.org)
+  - provider: NuGet
+    name: NuGet
+    on:
+      branch: master
+    server: https://www.nuget.org/api/v2/package
+    api_key:
+      secure: jMtKAe9m+jjen+zwguuceUoNSNI2EXyvj+/dJo2RnjsKnMV8DhVog/CVQG7V6Ai0
+    skip_symbols: false
+    symbol_server: https://nuget.smbsrc.net/
+    artifact: /.*\.nupkg/

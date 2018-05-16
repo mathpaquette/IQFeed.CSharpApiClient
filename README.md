@@ -1,1 +1,73 @@
 # IQFeed CSharp Api Client #
+IQFeed.CSharpApiClient is fastest and the most well designed C# DTN IQFeed socket API connector available to the open source community! Currently supporting the latest stable IQFeed protocol version 5.2.
+
+IQFeed is an affordable and reputable Internet market data provider. For more [info](http://www.iqfeed.net/index.cfm?displayaction=developer&section=main).
+
+If you appreciate this project, please star it now!
+
+## Table of Contents
+- [Features](#features)
+- [Usage](#usage)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+  - [Examples](#examples)
+- [IQFeed API support status](#iqfeed-api-support-status)
+- [Contributing](#contributing)
+
+## Features
+- Designed completely non-blocking from bottom-up with nice async/await interfaces
+- Streaming events are distributed using EventHandlers
+- Handle multiple socket connections for at least 40% performance increase when requesting lookup data
+- Sockets are using [SocketAsyncEventArgs](https://msdn.microsoft.com/en-us/library/system.net.sockets.socketasynceventargs(v=vs.110).aspx) for maximum performance and trying to reduce pressure on GB
+- Support for .NET Core (coming)
+
+## Usage
+### Installation
+`Install-Package IQFeed.CSharpApiClient`
+
+### Configuration
+Now, you need to set your API credentials and product id somewhere. You have 2 options, in your user environment variables or app.config.
+
+##### User environment variables
+- Run `rundll32 sysdm.cpl,EditEnvironmentVariables` to open the Environment Variables
+- In your User variables, create 4 new ones:
+  - IQCONNECT_LOGIN
+  - IQCONNECT_PASSWORD
+  - IQCONNECT_PRODUCT_ID
+  - IQCONNECT_PRODUCT_VERSION (not mandatory, will fallback to 1.0.0.0)
+
+##### app.config
+In your appSettings section, assign values to these key:
+```
+<appSettings>
+     <add key="IQConnect:login" value=""/>  
+     <add key="IQConnect:password" value=""/>  
+     <add key="IQConnect:product_id" value=""/>  
+     <add key="IQConnect:product_version" value=""/>  
+</appSettings>
+```
+
+### Examples
+Check IQFeed.CSharpApiClient.Example for more examples.
+
+```
+IQFeedLauncher.Start();
+var lookupClient = LookupClientFactory.CreateNew();
+lookupClient.Connect();
+var ticksMessages = await lookupClient.Historical.ReqHistoryTickDatapointsAsync("AAPL", 100);
+```
+
+### IQFeed API support status
+- Streaming data
+  - Level 1 data :heavy_check_mark:
+  - Level 2 data :x:
+  - Derivative data (in progress)
+  - Admin data :x:
+- Lookup data
+  - Historical data :heavy_check_mark:
+  - News data :x:
+  - Symbol Lookup data :x:
+  - Chains Lookup data (in progress)
+ 
+ # Contributing
+ Pull requests are welcome! Don't hesitate to open an issue if something goes wrong.
