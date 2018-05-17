@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Lookup;
@@ -17,22 +18,23 @@ namespace IQFeed.CSharpApiClient.Common
             _lookupDispatcher = lookupDispatcher;
         }
 
-        public async Task<string> GetStringAsync(string request)
+        public async Task<string> GetFilenameAsync(string request)
         {
             var client = await _lookupDispatcher.TakeAsync();
+            var filename = Path.GetRandomFileName();
+            var bw = new BinaryWriter(File.Open(filename, FileMode.OpenOrCreate));
 
-            var sb = new StringBuilder();
             var ct = new CancellationTokenSource(_timeoutMs);
             var res = new TaskCompletionSource<string>();
             ct.Token.Register(() => res.TrySetCanceled(), false);
 
             void SocketClientOnMessageReceived(object sender, SocketMessageEventArgs args)
             {
-                var msgs = Encoding.ASCII.GetString(args.Message, 0, args.Count);
-                sb.Append(msgs);
+                bw.Write(args.Message, 0, args.Count);
 
-                if (msgs.EndsWith("!ENDMSG!,\r\n"))     // TODO: to be put somewhere else.
-                    res.TrySetResult(sb.ToString());
+                var msgs = Encoding.ASCII.GetString(args.Message, 0, args.Count);       // TODO: should avoid string conversion
+                if (msgs.EndsWith("!ENDMSG!,\r\n"))                                     // TODO: to be put somewhere else.
+                    res.TrySetResult(filename);
             }
 
             client.MessageReceived += SocketClientOnMessageReceived;
@@ -40,6 +42,7 @@ namespace IQFeed.CSharpApiClient.Common
 
             await res.Task.ContinueWith(x =>
             {
+                bw.Close();
                 client.MessageReceived -= SocketClientOnMessageReceived;
                 _lookupDispatcher.Add(client);
             }, TaskContinuationOptions.None);
