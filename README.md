@@ -18,7 +18,7 @@ If you appreciate this project, please star it now!
 
 ## Features
 - Designed completely non-blocking from bottom-up with nice async/await interfaces
-- Streaming events are distributed using EventHandlers
+- Streaming events are distributed in a consistent way using Action delegates
 - Handle multiple socket connections for at least 40% performance increase when requesting lookup data
 - Sockets are using [SocketAsyncEventArgs](https://msdn.microsoft.com/en-us/library/system.net.sockets.socketasynceventargs(v=vs.110).aspx) for maximum performance and trying to reduce pressure on GB
 - Support for .NET Core (coming)

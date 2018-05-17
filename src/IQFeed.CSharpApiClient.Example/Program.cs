@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Lookup;
 using IQFeed.CSharpApiClient.Streaming.Level1;
@@ -13,7 +14,7 @@ namespace IQFeed.CSharpApiClient.Example
             RunLevel1Example();
 
             Console.WriteLine("*************************************");
-            Console.WriteLine("Press enter to continue.");
+            Console.WriteLine("**    Press enter to continue.     **");
             Console.WriteLine("*************************************");
 
             Console.ReadLine();
@@ -37,7 +38,7 @@ namespace IQFeed.CSharpApiClient.Example
 
             // Step 5 - Make any requests you need or want!
             var ticksMessages = await lookupClient.Historical.ReqHistoryTickDatapointsAsync("AAPL", 100);
-            var rawTickMessage = await lookupClient.Historical.Raw.ReqHistoryTickDatapointsAsync("AAPL", 100);
+            var ticksFilename = await lookupClient.Historical.Raw.ReqHistoryTickDaysAsync("AAPL", 100);
 
             // *************************************
         }
@@ -59,8 +60,8 @@ namespace IQFeed.CSharpApiClient.Example
             level1Client.Connect();
 
             // Step 5 - Register to appropriate events
-            level1Client.Timestamp += (sender, args) => Console.WriteLine(args.TimestampMessage);
-            level1Client.Update += (sender, args) => Console.WriteLine(args.UpdateSummaryMessage);
+            level1Client.Timestamp += timestampMsg => Console.WriteLine(timestampMsg);
+            level1Client.Update += updateMsg => Console.WriteLine(updateMsg);
 
             // Step 6 - Make your streaming Leve1 requests
             level1Client.ReqWatch("AAPL");

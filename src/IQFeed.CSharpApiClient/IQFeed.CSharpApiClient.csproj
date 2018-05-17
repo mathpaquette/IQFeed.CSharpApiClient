@@ -52,16 +52,8 @@
     <Compile Include="Lookup\Historical\HistoricalRawFacade.cs" />
     <Compile Include="Lookup\Historical\IHistoricalFacade.cs" />
     <Compile Include="Lookup\LookupDefault.cs" />
-    <Compile Include="Streaming\Level1\EventArgs\ErrorEventArgs.cs" />
-    <Compile Include="Streaming\Level1\EventArgs\FundamentalEventArgs.cs" />
-    <Compile Include="Streaming\Level1\EventArgs\NewsEventArgs.cs" />
-    <Compile Include="Streaming\Level1\EventArgs\SymbolNotFoundEventArgs.cs" />
-    <Compile Include="Streaming\Level1\EventArgs\RegionalUpdateEventArgs.cs" />
-    <Compile Include="Streaming\Level1\EventArgs\SystemEventArgs.cs" />
-    <Compile Include="Streaming\Level1\EventArgs\TimestampEventArgs.cs" />
-    <Compile Include="Streaming\Level1\EventArgs\UpdateSummaryEventArgs.cs" />
     <Compile Include="Streaming\Level1\ILevel1Client.cs" />
-    <Compile Include="Streaming\Level1\ILevel1EventHandler.cs" />
+    <Compile Include="Streaming\Level1\ILevel1Event.cs" />
     <Compile Include="Streaming\Level1\Level1Client.cs" />
     <Compile Include="Lookup\Chains\ChainsFacade.cs" />
     <Compile Include="Lookup\Historical\HistoricalIntervalType.cs" />

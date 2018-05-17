@@ -1,54 +1,54 @@
 ﻿using System;
 using IQFeed.CSharpApiClient.Socket;
-using IQFeed.CSharpApiClient.Streaming.Level1.EventArgs;
+using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
     public class Level1Client : ILevel1Client
     {
-        public event EventHandler<FundamentalEventArgs> Fundamental
+        public event Action<FundamentalMessage> Fundamental
         {
             add => _level1MessageHandler.Fundamental += value;
             remove => _level1MessageHandler.Fundamental -= value;
         }
 
-        public event EventHandler<UpdateSummaryEventArgs> Summary
+        public event Action<UpdateSummaryMessage> Summary
         {
             add => _level1MessageHandler.Summary += value;
             remove => _level1MessageHandler.Summary -= value;
         }
 
-        public event EventHandler<SystemEventArgs> System
+        public event Action<SystemMessage> System
         {
             add => _level1MessageHandler.System += value;
             remove => _level1MessageHandler.System -= value;
         }
-        public event EventHandler<SymbolNotFoundEventArgs> SymbolNotFound
+        public event Action<SymbolNotFoundMessage> SymbolNotFound
         {
             add => _level1MessageHandler.SymbolNotFound += value;
             remove => _level1MessageHandler.SymbolNotFound -= value;
         }
-        public event EventHandler<ErrorEventArgs> Error
+        public event Action<ErrorMessage> Error
         {
             add => _level1MessageHandler.Error += value;
             remove => _level1MessageHandler.Error -= value;
         }
-        public event EventHandler<TimestampEventArgs> Timestamp
+        public event Action<TimestampMessage> Timestamp
         {
             add => _level1MessageHandler.Timestamp += value;
             remove => _level1MessageHandler.Timestamp -= value;
         }
-        public event EventHandler<UpdateSummaryEventArgs> Update
+        public event Action<UpdateSummaryMessage> Update
         {
             add => _level1MessageHandler.Update += value;
             remove => _level1MessageHandler.Update -= value;
         }
-        public event EventHandler<RegionalUpdateEventArgs> Regional
+        public event Action<RegionalUpdateMessage> Regional
         {
             add => _level1MessageHandler.Regional += value;
             remove => _level1MessageHandler.Regional -= value;
         }
-        public event EventHandler<NewsEventArgs> News
+        public event Action<NewsMessage> News
         {
             add => _level1MessageHandler.News += value;
             remove => _level1MessageHandler.News -= value;

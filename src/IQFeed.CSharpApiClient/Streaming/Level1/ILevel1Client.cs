@@ -1,6 +1,6 @@
 ﻿namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
-    public interface ILevel1Client: ILevel1EventHandler
+    public interface ILevel1Client: ILevel1Event
     {
         void ReqWatch(string symbol);
         void ReqTradesOnlyWatch(string symbol);
