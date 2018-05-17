@@ -9,8 +9,6 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
 {
     public class HistoricalFacade : IHistoricalFacade<IEnumerable<TickMessage>, IEnumerable<IntervalMessage>, IEnumerable<DailyWeeklyMonthlyMessage>>
     {
-        public const int DefaultTimeoutMs = 3 * 60000;
-
         private readonly HistoricalRequestFormatter _historicalRequestFormatter;
         private readonly LookupDispatcher _lookupDispatcher;
         private readonly HistoricalMessageHandler _historicalMessageHandler;
@@ -21,7 +19,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             LookupDispatcher lookupDispatcher,
             HistoricalMessageHandler historicalMessageHandler,
             HistoricalRawFacade historicalRawFacade,
-            int timeoutMs = DefaultTimeoutMs)
+            int timeoutMs)
         {
             _timeoutMs = timeoutMs;
             _historicalMessageHandler = historicalMessageHandler;

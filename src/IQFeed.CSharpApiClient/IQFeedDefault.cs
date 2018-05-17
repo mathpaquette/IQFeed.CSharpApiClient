@@ -12,7 +12,7 @@
         public const char ProtocolDelimiterCharacter = ',';
 
         public const int Level1Port = 5009;
-        public const int HistoricalPort = 9100;
+        public const int LookupPort = 9100;
         public const int Level2Port = 9200;
         public const int AdminPort = 9300;
         public const int DerivativePort = 9400;

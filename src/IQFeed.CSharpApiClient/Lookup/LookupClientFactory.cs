@@ -8,12 +8,12 @@ namespace IQFeed.CSharpApiClient.Lookup
 {
     public static class LookupClientFactory
     {
-        public static LookupClient CreateNew(string host = IQFeedDefault.Hostname, int port = IQFeedDefault.HistoricalPort, int numberOfClients = 1)
+        public static LookupClient CreateNew(string host = IQFeedDefault.Hostname, int port = IQFeedDefault.LookupPort, int timeoutMs = LookupDefault.TimeoutMs, int numberOfClients = 1)
         {
             // Common
             var requestFormatter = new RequestFormatter();
             var lookupDispatcher = new LookupDispatcher(host, port, IQFeedDefault.ProtocolVersion, numberOfClients, requestFormatter);
-            var rawMessageHandler = new RawMessageHandler(lookupDispatcher, 60 * 1000);
+            var rawMessageHandler = new RawMessageHandler(lookupDispatcher, timeoutMs);
 
             // Historical
             var historicalDataRequestFormatter = new HistoricalRequestFormatter();
@@ -22,7 +22,8 @@ namespace IQFeed.CSharpApiClient.Lookup
                 historicalDataRequestFormatter,
                 lookupDispatcher, 
                 new HistoricalMessageHandler(),
-                historicalRawFace
+                historicalRawFace,
+                timeoutMs
             );
 
             // News
@@ -39,7 +40,7 @@ namespace IQFeed.CSharpApiClient.Lookup
 
         public static LookupClient CreateNew(int numberOfClients)
         {
-            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.HistoricalPort, numberOfClients);
+            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.LookupPort, numberOfClients);
         }
     }
 }
