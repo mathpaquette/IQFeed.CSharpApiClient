@@ -98,5 +98,11 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
             var dailyWeeklyMonthlyMessages = await _historicalFacade.ReqHistoryMonthlyDatapointsAsync(Symbol, Datapoints);
             Assert.AreEqual(dailyWeeklyMonthlyMessages.Count(), Datapoints);
         }
+
+        [Test, Timeout(TimeoutMs)]
+        public void Should_Throw_Exception_When_Historical_Getting_Error()
+        {
+            var ex = Assert.ThrowsAsync<Exception>(async () => await _historicalFacade.ReqHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints));
+        }
     }
 }

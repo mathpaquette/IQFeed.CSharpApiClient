@@ -215,6 +215,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             void SocketClientOnMessageReceived(object sender, SocketMessageEventArgs args)
             {
                 var container = historicalDataMessageHandler(args.Message, args.Count);
+
+                if (messages.Count == 0 && container.Error != null)
+                    res.TrySetException(new Exception(container.Error)); // TODO: should throw specific exception here
+
                 messages.AddRange(container.Messages);
 
                 if (container.End)

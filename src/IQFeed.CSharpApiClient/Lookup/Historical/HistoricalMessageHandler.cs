@@ -7,7 +7,6 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
 {
     public class HistoricalMessageHandler
     {
-        private static readonly Encoding DefaultEncoding = Encoding.ASCII;
         private readonly string[] _lineSplitDelimiter = { ",\r\n" };
 
         public HistoricalMessageContainer<TickMessage> GetTickMessages(byte[] message, int count)
@@ -27,13 +26,20 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
 
         private HistoricalMessageContainer<T> ProcessMessages<T>(Func<string, T> converter, byte[] message, int count)
         {
+            var messages = Encoding.ASCII.GetString(message, 0, count).Split(_lineSplitDelimiter, StringSplitOptions.RemoveEmptyEntries);
+
             var convertedMessages = new List<T>();
             var endMsg = false;
+            var lastMsgIdx = messages.Length - 1;
 
-            var messages = DefaultEncoding.GetString(message, 0, count).Split(_lineSplitDelimiter, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 0; i < messages.Length; i++)
+            // check for errors
+            if (messages[0][0] == 'E')
+                return new HistoricalMessageContainer<T>(convertedMessages, true, messages[0].Substring(2));
+
+            for (var i = 0; i < messages.Length; i++)
             {
-                if (messages[i] == IQFeedDefault.ProtocolEndOfMessageCharacters)
+                // check for last message
+                if (i == lastMsgIdx && messages[i] == IQFeedDefault.ProtocolEndOfMessageCharacters)
                 {
                     endMsg = true;
                     break;
