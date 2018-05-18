@@ -52,6 +52,7 @@
     <Compile Include="Lookup\Historical\HistoricalRawFacade.cs" />
     <Compile Include="Lookup\Historical\IHistoricalFacade.cs" />
     <Compile Include="Lookup\LookupDefault.cs" />
+    <Compile Include="Socket\SocketDiagnostic.cs" />
     <Compile Include="Streaming\Level1\ILevel1Client.cs" />
     <Compile Include="Streaming\Level1\ILevel1Event.cs" />
     <Compile Include="Streaming\Level1\Level1Client.cs" />
