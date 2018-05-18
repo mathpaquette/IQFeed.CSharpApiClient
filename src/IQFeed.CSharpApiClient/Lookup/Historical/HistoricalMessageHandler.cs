@@ -34,7 +34,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
 
             // check for errors
             if (messages[0][0] == 'E')
-                return new HistoricalMessageContainer<T>(convertedMessages, true, messages[0].Substring(2));
+                return new HistoricalMessageContainer<T>(convertedMessages, true, messages[0]);
 
             for (var i = 0; i < messages.Length; i++)
             {

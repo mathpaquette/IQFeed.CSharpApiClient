@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,8 +22,9 @@ namespace IQFeed.CSharpApiClient.Common
         public async Task<string> GetFilenameAsync(string request)
         {
             var client = await _lookupDispatcher.TakeAsync();
+            var count = 0;
             var filename = Path.GetRandomFileName();
-            var bw = new BinaryWriter(File.Open(filename, FileMode.OpenOrCreate));
+            var binaryWriter = new BinaryWriter(File.Open(filename, FileMode.OpenOrCreate));
 
             var ct = new CancellationTokenSource(_timeoutMs);
             var res = new TaskCompletionSource<string>();
@@ -30,11 +32,16 @@ namespace IQFeed.CSharpApiClient.Common
 
             void SocketClientOnMessageReceived(object sender, SocketMessageEventArgs args)
             {
-                bw.Write(args.Message, 0, args.Count);
+                var msg = Encoding.ASCII.GetString(args.Message, 0, args.Count);       // TODO: should avoid string conversion
+                if (count == 0 && msg[0] == 'E')
+                    res.TrySetException(new Exception(msg));
 
-                var msgs = Encoding.ASCII.GetString(args.Message, 0, args.Count);       // TODO: should avoid string conversion
-                if (msgs.EndsWith("!ENDMSG!,\r\n"))                                     // TODO: to be put somewhere else.
+                binaryWriter.Write(args.Message, 0, args.Count);
+
+                if (msg.EndsWith("!ENDMSG!,\r\n"))                                     // TODO: to be put somewhere else.
                     res.TrySetResult(filename);
+
+                count++;
             }
 
             client.MessageReceived += SocketClientOnMessageReceived;
@@ -42,7 +49,7 @@ namespace IQFeed.CSharpApiClient.Common
 
             await res.Task.ContinueWith(x =>
             {
-                bw.Close();
+                binaryWriter.Close();
                 client.MessageReceived -= SocketClientOnMessageReceived;
                 _lookupDispatcher.Add(client);
             }, TaskContinuationOptions.None);
