@@ -59,7 +59,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             NAICS = naics;
             ExchangeRoot = exchangeRoot;
             OptionsPremiumMultiplier = optionsPremiumMultiplier;
-            OptionsPremiumMultiplier = optionsMultipleDeliverables;
+            OptionsMultipleDeliverables = optionsMultipleDeliverables;
         }
 
         public string Symbol { get; }                           // 0
