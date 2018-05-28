@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Lookup;
 using IQFeed.CSharpApiClient.Socket;
 
@@ -12,19 +13,21 @@ namespace IQFeed.CSharpApiClient.Common
     {
         private readonly LookupDispatcher _lookupDispatcher;
         private readonly int _timeoutMs;
+        private readonly byte[] _endOfMsgBytes;
 
         public RawMessageHandler(LookupDispatcher lookupDispatcher, int timeoutMs)
         {
             _timeoutMs = timeoutMs;
             _lookupDispatcher = lookupDispatcher;
+            _endOfMsgBytes = Encoding.ASCII.GetBytes(IQFeedDefault.ProtocolEndMessage);
         }
 
         public async Task<string> GetFilenameAsync(string request)
         {
             var client = await _lookupDispatcher.TakeAsync();
-            var count = 0;
             var filename = Path.GetRandomFileName();
             var binaryWriter = new BinaryWriter(File.Open(filename, FileMode.OpenOrCreate));
+            var msgCount = 0;
 
             var ct = new CancellationTokenSource(_timeoutMs);
             var res = new TaskCompletionSource<string>();
@@ -32,16 +35,21 @@ namespace IQFeed.CSharpApiClient.Common
 
             void SocketClientOnMessageReceived(object sender, SocketMessageEventArgs args)
             {
-                var msg = Encoding.ASCII.GetString(args.Message, 0, args.Count);       // TODO: should avoid string conversion
-                if (count == 0 && msg[0] == 'E')
-                    res.TrySetException(new Exception(msg));
-
+                // check for errors
+                if (msgCount == 0 && args.Message[0] == 'E')
+                {
+                    var errorMsg = Encoding.ASCII.GetString(args.Message, 0, args.Count);
+                    res.TrySetException(new Exception(errorMsg));
+                    return;
+                }
+                
                 binaryWriter.Write(args.Message, 0, args.Count);
 
-                if (msg.EndsWith("!ENDMSG!,\r\n"))                                     // TODO: to be put somewhere else.
+                // check if the message end
+                if (args.Message.EndsWith(args.Count, _endOfMsgBytes))
                     res.TrySetResult(filename);
 
-                count++;
+                msgCount++;
             }
 
             client.MessageReceived += SocketClientOnMessageReceived;

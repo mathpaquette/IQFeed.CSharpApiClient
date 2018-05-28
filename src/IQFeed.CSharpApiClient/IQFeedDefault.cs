@@ -7,6 +7,7 @@
         public const string ProtocolVersion = "5.2";
         public const string ProtocolTerminatingCharacters = "\r\n";
         public const string ProtocolEndOfMessageCharacters = "!ENDMSG!";
+        public const string ProtocolEndMessage = "!ENDMSG!,\r\n";
 
         public const char ProtocolLineFeedCharacter = '\n';
         public const char ProtocolDelimiterCharacter = ',';
