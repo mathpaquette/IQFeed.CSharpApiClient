@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.Threading;
 using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Socket;
 
@@ -36,9 +35,9 @@ namespace IQFeed.CSharpApiClient
                 "IQConnect.exe", $"-product {productId} -version {productVersion} -login {login} -password {password} -autoconnect"
             );
 
-            var adminPort = SocketDiagnostic.IsPortOpen(IQFeedDefault.Hostname, IQFeedDefault.AdminPort, connectionTimeoutMs, retry);
-
-            if (!adminPort)
+            // TODO: check the status of the admin port using stats messages
+            var adminPortReady = SocketDiagnostic.IsPortOpen(IQFeedDefault.Hostname, IQFeedDefault.AdminPort, connectionTimeoutMs, retry);
+            if (!adminPortReady)
                 throw new Exception($"Can't establish TCP connection with host: {IQFeedDefault.Hostname}:{IQFeedDefault.AdminPort}");
         }
     }

@@ -51,6 +51,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             return new HistoricalMessageContainer<T>(convertedMessages, endMsg);
         }
 
+        // TODO: should be removed inside TickMessage
         private TickMessage GetTickMessage(string msg)
         {
             var values = msg.Split(',');
@@ -67,6 +68,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
                 values[9]);
         }
 
+        // TODO: should be removed inside IntervalMessage
         private IntervalMessage GetIntervalMessage(string msg)
         {
             var values = msg.Split(',');
@@ -80,6 +82,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
                 int.Parse(values[6]));
         }
 
+        // TODO: should be removed inside DailyWeeklyMonthlyMessage
         private DailyWeeklyMonthlyMessage GetDailyWeeklyMonthlyMessage(string msg)
         {
             var values = msg.Split(',');

@@ -217,7 +217,11 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
                 var container = historicalDataMessageHandler(args.Message, args.Count);
 
                 if (messages.Count == 0 && container.Error != null)
-                    res.TrySetException(new Exception(container.Error)); // TODO: should throw specific exception here
+                {
+                    // TODO: should throw specific exception here
+                    res.TrySetException(new Exception(container.Error)); 
+                    return;
+                }
 
                 messages.AddRange(container.Messages);
 

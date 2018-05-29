@@ -49,6 +49,16 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IQFeedDefault.cs" />
     <Compile Include="IQFeedLauncher.cs" />
+    <Compile Include="Lookup\Chains\Options\BinaryOptionFilterType.cs" />
+    <Compile Include="Lookup\Chains\Options\OptionSide.cs" />
+    <Compile Include="Lookup\Chains\Options\OptionSideFilterType.cs" />
+    <Compile Include="Lookup\Chains\ChainsMessageContainer.cs" />
+    <Compile Include="Lookup\Chains\ChainsMessageHandler.cs" />
+    <Compile Include="Lookup\Chains\ChainsRequestFormatter.cs" />
+    <Compile Include="Lookup\Chains\Options\EquityOptionMonthCode.cs" />
+    <Compile Include="Lookup\Chains\Messages\EquityOptionMessage.cs" />
+    <Compile Include="Lookup\Chains\Options\OptionFilterType.cs" />
+    <Compile Include="Lookup\Chains\IChainsFacade.cs" />
     <Compile Include="Lookup\Historical\HistoricalRawFacade.cs" />
     <Compile Include="Lookup\Historical\IHistoricalFacade.cs" />
     <Compile Include="Lookup\LookupDefault.cs" />

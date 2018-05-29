@@ -33,7 +33,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             var symbolFacade = new SymbolFacade();
 
             // Chains
-            var chainsFacade = new ChainsFacade();
+            var chainsFacade = new ChainsFacade(new ChainsRequestFormatter(), new ChainsMessageHandler(), lookupDispatcher, timeoutMs);
 
             return new LookupClient(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade);
         }

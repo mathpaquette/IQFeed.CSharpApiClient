@@ -2,8 +2,19 @@
 {
     public enum HistoricalIntervalType
     {
-        S,  // time intervals in seconds
-        V,  // volume intervals
-        T   // tick intervals
+        /// <summary>
+        /// time intervals in seconds
+        /// </summary>
+        S,
+        
+        /// <summary>
+        /// volume intervals
+        /// </summary>
+        V,
+        
+        /// <summary>
+        /// tick intervals
+        /// </summary>
+        T
     }
 }

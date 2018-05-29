@@ -69,7 +69,7 @@ var ticksMessages = await lookupClient.Historical.ReqHistoryTickDatapointsAsync(
   - Historical data :heavy_check_mark:
   - News data :x:
   - Symbol Lookup data :x:
-  - Chains Lookup data (in progress)
+  - Chains Lookup data :heavy_check_mark:
  
  # Contributing
  Pull requests are welcome! Don't hesitate to open an issue if something goes wrong.

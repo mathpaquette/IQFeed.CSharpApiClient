@@ -28,7 +28,11 @@ namespace IQFeed.CSharpApiClient.Lookup
         {
             for (int i = 0; i < numberOfClients; i++)
             {
-                var socketClient = new SocketClient(host, port);
+                // for SocketClients connected to the lookup port, we need to assign them larger buffer
+                // than unsual because since we're waiting for the \r\n pattern to notify upper layer that we
+                // completed a new message, some particuliar responses such on ReqChainIndexEquityOptionAsync
+                // IQFeed will return on the same line all matching symbols causing overflow
+                var socketClient = new SocketClient(host, port, 32768);     // TODO: buffer size should be part in the factory
                 socketClient.MessageReceived += OnMessageReceived;
                 socketClient.Connected += OnConnected;
                 yield return socketClient;

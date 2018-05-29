@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ByteExtensionsTests.cs" />
+    <Compile Include="Lookup\Chains\EquityOptionMessageTests.cs" />
     <Compile Include="Lookup\Historical\HistoricalRequestFormatterTests.cs" />
     <Compile Include="Streaming\Level1\Messages\FundamentalMessageTests.cs" />
     <Compile Include="Socket\SocketMessageHandlerTests.cs" />
