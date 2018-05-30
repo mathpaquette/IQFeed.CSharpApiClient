@@ -8,7 +8,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
 {
     public class HistoricalRawFacadeTests
     {
-        private const int TimeoutMs = 10000;
+        private const int TimeoutMs = 30000;
         private const int Datapoints = 100;
         private const string Symbol = "AAPL";
 

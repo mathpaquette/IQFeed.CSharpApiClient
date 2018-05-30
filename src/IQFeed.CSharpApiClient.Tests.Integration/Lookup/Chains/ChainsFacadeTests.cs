@@ -11,7 +11,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Chains
 {
     public class ChainsFacadeTests
     {
-        private const int TimeoutMs = 10000;
+        private const int TimeoutMs = 30000;
         private const string EquitySymbol = "SPY";
         private const string FutureSymbol = "@ES";
 
