@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Lookup;
 using IQFeed.CSharpApiClient.Streaming.Level1;

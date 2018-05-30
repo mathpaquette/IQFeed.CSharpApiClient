@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Configuration;
+using System.Threading;
 using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Socket;
+using IQFeed.CSharpApiClient.Streaming.Admin;
+using IQFeed.CSharpApiClient.Streaming.Admin.Messages;
 
 namespace IQFeed.CSharpApiClient
 {
@@ -11,17 +14,17 @@ namespace IQFeed.CSharpApiClient
         {
             var appSettings = ConfigurationManager.AppSettings;
 
-            login = login ?? 
-                    Environment.GetEnvironmentVariable("IQCONNECT_LOGIN") ?? 
+            login = login ??
+                    Environment.GetEnvironmentVariable("IQCONNECT_LOGIN") ??
                     appSettings["IQConnect:login"].NullIfEmpty() ??
                     throw new Exception("Unable to find IQConnect login from environment variable or app.config");
 
-            password = password ?? 
+            password = password ??
                        Environment.GetEnvironmentVariable("IQCONNECT_PASSWORD") ??
                        appSettings["IQConnect:password"].NullIfEmpty() ??
                        throw new Exception("Unable to find IQConnect password from environment variable or app.config");
 
-            productId = productId ?? 
+            productId = productId ??
                         Environment.GetEnvironmentVariable("IQCONNECT_PRODUCT_ID") ??
                         appSettings["IQConnect:product_id"].NullIfEmpty() ??
                         throw new Exception("Unable to find IQConnect product ID from environment variable or app.config");
@@ -35,10 +38,36 @@ namespace IQFeed.CSharpApiClient
                 "IQConnect.exe", $"-product {productId} -version {productVersion} -login {login} -password {password} -autoconnect"
             );
 
-            // TODO: check the status of the admin port using stats messages
+            WaitForAdminPortReady(connectionTimeoutMs, retry);
+            WaitForServerConnectedStatus(IQFeedDefault.Hostname, IQFeedDefault.AdminPort);
+        }
+
+        private static void WaitForAdminPortReady(int connectionTimeoutMs, int retry)
+        {
             var adminPortReady = SocketDiagnostic.IsPortOpen(IQFeedDefault.Hostname, IQFeedDefault.AdminPort, connectionTimeoutMs, retry);
             if (!adminPortReady)
                 throw new Exception($"Can't establish TCP connection with host: {IQFeedDefault.Hostname}:{IQFeedDefault.AdminPort}");
+        }
+
+        private static void WaitForServerConnectedStatus(string host, int port, int timeoutMs = 10000)
+        {
+            var manualResetEvent = new ManualResetEvent(false);
+            var adminClient = AdminClientFactory.CreateNew(host, port);
+
+            adminClient.Stats += AdminClientOnStats;
+            adminClient.Connect(); // TODO: disconnect and make sure that client is sucessfully disposed
+
+            var connected = manualResetEvent.WaitOne(timeoutMs);
+            if (!connected)
+                throw new Exception($"Haven't received connected status with host: {host}:{port}");
+
+            adminClient.Stats -= AdminClientOnStats;
+
+            void AdminClientOnStats(StatsMessage message)
+            {
+                if (message.Status == StatsStatusType.Connected)
+                    manualResetEvent.Set();
+            }
         }
     }
 }

@@ -103,6 +103,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             Error?.Invoke(errorMessage);
         }
 
+        // TODO: this could be extracted in a common class
         public static string[] GetValuesFromMessage(string message)
         {
             return message.Substring(2).Split(IQFeedDefault.ProtocolDelimiterCharacter);

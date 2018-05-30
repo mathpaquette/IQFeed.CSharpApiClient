@@ -64,7 +64,7 @@ var ticksMessages = await lookupClient.Historical.ReqHistoryTickDatapointsAsync(
   - Level 1 data :heavy_check_mark:
   - Level 2 data :x:
   - Derivative data (in progress)
-  - Admin data :x:
+  - Admin data (in progress)
 - Lookup data
   - Historical data :heavy_check_mark:
   - News data :x:

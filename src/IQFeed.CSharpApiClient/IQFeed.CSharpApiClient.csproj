@@ -63,6 +63,15 @@
     <Compile Include="Lookup\Historical\IHistoricalFacade.cs" />
     <Compile Include="Lookup\LookupDefault.cs" />
     <Compile Include="Socket\SocketDiagnostic.cs" />
+    <Compile Include="Streaming\Admin\AdminClient.cs" />
+    <Compile Include="Streaming\Admin\AdminClientFactory.cs" />
+    <Compile Include="Streaming\Admin\AdminMessageHandler.cs" />
+    <Compile Include="Streaming\Admin\AdminRequestFormatter.cs" />
+    <Compile Include="Streaming\Admin\IAdminClient.cs" />
+    <Compile Include="Streaming\Admin\IAdminMessage.cs" />
+    <Compile Include="Streaming\Admin\Messages\ClientStatsMessage.cs" />
+    <Compile Include="Streaming\Admin\Messages\StatsMessage.cs" />
+    <Compile Include="Streaming\Admin\Messages\StatsStatusType.cs" />
     <Compile Include="Streaming\Level1\ILevel1Client.cs" />
     <Compile Include="Streaming\Level1\ILevel1Event.cs" />
     <Compile Include="Streaming\Level1\Level1Client.cs" />
@@ -97,7 +106,6 @@
     <Compile Include="Lookup\Historical\HistoricalMessageContainer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Streaming\Admin\" />
     <Folder Include="Streaming\Derivative\" />
     <Folder Include="Streaming\Level2\" />
   </ItemGroup>
