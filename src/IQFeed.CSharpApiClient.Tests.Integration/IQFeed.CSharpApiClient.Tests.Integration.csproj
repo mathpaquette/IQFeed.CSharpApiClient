@@ -49,6 +49,9 @@
     <Compile Include="Lookup\Chains\ChainsFacadeTests.cs" />
     <Compile Include="Lookup\Historical\HistoricalFacadeTests.cs" />
     <Compile Include="Lookup\Historical\HistoricalRawFacadeTests.cs" />
+    <Compile Include="Lookup\Symbol\MarketSymbols\MarketSymbolDownloaderTests.cs" />
+    <Compile Include="Lookup\Symbol\Settings.cs" />
+    <Compile Include="Lookup\Symbol\SymbolFacadeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Streaming\Admin\AdminClientTests.cs" />
   </ItemGroup>

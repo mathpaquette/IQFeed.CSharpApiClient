@@ -3,6 +3,7 @@ using IQFeed.CSharpApiClient.Lookup.Chains;
 using IQFeed.CSharpApiClient.Lookup.Historical;
 using IQFeed.CSharpApiClient.Lookup.News;
 using IQFeed.CSharpApiClient.Lookup.Symbol;
+using IQFeed.CSharpApiClient.Lookup.Symbol.MarketSymbols;
 
 namespace IQFeed.CSharpApiClient.Lookup
 {
@@ -30,7 +31,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             var newsFacade = new NewsFacade();
 
             // Symbol
-            var symbolFacade = new SymbolFacade();
+            var symbolFacade = new SymbolFacade(new MarketSymbolDownloader(), new MarketSymbolReader());
 
             // Chains
             var chainsFacade = new ChainsFacade(new ChainsRequestFormatter(), new ChainsMessageHandler(), lookupDispatcher, timeoutMs);

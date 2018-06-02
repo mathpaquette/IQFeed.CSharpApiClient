@@ -18,5 +18,7 @@
         public const int AdminPort = 9300;
         public const int DerivativePort = 9400;
         public const int LoginPort = 60020;
+
+        public const string MarketSymbolsArchiveUrl = "http://www.dtniq.com/product/mktsymbols_v2.zip";
     }
 }

@@ -1,0 +1,71 @@
+﻿namespace IQFeed.CSharpApiClient.Lookup.Symbol.MarketSymbols
+{
+    public class MarketSymbolExchange
+    {
+        public const string NYMEX = "NYMEX";
+        public const string CME = "CME";
+        public const string NASDAQ = "NASDAQ";
+        public const string EEXP = "EEXP";
+        public const string DTN = "DTN";
+        public const string ENID = "ENID";
+        public const string NYSE = "NYSE";
+        public const string EEXE = "EEXE";
+        public const string EEXN = "EEXN";
+        public const string FTSE = "FTSE";
+        public const string SGX = "SGX";
+        public const string CME_FL = "CME-FL";
+        public const string CBOT = "CBOT";
+        public const string MGE = "MGE";
+        public const string NFX = "NFX";
+        public const string ICEFU = "ICEFU";
+        public const string ICEFC = "ICEFC";
+        public const string KCBOT = "KCBOT";
+        public const string ICEEF = "ICEEF";
+        public const string ICEEC = "ICEEC";
+        public const string KBCB = "KBCB";
+        public const string MGKB = "MGKB";
+        public const string MGCB = "MGCB";
+        public const string COMEX = "COMEX";
+        public const string CFE = "CFE";
+        public const string PK_SHEETS = "PK_SHEETS";
+        public const string OPRA = "OPRA";
+        public const string DJ = "DJ";
+        public const string NYSE_AMERICAN = "NYSE_AMERICAN";
+        public const string EEXAG = "EEXAG";
+        public const string ASXCM = "ASXCM";
+        public const string BMF = "BMF";
+        public const string BATS = "BATS";
+        public const string TENFORE = "TENFORE";
+        public const string CMEUR = "CMEUR";
+        public const string SAFEX = "SAFEX";
+        public const string EUREX = "EUREX";
+        public const string FXCM = "FXCM";
+        public const string BLOOMBERG = "BLOOMBERG";
+        public const string ICEENDEX = "ICEENDEX";
+        public const string CBOE = "CBOE";
+        public const string CVE = "CVE";
+        public const string TSE = "TSE";
+        public const string ENCOM = "ENCOM";
+        public const string CFTC = "CFTC";
+        public const string ICEEA = "ICEEA";
+        public const string DCE = "DCE";
+        public const string ELSPOT = "ELSPOT";
+        public const string N2EX = "N2EX";
+        public const string CANTOR = "CANTOR";
+        public const string MDEX = "MDEX";
+        public const string MCX = "MCX";
+        public const string LSE = "LSE";
+        public const string LME = "LME";
+        public const string LPPM = "LPPM";
+        public const string SGXAC = "SGXAC";
+        public const string RUSSELL_FL = "RUSSELL-FL";
+        public const string RUSSELL = "RUSSELL";
+        public const string EEXC = "EEXC";
+        public const string TOCOM = "TOCOM";
+        public const string USDA = "USDA";
+        public const string GRNST = "GRNST";
+        public const string WASDE = "WASDE";
+        public const string ZCE = "ZCE";
+        public const string IEX = "IEX";
+    }
+}
