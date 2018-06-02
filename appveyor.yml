@@ -1,7 +1,7 @@
 image: Visual Studio 2017
 
 # version format
-version: 1.1.1-build{build}
+version: 1.2.0-build{build}
 
 artifacts:
   - path: '**\AssemblyInfo.*'

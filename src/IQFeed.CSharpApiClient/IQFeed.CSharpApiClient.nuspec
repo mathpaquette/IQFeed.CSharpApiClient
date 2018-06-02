@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/mathpaquette/IQFeed.CSharpApiClient</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>IQFeed.CSharpApiClient version 1.1.1</releaseNotes>
+    <releaseNotes>IQFeed.CSharpApiClient version 1.2.0</releaseNotes>
     <copyright>$copyright$</copyright>
     <tags>DTN IQFeed Socket API (Client)</tags>
   </metadata>
