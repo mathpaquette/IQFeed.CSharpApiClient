@@ -63,6 +63,7 @@
     <Compile Include="Lookup\Historical\HistoricalRawFacade.cs" />
     <Compile Include="Lookup\Historical\IHistoricalFacade.cs" />
     <Compile Include="Lookup\LookupDefault.cs" />
+    <Compile Include="Lookup\Symbol\ListedMarket.cs" />
     <Compile Include="Socket\SocketDiagnostic.cs" />
     <Compile Include="Streaming\Admin\AdminClient.cs" />
     <Compile Include="Streaming\Admin\AdminClientFactory.cs" />
