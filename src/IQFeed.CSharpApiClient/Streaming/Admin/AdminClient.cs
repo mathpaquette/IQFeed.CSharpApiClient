@@ -4,7 +4,6 @@ using IQFeed.CSharpApiClient.Streaming.Admin.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Admin
 {
-    // TODO: finish the implementation of AdminClient
     public class AdminClient : IAdminClient
     {
         public event Action<StatsMessage> Stats
@@ -42,42 +41,32 @@ namespace IQFeed.CSharpApiClient.Streaming.Admin
             throw new NotImplementedException();
         }
 
-        public void RegisterClientApp(string appName)
+        public void RegisterClientApp(string productId, string productVersion)
         {
             throw new NotImplementedException();
         }
 
-        public void RemoveClientApp(string appName)
+        public void RemoveClientApp(string productId, string productVersion)
         {
             throw new NotImplementedException();
         }
 
-        public void SetLoginId(string login)
+        public void SetLoginId(string userLoginId)
         {
             throw new NotImplementedException();
         }
 
-        public void SetPassword(string password)
+        public void SetPassword(string userPassword)
         {
             throw new NotImplementedException();
         }
 
-        public void SetSaveLoginInfo()
+        public void SetSaveLoginInfo(bool on = true)
         {
             throw new NotImplementedException();
         }
 
-        public void SetAutoconnect()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetClientStatusOn()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetClientStatusOff()
+        public void SetAutoconnect(bool on = true)
         {
             throw new NotImplementedException();
         }
@@ -92,6 +81,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Admin
             throw new NotImplementedException();
         }
 
+        public void SetClientStats(bool on = true)
+        {
+            throw new NotImplementedException();
+        }
+        
         public void Connect()
         {
             _socketClient.Connect();
