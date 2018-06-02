@@ -52,6 +52,11 @@ namespace IQFeed.CSharpApiClient.Socket
             }
         }
 
+        public void Disconnect()
+        {
+            _clientSocket.Dispose();
+        }
+
         public void Send(string message)
         {
             if (_clientSocket.Connected)

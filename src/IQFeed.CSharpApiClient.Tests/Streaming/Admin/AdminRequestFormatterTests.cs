@@ -16,20 +16,20 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Admin
         public void SetClientName_Should_Return_Formatted_Request()
         {
             // Arrange
-            var clientName = "myclientapp";
+            var clientName = "MyClientName";
 
             // Act
             var formatted = _adminRequestFormatter.SetClientName(clientName);
 
             // Assert
-            Assert.AreEqual(formatted, $"S,SET CLIENT NAME,{clientName}{IQFeedDefault.ProtocolTerminatingCharacters}".ToUpper());
+            Assert.AreEqual(formatted, $"S,SET CLIENT NAME,{clientName}{IQFeedDefault.ProtocolTerminatingCharacters}");
         }
 
         [Test]
         public void RegisterClientApp_Should_Return_Formatted_Request()
         {
             // Arrange
-            var productId = "myproductid";
+            var productId = "MyProductId";
             var productVersion = "1.0.0.0";
 
             // Act
@@ -43,7 +43,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Admin
         public void RemoveClientApp_Should_Return_Formatted_Request()
         {
             // Arrange
-            var productId = "myproductid";
+            var productId = "MyProductId";
             var productVersion = "1.0.0.0";
 
             // Act

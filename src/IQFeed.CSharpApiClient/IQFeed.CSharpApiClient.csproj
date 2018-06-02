@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\IRequestFormatter.cs" />
+    <Compile Include="Common\Messages\ProtocolMessage.cs" />
     <Compile Include="Common\RawMessageHandler.cs" />
     <Compile Include="Common\RequestFormatter.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
@@ -67,11 +68,20 @@
     <Compile Include="Streaming\Admin\AdminClientFactory.cs" />
     <Compile Include="Streaming\Admin\AdminMessageHandler.cs" />
     <Compile Include="Streaming\Admin\AdminRequestFormatter.cs" />
+    <Compile Include="Streaming\Admin\ClientType.cs" />
     <Compile Include="Streaming\Admin\IAdminClient.cs" />
     <Compile Include="Streaming\Admin\IAdminMessage.cs" />
+    <Compile Include="Streaming\Admin\Messages\AutoConnectMessage.cs" />
+    <Compile Include="Streaming\Admin\Messages\AutoConnectMessageType.cs" />
+    <Compile Include="Streaming\Admin\Messages\ClientAppMessage.cs" />
+    <Compile Include="Streaming\Admin\Messages\ClientAppMessageType.cs" />
     <Compile Include="Streaming\Admin\Messages\ClientStatsMessage.cs" />
+    <Compile Include="Streaming\Admin\Messages\LoginIdMessage.cs" />
+    <Compile Include="Streaming\Admin\Messages\LoginInfoMessage.cs" />
+    <Compile Include="Streaming\Admin\Messages\LoginInfoMessageType.cs" />
+    <Compile Include="Streaming\Admin\Messages\PasswordMessage.cs" />
     <Compile Include="Streaming\Admin\Messages\StatsMessage.cs" />
-    <Compile Include="Streaming\Admin\Messages\StatsStatusType.cs" />
+    <Compile Include="Streaming\Admin\StatsStatusType.cs" />
     <Compile Include="Streaming\Level1\ILevel1Client.cs" />
     <Compile Include="Streaming\Level1\ILevel1Event.cs" />
     <Compile Include="Streaming\Level1\Level1Client.cs" />

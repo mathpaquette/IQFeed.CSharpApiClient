@@ -2,7 +2,7 @@
 {
     public interface IAdminClient: IAdminMessage
     {
-        void SetProtocol();
+        void SetProtocol(string version);
         void SetClientName(string name);
         void RegisterClientApp(string productId, string productVersion);
         void RemoveClientApp(string productId, string productVersion);

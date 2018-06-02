@@ -2,9 +2,9 @@
 {
     public class RequestFormatter : IRequestFormatter
     {
-        public string SetProtocol(string protocol)
+        public string SetProtocol(string version)
         {
-            return $"S,SET PROTOCOL,{protocol}{IQFeedDefault.ProtocolTerminatingCharacters}";
+            return $"S,SET PROTOCOL,{version}{IQFeedDefault.ProtocolTerminatingCharacters}";
         }
     }
 }

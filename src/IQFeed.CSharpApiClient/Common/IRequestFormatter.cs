@@ -2,6 +2,6 @@
 {
     public interface IRequestFormatter
     {
-        string SetProtocol(string protocol);
+        string SetProtocol(string version);
     }
 }

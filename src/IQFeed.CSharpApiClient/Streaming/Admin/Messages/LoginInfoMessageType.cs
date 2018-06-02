@@ -1,8 +1,8 @@
 ﻿namespace IQFeed.CSharpApiClient.Streaming.Admin.Messages
 {
-    public enum StatsStatusType
+    public enum LoginInfoMessageType
     {
-        NotConnected,
-        Connected
+        Saved,
+        NotSaved
     }
 }

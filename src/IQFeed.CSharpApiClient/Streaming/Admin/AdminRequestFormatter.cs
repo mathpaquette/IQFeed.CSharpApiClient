@@ -6,7 +6,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Admin
     {
         public string SetClientName(string name)
         {
-            return $"S,SET CLIENT NAME,{name}{IQFeedDefault.ProtocolTerminatingCharacters}".ToUpper();
+            return $"S,SET CLIENT NAME,{name}{IQFeedDefault.ProtocolTerminatingCharacters}";
         }
 
         public string RegisterClientApp(string productId, string productVersion)
