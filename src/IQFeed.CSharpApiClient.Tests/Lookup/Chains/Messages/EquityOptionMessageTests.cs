@@ -3,7 +3,7 @@ using IQFeed.CSharpApiClient.Lookup.Chains.Messages;
 using IQFeed.CSharpApiClient.Lookup.Chains.Options;
 using NUnit.Framework;
 
-namespace IQFeed.CSharpApiClient.Tests.Lookup.Chains
+namespace IQFeed.CSharpApiClient.Tests.Lookup.Chains.Messages
 {
     public class EquityOptionMessageTests
     {

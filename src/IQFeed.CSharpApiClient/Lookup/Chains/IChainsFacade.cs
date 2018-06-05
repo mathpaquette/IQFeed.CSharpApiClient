@@ -16,7 +16,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
         /// <param name="nearMonths"></param>
         /// <param name="requestId"></param>
         /// <returns></returns>
-        Task<IEnumerable<string>> ReqChainFutureAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null);
+        Task<IEnumerable<FutureMessage>> ReqChainFutureAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null);
 
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
         /// <param name="nearMonths"></param>
         /// <param name="requestId"></param>
         /// <returns></returns>
-        Task<IEnumerable<string>> ReqChainFutureSpreadsAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null);
+        Task<IEnumerable<FutureSpreadMessage>> ReqChainFutureSpreadsAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null);
 
         /// <summary>
         /// CFO - Request a Future Option Chain from IQFeed
@@ -40,7 +40,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
         /// <param name="nearMonths"></param>
         /// <param name="requestId"></param>
         /// <returns></returns>
-        Task<IEnumerable<string>> ReqChainFutureOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, string years, int? nearMonths = null, string requestId = null);
+        Task<IEnumerable<FutureOptionMessage>> ReqChainFutureOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, string years, int? nearMonths = null, string requestId = null);
 
         /// <summary>
         /// CEO - Request an Index or Equity Option Chain from IQFeed

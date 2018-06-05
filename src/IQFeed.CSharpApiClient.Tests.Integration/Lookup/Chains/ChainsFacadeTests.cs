@@ -32,24 +32,24 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Chains
         }
 
         [Test, Timeout(TimeoutMs)]
-        public async Task Should_Return_Strings_When_ReqChainFutureAsync()
+        public async Task Should_Return_Futures_When_ReqChainFutureAsync()
         {
-            var stringMessages = await _chainsFacade.ReqChainFutureAsync(FutureSymbol, string.Empty, "1819", 24);
-            Assert.IsInstanceOf<string>(stringMessages.First());
+            var futureMessages = await _chainsFacade.ReqChainFutureAsync(FutureSymbol, string.Empty, "1819", 24);
+            Assert.IsInstanceOf<FutureMessage>(futureMessages.First());
         }
 
         [Test, Timeout(TimeoutMs)]
-        public async Task Should_Return_Strings_When_ReqChainFutureSpreadsAsync()
+        public async Task Should_Return_FutureSpreads_When_ReqChainFutureSpreadsAsync()
         {
-            var stringMessages = await _chainsFacade.ReqChainFutureSpreadsAsync(FutureSymbol, string.Empty, "1819", 24);
-            Assert.IsInstanceOf<string>(stringMessages.First());
+            var futureSpreadMessages = await _chainsFacade.ReqChainFutureSpreadsAsync(FutureSymbol, string.Empty, "1819", 24);
+            Assert.IsInstanceOf<FutureSpreadMessage>(futureSpreadMessages.First());
         }
 
         [Test, Timeout(TimeoutMs)]
-        public async Task Should_Return_Strings_When_ReqChainFutureOptionAsync()
+        public async Task Should_Return_FutureOptions_When_ReqChainFutureOptionAsync()
         {
-            var stringMessages = await _chainsFacade.ReqChainFutureOptionAsync(FutureSymbol, OptionSideFilterType.CP, string.Empty, "18", 12);
-            Assert.IsInstanceOf<string>(stringMessages.First());
+            var futureOptionMessages = await _chainsFacade.ReqChainFutureOptionAsync(FutureSymbol, OptionSideFilterType.CP, string.Empty, "18", 12);
+            Assert.IsInstanceOf<FutureOptionMessage>(futureOptionMessages.First());
         }
 
         [Test, Timeout(TimeoutMs)]

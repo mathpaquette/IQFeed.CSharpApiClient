@@ -52,6 +52,10 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IQFeedDefault.cs" />
     <Compile Include="IQFeedLauncher.cs" />
+    <Compile Include="Lookup\Chains\Futures\FutureMonthCode.cs" />
+    <Compile Include="Lookup\Chains\Messages\FutureMessage.cs" />
+    <Compile Include="Lookup\Chains\Messages\FutureOptionMessage.cs" />
+    <Compile Include="Lookup\Chains\Messages\FutureSpreadMessage.cs" />
     <Compile Include="Lookup\Chains\Options\BinaryOptionFilterType.cs" />
     <Compile Include="Lookup\Chains\Options\OptionSide.cs" />
     <Compile Include="Lookup\Chains\Options\OptionSideFilterType.cs" />

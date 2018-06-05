@@ -23,25 +23,22 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
             _chainsRequestFormatter = chainsRequestFormatter;
         }
 
-        public Task<IEnumerable<string>> ReqChainFutureAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null)
+        public Task<IEnumerable<FutureMessage>> ReqChainFutureAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null)
         {
-            // TODO: should return Future contract message
             var request = _chainsRequestFormatter.ReqChainFuture(symbol, monthCodes, years, nearMonths, requestId);
-            return GetMessagesAsync(request, _chainsMessageHandler.GetStringMessages);
+            return GetMessagesAsync(request, _chainsMessageHandler.GetFutureMessages);
         }
 
-        public Task<IEnumerable<string>> ReqChainFutureSpreadsAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null)
+        public Task<IEnumerable<FutureSpreadMessage>> ReqChainFutureSpreadsAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null)
         {
-            // TODO: should return Future contract spread message
             var request = _chainsRequestFormatter.ReqChainFutureSpreads(symbol, monthCodes, years, nearMonths, requestId);
-            return GetMessagesAsync(request, _chainsMessageHandler.GetStringMessages);
+            return GetMessagesAsync(request, _chainsMessageHandler.GetFutureSpreadMessages);
         }
 
-        public Task<IEnumerable<string>> ReqChainFutureOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, string years, int? nearMonths = null, string requestId = null)
+        public Task<IEnumerable<FutureOptionMessage>> ReqChainFutureOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, string years, int? nearMonths = null, string requestId = null)
         {
-            // TODO: should return Future option contract message
             var request = _chainsRequestFormatter.ReqChainFutureOption(symbol, optionSideFilter, monthCodes, years, nearMonths, requestId);
-            return GetMessagesAsync(request, _chainsMessageHandler.GetStringMessages);
+            return GetMessagesAsync(request, _chainsMessageHandler.GetFutureOptionMessages);
         }
 
         public Task<IEnumerable<EquityOptionMessage>> ReqChainIndexEquityOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, int? nearMonths = null, BinaryOptionFilterType binaryOptionFilter = BinaryOptionFilterType.Include,

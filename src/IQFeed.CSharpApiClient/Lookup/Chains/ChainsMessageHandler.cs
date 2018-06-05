@@ -18,14 +18,24 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
             _symbolSplitDelimiter = new[] { IQFeedDefault.ProtocolDelimiterCharacter };
         }
 
+        public ChainsMessageContainer<FutureMessage> GetFutureMessages(byte[] message, int count)
+        {
+            return ProcessMessages(message, count, FutureMessage.CreateFutureMessage);
+        }
+
+        public ChainsMessageContainer<FutureSpreadMessage> GetFutureSpreadMessages(byte[] message, int count)
+        {
+            return ProcessMessages(message, count, FutureSpreadMessage.CreateFutureSpreadMessage);
+        }
+
+        public ChainsMessageContainer<FutureOptionMessage> GetFutureOptionMessages(byte[] message, int count)
+        {
+            return ProcessMessages(message, count, FutureOptionMessage.CreateFutureOptionMessage);
+        }
+
         public ChainsMessageContainer<EquityOptionMessage> GetEquityOptionMessages(byte[] message, int count)
         {
             return ProcessMessages(message, count, EquityOptionMessage.CreateEquityIndexOptionMessage);
-        }
-
-        public ChainsMessageContainer<string> GetStringMessages(byte[] message, int count)
-        {
-            return ProcessMessages(message, count, s => s);
         }
 
         // TODO: this method can be combined with Historical

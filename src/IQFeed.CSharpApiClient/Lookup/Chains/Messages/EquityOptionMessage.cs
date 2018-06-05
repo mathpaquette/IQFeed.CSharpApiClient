@@ -50,7 +50,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains.Messages
 
         public override string ToString()
         {
-            return $"{Expiration.Date:dd MMM yy} {EquitySymbol}@{StrikePrice} {Side.ToString()}".ToUpper();
+            return $"{EquitySymbol} {Expiration.Date:dd MMM yy} {Side} {StrikePrice}".ToUpper();
         }
     }
 }
