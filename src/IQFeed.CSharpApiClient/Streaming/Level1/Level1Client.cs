@@ -98,15 +98,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             _socketClient.Send(request);
         }
 
-        public void ReqTimestampsOn()
+        public void ReqTimestamps(bool on = true)
         {
-            var request = _level1RequestFormatter.ReqTimestampsOn();
-            _socketClient.Send(request);
-        }
-
-        public void ReqTimestampsOff()
-        {
-            var request = _level1RequestFormatter.ReqTimestampsOff();
+            var request = _level1RequestFormatter.ReqTimestamps(on);
             _socketClient.Send(request);
         }
 
@@ -122,15 +116,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             _socketClient.Send(request);
         }
 
-        public void ReqNewsOn()
+        public void ReqNews(bool on = true)
         {
-            var request = _level1RequestFormatter.ReqNewsOn();
-            _socketClient.Send(request);
-        }
-
-        public void ReqNewsOff()
-        {
-            var request = _level1RequestFormatter.ReqNewsOff();
+            var request = _level1RequestFormatter.ReqNews(on);
             _socketClient.Send(request);
         }
 

@@ -7,12 +7,10 @@
         void ReqUnwatch(string symbol);
         void ReqForcedRefresh(string symbol);
         void ReqTimestamp();
-        void ReqTimestampsOn();
-        void ReqTimestampsOff();
+        void ReqTimestamps(bool on);
         void ReqRegionalWatch(string symbol);
         void ReqRegionalUnwatch(string symbol);
-        void ReqNewsOn();
-        void ReqNewsOff();
+        void ReqNews(bool on);
         void ReqStats();
         void ReqFundamentalFieldnames();
         void ReqUpdateFieldnames();

@@ -31,14 +31,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return $"T{IQFeedDefault.ProtocolTerminatingCharacters}";
         }
 
-        public string ReqTimestampsOn()
+        public string ReqTimestamps(bool on)
         {
-            return $"S,TIMESTAMPSON{IQFeedDefault.ProtocolTerminatingCharacters}";
-        }
-
-        public string ReqTimestampsOff()
-        {
-            return $"S,TIMESTAMPSOFF{IQFeedDefault.ProtocolTerminatingCharacters}";
+            var timestamps = on ? "TIMESTAMPSON" : "TIMESTAMPSOFF";
+            return $"S,{timestamps}{IQFeedDefault.ProtocolTerminatingCharacters}";
         }
 
         public string ReqRegionalWatch(string symbol)
@@ -51,14 +47,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return $"S,REGOFF,{symbol.ToUpper()}{IQFeedDefault.ProtocolTerminatingCharacters}";
         }
 
-        public string ReqNewsOn()
+        public string ReqNews(bool on)
         {
-            return $"S,NEWSON{IQFeedDefault.ProtocolTerminatingCharacters}";
-        }
-
-        public string ReqNewsOff()
-        {
-            return $"S,NEWSOFF{IQFeedDefault.ProtocolTerminatingCharacters}";
+            var news = on ? "NEWSON" : "NEWSOFF";
+            return $"S,{news}{IQFeedDefault.ProtocolTerminatingCharacters}";
         }
 
         public string ReqStats()
