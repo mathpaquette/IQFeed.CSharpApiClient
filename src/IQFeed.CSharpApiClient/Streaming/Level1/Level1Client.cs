@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
@@ -147,13 +148,13 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             _socketClient.Send(request);
         }
 
-        public void SelectUpdateFieldName(string[] fieldNames)
+        public void SelectUpdateFieldName(params string[] fieldNames)
         {
             var request = _level1RequestFormatter.SelectUpdateFieldName(fieldNames);
             _socketClient.Send(request);
         }
 
-        public void SetLogLevels(string[] logLevels)
+        public void SetLogLevels(params LoggingLevel[] logLevels)
         {
             var request = _level1RequestFormatter.SetLogLevels(logLevels);
             _socketClient.Send(request);

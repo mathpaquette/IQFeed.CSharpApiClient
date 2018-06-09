@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\IRequestFormatter.cs" />
+    <Compile Include="Common\LoggingLevel.cs" />
     <Compile Include="Common\Messages\ProtocolMessage.cs" />
     <Compile Include="Common\RawMessageHandler.cs" />
     <Compile Include="Common\RequestFormatter.cs" />

@@ -84,9 +84,15 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return sb.ToString();
         }
 
-        public string SetLogLevels(string[] logLevels)
+        public string SetLogLevels(LoggingLevel[] logLevels)
         {
-           throw new NotImplementedException();
+            var sb = new StringBuilder("S,SET LOG LEVELS");
+            foreach (var logLevel in logLevels)
+            {
+                sb.Append($"{IQFeedDefault.ProtocolDelimiterCharacter}{logLevel.ToString()}");
+            }
+            sb.Append(IQFeedDefault.ProtocolTerminatingCharacters);
+            return sb.ToString();
         }
 
         public string ReqWatchList()

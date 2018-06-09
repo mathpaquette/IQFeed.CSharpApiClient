@@ -51,6 +51,7 @@
     <Compile Include="Lookup\Chains\Futures\FutureMonthCodeTests.cs" />
     <Compile Include="Lookup\Historical\HistoricalRequestFormatterTests.cs" />
     <Compile Include="Streaming\Admin\AdminRequestFormatterTests.cs" />
+    <Compile Include="Streaming\Level1\Level1RequestFormatterTests.cs" />
     <Compile Include="Streaming\Level1\Messages\FundamentalMessageTests.cs" />
     <Compile Include="Socket\SocketMessageHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

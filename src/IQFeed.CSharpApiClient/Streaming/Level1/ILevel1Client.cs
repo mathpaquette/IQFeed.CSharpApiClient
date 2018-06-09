@@ -1,4 +1,6 @@
-﻿namespace IQFeed.CSharpApiClient.Streaming.Level1
+﻿using IQFeed.CSharpApiClient.Common;
+
+namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
     public interface ILevel1Client: ILevel1Event, ILevel1Snapshot
     {
@@ -15,8 +17,8 @@
         void ReqFundamentalFieldnames();
         void ReqUpdateFieldnames();
         void ReqCurrentUpdateFieldNames();
-        void SelectUpdateFieldName(string[] fieldNames);
-        void SetLogLevels(string[] logLevels);
+        void SelectUpdateFieldName(params string[] fieldNames);
+        void SetLogLevels(params LoggingLevel[] logLevels);
         void ReqWatchList();
         void ReqUnwatchAll();
         void ReqServerConnect();
