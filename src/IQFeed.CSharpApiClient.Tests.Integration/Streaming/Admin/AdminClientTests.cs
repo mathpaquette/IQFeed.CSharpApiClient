@@ -22,6 +22,13 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Admin
             _adminClient.Connect();
         }
 
+        [OneTimeTearDown]
+        public void Cleanup()
+        {
+            // make sure that the IQFeed client is connected to remote servers
+            _adminClient.ReqServerConnect();
+        }
+
         [Test, Timeout(TimeoutMs)]
         public void Should_Receive_ProtocolMessage_When_Set()
         {
@@ -208,6 +215,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Admin
 
             // Assert
             Assert.IsTrue(disconnectedEventRaised.WaitOne());
+
         }
 
         [Test, Timeout(TimeoutMs)]

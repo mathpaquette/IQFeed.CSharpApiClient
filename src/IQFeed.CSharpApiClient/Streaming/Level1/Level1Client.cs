@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
@@ -11,13 +12,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             add => _level1MessageHandler.Fundamental += value;
             remove => _level1MessageHandler.Fundamental -= value;
         }
-
         public event Action<UpdateSummaryMessage> Summary
         {
             add => _level1MessageHandler.Summary += value;
             remove => _level1MessageHandler.Summary -= value;
         }
-
         public event Action<SystemMessage> System
         {
             add => _level1MessageHandler.System += value;
@@ -57,9 +56,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         private readonly SocketClient _socketClient;
         private readonly Level1RequestFormatter _level1RequestFormatter;
         private readonly Level1MessageHandler _level1MessageHandler;
+        private readonly ILevel1Snapshot _level1Snapshot;
 
-        public Level1Client(SocketClient socketClient, Level1RequestFormatter level1RequestFormatter, Level1MessageHandler level1MessageHandler)
+        public Level1Client(SocketClient socketClient, Level1RequestFormatter level1RequestFormatter, Level1MessageHandler level1MessageHandler, ILevel1Snapshot level1Snapshot)
         {
+            _level1Snapshot = level1Snapshot;
             _socketClient = socketClient;
             _socketClient.MessageReceived += SocketClientOnMessageReceived;
             _socketClient.Connected += SocketClientOnConnected;
@@ -187,11 +188,27 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             _socketClient.Connect();
         }
 
+        public void Disconnect()
+        {
+            _socketClient.Disconnect();
+        }
+
+        public Task<FundamentalMessage> GetFundamentalSnapshotAsync(string symbol)
+        {
+            return _level1Snapshot.GetFundamentalSnapshotAsync(symbol.ToUpper());
+        }
+
+        public Task<UpdateSummaryMessage> GetUpdateSummarySnapshotAsync(string symbol)
+        {
+            return _level1Snapshot.GetUpdateSummarySnapshotAsync(symbol.ToUpper());
+        }
+
         private void SocketClientOnMessageReceived(object sender, SocketMessageEventArgs e)
         {
             _level1MessageHandler.ProcessMessages(e.Message, e.Count);
         }
-        private void SocketClientOnConnected(object sender, System.EventArgs eventArgs)
+
+        private void SocketClientOnConnected(object sender, EventArgs eventArgs)
         {
             var socketClient = (SocketClient)sender;
             socketClient.Send(_level1RequestFormatter.SetProtocol(IQFeedDefault.ProtocolVersion));

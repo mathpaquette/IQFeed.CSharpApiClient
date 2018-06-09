@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
+﻿namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 {
     public class ErrorMessage
     {

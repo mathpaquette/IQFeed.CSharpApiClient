@@ -6,6 +6,16 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
     public class Level1MessageHandler : ILevel1Event
     {
+        public event Action<FundamentalMessage> Fundamental;
+        public event Action<UpdateSummaryMessage> Summary;
+        public event Action<SystemMessage> System;
+        public event Action<SymbolNotFoundMessage> SymbolNotFound;
+        public event Action<ErrorMessage> Error;
+        public event Action<TimestampMessage> Timestamp;
+        public event Action<UpdateSummaryMessage> Update;
+        public event Action<RegionalUpdateMessage> Regional;
+        public event Action<NewsMessage> News;
+
         public void ProcessMessages(byte[] messageBytes, int count)
         {
             string[] messages = Encoding.ASCII.GetString(messageBytes, 0, count - 1).Split(IQFeedDefault.ProtocolLineFeedCharacter);
@@ -49,74 +59,64 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             }
         }
 
-        public void ProcessFundamentalMessage(string msg, string[] values)
-        {
-            var fundamentalMessage = FundamentalMessage.CreateFundamentalMessage(values);
-            Fundamental?.Invoke(fundamentalMessage);
-        }
-
-        public void ProcessSummaryMessage(string msg, string[] values)
-        {
-            var updateSummaryMessage = UpdateSummaryMessage.CreateUpdateSummaryMessage(values);
-            Summary?.Invoke(updateSummaryMessage);
-        }
-
-        public void ProcessUpdateMessage(string msg, string[] values)
-        {
-            var updateSummaryMessage = UpdateSummaryMessage.CreateUpdateSummaryMessage(values);
-            Update?.Invoke(updateSummaryMessage);
-        }
-
-        public void ProcessRegionalUpdateMessage(string msg, string[] values)
-        {
-            var regionUpdateMessage = RegionalUpdateMessage.CreateRegionalUpdateMessage(values);
-            Regional?.Invoke(regionUpdateMessage);
-        }
-
-        public void ProcessNewsMessage(string msg, string[] values)
-        {
-            var newsMessage = NewsMessage.CreateNewsMessage(values);
-            News?.Invoke(newsMessage);
-        }
-
-        public void ProcessSystemMessage(string msg, string[] values)
-        {
-            var systemMessage = new SystemMessage(values[0], msg);
-            System?.Invoke(systemMessage);
-        }
-
-        public void ProcessTimestampMessage(string msg, string[] values)
-        {
-            var timestampMessage = TimestampMessage.CreateTimestampMessage(values[0]);
-            Timestamp?.Invoke(timestampMessage);
-        }
-
-        public void ProcessSymbolNotFoundMessage(string msg, string[] values)
-        {
-            var symbolNotFoundMessage = new SymbolNotFoundMessage(values[0]);
-            SymbolNotFound?.Invoke(symbolNotFoundMessage);
-        }
-
-        public void ProcessErrorMessage(string msg, string[] values)
-        {
-            var errorMessage = new ErrorMessage(values[0]);
-            Error?.Invoke(errorMessage);
-        }
-
         // TODO: this could be extracted in a common class
         public static string[] GetValuesFromMessage(string message)
         {
             return message.Substring(2).Split(IQFeedDefault.ProtocolDelimiterCharacter);
         }
 
-        public event Action<FundamentalMessage> Fundamental;
-        public event Action<UpdateSummaryMessage> Summary;
-        public event Action<SystemMessage> System;
-        public event Action<SymbolNotFoundMessage> SymbolNotFound;
-        public event Action<ErrorMessage> Error;
-        public event Action<TimestampMessage> Timestamp;
-        public event Action<UpdateSummaryMessage> Update;
-        public event Action<RegionalUpdateMessage> Regional;
-        public event Action<NewsMessage> News;
+        private void ProcessFundamentalMessage(string msg, string[] values)
+        {
+            var fundamentalMessage = FundamentalMessage.CreateFundamentalMessage(values);
+            Fundamental?.Invoke(fundamentalMessage);
+        }
+
+        private void ProcessSummaryMessage(string msg, string[] values)
+        {
+            var updateSummaryMessage = UpdateSummaryMessage.CreateUpdateSummaryMessage(values);
+            Summary?.Invoke(updateSummaryMessage);
+        }
+
+        private void ProcessUpdateMessage(string msg, string[] values)
+        {
+            var updateSummaryMessage = UpdateSummaryMessage.CreateUpdateSummaryMessage(values);
+            Update?.Invoke(updateSummaryMessage);
+        }
+
+        private void ProcessRegionalUpdateMessage(string msg, string[] values)
+        {
+            var regionUpdateMessage = RegionalUpdateMessage.CreateRegionalUpdateMessage(values);
+            Regional?.Invoke(regionUpdateMessage);
+        }
+
+        private void ProcessNewsMessage(string msg, string[] values)
+        {
+            var newsMessage = NewsMessage.CreateNewsMessage(values);
+            News?.Invoke(newsMessage);
+        }
+
+        private void ProcessSystemMessage(string msg, string[] values)
+        {
+            var systemMessage = new SystemMessage(values[0], msg);
+            System?.Invoke(systemMessage);
+        }
+
+        private void ProcessTimestampMessage(string msg, string[] values)
+        {
+            var timestampMessage = TimestampMessage.CreateTimestampMessage(values[0]);
+            Timestamp?.Invoke(timestampMessage);
+        }
+
+        private void ProcessSymbolNotFoundMessage(string msg, string[] values)
+        {
+            var symbolNotFoundMessage = new SymbolNotFoundMessage(values[0]);
+            SymbolNotFound?.Invoke(symbolNotFoundMessage);
+        }
+
+        private void ProcessErrorMessage(string msg, string[] values)
+        {
+            var errorMessage = new ErrorMessage(values[0]);
+            Error?.Invoke(errorMessage);
+        }
     }
 }

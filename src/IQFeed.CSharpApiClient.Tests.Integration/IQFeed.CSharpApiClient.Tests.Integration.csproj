@@ -54,6 +54,7 @@
     <Compile Include="Lookup\Symbol\SymbolFacadeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Streaming\Admin\AdminClientTests.cs" />
+    <Compile Include="Streaming\Level1\Level1ClientTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IQFeed.CSharpApiClient\IQFeed.CSharpApiClient.csproj">

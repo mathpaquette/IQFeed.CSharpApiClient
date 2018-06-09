@@ -98,6 +98,7 @@
     <Compile Include="Streaming\Admin\Messages\StatsMessage.cs" />
     <Compile Include="Streaming\Admin\StatsStatusType.cs" />
     <Compile Include="Streaming\Level1\ILevel1Client.cs" />
+    <Compile Include="Streaming\Level1\ILevel1Snapshot.cs" />
     <Compile Include="Streaming\Level1\ILevel1Event.cs" />
     <Compile Include="Streaming\Level1\Level1Client.cs" />
     <Compile Include="Lookup\Chains\ChainsFacade.cs" />
@@ -109,6 +110,8 @@
     <Compile Include="Lookup\Historical\HistoricalRequestFormatter.cs" />
     <Compile Include="Lookup\Historical\HistoricalMessageHandler.cs" />
     <Compile Include="Streaming\Level1\Level1ClientFactory.cs" />
+    <Compile Include="Streaming\Level1\Level1Default.cs" />
+    <Compile Include="Streaming\Level1\Level1Snapshot.cs" />
     <Compile Include="Streaming\Level1\Level1MessageHandler.cs" />
     <Compile Include="Streaming\Level1\Level1RequestFormatter.cs" />
     <Compile Include="Streaming\Level1\Messages\ErrorMessage.cs" />
