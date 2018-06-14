@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 using IQFeed.CSharpApiClient.Lookup.Chains.Messages;
 
@@ -11,6 +10,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
     {
         private readonly char[] _lineSplitDelimiter;
         private readonly char[] _symbolSplitDelimiter;
+        private const string ErrorPattern = "E,";
 
         public ChainsMessageHandler()
         {
@@ -50,7 +50,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
             var lastMsgIdx = lines.Length - 1;
 
             // check for errors
-            if (lines[0][0] == 'E')
+            if (lines.Length > 0 && lines[0].StartsWith(ErrorPattern))
                 return new ChainsMessageContainer<T>(convertedMessages, true, lines[0]);
 
             for (var i = 0; i < lines.Length; i++)
