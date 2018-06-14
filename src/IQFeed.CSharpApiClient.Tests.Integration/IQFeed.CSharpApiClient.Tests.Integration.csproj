@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Lookup\Chains\ChainsFacadeTests.cs" />
+    <Compile Include="Lookup\Historical\HistoricalFacadeMultiClientTests.cs" />
     <Compile Include="Lookup\Historical\HistoricalFacadeTests.cs" />
     <Compile Include="Lookup\Historical\HistoricalRawFacadeTests.cs" />
     <Compile Include="Lookup\Symbol\MarketSymbols\MarketSymbolDownloaderTests.cs" />

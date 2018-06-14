@@ -41,7 +41,7 @@ namespace IQFeed.CSharpApiClient.Lookup
 
         public static LookupClient CreateNew(int numberOfClients)
         {
-            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.LookupPort, numberOfClients);
+            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.LookupPort, LookupDefault.TimeoutMs, numberOfClients);
         }
     }
 }
