@@ -1,5 +1,6 @@
 ﻿namespace IQFeed.CSharpApiClient
 {
+    // ReSharper disable once InconsistentNaming
     public class IQFeedDefault
     {
         public const string Hostname = "localhost";

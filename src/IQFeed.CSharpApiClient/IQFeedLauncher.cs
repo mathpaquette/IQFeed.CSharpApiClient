@@ -8,6 +8,7 @@ using IQFeed.CSharpApiClient.Streaming.Admin.Messages;
 
 namespace IQFeed.CSharpApiClient
 {
+    // ReSharper disable once InconsistentNaming
     public static class IQFeedLauncher
     {
         public static void Start(string login = null, string password = null, string productId = null, string productVersion = null, int connectionTimeoutMs = 100, int retry = 50)
@@ -34,9 +35,8 @@ namespace IQFeed.CSharpApiClient
                              appSettings["IQConnect:product_version"].NullIfEmpty() ??
                              "1.0.0.0";
 
-            System.Diagnostics.Process.Start(
-                "IQConnect.exe", $"-product {productId} -version {productVersion} -login {login} -password {password} -autoconnect"
-            );
+            var iqConnectParameters = $"-product {productId} -version {productVersion} -login {login} -password {password} -autoconnect";
+            System.Diagnostics.Process.Start("IQConnect.exe", iqConnectParameters);
 
             WaitForAdminPortReady(connectionTimeoutMs, retry);
             WaitForServerConnectedStatus(IQFeedDefault.Hostname, IQFeedDefault.AdminPort);
@@ -55,13 +55,14 @@ namespace IQFeed.CSharpApiClient
             var adminClient = AdminClientFactory.CreateNew(host, port);
 
             adminClient.Stats += AdminClientOnStats;
-            adminClient.Connect(); // TODO: disconnect and make sure that client is sucessfully disposed
+            adminClient.Connect();
 
             var connected = manualResetEvent.WaitOne(timeoutMs);
             if (!connected)
                 throw new Exception($"Haven't received connected status with host: {host}:{port}");
 
             adminClient.Stats -= AdminClientOnStats;
+            adminClient.Disconnect();
 
             void AdminClientOnStats(StatsMessage message)
             {

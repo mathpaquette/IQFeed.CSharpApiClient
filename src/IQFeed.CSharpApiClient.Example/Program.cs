@@ -10,7 +10,7 @@ namespace IQFeed.CSharpApiClient.Example
         static void Main(string[] args)
         {
             RunHistoricalExample();
-            RunLevel1Example();
+            //RunLevel1Example();
 
             Console.WriteLine("*************************************");
             Console.WriteLine("**    Press enter to continue.     **");
@@ -37,7 +37,7 @@ namespace IQFeed.CSharpApiClient.Example
 
             // Step 5 - Make any requests you need or want!
             var ticksMessages = await lookupClient.Historical.ReqHistoryTickDatapointsAsync("AAPL", 100);
-            var ticksFilename = await lookupClient.Historical.Raw.ReqHistoryTickDaysAsync("AAPL", 100);
+            var ticksFilename = await lookupClient.Historical.Raw.ReqHistoryTickDatapointsAsync("AAPL", 100);
 
             // *************************************
         }
