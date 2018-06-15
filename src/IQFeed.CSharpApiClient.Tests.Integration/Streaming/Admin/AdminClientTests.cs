@@ -22,11 +22,16 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Admin
             _adminClient.Connect();
         }
 
-        [OneTimeTearDown]
-        public void Cleanup()
+        [TearDown]
+        public void TearDown()
         {
-            // make sure that the IQFeed client is connected to remote servers
-            _adminClient.ReqServerConnect();
+            _adminClient.Disconnect();
+        }
+
+        [OneTimeTearDown]
+        public void Shutdown()
+        {
+            IQFeedLauncher.Terminate();
         }
 
         [Test, Timeout(TimeoutMs)]
@@ -207,15 +212,14 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Admin
                     disconnectedEventRaised.Set();
             };
 
-            // Act
             _adminClient.ReqServerConnect();
             connectedEventRaised.WaitOne();
 
+            // Act
             _adminClient.ReqServerDisconnect();
 
             // Assert
             Assert.IsTrue(disconnectedEventRaised.WaitOne());
-
         }
 
         [Test, Timeout(TimeoutMs)]

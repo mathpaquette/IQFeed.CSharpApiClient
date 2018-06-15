@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.Threading;
 using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Socket;
@@ -36,10 +37,18 @@ namespace IQFeed.CSharpApiClient
                              "1.0.0.0";
 
             var iqConnectParameters = $"-product {productId} -version {productVersion} -login {login} -password {password} -autoconnect";
-            System.Diagnostics.Process.Start("IQConnect.exe", iqConnectParameters);
+            Process.Start("IQConnect.exe", iqConnectParameters);
 
             WaitForAdminPortReady(connectionTimeoutMs, retry);
             WaitForServerConnectedStatus(IQFeedDefault.Hostname, IQFeedDefault.AdminPort);
+        }
+
+        public static void Terminate()
+        {
+            foreach (var process in Process.GetProcessesByName("IQConnect"))
+            {
+                process.Kill();
+            }
         }
 
         private static void WaitForAdminPortReady(int connectionTimeoutMs, int retry)
