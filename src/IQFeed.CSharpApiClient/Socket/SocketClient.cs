@@ -11,6 +11,7 @@ namespace IQFeed.CSharpApiClient.Socket
         public event EventHandler<SocketMessageEventArgs> MessageReceived;
         public event EventHandler Connected;
 
+        private bool _disposed;
         private readonly IPEndPoint _hostEndPoint;
         private readonly System.Net.Sockets.Socket _clientSocket;
         private readonly int _bufferSize;
@@ -54,6 +55,7 @@ namespace IQFeed.CSharpApiClient.Socket
 
         public void Disconnect()
         {
+            _disposed = true;
             _clientSocket.Dispose();
         }
 
@@ -104,6 +106,9 @@ namespace IQFeed.CSharpApiClient.Socket
                     // inform that the socket just received complete message
                     MessageReceived.RaiseEvent(this, _socketMessageEventArgs);
                 }
+
+                // don't attempt another receive if socket is already disposed
+                if (_disposed) return;
 
                 var willRaiseEvent = _clientSocket.ReceiveAsync(e);
                 if (!willRaiseEvent)
