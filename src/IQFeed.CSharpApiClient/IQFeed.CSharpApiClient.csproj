@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\IClient.cs" />
     <Compile Include="Common\IRequestFormatter.cs" />
     <Compile Include="Common\LoggingLevel.cs" />
     <Compile Include="Common\Messages\ProtocolMessage.cs" />

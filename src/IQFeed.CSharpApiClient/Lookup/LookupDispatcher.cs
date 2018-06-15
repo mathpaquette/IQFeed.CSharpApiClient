@@ -47,6 +47,14 @@ namespace IQFeed.CSharpApiClient.Lookup
             }
         }
 
+        public void DisconnectAll()
+        {
+            foreach (var socketClient in _socketClients)
+            {
+                socketClient.Disconnect();
+            }
+        }
+
         public async Task<SocketClient> TakeAsync()
         {
             await _semaphoreSlim.WaitAsync();

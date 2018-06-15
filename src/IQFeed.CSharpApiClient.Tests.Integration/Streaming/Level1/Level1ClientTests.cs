@@ -6,8 +6,8 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level1
 {
     public class Level1ClientTests
     {
-        private ILevel1Client _level1Client;
         private const string Symbol = "AAPL";
+        private ILevel1Client _level1Client;
 
         public Level1ClientTests()
         {
@@ -19,6 +19,12 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level1
         {
             _level1Client = Level1ClientFactory.CreateNew();
             _level1Client.Connect();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _level1Client.Disconnect();
         }
 
         [Test]

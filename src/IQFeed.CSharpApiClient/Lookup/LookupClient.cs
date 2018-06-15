@@ -1,11 +1,12 @@
-﻿using IQFeed.CSharpApiClient.Lookup.Chains;
+﻿using IQFeed.CSharpApiClient.Common;
+using IQFeed.CSharpApiClient.Lookup.Chains;
 using IQFeed.CSharpApiClient.Lookup.Historical;
 using IQFeed.CSharpApiClient.Lookup.News;
 using IQFeed.CSharpApiClient.Lookup.Symbol;
 
 namespace IQFeed.CSharpApiClient.Lookup
 {
-    public class LookupClient
+    public class LookupClient: IClient
     {
         private readonly LookupDispatcher _lookupDispatcher;
 
@@ -26,6 +27,11 @@ namespace IQFeed.CSharpApiClient.Lookup
         public void Connect()
         {
             _lookupDispatcher.ConnectAll();
+        }
+
+        public void Disconnect()
+        {
+            _lookupDispatcher.DisconnectAll();
         }
     }
 }

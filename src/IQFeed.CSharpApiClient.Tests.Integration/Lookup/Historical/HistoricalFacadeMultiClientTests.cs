@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Lookup;
-using IQFeed.CSharpApiClient.Lookup.Historical;
 using IQFeed.CSharpApiClient.Lookup.Historical.Messages;
 using NUnit.Framework;
 
@@ -17,7 +16,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         private const int NumberOfClients = 10;
         private static readonly string[] Symbols = {"SPY", "AAPL", "NFLX", "MSFT", "TSLA", "AMD", "NVDA", "MU", "BABA", "AMZN"};
 
-    private HistoricalFacade _historicalFacade;
+        private LookupClient _lookupClient;
 
         public HistoricalFacadeMultiClientTests()
         {
@@ -28,10 +27,14 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         public void SetUp()
         {
 
-            var lookupClient = LookupClientFactory.CreateNew(NumberOfClients);
-            lookupClient.Connect();
+            _lookupClient = LookupClientFactory.CreateNew(NumberOfClients);
+            _lookupClient.Connect();
+        }
 
-            _historicalFacade = lookupClient.Historical;
+        [TearDown]
+        public void TearDown()
+        {
+            _lookupClient.Disconnect();
         }
 
         [Test, Timeout(TimeoutMs)]
@@ -44,7 +47,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
             var sw = Stopwatch.StartNew();
             foreach (var symbol in Symbols)
             {
-                var tickMessageTask = _historicalFacade.ReqHistoryTickDatapointsAsync(symbol, Datapoints);
+                var tickMessageTask = _lookupClient.Historical.ReqHistoryTickDatapointsAsync(symbol, Datapoints);
                 tickMessageTasks.Add(tickMessageTask);
             }
             await Task.WhenAll(tickMessageTasks);
@@ -70,7 +73,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
             var sw = Stopwatch.StartNew();
             foreach (var symbol in Symbols)
             {
-                var tickMessages = await _historicalFacade.ReqHistoryTickDatapointsAsync(symbol, Datapoints);
+                var tickMessages = await _lookupClient.Historical.ReqHistoryTickDatapointsAsync(symbol, Datapoints);
                 listOfTickMessages.Add(tickMessages);
             }
             sw.Stop();
