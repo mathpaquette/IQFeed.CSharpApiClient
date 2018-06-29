@@ -10,7 +10,7 @@ namespace IQFeed.CSharpApiClient.Example
         static void Main(string[] args)
         {
             RunHistoricalExample();
-            //RunLevel1Example();
+            RunLevel1Example();
 
             Console.WriteLine("*************************************");
             Console.WriteLine("**    Press enter to continue.     **");

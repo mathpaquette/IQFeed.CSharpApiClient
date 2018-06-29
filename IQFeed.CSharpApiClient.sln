@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQFeed.CSharpApiClient", "src\IQFeed.CSharpApiClient\IQFeed.CSharpApiClient.csproj", "{3AB9DC99-742D-40B6-9B87-5F03DE2C19E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient", "src\IQFeed.CSharpApiClient\IQFeed.CSharpApiClient.csproj", "{3AB9DC99-742D-40B6-9B87-5F03DE2C19E9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A5B0360D-1645-4764-9723-EFAC370A7FF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQFeed.CSharpApiClient.Tests", "src\IQFeed.CSharpApiClient.Tests\IQFeed.CSharpApiClient.Tests.csproj", "{D25664CF-7855-46C4-9483-8897A3926587}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient.Tests", "src\IQFeed.CSharpApiClient.Tests\IQFeed.CSharpApiClient.Tests.csproj", "{D25664CF-7855-46C4-9483-8897A3926587}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQFeed.CSharpApiClient.Example", "src\IQFeed.CSharpApiClient.Example\IQFeed.CSharpApiClient.Example.csproj", "{BF59DF56-D18C-4708-9105-796A76845A8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient.Example", "src\IQFeed.CSharpApiClient.Example\IQFeed.CSharpApiClient.Example.csproj", "{BF59DF56-D18C-4708-9105-796A76845A8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQFeed.CSharpApiClient.Tests.Integration", "src\IQFeed.CSharpApiClient.Tests.Integration\IQFeed.CSharpApiClient.Tests.Integration.csproj", "{9E109863-057B-4A64-9B93-8E2FFD4E9A48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient.Tests.Integration", "src\IQFeed.CSharpApiClient.Tests.Integration\IQFeed.CSharpApiClient.Tests.Integration.csproj", "{9E109863-057B-4A64-9B93-8E2FFD4E9A48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

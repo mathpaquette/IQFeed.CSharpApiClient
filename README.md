@@ -21,7 +21,7 @@ If you appreciate this project, please star it now!
 - Streaming events are distributed in a consistent way using Action delegates
 - Handle multiple socket connections for at least 40% performance increase when requesting lookup data
 - Sockets are using [SocketAsyncEventArgs](https://msdn.microsoft.com/en-us/library/system.net.sockets.socketasynceventargs(v=vs.110).aspx) for maximum performance and trying to reduce pressure on GC
-- Support for .NET Core (coming)
+- Support for .NET Core 2.0
 
 ## Usage
 ### Installation

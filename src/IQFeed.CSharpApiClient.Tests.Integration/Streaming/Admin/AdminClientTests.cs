@@ -34,7 +34,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Admin
             IQFeedLauncher.Terminate();
         }
 
-        [Test, Timeout(TimeoutMs)]
+        [Test, MaxTime(TimeoutMs)]
         public void Should_Receive_ProtocolMessage_When_Set()
         {
             // Arrange
@@ -48,7 +48,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Admin
             Assert.IsTrue(eventRaised.WaitOne());
         }
 
-        [Test, Timeout(TimeoutMs)]
+        [Test, MaxTime(TimeoutMs)]
         public void Should_Receive_ClientName_In_ClientStatsMessage_When_Set()
         {
             // Arrange
@@ -94,7 +94,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Admin
             Assert.IsTrue(eventRaised.WaitOne());
         }
 
-        [Test, Timeout(TimeoutMs)]
+        [Test, MaxTime(TimeoutMs)]
         public void Should_Receive_LoginIdMessage_When_Set()
         {
             // Arrange
@@ -113,7 +113,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Admin
             Assert.IsTrue(eventRaised.WaitOne());
         }
 
-        [Test, Timeout(TimeoutMs)]
+        [Test, MaxTime(TimeoutMs)]
         public void Should_Receive_PasswordMessage_When_Set()
         {
             // Arrange
@@ -222,7 +222,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Admin
             Assert.IsTrue(disconnectedEventRaised.WaitOne());
         }
 
-        [Test, Timeout(TimeoutMs)]
+        [Test, MaxTime(TimeoutMs)]
         public void Should_Receive_StatsMessage_When_Connected()
         {
             // Arrange

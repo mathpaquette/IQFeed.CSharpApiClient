@@ -1,27 +1,31 @@
 image: Visual Studio 2017
 
-# version format
-version: 1.2.4-build{build}
+version: '{build}'
 
-artifacts:
-  - path: '**\AssemblyInfo.*'
+install:
+  - ps: >-
+      $FileVersion = Get-Content $env:appveyor_build_folder\VERSION
+      
+      $Version = If ($env:appveyor_repo_branch -eq "master") {"$FileVersion"} Else {"$FileVersion.$env:appveyor_build_number"}
+      
+      Update-AppveyorBuild -Version $Version
 
-assembly_info:
+dotnet_csproj:
   patch: true
-  file: AssemblyInfo.*
-  assembly_version: "{version}"
-  assembly_file_version: "{version}"
-  assembly_informational_version: "{version}"
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
 
 configuration: Release
 
 before_build:
   - nuget restore
-
-test:
-  assemblies:
-    only:
-      - '**\*.Tests.dll'  
+  - dotnet restore
+  
+test: off
   
 build:
   project: IQFeed.CSharpApiClient.sln

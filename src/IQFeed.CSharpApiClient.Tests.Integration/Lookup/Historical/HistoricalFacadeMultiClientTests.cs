@@ -37,7 +37,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
             _lookupClient.Disconnect();
         }
 
-        [Test, Timeout(TimeoutMs)]
+        [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_TickMessages_When_ReqHistoryTickDatapointsAsync_Parallel()
         {
             // Arrange
@@ -63,7 +63,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         }
 
 
-        [Test, Timeout(TimeoutMs)]
+        [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_TickMessages_When_ReqHistoryTickDatapointsAsync_Sequential()
         {
             // Arrange

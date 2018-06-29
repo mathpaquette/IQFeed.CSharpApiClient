@@ -1,143 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3AB9DC99-742D-40B6-9B87-5F03DE2C19E9}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IQFeed.CSharpApiClient</RootNamespace>
-    <AssemblyName>IQFeed.CSharpApiClient</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Common\IClient.cs" />
-    <Compile Include="Common\IRequestFormatter.cs" />
-    <Compile Include="Common\LoggingLevel.cs" />
-    <Compile Include="Common\Messages\ProtocolMessage.cs" />
-    <Compile Include="Common\RawMessageHandler.cs" />
-    <Compile Include="Common\RequestFormatter.cs" />
-    <Compile Include="Extensions\ByteExtensions.cs" />
-    <Compile Include="Extensions\EventExtentions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="IQFeedDefault.cs" />
-    <Compile Include="IQFeedLauncher.cs" />
-    <Compile Include="Lookup\Chains\Futures\FutureMonthCode.cs" />
-    <Compile Include="Lookup\Chains\Messages\FutureMessage.cs" />
-    <Compile Include="Lookup\Chains\Messages\FutureOptionMessage.cs" />
-    <Compile Include="Lookup\Chains\Messages\FutureSpreadMessage.cs" />
-    <Compile Include="Lookup\Chains\Options\BinaryOptionFilterType.cs" />
-    <Compile Include="Lookup\Chains\Options\OptionSide.cs" />
-    <Compile Include="Lookup\Chains\Options\OptionSideFilterType.cs" />
-    <Compile Include="Lookup\Chains\ChainsMessageContainer.cs" />
-    <Compile Include="Lookup\Chains\ChainsMessageHandler.cs" />
-    <Compile Include="Lookup\Chains\ChainsRequestFormatter.cs" />
-    <Compile Include="Lookup\Chains\Options\EquityOptionMonthCode.cs" />
-    <Compile Include="Lookup\Chains\Messages\EquityOptionMessage.cs" />
-    <Compile Include="Lookup\Chains\Options\OptionFilterType.cs" />
-    <Compile Include="Lookup\Chains\IChainsFacade.cs" />
-    <Compile Include="Lookup\Historical\HistoricalRawFacade.cs" />
-    <Compile Include="Lookup\Historical\IHistoricalFacade.cs" />
-    <Compile Include="Lookup\LookupDefault.cs" />
-    <Compile Include="Lookup\Symbol\ListedMarket.cs" />
-    <Compile Include="Lookup\Symbol\MarketSymbols\MarketSymbolExchange.cs" />
-    <Compile Include="Lookup\Symbol\MarketSymbols\MarketSymbolExtensions.cs" />
-    <Compile Include="Lookup\Symbol\MarketSymbols\MarketSymbolListedMarket.cs" />
-    <Compile Include="Lookup\Symbol\MarketSymbols\MarketSymbolSecurityType.cs" />
-    <Compile Include="Lookup\Symbol\SecurityType.cs" />
-    <Compile Include="Lookup\Symbol\MarketSymbols\MarketSymbol.cs" />
-    <Compile Include="Lookup\Symbol\MarketSymbols\MarketSymbolDownloader.cs" />
-    <Compile Include="Lookup\Symbol\MarketSymbols\MarketSymbolReader.cs" />
-    <Compile Include="Socket\SocketDiagnostic.cs" />
-    <Compile Include="Streaming\Admin\AdminClient.cs" />
-    <Compile Include="Streaming\Admin\AdminClientFactory.cs" />
-    <Compile Include="Streaming\Admin\AdminMessageHandler.cs" />
-    <Compile Include="Streaming\Admin\AdminRequestFormatter.cs" />
-    <Compile Include="Streaming\Admin\ClientType.cs" />
-    <Compile Include="Streaming\Admin\IAdminClient.cs" />
-    <Compile Include="Streaming\Admin\IAdminMessage.cs" />
-    <Compile Include="Streaming\Admin\Messages\AutoConnectMessage.cs" />
-    <Compile Include="Streaming\Admin\Messages\AutoConnectMessageType.cs" />
-    <Compile Include="Streaming\Admin\Messages\ClientAppMessage.cs" />
-    <Compile Include="Streaming\Admin\Messages\ClientAppMessageType.cs" />
-    <Compile Include="Streaming\Admin\Messages\ClientStatsMessage.cs" />
-    <Compile Include="Streaming\Admin\Messages\LoginIdMessage.cs" />
-    <Compile Include="Streaming\Admin\Messages\LoginInfoMessage.cs" />
-    <Compile Include="Streaming\Admin\Messages\LoginInfoMessageType.cs" />
-    <Compile Include="Streaming\Admin\Messages\PasswordMessage.cs" />
-    <Compile Include="Streaming\Admin\Messages\StatsMessage.cs" />
-    <Compile Include="Streaming\Admin\StatsStatusType.cs" />
-    <Compile Include="Streaming\Level1\ILevel1Client.cs" />
-    <Compile Include="Streaming\Level1\ILevel1Snapshot.cs" />
-    <Compile Include="Streaming\Level1\ILevel1Event.cs" />
-    <Compile Include="Streaming\Level1\Level1Client.cs" />
-    <Compile Include="Lookup\Chains\ChainsFacade.cs" />
-    <Compile Include="Lookup\Historical\HistoricalIntervalType.cs" />
-    <Compile Include="Lookup\Historical\HistoricalFacade.cs" />
-    <Compile Include="Lookup\LookupClient.cs" />
-    <Compile Include="Lookup\LookupClientFactory.cs" />
-    <Compile Include="Lookup\LookupDispatcher.cs" />
-    <Compile Include="Lookup\Historical\HistoricalRequestFormatter.cs" />
-    <Compile Include="Lookup\Historical\HistoricalMessageHandler.cs" />
-    <Compile Include="Streaming\Level1\Level1ClientFactory.cs" />
-    <Compile Include="Streaming\Level1\Level1Default.cs" />
-    <Compile Include="Streaming\Level1\Level1Snapshot.cs" />
-    <Compile Include="Streaming\Level1\Level1MessageHandler.cs" />
-    <Compile Include="Streaming\Level1\Level1RequestFormatter.cs" />
-    <Compile Include="Streaming\Level1\Messages\ErrorMessage.cs" />
-    <Compile Include="Streaming\Level1\Messages\FundamentalMessage.cs" />
-    <Compile Include="Streaming\Level1\Messages\NewsMessage.cs" />
-    <Compile Include="Streaming\Level1\Messages\RegionalUpdateMessage.cs" />
-    <Compile Include="Streaming\Level1\Messages\UpdateSummaryMessage.cs" />
-    <Compile Include="Streaming\Level1\Messages\SymbolNotFoundMessage.cs" />
-    <Compile Include="Streaming\Level1\Messages\SystemMessage.cs" />
-    <Compile Include="Streaming\Level1\Messages\TimestampMessage.cs" />
-    <Compile Include="Lookup\News\NewsFacade.cs" />
-    <Compile Include="Lookup\Symbol\SymbolFacade.cs" />
-    <Compile Include="Socket\SocketMessageHandler.cs" />
-    <Compile Include="Lookup\Historical\Messages\DailyWeeklyMonthlyMessage.cs" />
-    <Compile Include="Lookup\Historical\Messages\IntervalMessage.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Lookup\Historical\Messages\TickMessage.cs" />
-    <Compile Include="Socket\SocketMessageEventArgs.cs" />
-    <Compile Include="Socket\SocketClient.cs" />
-    <Compile Include="Lookup\Historical\HistoricalMessageContainer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Streaming\Derivative\" />
-    <Folder Include="Streaming\Level2\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Mathieu Paquette</Authors>
+        <PackageReleaseNotes />
+        <PackageTags>DTN IQFeed Socket API (Client)</PackageTags>
+        <RepositoryUrl>https://github.com/mathpaquette/IQFeed.CSharpApiClient</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/mathpaquette/IQFeed.CSharpApiClient</PackageProjectUrl>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/mathpaquette/IQFeed.CSharpApiClient/master/LICENSE</PackageLicenseUrl>
+        <Copyright>Copyright © 2018 Mathieu Paquette</Copyright>
+        <Description>IQFeed.CSharpApiClient is fastest and the most well designed C# DTN IQFeed socket API connector available to the open source community!</Description>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <FileVersion>1.0.0.0</FileVersion>
+        <Version>1.0.0</Version>
+    </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+      <PackageReference Include="System.IO.Compression" Version="4.1.0" />
+    </ItemGroup>
 </Project>
