@@ -49,6 +49,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             {
                 _level1MessageHandler.Fundamental -= Level1ClientOnFundamental;
                 ReqUnwatch(symbol);
+                ct.Dispose();
             }, TaskContinuationOptions.None).ConfigureAwait(false);
 
             return await res.Task.ConfigureAwait(false);
@@ -75,6 +76,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                 _level1MessageHandler.Summary -= Level1ClientOnUpdate;
                 _level1MessageHandler.Update -= Level1ClientOnUpdate;
                 ReqUnwatch(symbol);
+                ct.Dispose();
             }, TaskContinuationOptions.None).ConfigureAwait(false);
 
             return await res.Task.ConfigureAwait(false);
