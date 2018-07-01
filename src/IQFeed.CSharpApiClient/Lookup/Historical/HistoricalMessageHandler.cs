@@ -11,20 +11,20 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
 
         public HistoricalMessageContainer<TickMessage> GetTickMessages(byte[] message, int count)
         {
-            return ProcessMessages(GetTickMessage, message, count);
+            return ProcessMessages(TickMessage.CreateTickMessage, message, count);
         }
 
         public HistoricalMessageContainer<IntervalMessage> GetIntervalMessages(byte[] message, int count)
         {
-            return ProcessMessages(GetIntervalMessage, message, count);
+            return ProcessMessages(IntervalMessage.CreateIntervalMessage, message, count);
         }
 
         public HistoricalMessageContainer<DailyWeeklyMonthlyMessage> GetDailyWeeklyMonthlyMessages(byte[] message, int count)
         {
-            return ProcessMessages(GetDailyWeeklyMonthlyMessage, message, count);
+            return ProcessMessages(DailyWeeklyMonthlyMessage.CreateDailyWeeklyMonthlyMessage, message, count);
         }
 
-        private HistoricalMessageContainer<T> ProcessMessages<T>(Func<string, T> converter, byte[] message, int count)
+        private HistoricalMessageContainer<T> ProcessMessages<T>(Func<string[], T> converter, byte[] message, int count)
         {
             var messages = Encoding.ASCII.GetString(message, 0, count).Split(_lineSplitDelimiter, StringSplitOptions.RemoveEmptyEntries);
 
@@ -45,55 +45,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
                     break;
                 }
 
-                convertedMessages.Add(converter(messages[i]));
+                convertedMessages.Add(converter(messages[i].Split(IQFeedDefault.ProtocolDelimiterCharacter)));
             }
 
             return new HistoricalMessageContainer<T>(convertedMessages, endMsg);
-        }
-
-        // TODO: should be removed inside TickMessage
-        private TickMessage GetTickMessage(string msg)
-        {
-            var values = msg.Split(',');
-            return new TickMessage(
-                DateTime.Parse(values[0]),
-                float.Parse(values[1]),
-                int.Parse(values[2]),
-                int.Parse(values[3]),
-                float.Parse(values[4]),
-                float.Parse(values[5]),
-                int.Parse(values[6]),
-                char.Parse(values[7]),
-                int.Parse(values[8]),
-                values[9]);
-        }
-
-        // TODO: should be removed inside IntervalMessage
-        private IntervalMessage GetIntervalMessage(string msg)
-        {
-            var values = msg.Split(',');
-            return new IntervalMessage(
-                DateTime.Parse(values[0]), 
-                float.Parse(values[1]),
-                float.Parse(values[2]),
-                float.Parse(values[3]),
-                float.Parse(values[4]),
-                int.Parse(values[5]),
-                int.Parse(values[6]));
-        }
-
-        // TODO: should be removed inside DailyWeeklyMonthlyMessage
-        private DailyWeeklyMonthlyMessage GetDailyWeeklyMonthlyMessage(string msg)
-        {
-            var values = msg.Split(',');
-            return new DailyWeeklyMonthlyMessage(
-                DateTime.Parse(values[0]),
-                float.Parse(values[1]),
-                float.Parse(values[2]),
-                float.Parse(values[3]),
-                float.Parse(values[4]),
-                int.Parse(values[5]),
-                int.Parse(values[6]));
         }
     }
 }
