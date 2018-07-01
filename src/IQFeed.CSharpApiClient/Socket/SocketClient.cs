@@ -6,7 +6,7 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Socket
 {
-    public class SocketClient
+    public class SocketClient : IDisposable
     {
         public event EventHandler<SocketMessageEventArgs> MessageReceived;
         public event EventHandler Connected;
@@ -17,6 +17,7 @@ namespace IQFeed.CSharpApiClient.Socket
         private readonly int _bufferSize;
         private readonly SocketMessageHandler _socketMessageHandler;
         private readonly SocketMessageEventArgs _socketMessageEventArgs;
+        private readonly SocketAsyncEventArgs _readEventArgs;
 
         public SocketClient(string hostname, int port, int bufferSize = 8192)
         {
@@ -32,35 +33,38 @@ namespace IQFeed.CSharpApiClient.Socket
             _hostEndPoint = new IPEndPoint(addressList[addressList.Length - 1], port);
             _clientSocket = new System.Net.Sockets.Socket(_hostEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-            _socketMessageHandler = new SocketMessageHandler(_bufferSize, '\n');    // TODO: could be injected in the constructor
+            _socketMessageHandler = new SocketMessageHandler(_bufferSize, '\n'); // TODO: could be injected in the constructor
             _socketMessageEventArgs = new SocketMessageEventArgs();
+            _readEventArgs = new SocketAsyncEventArgs();
         }
+
 
         public void Connect()
         {
+            if (_disposed)
+                throw new ObjectDisposedException($"Can't connect because SocketClient is disposed.");
+
             _clientSocket.Connect(_hostEndPoint);
             Connected.RaiseEvent(this, EventArgs.Empty);
 
-            SocketAsyncEventArgs readEventArgs = new SocketAsyncEventArgs();
-            readEventArgs.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
-            readEventArgs.SetBuffer(new byte[_bufferSize], 0, _bufferSize);
+            _readEventArgs.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
+            _readEventArgs.SetBuffer(new byte[_bufferSize], 0, _bufferSize);
 
             // As soon as the client is connected, post a receive to the connection 
-            bool willRaiseEvent = _clientSocket.ReceiveAsync(readEventArgs);
+            bool willRaiseEvent = _clientSocket.ReceiveAsync(_readEventArgs);
             if (!willRaiseEvent)
             {
-                ProcessReceive(readEventArgs);
+                ProcessReceive(_readEventArgs);
             }
         }
 
-        public void Disconnect()
-        {
-            _disposed = true;
-            _clientSocket.Dispose();
-        }
+        public void Disconnect() { Dispose(); }
 
         public void Send(string message)
         {
+            if (_disposed)
+                throw new ObjectDisposedException($"Can't send because SocketClient is disposed.");
+
             if (_clientSocket.Connected)
             {
                 _clientSocket.Send(Encoding.ASCII.GetBytes(message));
@@ -108,7 +112,8 @@ namespace IQFeed.CSharpApiClient.Socket
                 }
 
                 // don't attempt another receive if socket is already disposed
-                if (_disposed) return;
+                if (_disposed)
+                    return;
 
                 var willRaiseEvent = _clientSocket.ReceiveAsync(e);
                 if (!willRaiseEvent)
@@ -118,9 +123,24 @@ namespace IQFeed.CSharpApiClient.Socket
             }
         }
 
-        protected virtual void ProcessSend(SocketAsyncEventArgs e)
+        protected virtual void ProcessSend(SocketAsyncEventArgs e) { throw new NotImplementedException(); }
+
+        #region IDisposable
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
         {
-            throw new NotImplementedException();
+            if (_disposed)
+                return;
+
+            _disposed = true;
+            _clientSocket?.Dispose();
+            _socketMessageHandler.Dispose();
+            _readEventArgs?.Dispose();
+            MessageReceived = null;
+            Connected = null;
         }
+
+        #endregion
     }
 }

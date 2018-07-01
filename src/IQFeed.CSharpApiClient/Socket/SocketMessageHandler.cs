@@ -1,9 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Socket
 {
-    public class SocketMessageHandler
+    public class SocketMessageHandler : IDisposable
     {
         private readonly char _delimeter;
 
@@ -66,5 +67,16 @@ namespace IQFeed.CSharpApiClient.Socket
             output = _readBytes;
             return length;
         }
+
+        #region IDisposable
+
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+        {
+            _completeStream?.Dispose();
+            _remainderStream?.Dispose();
+        }
+
+        #endregion
     }
 }

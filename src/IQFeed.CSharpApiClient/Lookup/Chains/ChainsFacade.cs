@@ -82,6 +82,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
             {
                 client.MessageReceived -= SocketClientOnMessageReceived;
                 _lookupDispatcher.Add(client);
+                ct.Dispose();
             }, TaskContinuationOptions.None).ConfigureAwait(false);
 
             return await res.Task.ConfigureAwait(false);

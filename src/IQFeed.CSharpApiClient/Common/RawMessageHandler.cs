@@ -60,6 +60,7 @@ namespace IQFeed.CSharpApiClient.Common
                 binaryWriter.Close();
                 client.MessageReceived -= SocketClientOnMessageReceived;
                 _lookupDispatcher.Add(client);
+                ct.Dispose();
             }, TaskContinuationOptions.None).ConfigureAwait(false);
 
             return await res.Task.ConfigureAwait(false);

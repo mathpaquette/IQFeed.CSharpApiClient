@@ -236,6 +236,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             {
                 client.MessageReceived -= SocketClientOnMessageReceived;
                 _lookupDispatcher.Add(client);
+                ct.Dispose();
             }, TaskContinuationOptions.None).ConfigureAwait(false);
 
             return await res.Task.ConfigureAwait(false);
