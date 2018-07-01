@@ -6,7 +6,7 @@ install:
   - ps: >-
       $FileVersion = Get-Content $env:appveyor_build_folder\VERSION
       
-      $Version = If ($env:appveyor_repo_branch -eq "master") {"$FileVersion"} Else {"$FileVersion.$env:appveyor_build_number"}
+      $Version = If ($env:appveyor_repo_branch -eq "release") {"$FileVersion"} Else {"$FileVersion.$env:appveyor_build_number"}
       
       Update-AppveyorBuild -Version $Version
 
@@ -48,7 +48,7 @@ deploy:
   - provider: NuGet
     name: NuGet
     on:
-      branch: master
+      branch: release
     server: https://www.nuget.org/api/v2/package
     api_key:
       secure: jMtKAe9m+jjen+zwguuceUoNSNI2EXyvj+/dJo2RnjsKnMV8DhVog/CVQG7V6Ai0
