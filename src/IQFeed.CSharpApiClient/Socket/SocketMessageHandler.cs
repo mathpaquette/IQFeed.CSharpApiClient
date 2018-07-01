@@ -60,7 +60,7 @@ namespace IQFeed.CSharpApiClient.Socket
             if (_completeStream.Position == 0)
                 return 0;
 
-            var length = (int) _completeStream.Length;
+            var length = (int)_completeStream.Length;
             _completeStream.Position = 0;
             _completeStream.Read(_readBytes, 0, length);
             _completeStream.SetLength(0);

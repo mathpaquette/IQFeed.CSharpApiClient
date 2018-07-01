@@ -43,6 +43,7 @@ namespace IQFeed.CSharpApiClient.Socket
         {
             if (_disposed)
                 throw new ObjectDisposedException($"Can't connect because SocketClient is disposed.");
+
             _clientSocket.Connect(_hostEndPoint);
             Connected.RaiseEvent(this, EventArgs.Empty);
 
@@ -63,12 +64,14 @@ namespace IQFeed.CSharpApiClient.Socket
         {
             if (_disposed)
                 throw new ObjectDisposedException($"Can't send because SocketClient is disposed.");
+
             if (_clientSocket.Connected)
             {
                 _clientSocket.Send(Encoding.ASCII.GetBytes(message));
-            } else
+            }
+            else
             {
-                throw new SocketException((int) SocketError.NotConnected);
+                throw new SocketException((int)SocketError.NotConnected);
             }
         }
 
@@ -129,8 +132,8 @@ namespace IQFeed.CSharpApiClient.Socket
         {
             if (_disposed)
                 return;
-            _disposed = true;
 
+            _disposed = true;
             _clientSocket?.Dispose();
             _socketMessageHandler.Dispose();
             _readEventArgs?.Dispose();
