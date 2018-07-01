@@ -62,7 +62,7 @@ namespace IQFeed.CSharpApiClient.Socket
         public void Send(string message)
         {
             if (_disposed)
-                throw new ObjectDisposedException($"Can't connect because SocketClient is disposed.");
+                throw new ObjectDisposedException($"Can't send because SocketClient is disposed.");
             if (_clientSocket.Connected)
             {
                 _clientSocket.Send(Encoding.ASCII.GetBytes(message));
