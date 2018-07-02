@@ -10,11 +10,10 @@
     <ItemGroup>
       <ProjectReference Include="..\IQFeed.CSharpApiClient\IQFeed.CSharpApiClient.csproj" />
     </ItemGroup>
-	
-	<ItemGroup Condition="'$(TargetFramework)'!='net45'">
+    <ItemGroup Condition="'$(TargetFramework)'!='net45'">
       <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
-    </ItemGroup>	
-	<ItemGroup Condition="'$(TargetFramework)'=='net45'">
-		<Reference Include="System.Configuration" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)'=='net45'">
+      <Reference Include="System.Configuration" />
     </ItemGroup>
 </Project>
