@@ -28,9 +28,29 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains.Messages
 
             return new FutureSpreadMessage(
                 futureSpreadSymbol,
-                FutureMessage.CreateFutureMessage(futureSymbol1),
-                FutureMessage.CreateFutureMessage(futureSymbol2)
+                FutureMessage.Parse(futureSymbol1),
+                FutureMessage.Parse(futureSymbol2)
             );
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is FutureSpreadMessage message &&
+                   Symbol == message.Symbol &&
+                   Spread1.Equals(message.Spread1) &&
+                   Spread2.Equals(message.Spread2);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash = 17;
+                hash = hash * 29 + Symbol.GetHashCode();
+                hash = hash * 29 + Spread1.GetHashCode();
+                hash = hash * 29 + Spread2.GetHashCode();
+                return hash;
+            }
         }
 
         public override string ToString()

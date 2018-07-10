@@ -15,14 +15,14 @@ namespace IQFeed.CSharpApiClient.Extensions
 
         public static int? ToNullableInt(this string s)
         {
-            if (int.TryParse(s, out var i))
+            if (int.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var i))
                 return i;
             return null;
         }
 
         public static float? ToNullableFloat(this string s)
         {
-            if (float.TryParse(s, out var f))
+            if (float.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var f))
                 return f;
             return null;
         }
@@ -32,6 +32,11 @@ namespace IQFeed.CSharpApiClient.Extensions
             if (DateTime.TryParseExact(s, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out var d))
                 return d;
             return null;
+        }
+
+        public static string[] SplitFeedMessage(this string s)
+        {
+            return s.Split(IQFeedDefault.ProtocolDelimiterCharacter);
         }
     }
 }

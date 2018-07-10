@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Globalization;
+using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
     public class TickMessage
     {
+        public const string TickDateTimeFormat = "yyyy-MM-dd HH:mm:ss.ffffff";
+
         public TickMessage(DateTime timestamp, float last, int lastSize, int totalVolume, float bid, float ask, 
             long tickId, char basisForLast, int tradeMarketCenter, string tradeConditions)
         {
@@ -30,18 +34,20 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public int TradeMarketCenter { get; }
         public string TradeConditions { get; }
 
-        public static TickMessage CreateTickMessage(string[] values)
+        public static TickMessage Parse(string message)
         {
+            var values = message.SplitFeedMessage();
+
             return new TickMessage(
-                DateTime.Parse(values[0]),
-                float.Parse(values[1]),
-                int.Parse(values[2]),
-                int.Parse(values[3]),
-                float.Parse(values[4]),
-                float.Parse(values[5]),
-                long.Parse(values[6]),
+                DateTime.ParseExact(values[0], TickDateTimeFormat, CultureInfo.InvariantCulture),
+                float.Parse(values[1], CultureInfo.InvariantCulture),
+                int.Parse(values[2], CultureInfo.InvariantCulture),
+                int.Parse(values[3], CultureInfo.InvariantCulture),
+                float.Parse(values[4], CultureInfo.InvariantCulture),
+                float.Parse(values[5], CultureInfo.InvariantCulture),
+                long.Parse(values[6], CultureInfo.InvariantCulture),
                 char.Parse(values[7]),
-                int.Parse(values[8]),
+                int.Parse(values[8], CultureInfo.InvariantCulture),
                 values[9]);
         }
 
@@ -66,7 +72,15 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             {
                 var hash = 17;
                 hash = hash * 29 + Timestamp.GetHashCode();
+                hash = hash * 29 + Last.GetHashCode();
+                hash = hash * 29 + LastSize.GetHashCode();
+                hash = hash * 29 + TotalVolume.GetHashCode();
+                hash = hash * 29 + Bid.GetHashCode();
+                hash = hash * 29 + Ask.GetHashCode();
                 hash = hash * 29 + TickId.GetHashCode();
+                hash = hash * 29 + BasisForLast.GetHashCode();
+                hash = hash * 29 + TradeMarketCenter.GetHashCode();
+                hash = hash * 29 + TradeConditions.GetHashCode();
                 return hash;
             }
         }

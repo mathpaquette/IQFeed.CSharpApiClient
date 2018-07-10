@@ -20,7 +20,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
 
         public ChainsMessageContainer<FutureMessage> GetFutureMessages(byte[] message, int count)
         {
-            return ProcessMessages(message, count, FutureMessage.CreateFutureMessage);
+            return ProcessMessages(message, count, FutureMessage.Parse);
         }
 
         public ChainsMessageContainer<FutureSpreadMessage> GetFutureSpreadMessages(byte[] message, int count)
@@ -30,28 +30,28 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
 
         public ChainsMessageContainer<FutureOptionMessage> GetFutureOptionMessages(byte[] message, int count)
         {
-            return ProcessMessages(message, count, FutureOptionMessage.CreateFutureOptionMessage);
+            return ProcessMessages(message, count, FutureOptionMessage.Parse);
         }
 
         public ChainsMessageContainer<EquityOptionMessage> GetEquityOptionMessages(byte[] message, int count)
         {
-            return ProcessMessages(message, count, EquityOptionMessage.CreateEquityIndexOptionMessage);
+            return ProcessMessages(message, count, EquityOptionMessage.Parse);
         }
 
         // TODO: this method can be combined with Historical
-        private ChainsMessageContainer<T> ProcessMessages<T>(byte[] message, int count, Func<string, T> converter)
+        private ChainsMessageContainer<T> ProcessMessages<T>(byte[] message, int count, Func<string, T> parser)
         {
             var lines = Encoding.ASCII.GetString(message, 0, count)
                 .Split(_lineSplitDelimiter, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim()).ToArray();
 
-            var convertedMessages = new List<T>();
+            var parsedMessages = new List<T>();
             var endMsg = false;
             var lastMsgIdx = lines.Length - 1;
 
             // check for errors
             if (lines.Length > 0 && lines[0].StartsWith(ErrorPattern))
-                return new ChainsMessageContainer<T>(convertedMessages, true, lines[0]);
+                return new ChainsMessageContainer<T>(parsedMessages, true, lines[0]);
 
             for (var i = 0; i < lines.Length; i++)
             {
@@ -70,11 +70,11 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
                         break;
                     }
 
-                    convertedMessages.Add(converter(symbol));
+                    parsedMessages.Add(parser(symbol));
                 }
             }
 
-            return new ChainsMessageContainer<T>(convertedMessages, endMsg);
+            return new ChainsMessageContainer<T>(parsedMessages, endMsg);
         }
     }
 }

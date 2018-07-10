@@ -1,4 +1,6 @@
-﻿namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
+﻿using IQFeed.CSharpApiClient.Extensions;
+
+namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 {
     public class SymbolNotFoundMessage
     {
@@ -8,5 +10,25 @@
         }
 
         public string Symbol { get; }
+
+        public static SymbolNotFoundMessage Parse(string message)
+        {
+            var values = message.SplitFeedMessage();
+            return new SymbolNotFoundMessage(values[1]);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is SymbolNotFoundMessage message &&
+                   Symbol == message.Symbol;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return -1758840423 + Symbol.GetHashCode();
+            }
+        }
     }
 }

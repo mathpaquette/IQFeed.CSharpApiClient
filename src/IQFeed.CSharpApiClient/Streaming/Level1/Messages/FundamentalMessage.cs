@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using IQFeed.CSharpApiClient.Extensions;
 
 // ReSharper disable InconsistentNaming
@@ -7,7 +8,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 {
     public class FundamentalMessage
     {
-        public const string FundamentalDatetimeFormat = "MM/dd/yyyy";
+        public const string FundamentalDateTimeFormat = "MM/dd/yyyy";
 
         public FundamentalMessage(string symbol, string exchangeId, float? pe, int? averageVolume, float? fiftyTwoWeekHigh, float? fiftyTwoWeekLow, float? calendarYearHigh, float? calendarYearLow, float? dividendYield, float? dividendAmount, float? dividendRate, DateTime? payDate, DateTime? exDividendDate, int? shortInterest, float? currentYearEarningsPerShare, float? nextYearEarningsPerShare, float? fiveYearGrowthPercentage, int? fiscalYearEnd, string companyName, string rootOptionSymbol, float? percentHeldByInstitutions, float? beta, string leaps, float? currentAssets, float? currentLiabilities, DateTime? balanceSheetDate, float? longTermDebt, float? commonSharesOutstanding, string splitFactor1, string splitFactor2, string formatCode, int? precision, int? sic, float? historicalVolatility, string securityType, string listedMarket, DateTime? fiftyTwoWeekHighDate, DateTime? fiftyTwoWeekLowDate, DateTime? calendarYearHighDate, DateTime? calendarYearLowDate, float? yearEndClose, DateTime? maturityDate, float? couponRate, DateTime? expirationDate, float? strikePrice, int? naics, string exchangeRoot, float? optionsPremiumMultiplier, int? optionsMultipleDeliverables)
         {
@@ -126,67 +127,185 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         public float? OptionsPremiumMultiplier { get; }       // 55
         public int? OptionsMultipleDeliverables { get; }      // 56
 
-        public static FundamentalMessage CreateFundamentalMessage(string[] values)
+        public static FundamentalMessage Parse(string message)
         {
+            var values = message.SplitFeedMessage();
             return new FundamentalMessage(
-                values[0].NullIfEmpty(),
                 values[1].NullIfEmpty(),
-                values[2].ToNullableFloat(),
-                values[3].ToNullableInt(),
-                values[4].ToNullableFloat(),
+                values[2].NullIfEmpty(),
+                values[3].ToNullableFloat(),
+                values[4].ToNullableInt(),
                 values[5].ToNullableFloat(),
                 values[6].ToNullableFloat(),
                 values[7].ToNullableFloat(),
                 values[8].ToNullableFloat(),
                 values[9].ToNullableFloat(),
                 values[10].ToNullableFloat(),
-                values[11].ToNullableDateTime(FundamentalDatetimeFormat),
-                values[12].ToNullableDateTime(FundamentalDatetimeFormat),
+                values[11].ToNullableFloat(),
+                values[12].ToNullableDateTime(FundamentalDateTimeFormat),
+                values[13].ToNullableDateTime(FundamentalDateTimeFormat),
                 //// (Reserved)
                 //// (Reserved)
                 //// (Reserved)
-                values[16].ToNullableInt(),
+                values[17].ToNullableInt(),
                 //// (Reserved)
-                values[18].ToNullableFloat(),
                 values[19].ToNullableFloat(),
                 values[20].ToNullableFloat(),
-                values[21].ToNullableInt(),
+                values[21].ToNullableFloat(),
+                values[22].ToNullableInt(),
                 //// (Reserved)    
-                values[23].NullIfEmpty(),
                 values[24].NullIfEmpty(),
-                values[25].ToNullableFloat(),
+                values[25].NullIfEmpty(),
                 values[26].ToNullableFloat(),
-                values[27].NullIfEmpty(),
-                values[28].ToNullableFloat(),
+                values[27].ToNullableFloat(),
+                values[28].NullIfEmpty(),
                 values[29].ToNullableFloat(),
-                values[30].ToNullableDateTime(FundamentalDatetimeFormat),
-                values[31].ToNullableFloat(),
+                values[30].ToNullableFloat(),
+                values[31].ToNullableDateTime(FundamentalDateTimeFormat),
                 values[32].ToNullableFloat(),
+                values[33].ToNullableFloat(),
                 //// (Reserved)
-                values[34].NullIfEmpty(),
                 values[35].NullIfEmpty(),
+                values[36].NullIfEmpty(),
                 //// (Reserved)
                 //// (Reserved)
-                values[38].NullIfEmpty(),
-                values[39].ToNullableInt(),
+                values[39].NullIfEmpty(),
                 values[40].ToNullableInt(),
-                values[41].ToNullableFloat(),
-                values[42].NullIfEmpty(),
+                values[41].ToNullableInt(),
+                values[42].ToNullableFloat(),
                 values[43].NullIfEmpty(),
-                values[44].ToNullableDateTime(FundamentalDatetimeFormat),
-                values[45].ToNullableDateTime(FundamentalDatetimeFormat),
-                values[46].ToNullableDateTime(FundamentalDatetimeFormat),
-                values[47].ToNullableDateTime(FundamentalDatetimeFormat),
-                values[48].ToNullableFloat(),
-                values[49].ToNullableDateTime(FundamentalDatetimeFormat),
-                values[50].ToNullableFloat(),
-                values[51].ToNullableDateTime(FundamentalDatetimeFormat),
-                values[52].ToNullableFloat(),
-                values[53].ToNullableInt(),
-                values[54].NullIfEmpty(),
-                values[55].ToNullableFloat(),
-                values[56].ToNullableInt()
+                values[44].NullIfEmpty(),
+                values[45].ToNullableDateTime(FundamentalDateTimeFormat),
+                values[46].ToNullableDateTime(FundamentalDateTimeFormat),
+                values[47].ToNullableDateTime(FundamentalDateTimeFormat),
+                values[48].ToNullableDateTime(FundamentalDateTimeFormat),
+                values[49].ToNullableFloat(),
+                values[50].ToNullableDateTime(FundamentalDateTimeFormat),
+                values[51].ToNullableFloat(),
+                values[52].ToNullableDateTime(FundamentalDateTimeFormat),
+                values[53].ToNullableFloat(),
+                values[54].ToNullableInt(),
+                values[55].NullIfEmpty(),
+                values[56].ToNullableFloat(),
+                values[57].ToNullableInt()
             );
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is FundamentalMessage message &&
+                   Symbol == message.Symbol &&
+                   ExchangeId == message.ExchangeId &&
+                   EqualityComparer<float?>.Default.Equals(PE, message.PE) &&
+                   EqualityComparer<int?>.Default.Equals(AverageVolume, message.AverageVolume) &&
+                   EqualityComparer<float?>.Default.Equals(FiftyTwoWeekHigh, message.FiftyTwoWeekHigh) &&
+                   EqualityComparer<float?>.Default.Equals(FiftyTwoWeekLow, message.FiftyTwoWeekLow) &&
+                   EqualityComparer<float?>.Default.Equals(CalendarYearHigh, message.CalendarYearHigh) &&
+                   EqualityComparer<float?>.Default.Equals(CalendarYearLow, message.CalendarYearLow) &&
+                   EqualityComparer<float?>.Default.Equals(DividendYield, message.DividendYield) &&
+                   EqualityComparer<float?>.Default.Equals(DividendAmount, message.DividendAmount) &&
+                   EqualityComparer<float?>.Default.Equals(DividendRate, message.DividendRate) &&
+                   EqualityComparer<DateTime?>.Default.Equals(PayDate, message.PayDate) &&
+                   EqualityComparer<DateTime?>.Default.Equals(ExDividendDate, message.ExDividendDate) &&
+                   EqualityComparer<int?>.Default.Equals(ShortInterest, message.ShortInterest) &&
+                   EqualityComparer<float?>.Default.Equals(CurrentYearEarningsPerShare, message.CurrentYearEarningsPerShare) &&
+                   EqualityComparer<float?>.Default.Equals(NextYearEarningsPerShare, message.NextYearEarningsPerShare) &&
+                   EqualityComparer<float?>.Default.Equals(FiveYearGrowthPercentage, message.FiveYearGrowthPercentage) &&
+                   EqualityComparer<int?>.Default.Equals(FiscalYearEnd, message.FiscalYearEnd) &&
+                   CompanyName == message.CompanyName &&
+                   RootOptionSymbol == message.RootOptionSymbol &&
+                   EqualityComparer<float?>.Default.Equals(PercentHeldByInstitutions, message.PercentHeldByInstitutions) &&
+                   EqualityComparer<float?>.Default.Equals(Beta, message.Beta) &&
+                   Leaps == message.Leaps &&
+                   EqualityComparer<float?>.Default.Equals(CurrentAssets, message.CurrentAssets) &&
+                   EqualityComparer<float?>.Default.Equals(CurrentLiabilities, message.CurrentLiabilities) &&
+                   EqualityComparer<DateTime?>.Default.Equals(BalanceSheetDate, message.BalanceSheetDate) &&
+                   EqualityComparer<float?>.Default.Equals(LongTermDebt, message.LongTermDebt) &&
+                   EqualityComparer<float?>.Default.Equals(CommonSharesOutstanding, message.CommonSharesOutstanding) &&
+                   SplitFactor1 == message.SplitFactor1 &&
+                   SplitFactor2 == message.SplitFactor2 &&
+                   FormatCode == message.FormatCode &&
+                   EqualityComparer<int?>.Default.Equals(Precision, message.Precision) &&
+                   EqualityComparer<int?>.Default.Equals(SIC, message.SIC) &&
+                   EqualityComparer<float?>.Default.Equals(HistoricalVolatility, message.HistoricalVolatility) &&
+                   SecurityType == message.SecurityType &&
+                   ListedMarket == message.ListedMarket &&
+                   EqualityComparer<DateTime?>.Default.Equals(FiftyTwoWeekHighDate, message.FiftyTwoWeekHighDate) &&
+                   EqualityComparer<DateTime?>.Default.Equals(FiftyTwoWeekLowDate, message.FiftyTwoWeekLowDate) &&
+                   EqualityComparer<DateTime?>.Default.Equals(CalendarYearHighDate, message.CalendarYearHighDate) &&
+                   EqualityComparer<DateTime?>.Default.Equals(CalendarYearLowDate, message.CalendarYearLowDate) &&
+                   EqualityComparer<float?>.Default.Equals(YearEndClose, message.YearEndClose) &&
+                   EqualityComparer<DateTime?>.Default.Equals(MaturityDate, message.MaturityDate) &&
+                   EqualityComparer<float?>.Default.Equals(CouponRate, message.CouponRate) &&
+                   EqualityComparer<DateTime?>.Default.Equals(ExpirationDate, message.ExpirationDate) &&
+                   EqualityComparer<float?>.Default.Equals(StrikePrice, message.StrikePrice) &&
+                   EqualityComparer<int?>.Default.Equals(NAICS, message.NAICS) &&
+                   ExchangeRoot == message.ExchangeRoot &&
+                   EqualityComparer<float?>.Default.Equals(OptionsPremiumMultiplier, message.OptionsPremiumMultiplier) &&
+                   EqualityComparer<int?>.Default.Equals(OptionsMultipleDeliverables, message.OptionsMultipleDeliverables);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash = 17;
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(Symbol);
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(ExchangeId);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(PE);
+                hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(AverageVolume);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(FiftyTwoWeekHigh);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(FiftyTwoWeekLow);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(CalendarYearHigh);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(CalendarYearLow);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(DividendYield);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(DividendAmount);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(DividendRate);
+                hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(PayDate);
+                hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(ExDividendDate);
+                hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(ShortInterest);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(CurrentYearEarningsPerShare);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(NextYearEarningsPerShare);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(FiveYearGrowthPercentage);
+                hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(FiscalYearEnd);
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(CompanyName);
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(RootOptionSymbol);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(PercentHeldByInstitutions);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(Beta);
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(Leaps);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(CurrentAssets);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(CurrentLiabilities);
+                hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(BalanceSheetDate);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(LongTermDebt);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(CommonSharesOutstanding);
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(SplitFactor1);
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(SplitFactor2);
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(FormatCode);
+                hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(Precision);
+                hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(SIC);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(HistoricalVolatility);
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(SecurityType);
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(ListedMarket);
+                hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(FiftyTwoWeekHighDate);
+                hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(FiftyTwoWeekLowDate);
+                hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(CalendarYearHighDate);
+                hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(CalendarYearLowDate);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(YearEndClose);
+                hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(MaturityDate);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(CouponRate);
+                hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(ExpirationDate);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(StrikePrice);
+                hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(NAICS);
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(ExchangeRoot);
+                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(OptionsPremiumMultiplier);
+                hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(OptionsMultipleDeliverables);
+                return hash;
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(Symbol)}: {Symbol}, {nameof(ExchangeId)}: {ExchangeId}, {nameof(PE)}: {PE}, {nameof(AverageVolume)}: {AverageVolume}, {nameof(FiftyTwoWeekHigh)}: {FiftyTwoWeekHigh}, {nameof(FiftyTwoWeekLow)}: {FiftyTwoWeekLow}, {nameof(CalendarYearHigh)}: {CalendarYearHigh}, {nameof(CalendarYearLow)}: {CalendarYearLow}, {nameof(DividendYield)}: {DividendYield}, {nameof(DividendAmount)}: {DividendAmount}, {nameof(DividendRate)}: {DividendRate}, {nameof(PayDate)}: {PayDate}, {nameof(ExDividendDate)}: {ExDividendDate}, {nameof(ShortInterest)}: {ShortInterest}, {nameof(CurrentYearEarningsPerShare)}: {CurrentYearEarningsPerShare}, {nameof(NextYearEarningsPerShare)}: {NextYearEarningsPerShare}, {nameof(FiveYearGrowthPercentage)}: {FiveYearGrowthPercentage}, {nameof(FiscalYearEnd)}: {FiscalYearEnd}, {nameof(CompanyName)}: {CompanyName}, {nameof(RootOptionSymbol)}: {RootOptionSymbol}, {nameof(PercentHeldByInstitutions)}: {PercentHeldByInstitutions}, {nameof(Beta)}: {Beta}, {nameof(Leaps)}: {Leaps}, {nameof(CurrentAssets)}: {CurrentAssets}, {nameof(CurrentLiabilities)}: {CurrentLiabilities}, {nameof(BalanceSheetDate)}: {BalanceSheetDate}, {nameof(LongTermDebt)}: {LongTermDebt}, {nameof(CommonSharesOutstanding)}: {CommonSharesOutstanding}, {nameof(SplitFactor1)}: {SplitFactor1}, {nameof(SplitFactor2)}: {SplitFactor2}, {nameof(FormatCode)}: {FormatCode}, {nameof(Precision)}: {Precision}, {nameof(SIC)}: {SIC}, {nameof(HistoricalVolatility)}: {HistoricalVolatility}, {nameof(SecurityType)}: {SecurityType}, {nameof(ListedMarket)}: {ListedMarket}, {nameof(FiftyTwoWeekHighDate)}: {FiftyTwoWeekHighDate}, {nameof(FiftyTwoWeekLowDate)}: {FiftyTwoWeekLowDate}, {nameof(CalendarYearHighDate)}: {CalendarYearHighDate}, {nameof(CalendarYearLowDate)}: {CalendarYearLowDate}, {nameof(YearEndClose)}: {YearEndClose}, {nameof(MaturityDate)}: {MaturityDate}, {nameof(CouponRate)}: {CouponRate}, {nameof(ExpirationDate)}: {ExpirationDate}, {nameof(StrikePrice)}: {StrikePrice}, {nameof(NAICS)}: {NAICS}, {nameof(ExchangeRoot)}: {ExchangeRoot}, {nameof(OptionsPremiumMultiplier)}: {OptionsPremiumMultiplier}, {nameof(OptionsMultipleDeliverables)}: {OptionsMultipleDeliverables}";
         }
     }
 }

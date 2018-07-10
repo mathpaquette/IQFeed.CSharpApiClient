@@ -8,6 +8,11 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
     {
         private LookupClient _lookupClient;
 
+        public SymbolFacadeTests()
+        {
+            IQFeedLauncher.Start();
+        }
+
         [SetUp]
         public void SetUp()
         {

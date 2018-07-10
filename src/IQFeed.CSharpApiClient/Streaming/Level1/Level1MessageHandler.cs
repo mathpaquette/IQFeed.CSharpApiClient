@@ -23,99 +23,92 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             for (int i = 0; i < messages.Length; i++)
             {
                 var message = messages[i];
-                var values = GetValuesFromMessage(message);
                 switch (messages[i][0])
                 {
                     case 'F': // A fundamental message
-                        ProcessFundamentalMessage(message, values);
+                        ProcessFundamentalMessage(message);
                         break;
                     case 'P': // A summary message
-                        ProcessSummaryMessage(message, values);
+                        ProcessSummaryMessage(message);
                         break;
                     case 'Q': // An update message
-                        ProcessUpdateMessage(message, values);
+                        ProcessUpdateMessage(message);
                         break;
                     case 'R': // A regional update message
-                        ProcessRegionalUpdateMessage(message, values);
+                        ProcessRegionalUpdateMessage(message);
                         break;
                     case 'N': // A news headline message
-                        ProcessNewsMessage(message, values);
+                        ProcessNewsMessage(message);
                         break;
                     case 'S': // A system message
-                        ProcessSystemMessage(message, values);
+                        ProcessSystemMessage(message);
                         break;
                     case 'T': // A timestamp message
-                        ProcessTimestampMessage(message, values);
+                        ProcessTimestampMessage(message);
                         break;
                     case 'n': // Symbol not found message
-                        ProcessSymbolNotFoundMessage(message, values);
+                        ProcessSymbolNotFoundMessage(message);
                         break;
                     case 'E': // An error message
-                        ProcessErrorMessage(message, values);
+                        ProcessErrorMessage(message);
                         break;
                     default:
                         throw new Exception("Unknown type of level 1 message received.");
                 }
             }
         }
-
-        // TODO: this could be extracted in a common class
-        public static string[] GetValuesFromMessage(string message)
+        
+        private void ProcessFundamentalMessage(string msg)
         {
-            return message.Substring(2).Split(IQFeedDefault.ProtocolDelimiterCharacter);
-        }
-
-        private void ProcessFundamentalMessage(string msg, string[] values)
-        {
-            var fundamentalMessage = FundamentalMessage.CreateFundamentalMessage(values);
+            var fundamentalMessage = FundamentalMessage.Parse(msg);
             Fundamental?.Invoke(fundamentalMessage);
         }
 
-        private void ProcessSummaryMessage(string msg, string[] values)
+        private void ProcessSummaryMessage(string msg)
         {
-            var updateSummaryMessage = UpdateSummaryMessage.CreateUpdateSummaryMessage(values);
+            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
             Summary?.Invoke(updateSummaryMessage);
         }
 
-        private void ProcessUpdateMessage(string msg, string[] values)
+        private void ProcessUpdateMessage(string msg)
         {
-            var updateSummaryMessage = UpdateSummaryMessage.CreateUpdateSummaryMessage(values);
+            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
             Update?.Invoke(updateSummaryMessage);
         }
 
-        private void ProcessRegionalUpdateMessage(string msg, string[] values)
+        private void ProcessRegionalUpdateMessage(string msg)
         {
-            var regionUpdateMessage = RegionalUpdateMessage.CreateRegionalUpdateMessage(values);
+            var regionUpdateMessage = RegionalUpdateMessage.Parse(msg);
             Regional?.Invoke(regionUpdateMessage);
         }
 
-        private void ProcessNewsMessage(string msg, string[] values)
+        private void ProcessNewsMessage(string msg)
         {
-            var newsMessage = NewsMessage.CreateNewsMessage(values);
+            var newsMessage = NewsMessage.Parse(msg);
             News?.Invoke(newsMessage);
         }
 
-        private void ProcessSystemMessage(string msg, string[] values)
+        private void ProcessSystemMessage(string msg)
         {
-            var systemMessage = new SystemMessage(values[0], msg);
+            var systemMessage = SystemMessage.Parse(msg);
             System?.Invoke(systemMessage);
         }
 
-        private void ProcessTimestampMessage(string msg, string[] values)
+        private void ProcessTimestampMessage(string msg)
         {
-            var timestampMessage = TimestampMessage.CreateTimestampMessage(values[0]);
+            var timestampMessage = TimestampMessage.Parse(msg);
             Timestamp?.Invoke(timestampMessage);
         }
 
-        private void ProcessSymbolNotFoundMessage(string msg, string[] values)
+        private void ProcessSymbolNotFoundMessage(string msg)
         {
-            var symbolNotFoundMessage = new SymbolNotFoundMessage(values[0]);
+            var symbolNotFoundMessage = SymbolNotFoundMessage.Parse(msg);
             SymbolNotFound?.Invoke(symbolNotFoundMessage);
         }
 
-        private void ProcessErrorMessage(string msg, string[] values)
+        private void ProcessErrorMessage(string msg)
         {
-            var errorMessage = new ErrorMessage(values[0]);
+            var errorMessage = ErrorMessage.Parse(msg);
             Error?.Invoke(errorMessage);
         }
     }

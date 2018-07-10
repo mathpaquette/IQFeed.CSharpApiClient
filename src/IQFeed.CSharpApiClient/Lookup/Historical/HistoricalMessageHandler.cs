@@ -11,20 +11,20 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
 
         public HistoricalMessageContainer<TickMessage> GetTickMessages(byte[] message, int count)
         {
-            return ProcessMessages(TickMessage.CreateTickMessage, message, count);
+            return ProcessMessages(TickMessage.Parse, message, count);
         }
 
         public HistoricalMessageContainer<IntervalMessage> GetIntervalMessages(byte[] message, int count)
         {
-            return ProcessMessages(IntervalMessage.CreateIntervalMessage, message, count);
+            return ProcessMessages(IntervalMessage.Parse, message, count);
         }
 
         public HistoricalMessageContainer<DailyWeeklyMonthlyMessage> GetDailyWeeklyMonthlyMessages(byte[] message, int count)
         {
-            return ProcessMessages(DailyWeeklyMonthlyMessage.CreateDailyWeeklyMonthlyMessage, message, count);
+            return ProcessMessages(DailyWeeklyMonthlyMessage.Parse, message, count);
         }
 
-        private HistoricalMessageContainer<T> ProcessMessages<T>(Func<string[], T> converter, byte[] message, int count)
+        private HistoricalMessageContainer<T> ProcessMessages<T>(Func<string, T> converter, byte[] message, int count)
         {
             var messages = Encoding.ASCII.GetString(message, 0, count).Split(_lineSplitDelimiter, StringSplitOptions.RemoveEmptyEntries);
 
@@ -45,7 +45,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
                     break;
                 }
 
-                convertedMessages.Add(converter(messages[i].Split(IQFeedDefault.ProtocolDelimiterCharacter)));
+                convertedMessages.Add(converter(messages[i]));
             }
 
             return new HistoricalMessageContainer<T>(convertedMessages, endMsg);

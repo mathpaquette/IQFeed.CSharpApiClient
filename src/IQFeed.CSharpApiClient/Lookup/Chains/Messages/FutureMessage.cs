@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using IQFeed.CSharpApiClient.Lookup.Chains.Futures;
 
@@ -28,14 +29,35 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains.Messages
             Expiration = expiration;
         }
 
-        public static FutureMessage CreateFutureMessage(string futureSymbol)
+        public static FutureMessage Parse(string futureSymbol)
         {
             var m = Regex.Match(futureSymbol, FutureSymbolPattern);
             var futureRoot = m.Groups[FutureRootComponent].Value;
             var futureMonth = FutureMonthCode.Decode(m.Groups[FutureMonthCodeComponent].Value);
-            var futureYear = int.Parse($"20{m.Groups[FutureYearComponent].Value}");
+            var futureYear = int.Parse($"20{m.Groups[FutureYearComponent].Value}", CultureInfo.InvariantCulture);
 
             return new FutureMessage(futureSymbol, futureRoot, new DateTime(futureYear, futureMonth, 1));
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is FutureMessage message &&
+                   Symbol == message.Symbol &&
+                   FutureRoot == message.FutureRoot &&
+                   Expiration.Date.Year == message.Expiration.Date.Year &&
+                   Expiration.Date.Month == message.Expiration.Date.Month;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash = 17;
+                hash = hash * 29 + Symbol.GetHashCode();
+                hash = hash * 29 + FutureRoot.GetHashCode();
+                hash = hash * 29 + Expiration.GetHashCode();
+                return hash;
+            }
         }
 
         public override string ToString()

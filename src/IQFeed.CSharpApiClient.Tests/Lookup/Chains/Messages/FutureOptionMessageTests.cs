@@ -7,21 +7,21 @@ using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Lookup.Chains.Messages
 {
-    public class EquityOptionMessageTests
+    public class FutureOptionMessageTests
     {
         [Test, TestCaseSource(typeof(CultureNameTestCase), nameof(CultureNameTestCase.CultureNames))]
-        public void Should_Parse_EquityOptionMessage_Culture_Independant(string cultureName)
+        public void Should_Parse_FutureOptionMessage_Culture_Independant(string cultureName)
         {
             // Arrange
             TestHelper.SetThreadCulture(cultureName);
-            var optionSymbol = "AAPL1806G167.5";
+            var futureOptionSymbol = "@ESU18C100000";
 
             // Act
-            var equityOptionMessageParsed = EquityOptionMessage.Parse(optionSymbol);
-            var equityOptionMessage = new EquityOptionMessage(optionSymbol, "AAPL", 167.5f, new DateTime(2018, 07, 06), OptionSide.Call);
+            var futureOptionMessageParsed = FutureOptionMessage.Parse(futureOptionSymbol);
+            var futureOptionMessage = new FutureOptionMessage(futureOptionSymbol, new FutureMessage("@ESU18", "@ES", new DateTime(2018, 09, 01)), OptionSide.Call, 1000);
 
             // Assert
-            Assert.AreEqual(equityOptionMessage, equityOptionMessageParsed);
+            Assert.AreEqual(futureOptionMessageParsed, futureOptionMessage);
         }
     }
 }
