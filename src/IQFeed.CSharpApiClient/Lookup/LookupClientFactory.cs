@@ -1,5 +1,6 @@
 ﻿using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Lookup.Chains;
+using IQFeed.CSharpApiClient.Lookup.Common;
 using IQFeed.CSharpApiClient.Lookup.Historical;
 using IQFeed.CSharpApiClient.Lookup.News;
 using IQFeed.CSharpApiClient.Lookup.Symbol;
@@ -14,14 +15,16 @@ namespace IQFeed.CSharpApiClient.Lookup
             // Common
             var requestFormatter = new RequestFormatter();
             var lookupDispatcher = new LookupDispatcher(host, port, IQFeedDefault.ProtocolVersion, numberOfClients, requestFormatter);
-            var rawMessageHandler = new RawMessageHandler(lookupDispatcher, timeoutMs);
+            var errorMessageHandler = new ErrorMessageHandler();
+            var rawMessageHandler = new RawMessageHandler(lookupDispatcher, errorMessageHandler, timeoutMs);
 
             // Historical
             var historicalDataRequestFormatter = new HistoricalRequestFormatter();
             var historicalRawFace = new HistoricalRawFacade(historicalDataRequestFormatter, rawMessageHandler);
             var historicalFacade = new HistoricalFacade(
                 historicalDataRequestFormatter,
-                lookupDispatcher, 
+                lookupDispatcher,
+                errorMessageHandler,
                 new HistoricalMessageHandler(),
                 historicalRawFace,
                 timeoutMs
@@ -34,7 +37,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             var symbolFacade = new SymbolFacade(new MarketSymbolDownloader(), new MarketSymbolReader());
 
             // Chains
-            var chainsFacade = new ChainsFacade(new ChainsRequestFormatter(), new ChainsMessageHandler(), lookupDispatcher, timeoutMs);
+            var chainsFacade = new ChainsFacade(new ChainsRequestFormatter(), new ChainsMessageHandler(), lookupDispatcher, errorMessageHandler, timeoutMs);
 
             return new LookupClient(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade);
         }

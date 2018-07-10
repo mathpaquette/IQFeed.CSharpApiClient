@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
+using IQFeed.CSharpApiClient.Lookup.Common;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical
 {

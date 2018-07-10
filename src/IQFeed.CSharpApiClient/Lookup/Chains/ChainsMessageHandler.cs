@@ -1,80 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Lookup.Chains.Messages;
+using IQFeed.CSharpApiClient.Lookup.Common;
 
 namespace IQFeed.CSharpApiClient.Lookup.Chains
 {
-    public class ChainsMessageHandler
+    public class ChainsMessageHandler : BaseLookupMessageHandler
     {
-        private readonly char[] _lineSplitDelimiter;
-        private readonly char[] _symbolSplitDelimiter;
-        private const string ErrorPattern = "E,";
-
-        public ChainsMessageHandler()
+        public MessageContainer<FutureMessage> GetFutureMessages(byte[] message, int count)
         {
-            _lineSplitDelimiter = IQFeedDefault.ProtocolTerminatingCharacters.ToCharArray();
-            _symbolSplitDelimiter = new[] { IQFeedDefault.ProtocolDelimiterCharacter };
+            return ProcessMessages(FutureMessage.Parse, message, count);
         }
 
-        public ChainsMessageContainer<FutureMessage> GetFutureMessages(byte[] message, int count)
+        public MessageContainer<FutureSpreadMessage> GetFutureSpreadMessages(byte[] message, int count)
         {
-            return ProcessMessages(message, count, FutureMessage.Parse);
+            return ProcessMessages(FutureSpreadMessage.Parse, message, count);
         }
 
-        public ChainsMessageContainer<FutureSpreadMessage> GetFutureSpreadMessages(byte[] message, int count)
+        public MessageContainer<FutureOptionMessage> GetFutureOptionMessages(byte[] message, int count)
         {
-            return ProcessMessages(message, count, FutureSpreadMessage.CreateFutureSpreadMessage);
+            return ProcessMessages(FutureOptionMessage.Parse, message, count);
         }
 
-        public ChainsMessageContainer<FutureOptionMessage> GetFutureOptionMessages(byte[] message, int count)
+        public MessageContainer<EquityOptionMessage> GetEquityOptionMessages(byte[] message, int count)
         {
-            return ProcessMessages(message, count, FutureOptionMessage.Parse);
-        }
-
-        public ChainsMessageContainer<EquityOptionMessage> GetEquityOptionMessages(byte[] message, int count)
-        {
-            return ProcessMessages(message, count, EquityOptionMessage.Parse);
-        }
-
-        // TODO: this method can be combined with Historical
-        private ChainsMessageContainer<T> ProcessMessages<T>(byte[] message, int count, Func<string, T> parser)
-        {
-            var lines = Encoding.ASCII.GetString(message, 0, count)
-                .Split(_lineSplitDelimiter, StringSplitOptions.RemoveEmptyEntries)
-                .Select(x => x.Trim()).ToArray();
-
-            var parsedMessages = new List<T>();
-            var endMsg = false;
-            var lastMsgIdx = lines.Length - 1;
-
-            // check for errors
-            if (lines.Length > 0 && lines[0].StartsWith(ErrorPattern))
-                return new ChainsMessageContainer<T>(parsedMessages, true, lines[0]);
-
-            for (var i = 0; i < lines.Length; i++)
-            {
-                var symbols = lines[i].Split(_symbolSplitDelimiter, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (var symbol in symbols)
-                {
-                    // skip characters
-                    if (symbol == ":")
-                        continue;
-
-                    // check for last message
-                    if (i == lastMsgIdx && symbol.StartsWith(IQFeedDefault.ProtocolEndOfMessageCharacters))
-                    {
-                        endMsg = true;
-                        break;
-                    }
-
-                    parsedMessages.Add(parser(symbol));
-                }
-            }
-
-            return new ChainsMessageContainer<T>(parsedMessages, endMsg);
+            return ProcessMessages(EquityOptionMessage.Parse, message, count);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IQFeed.CSharpApiClient.Lookup.Chains.Options
+namespace IQFeed.CSharpApiClient.Lookup.Chains.Equities
 {
     public class EquityOptionMonthCode
     {

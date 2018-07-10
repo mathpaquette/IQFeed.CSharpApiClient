@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using IQFeed.CSharpApiClient.Common.Exceptions;
 using IQFeed.CSharpApiClient.Lookup;
+using IQFeed.CSharpApiClient.Lookup.Chains;
 using IQFeed.CSharpApiClient.Lookup.Chains.Messages;
-using IQFeed.CSharpApiClient.Lookup.Chains.Options;
 using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Chains
@@ -64,9 +64,9 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Chains
         }
 
         [Test, MaxTime(TimeoutMs)]
-        public void Should_Throw_Exception_When_Chains_Getting_Error()
+        public void Should_Throw_IQFeedException_When_Chains_Getting_Error()
         {
-            var ex = Assert.ThrowsAsync<Exception>(async () => await _lookupClient.Chains.ReqChainIndexEquityOptionAsync("INVALID_SYMBOL_NAME", OptionSideFilterType.CP, string.Empty, 4));
+            var ex = Assert.ThrowsAsync<NoDataIQFeedException>(async () => await _lookupClient.Chains.ReqChainIndexEquityOptionAsync("INVALID_SYMBOL_NAME", OptionSideFilterType.CP, string.Empty, 4));
         }
     }
 }

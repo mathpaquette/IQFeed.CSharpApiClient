@@ -1,6 +1,4 @@
-﻿using IQFeed.CSharpApiClient.Lookup.Chains.Options;
-
-namespace IQFeed.CSharpApiClient.Lookup.Chains
+﻿namespace IQFeed.CSharpApiClient.Lookup.Chains
 {
     public class ChainsRequestFormatter
     {

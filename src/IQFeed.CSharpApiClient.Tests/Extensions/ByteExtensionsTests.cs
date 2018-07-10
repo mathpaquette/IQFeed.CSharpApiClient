@@ -6,7 +6,7 @@ namespace IQFeed.CSharpApiClient.Tests.Extensions
 {
     public class ByteExtensionsTests
     {
-        private const string EndMessage = IQFeedDefault.ProtocolEndMessage;
+        private const string EndMessage = IQFeedDefault.ProtocolEndOfMessageCharacters;
 
         [Test]
         public void Should_Return_False_When_Count_Is_Smaller_Then_Pattern_Length()

@@ -1,25 +1,29 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using IQFeed.CSharpApiClient.Common;
+using IQFeed.CSharpApiClient.Common.Exceptions;
 using IQFeed.CSharpApiClient.Extensions;
-using IQFeed.CSharpApiClient.Lookup;
 using IQFeed.CSharpApiClient.Socket;
 
-namespace IQFeed.CSharpApiClient.Common
+namespace IQFeed.CSharpApiClient.Lookup.Common
 {
     public class RawMessageHandler
     {
         private readonly LookupDispatcher _lookupDispatcher;
+        private readonly ErrorMessageHandler _errorMessageHandler;
+
         private readonly int _timeoutMs;
         private readonly byte[] _endOfMsgBytes;
 
-        public RawMessageHandler(LookupDispatcher lookupDispatcher, int timeoutMs)
+        public RawMessageHandler(LookupDispatcher lookupDispatcher, ErrorMessageHandler errorMessageHandler, int timeoutMs)
         {
-            _timeoutMs = timeoutMs;
+            _endOfMsgBytes = Encoding.ASCII.GetBytes(IQFeedDefault.ProtocolEndOfMessageCharacters + IQFeedDefault.ProtocolDelimiterCharacter + IQFeedDefault.ProtocolTerminatingCharacters);
+
             _lookupDispatcher = lookupDispatcher;
-            _endOfMsgBytes = Encoding.ASCII.GetBytes(IQFeedDefault.ProtocolEndMessage);
+            _errorMessageHandler = errorMessageHandler;
+            _timeoutMs = timeoutMs;
         }
 
         public async Task<string> GetFilenameAsync(string request)
@@ -27,7 +31,6 @@ namespace IQFeed.CSharpApiClient.Common
             var client = await _lookupDispatcher.TakeAsync();
             var filename = Path.GetRandomFileName();
             var binaryWriter = new BinaryWriter(File.Open(filename, FileMode.OpenOrCreate));
-            var msgCount = 0;
 
             var ct = new CancellationTokenSource(_timeoutMs);
             var res = new TaskCompletionSource<string>();
@@ -36,10 +39,10 @@ namespace IQFeed.CSharpApiClient.Common
             void SocketClientOnMessageReceived(object sender, SocketMessageEventArgs args)
             {
                 // check for errors
-                if (msgCount == 0 && args.Message[0] == 'E')
+                if (args.Message[0] == IQFeedDefault.PrototolErrorCharacter && args.Message[1] == IQFeedDefault.ProtocolDelimiterCharacter)
                 {
-                    var errorMsg = Encoding.ASCII.GetString(args.Message, 0, args.Count);
-                    res.TrySetException(new Exception(errorMsg));
+                    var errorMessage = Encoding.ASCII.GetString(args.Message, 0, args.Count);
+                    res.TrySetException(_errorMessageHandler.GetException(errorMessage));
                     return;
                 }
                 
@@ -48,8 +51,6 @@ namespace IQFeed.CSharpApiClient.Common
                 // check if the message end
                 if (args.Message.EndsWith(args.Count, _endOfMsgBytes))
                     res.TrySetResult(filename);
-
-                msgCount++;
             }
 
             client.MessageReceived += SocketClientOnMessageReceived;

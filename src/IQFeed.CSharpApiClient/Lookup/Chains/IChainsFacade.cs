@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Lookup.Chains.Messages;
-using IQFeed.CSharpApiClient.Lookup.Chains.Options;
 
 namespace IQFeed.CSharpApiClient.Lookup.Chains
 {

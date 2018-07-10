@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
+using IQFeed.CSharpApiClient.Common.Interfaces;
 using IQFeed.CSharpApiClient.Socket;
 
 namespace IQFeed.CSharpApiClient.Lookup

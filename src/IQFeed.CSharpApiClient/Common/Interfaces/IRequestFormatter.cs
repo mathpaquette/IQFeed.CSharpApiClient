@@ -1,4 +1,4 @@
-﻿namespace IQFeed.CSharpApiClient.Common
+﻿namespace IQFeed.CSharpApiClient.Common.Interfaces
 {
     public interface IRequestFormatter
     {

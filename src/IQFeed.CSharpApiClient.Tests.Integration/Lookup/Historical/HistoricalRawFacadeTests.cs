@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using IQFeed.CSharpApiClient.Common.Exceptions;
 using IQFeed.CSharpApiClient.Lookup;
 using NUnit.Framework;
 
@@ -102,9 +103,9 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         }
 
         [Test, MaxTime(TimeoutMs)]
-        public void Should_Throw_Exception_When_Historical_Getting_Error()
+        public void Should_Throw_IQFeedException_When_Historical_Getting_Error()
         {
-            var ex = Assert.ThrowsAsync<Exception>(async () => await _lookupClient.Historical.Raw.ReqHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints));
+            var ex = Assert.ThrowsAsync<NoDataIQFeedException>(async () => await _lookupClient.Historical.Raw.ReqHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints));
         }
     }
 }

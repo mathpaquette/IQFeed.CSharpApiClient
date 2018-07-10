@@ -1,29 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
+using IQFeed.CSharpApiClient.Common;
+using IQFeed.CSharpApiClient.Lookup.Common;
 using IQFeed.CSharpApiClient.Lookup.Historical.Messages;
-using IQFeed.CSharpApiClient.Socket;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical
 {
-    public class HistoricalFacade : IHistoricalFacade<IEnumerable<TickMessage>, IEnumerable<IntervalMessage>, IEnumerable<DailyWeeklyMonthlyMessage>>
+    public class HistoricalFacade : BaseLookupFacade, IHistoricalFacade<IEnumerable<TickMessage>, IEnumerable<IntervalMessage>, IEnumerable<DailyWeeklyMonthlyMessage>>
     {
         private readonly HistoricalRequestFormatter _historicalRequestFormatter;
-        private readonly LookupDispatcher _lookupDispatcher;
         private readonly HistoricalMessageHandler _historicalMessageHandler;
-        private readonly int _timeoutMs;
 
         public HistoricalFacade(
             HistoricalRequestFormatter historicalRequestFormatter,
             LookupDispatcher lookupDispatcher,
+            ErrorMessageHandler errorMessageHandler,
             HistoricalMessageHandler historicalMessageHandler,
             HistoricalRawFacade historicalRawFacade,
-            int timeoutMs)
+            int timeoutMs) : base(lookupDispatcher, errorMessageHandler, timeoutMs)
         {
-            _timeoutMs = timeoutMs;
             _historicalMessageHandler = historicalMessageHandler;
-            _lookupDispatcher = lookupDispatcher;
             _historicalRequestFormatter = historicalRequestFormatter;
             Raw = historicalRawFacade;
         }
@@ -201,45 +198,6 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         {
             var request = _historicalRequestFormatter.ReqHistoryMonthlyDatapoints(symbol, maxDatapoints, dataDirection, requestId, datapointsPerSend);
             return GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessages);
-        }
-
-        private async Task<IEnumerable<T>> GetMessagesAsync<T>(string request, Func<byte[], int, HistoricalMessageContainer<T>> historicalDataMessageHandler)
-        {
-            var client = await _lookupDispatcher.TakeAsync();
-
-            var messages = new List<T>();
-            var ct = new CancellationTokenSource(_timeoutMs);
-            var res = new TaskCompletionSource<IEnumerable<T>>();
-            ct.Token.Register(() => res.TrySetCanceled(), false);
-
-            void SocketClientOnMessageReceived(object sender, SocketMessageEventArgs args)
-            {
-                var container = historicalDataMessageHandler(args.Message, args.Count);
-
-                if (messages.Count == 0 && container.Error != null)
-                {
-                    // TODO: should throw specific exception here
-                    res.TrySetException(new Exception(container.Error)); 
-                    return;
-                }
-
-                messages.AddRange(container.Messages);
-
-                if (container.End)
-                    res.TrySetResult(messages);
-            }
-
-            client.MessageReceived += SocketClientOnMessageReceived;
-            client.Send(request);
-
-            await res.Task.ContinueWith(x =>
-            {
-                client.MessageReceived -= SocketClientOnMessageReceived;
-                _lookupDispatcher.Add(client);
-                ct.Dispose();
-            }, TaskContinuationOptions.None).ConfigureAwait(false);
-
-            return await res.Task.ConfigureAwait(false);
         }
     }
 }
