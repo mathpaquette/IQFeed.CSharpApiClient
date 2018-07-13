@@ -3,7 +3,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
-using IQFeed.CSharpApiClient.Common.Exceptions;
 using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Socket;
 
