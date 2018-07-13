@@ -8,7 +8,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
     {
         public const string IntervalDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
-        public IntervalMessage(DateTime timestamp, float high, float low, float close, float open, int totalVolume, int periodVolume)
+        public IntervalMessage(DateTime timestamp, float high, float low, float close, float open, int totalVolume, int periodVolume, int numberOfTrades)
         {
             Timestamp = timestamp;
             High = high;
@@ -17,6 +17,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             Open = open;
             TotalVolume = totalVolume;
             PeriodVolume = periodVolume;
+            NumberOfTrades = numberOfTrades;
         }
 
         public DateTime Timestamp { get; }
@@ -26,6 +27,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public float Open { get; }
         public int TotalVolume { get; }
         public int PeriodVolume { get; }
+        public int NumberOfTrades { get; }
 
         public static IntervalMessage Parse(string message)
         {
@@ -38,7 +40,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 float.Parse(values[3], CultureInfo.InvariantCulture),
                 float.Parse(values[4], CultureInfo.InvariantCulture),
                 int.Parse(values[5], CultureInfo.InvariantCulture),
-                int.Parse(values[6], CultureInfo.InvariantCulture));
+                int.Parse(values[6], CultureInfo.InvariantCulture),
+                int.Parse(values[7], CultureInfo.InvariantCulture));
         }
 
         public override bool Equals(object obj)
@@ -50,7 +53,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                    Close == message.Close &&
                    Open == message.Open &&
                    TotalVolume == message.TotalVolume &&
-                   PeriodVolume == message.PeriodVolume;
+                   PeriodVolume == message.PeriodVolume &&
+                   NumberOfTrades == message.NumberOfTrades;
         }
 
         public override int GetHashCode()
@@ -65,6 +69,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 hash = hash * 29 + Open.GetHashCode();
                 hash = hash * 29 + TotalVolume.GetHashCode();
                 hash = hash * 29 + PeriodVolume.GetHashCode();
+                hash = hash * 29 + NumberOfTrades.GetHashCode();
                 return hash;
             }
         }
