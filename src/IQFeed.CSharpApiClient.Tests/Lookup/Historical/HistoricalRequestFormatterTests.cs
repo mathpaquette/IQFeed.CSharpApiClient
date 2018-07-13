@@ -1,5 +1,6 @@
 ﻿using System;
 using IQFeed.CSharpApiClient.Lookup.Historical;
+using IQFeed.CSharpApiClient.Lookup.Historical.Enums;
 using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical
@@ -31,22 +32,22 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical
         [Test]
         public void ReqHistoryIntervalDatapoints()
         {
-            var request = _historicalRequestFormatter.ReqHistoryIntervalDatapoints("aapl", 5, 10000, 0, "TEST", 25000, HistoricalIntervalType.V);
-            Assert.AreEqual(request, "HIX,AAPL,5,10000,0,TEST,25000,v\r\n");
+            var request = _historicalRequestFormatter.ReqHistoryIntervalDatapoints("aapl", 5, 10000, 0, "TEST", 25000, HistoricalIntervalType.V, LabelAtBeginning.End);
+            Assert.AreEqual(request, "HIX,AAPL,5,10000,0,TEST,25000,v,0\r\n");
         }
 
         [Test]
         public void ReqHistoryIntervalDays()
         {
-            var request = _historicalRequestFormatter.ReqHistoryIntervalDays("aapl", 15, 25, 25000, new TimeSpan(9, 30, 00), new TimeSpan(16, 00, 00), 1, "TEST", 25000, HistoricalIntervalType.T);
-            Assert.AreEqual(request, "HID,AAPL,15,25,25000,093000,160000,1,TEST,25000,t\r\n");
+            var request = _historicalRequestFormatter.ReqHistoryIntervalDays("aapl", 15, 25, 25000, new TimeSpan(9, 30, 00), new TimeSpan(16, 00, 00), 1, "TEST", 25000, HistoricalIntervalType.T, LabelAtBeginning.Beginning);
+            Assert.AreEqual(request, "HID,AAPL,15,25,25000,093000,160000,1,TEST,25000,t,1\r\n");
         }
 
         [Test]
         public void ReqHistoryIntervalTimeframe()
         {
-            var request = _historicalRequestFormatter.ReqHistoryIntervalTimeframe("appl", 5, new DateTime(2000, 01, 01, 9, 30, 00), new DateTime(2001, 01, 01, 16, 00, 00), 25000, new TimeSpan(9, 30, 00), new TimeSpan(16, 00, 00), 1, "TEST", 15000, HistoricalIntervalType.S);
-            Assert.AreEqual(request, "HIT,APPL,5,20000101 093000,20010101 160000,25000,093000,160000,1,TEST,15000,s\r\n");
+            var request = _historicalRequestFormatter.ReqHistoryIntervalTimeframe("appl", 5, new DateTime(2000, 01, 01, 9, 30, 00), new DateTime(2001, 01, 01, 16, 00, 00), 25000, new TimeSpan(9, 30, 00), new TimeSpan(16, 00, 00), 1, "TEST", 15000, HistoricalIntervalType.S, LabelAtBeginning.End);
+            Assert.AreEqual(request, "HIT,APPL,5,20000101 093000,20010101 160000,25000,093000,160000,1,TEST,15000,s,0\r\n");
         }
 
         [Test]

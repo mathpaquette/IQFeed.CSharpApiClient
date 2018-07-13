@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using IQFeed.CSharpApiClient.Lookup.Historical.Enums;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical
 {
@@ -54,7 +55,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         /// <param name="requestId"></param>
         /// <param name="datapointsPerSend"></param>
         /// <param name="intervalType"></param>
-        Task<TIntervalMessages> ReqHistoryIntervalDatapointsAsync(string symbol, int interval, int maxDatapoints, int? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null);
+        Task<TIntervalMessages> ReqHistoryIntervalDatapointsAsync(string symbol, int interval, int maxDatapoints, int? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null);
 
         /// <summary>
         /// HID - Retrieves [Days] days of interval data for the specified [Symbol].
@@ -70,7 +71,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         /// <param name="datapointsPerSend"></param>
         /// <param name="intervalType"></param>
         Task<TIntervalMessages> ReqHistoryIntervalDaysAsync(string symbol, int interval, int days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null,
-            int? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null);
+            int? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null);
 
         /// <summary>
         /// HIT - Retrieves interval data between [BeginDate BeginTime] and [EndDate EndTime] for the specified [Symbol].
@@ -87,7 +88,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         /// <param name="datapointsPerSend"></param>
         /// <param name="intervalType"></param>
         Task<TIntervalMessages> ReqHistoryIntervalTimeframeAsync(string symbol, int interval, DateTime? beginDate, DateTime? endDate, int? maxDatapoints = null, TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null,
-            int? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null);
+            int? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null);
 
         /// <summary>
         /// HDX - Retrieves up to [maxDatapoints] number of End-Of-Day Data for the specified [Symbol].

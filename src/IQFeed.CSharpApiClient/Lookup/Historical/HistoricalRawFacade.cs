@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Lookup.Common;
+using IQFeed.CSharpApiClient.Lookup.Historical.Enums;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical
 {
@@ -44,7 +45,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         }
 
         public Task<string> ReqHistoryIntervalDatapointsAsync(string symbol, int interval, int maxDatapoints, int? dataDirection = null,
-            string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null)
+            string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryIntervalDatapoints(symbol, interval, maxDatapoints, dataDirection, requestId, datapointsPerSend, intervalType);
             return _rawMessageHandler.GetFilenameAsync(request);
@@ -52,7 +53,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
 
         public Task<string> ReqHistoryIntervalDaysAsync(string symbol, int interval, int days, int? maxDatapoints = null,
             TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null, int? dataDirection = null,
-            string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null)
+            string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryIntervalDays(symbol, interval, days, maxDatapoints, beginFilterTime, endFilterTime, dataDirection, requestId, datapointsPerSend, intervalType);
             return _rawMessageHandler.GetFilenameAsync(request);
@@ -61,7 +62,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         public Task<string> ReqHistoryIntervalTimeframeAsync(string symbol, int interval, DateTime? beginDate, DateTime? endDate,
             int? maxDatapoints = null, TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null,
             int? dataDirection = null, string requestId = null, int? datapointsPerSend = null,
-            HistoricalIntervalType? intervalType = null)
+            HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryIntervalTimeframe(symbol, interval, beginDate, endDate,
                 maxDatapoints, beginFilterTime, endFilterTime, dataDirection, requestId, datapointsPerSend, intervalType);

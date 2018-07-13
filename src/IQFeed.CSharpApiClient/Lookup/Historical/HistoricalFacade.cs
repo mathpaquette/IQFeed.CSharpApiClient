@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Lookup.Common;
+using IQFeed.CSharpApiClient.Lookup.Historical.Enums;
 using IQFeed.CSharpApiClient.Lookup.Historical.Messages;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical
@@ -91,9 +92,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         /// <param name="requestId"></param>
         /// <param name="datapointsPerSend"></param>
         /// <param name="intervalType"></param>
-        public Task<IEnumerable<IntervalMessage>> ReqHistoryIntervalDatapointsAsync(string symbol, int interval, int maxDatapoints, int? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null)
+        public Task<IEnumerable<IntervalMessage>> ReqHistoryIntervalDatapointsAsync(string symbol, int interval, int maxDatapoints, int? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
-            var request = _historicalRequestFormatter.ReqHistoryIntervalDatapoints(symbol, interval, maxDatapoints, dataDirection, requestId, datapointsPerSend, intervalType);
+            var request = _historicalRequestFormatter.ReqHistoryIntervalDatapoints(symbol, interval, maxDatapoints, dataDirection, requestId, datapointsPerSend, intervalType, labelAtBeginning);
             return GetMessagesAsync(request, _historicalMessageHandler.GetIntervalMessages);
         }
 
@@ -111,9 +112,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         /// <param name="datapointsPerSend"></param>
         /// <param name="intervalType"></param>
         public Task<IEnumerable<IntervalMessage>> ReqHistoryIntervalDaysAsync(string symbol, int interval, int days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null,
-            int? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null)
+            int? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
-            var request = _historicalRequestFormatter.ReqHistoryIntervalDays(symbol, interval, days, maxDatapoints, beginFilterTime, endFilterTime, dataDirection, requestId, datapointsPerSend, intervalType);
+            var request = _historicalRequestFormatter.ReqHistoryIntervalDays(symbol, interval, days, maxDatapoints, beginFilterTime, endFilterTime, dataDirection, requestId, datapointsPerSend, intervalType, labelAtBeginning);
             return GetMessagesAsync(request, _historicalMessageHandler.GetIntervalMessages);
         }
 
@@ -132,10 +133,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         /// <param name="datapointsPerSend"></param>
         /// <param name="intervalType"></param>
         public Task<IEnumerable<IntervalMessage>> ReqHistoryIntervalTimeframeAsync(string symbol, int interval, DateTime? beginDate, DateTime? endDate, int? maxDatapoints = null, TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null,
-            int? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null)
+            int? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryIntervalTimeframe(symbol, interval, beginDate, endDate,
-                maxDatapoints, beginFilterTime, endFilterTime, dataDirection, requestId, datapointsPerSend, intervalType);
+                maxDatapoints, beginFilterTime, endFilterTime, dataDirection, requestId, datapointsPerSend, intervalType, labelAtBeginning);
             return GetMessagesAsync(request, _historicalMessageHandler.GetIntervalMessages);
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using IQFeed.CSharpApiClient.Common;
+using IQFeed.CSharpApiClient.Lookup.Historical.Enums;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical
 {
@@ -43,39 +44,42 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
 
         public string ReqHistoryIntervalDatapoints(string symbol, int interval, int maxDatapoints,
             int? dataDirection = null, string requestId = null, int? datapointsPerSend = null,
-            HistoricalIntervalType? intervalType = null)
+            HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
-            // HIX,[Symbol],[Interval],[MaxDatapoints],[DataDirection],[RequestID],[DatapointsPerSend],[IntervalType]<CR><LF> 
+            // HIX,[Symbol],[Interval],[MaxDatapoints],[DataDirection],[RequestID],[DatapointsPerSend],[IntervalType],[LabelAtBeginning]<CR><LF> 
             var intervalTypeFormat = intervalType?.ToString().ToLower();
-            var request = $"HIX,{symbol.ToUpper()},{interval},{maxDatapoints},{dataDirection},{requestId},{datapointsPerSend},{intervalTypeFormat}{IQFeedDefault.ProtocolTerminatingCharacters}";
+            var labelAtBeginningFormat = labelAtBeginning.HasValue ? ((int)labelAtBeginning).ToString() : null;
+            var request = $"HIX,{symbol.ToUpper()},{interval},{maxDatapoints},{dataDirection},{requestId},{datapointsPerSend},{intervalTypeFormat},{labelAtBeginningFormat}{IQFeedDefault.ProtocolTerminatingCharacters}";
             return request;
         }
 
         public string ReqHistoryIntervalDays(string symbol, int interval, int days, int? maxDatapoints = null,
             TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null,
             int? dataDirection = null, string requestId = null, int? datapointsPerSend = null,
-            HistoricalIntervalType? intervalType = null)
+            HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
-            // HID,[Symbol],[Interval],[Days],[MaxDatapoints],[BeginFilterTime],[EndFilterTime],[DataDirection],[RequestID],[DatapointsPerSend],[IntervalType]<CR><LF> 
+            // HID,[Symbol],[Interval],[Days],[MaxDatapoints],[BeginFilterTime],[EndFilterTime],[DataDirection],[RequestID],[DatapointsPerSend],[IntervalType],[LabelAtBeginning]<CR><LF> 
             var beginFilterTimeFormat = beginFilterTime?.ToString(HistoricalDataTimeFormat) ?? string.Empty;
             var endFilterTimeFormat = endFilterTime?.ToString(HistoricalDataTimeFormat) ?? string.Empty;
             var intervalTypeFormat = intervalType?.ToString().ToLower();
-            var request = $"HID,{symbol.ToUpper()},{interval},{days},{maxDatapoints},{beginFilterTimeFormat},{endFilterTimeFormat},{dataDirection},{requestId},{datapointsPerSend},{intervalTypeFormat}{IQFeedDefault.ProtocolTerminatingCharacters}";
+            var labelAtBeginningFormat = labelAtBeginning.HasValue ? ((int)labelAtBeginning).ToString() : null;
+            var request = $"HID,{symbol.ToUpper()},{interval},{days},{maxDatapoints},{beginFilterTimeFormat},{endFilterTimeFormat},{dataDirection},{requestId},{datapointsPerSend},{intervalTypeFormat},{labelAtBeginningFormat}{IQFeedDefault.ProtocolTerminatingCharacters}";
             return request;
         }
 
         public string ReqHistoryIntervalTimeframe(string symbol, int interval, DateTime? beginDate, DateTime? endDate,
             int? maxDatapoints = null, TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null,
             int? dataDirection = null, string requestId = null, int? datapointsPerSend = null,
-            HistoricalIntervalType? intervalType = null)
+            HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
-            // HIT,[Symbol],[Interval],[BeginDate BeginTime],[EndDate EndTime],[MaxDatapoints],[BeginFilterTime],[EndFilterTime],[DataDirection],[RequestID],[DatapointsPerSend],[IntervalType]<CR><LF> 
+            // HIT,[Symbol],[Interval],[BeginDate BeginTime],[EndDate EndTime],[MaxDatapoints],[BeginFilterTime],[EndFilterTime],[DataDirection],[RequestID],[DatapointsPerSend],[IntervalType],[LabelAtBeginning]<CR><LF> 
             var beginDateFormat = beginDate?.ToString(HistoricalDataDatetimeFormat) ?? string.Empty;
             var endDateFormat = endDate?.ToString(HistoricalDataDatetimeFormat) ?? string.Empty;
             var beginFilterTimeFormat = beginFilterTime?.ToString(HistoricalDataTimeFormat) ?? string.Empty;
             var endFilterTimeFormat = endFilterTime?.ToString(HistoricalDataTimeFormat) ?? string.Empty;
             var intervalTypeFormat = intervalType?.ToString().ToLower();
-            var request = $"HIT,{symbol.ToUpper()},{interval},{beginDateFormat},{endDateFormat},{maxDatapoints},{beginFilterTimeFormat},{endFilterTimeFormat},{dataDirection},{requestId},{datapointsPerSend},{intervalTypeFormat}{IQFeedDefault.ProtocolTerminatingCharacters}";
+            var labelAtBeginningFormat = labelAtBeginning.HasValue ? ((int) labelAtBeginning).ToString() : null;
+            var request = $"HIT,{symbol.ToUpper()},{interval},{beginDateFormat},{endDateFormat},{maxDatapoints},{beginFilterTimeFormat},{endFilterTimeFormat},{dataDirection},{requestId},{datapointsPerSend},{intervalTypeFormat},{labelAtBeginningFormat}{IQFeedDefault.ProtocolTerminatingCharacters}";
             return request;
         }
 
