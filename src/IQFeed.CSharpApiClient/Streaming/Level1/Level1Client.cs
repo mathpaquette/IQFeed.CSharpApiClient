@@ -148,7 +148,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             _socketClient.Send(request);
         }
 
-        public void SelectUpdateFieldName(params string[] fieldNames)
+        public void SelectUpdateFieldName(params DynamicFieldset[] fieldNames)
         {
             var request = _level1RequestFormatter.SelectUpdateFieldName(fieldNames);
             _socketClient.Send(request);

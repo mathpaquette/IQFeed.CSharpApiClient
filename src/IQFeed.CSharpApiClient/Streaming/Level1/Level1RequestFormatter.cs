@@ -1,6 +1,6 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using IQFeed.CSharpApiClient.Common;
+using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
@@ -73,12 +73,13 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return $"S,REQUEST CURRENT UPDATE FIELDNAMES{IQFeedDefault.ProtocolTerminatingCharacters}";
         }
 
-        public string SelectUpdateFieldName(string[] fieldNames)
+        public string SelectUpdateFieldName(DynamicFieldset[] fieldNames)
         {
             var sb = new StringBuilder("S,SELECT UPDATE FIELDS");
             foreach (var fieldName in fieldNames)
             {
-                sb.Append($"{IQFeedDefault.ProtocolDelimiterCharacter}{fieldName.ToUpper()}");
+                var fieldsetDescriptionAttribute = fieldName.GetAttribute<FieldsetDescriptionAttribute>();
+                sb.Append($"{IQFeedDefault.ProtocolDelimiterCharacter}{fieldsetDescriptionAttribute.Name}");
             }
             sb.Append(IQFeedDefault.ProtocolTerminatingCharacters);
             return sb.ToString();
