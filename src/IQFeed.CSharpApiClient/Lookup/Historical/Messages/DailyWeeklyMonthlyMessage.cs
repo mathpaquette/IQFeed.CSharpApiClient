@@ -8,7 +8,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
     {
         public const string DailyWeeklyMonthlyDateTimeFormat = "yyyy-MM-dd";
 
-        public DailyWeeklyMonthlyMessage(DateTime timestamp, float high, float low, float close, float open, int periodVolume, int openInterest)
+        public DailyWeeklyMonthlyMessage(DateTime timestamp, float high, float low, float close, float open, long periodVolume, int openInterest)
         {
             Timestamp = timestamp;
             High = high;
@@ -24,7 +24,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public float Low { get; }
         public float Close { get; }
         public float Open { get; }
-        public int PeriodVolume { get; }
+        public long PeriodVolume { get; }
         public int OpenInterest { get; }
 
         public static DailyWeeklyMonthlyMessage Parse(string message)
@@ -36,7 +36,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 float.Parse(values[2], CultureInfo.InvariantCulture),
                 float.Parse(values[3], CultureInfo.InvariantCulture),
                 float.Parse(values[4], CultureInfo.InvariantCulture),
-                int.Parse(values[5], CultureInfo.InvariantCulture),
+                long.Parse(values[5], CultureInfo.InvariantCulture),
                 int.Parse(values[6], CultureInfo.InvariantCulture));
         }
 

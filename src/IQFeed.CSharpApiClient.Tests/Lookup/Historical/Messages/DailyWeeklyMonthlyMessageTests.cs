@@ -22,5 +22,18 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
             // Assert
             Assert.AreEqual(dailyWeeklyMonthlyMessage, dailyWeeklyMonthlyMessageFromValues);
         }
+
+        [Test]
+        public void Should_Parse_DailyWeeklyMonthlyMessage_With_Large_PeriodVolume()
+        {
+            // Arrange
+            var message = $"2018-04-27,164.3300,160.6300,164.0000,162.3200,{long.MaxValue},0,";
+
+            // Act
+            var dailyWeeklyMonthlyMessage = DailyWeeklyMonthlyMessage.Parse(message);
+
+            // Assert
+            Assert.AreEqual(dailyWeeklyMonthlyMessage.PeriodVolume, long.MaxValue);
+        }
     }
 }
