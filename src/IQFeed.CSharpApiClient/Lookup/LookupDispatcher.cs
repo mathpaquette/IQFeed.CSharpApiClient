@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Common.Interfaces;
 using IQFeed.CSharpApiClient.Socket;
 
@@ -16,24 +15,20 @@ namespace IQFeed.CSharpApiClient.Lookup
         private readonly string _protocol;
         private readonly IRequestFormatter _requestFormatter;
 
-        public LookupDispatcher(string host, int port, string protocol, int numberOfClients, IRequestFormatter requestFormatter)
+        public LookupDispatcher(string host, int port, int bufferSize, string protocol, int numberOfClients, IRequestFormatter requestFormatter)
         {
             _protocol = protocol;
             _semaphoreSlim = new SemaphoreSlim(0, numberOfClients);
-            _socketClients = new List<SocketClient>(GetSocketClients(host, port, numberOfClients));
+            _socketClients = new List<SocketClient>(GetSocketClients(host, port, bufferSize, numberOfClients));
             _socketClientsAvailable = new Queue<SocketClient>();
             _requestFormatter = requestFormatter;
         }
 
-        private IEnumerable<SocketClient> GetSocketClients(string host, int port, int numberOfClients)
+        private IEnumerable<SocketClient> GetSocketClients(string host, int port, int bufferSize, int numberOfClients)
         {
-            for (int i = 0; i < numberOfClients; i++)
+            for (var i = 0; i < numberOfClients; i++)
             {
-                // for SocketClients connected to the lookup port, we need to assign them larger buffer
-                // than unsual because since we're waiting for the \r\n pattern to notify upper layer that we
-                // completed a new message, some particuliar responses such on ReqChainIndexEquityOptionAsync
-                // IQFeed will return on the same line all matching symbols causing overflow
-                var socketClient = new SocketClient(host, port, 32768);     // TODO: buffer size should be part in the factory
+                var socketClient = new SocketClient(host, port, bufferSize);
                 socketClient.MessageReceived += OnMessageReceived;
                 socketClient.Connected += OnConnected;
                 yield return socketClient;

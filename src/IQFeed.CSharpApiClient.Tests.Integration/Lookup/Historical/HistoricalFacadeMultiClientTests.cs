@@ -26,7 +26,6 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         [SetUp]
         public void SetUp()
         {
-
             _lookupClient = LookupClientFactory.CreateNew(NumberOfClients);
             _lookupClient.Connect();
         }

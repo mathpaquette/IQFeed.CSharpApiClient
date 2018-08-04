@@ -10,11 +10,12 @@ namespace IQFeed.CSharpApiClient.Lookup
 {
     public static class LookupClientFactory
     {
-        public static LookupClient CreateNew(string host = IQFeedDefault.Hostname, int port = IQFeedDefault.LookupPort, int timeoutMs = LookupDefault.TimeoutMs, int numberOfClients = 1)
+        public static LookupClient CreateNew(string host = IQFeedDefault.Hostname, int port = IQFeedDefault.LookupPort,
+            int timeoutMs = LookupDefault.TimeoutMs, int numberOfClients = 1, int bufferSize = LookupDefault.BufferSize)
         {
             // Common
             var requestFormatter = new RequestFormatter();
-            var lookupDispatcher = new LookupDispatcher(host, port, IQFeedDefault.ProtocolVersion, numberOfClients, requestFormatter);
+            var lookupDispatcher = new LookupDispatcher(host, port, bufferSize, IQFeedDefault.ProtocolVersion, numberOfClients, requestFormatter);
             var errorMessageHandler = new ErrorMessageHandler();
             var rawMessageHandler = new RawMessageHandler(lookupDispatcher, errorMessageHandler, timeoutMs);
 
