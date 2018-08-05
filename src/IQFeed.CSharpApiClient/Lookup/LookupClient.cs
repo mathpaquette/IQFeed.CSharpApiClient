@@ -1,5 +1,4 @@
-﻿using IQFeed.CSharpApiClient.Common;
-using IQFeed.CSharpApiClient.Common.Interfaces;
+﻿using IQFeed.CSharpApiClient.Common.Interfaces;
 using IQFeed.CSharpApiClient.Lookup.Chains;
 using IQFeed.CSharpApiClient.Lookup.Historical;
 using IQFeed.CSharpApiClient.Lookup.News;

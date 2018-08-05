@@ -1,6 +1,6 @@
 ﻿using IQFeed.CSharpApiClient.Extensions;
 
-namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
+namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
 {
     public class ErrorMessage
     {

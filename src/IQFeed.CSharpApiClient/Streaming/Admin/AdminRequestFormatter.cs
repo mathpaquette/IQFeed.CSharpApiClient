@@ -4,11 +4,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Admin
 {
     public class AdminRequestFormatter : RequestFormatter
     {
-        public string SetClientName(string name)
-        {
-            return $"S,SET CLIENT NAME,{name}{IQFeedDefault.ProtocolTerminatingCharacters}";
-        }
-
         public string RegisterClientApp(string productId, string productVersion)
         {
             return $"S,REGISTER CLIENT APP,{productId},{productVersion}{IQFeedDefault.ProtocolTerminatingCharacters}".ToUpper();

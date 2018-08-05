@@ -1,7 +1,6 @@
 ﻿using IQFeed.CSharpApiClient.Extensions;
-using System.Collections.Generic;
 
-namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
+namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
 {
     public class SystemMessage
     {
@@ -13,7 +12,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             Type = type;
             Message = message;
         }
-
+        
         public static SystemMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();

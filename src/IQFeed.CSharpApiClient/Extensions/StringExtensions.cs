@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 
 namespace IQFeed.CSharpApiClient.Extensions
 {
     public static class StringExtensions
     {
-        private static readonly string[] MessageDelimiter = { IQFeedDefault.ProtocolDelimiterCharacter.ToString() };
         private static readonly string[] LineDelimiter = { IQFeedDefault.ProtocolTerminatingCharacters };
 
         public static string NullIfEmpty(this string s)

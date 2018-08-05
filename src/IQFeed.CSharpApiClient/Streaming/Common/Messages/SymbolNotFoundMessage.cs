@@ -1,6 +1,6 @@
 ﻿using IQFeed.CSharpApiClient.Extensions;
 
-namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
+namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
 {
     public class SymbolNotFoundMessage
     {
@@ -29,6 +29,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             {
                 return -1758840423 + Symbol.GetHashCode();
             }
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(Symbol)}: {Symbol}";
         }
     }
 }
