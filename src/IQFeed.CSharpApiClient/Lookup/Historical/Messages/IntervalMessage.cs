@@ -8,13 +8,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
     {
         public const string IntervalDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
-        public IntervalMessage(DateTime timestamp, float high, float low, float close, float open, int totalVolume, int periodVolume, int numberOfTrades)
+        public IntervalMessage(DateTime timestamp, float high, float low, float open, float close, int totalVolume, int periodVolume, int numberOfTrades)
         {
             Timestamp = timestamp;
             High = high;
             Low = low;
-            Close = close;
             Open = open;
+            Close = close;
             TotalVolume = totalVolume;
             PeriodVolume = periodVolume;
             NumberOfTrades = numberOfTrades;
@@ -23,8 +23,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public DateTime Timestamp { get; }
         public float High { get; }
         public float Low { get; }
-        public float Close { get; }
         public float Open { get; }
+        public float Close { get; }
         public int TotalVolume { get; }
         public int PeriodVolume { get; }
         public int NumberOfTrades { get; }
@@ -50,8 +50,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                    Timestamp == message.Timestamp &&
                    High == message.High &&
                    Low == message.Low &&
-                   Close == message.Close &&
                    Open == message.Open &&
+                   Close == message.Close &&
                    TotalVolume == message.TotalVolume &&
                    PeriodVolume == message.PeriodVolume &&
                    NumberOfTrades == message.NumberOfTrades;
@@ -65,8 +65,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 hash = hash * 29 + Timestamp.GetHashCode();
                 hash = hash * 29 + High.GetHashCode();
                 hash = hash * 29 + Low.GetHashCode();
-                hash = hash * 29 + Close.GetHashCode();
                 hash = hash * 29 + Open.GetHashCode();
+                hash = hash * 29 + Close.GetHashCode();
                 hash = hash * 29 + TotalVolume.GetHashCode();
                 hash = hash * 29 + PeriodVolume.GetHashCode();
                 hash = hash * 29 + NumberOfTrades.GetHashCode();
