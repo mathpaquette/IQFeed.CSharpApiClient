@@ -8,13 +8,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
     {
         public const string DailyWeeklyMonthlyDateTimeFormat = "yyyy-MM-dd";
 
-        public DailyWeeklyMonthlyMessage(DateTime timestamp, float high, float low, float close, float open, long periodVolume, int openInterest)
+        public DailyWeeklyMonthlyMessage(DateTime timestamp, float high, float low, float open, float close, long periodVolume, int openInterest)
         {
             Timestamp = timestamp;
             High = high;
             Low = low;
-            Close = close;
             Open = open;
+            Close = close;
             PeriodVolume = periodVolume;
             OpenInterest = openInterest;
         }
@@ -22,8 +22,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public DateTime Timestamp { get; }
         public float High { get; }
         public float Low { get; }
-        public float Close { get; }
         public float Open { get; }
+        public float Close { get; }
         public long PeriodVolume { get; }
         public int OpenInterest { get; }
 
@@ -45,9 +45,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             return obj is DailyWeeklyMonthlyMessage message &&
                    Timestamp == message.Timestamp &&
                    High == message.High &&
-                   Low == message.Low &&
-                   Close == message.Close &&
+                   Low == message.Low && 
                    Open == message.Open &&
+                   Close == message.Close &&
                    PeriodVolume == message.PeriodVolume &&
                    OpenInterest == message.OpenInterest;
         }
@@ -60,8 +60,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 hash = hash * 29 + Timestamp.GetHashCode();
                 hash = hash * 29 + High.GetHashCode();
                 hash = hash * 29 + Low.GetHashCode();
-                hash = hash * 29 + Close.GetHashCode();
                 hash = hash * 29 + Open.GetHashCode();
+                hash = hash * 29 + Close.GetHashCode();
                 hash = hash * 29 + PeriodVolume.GetHashCode();
                 hash = hash * 29 + OpenInterest.GetHashCode();
                 return hash;
