@@ -39,7 +39,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         public Task<IEnumerable<TickMessage>> ReqHistoryTickDatapointsAsync(string symbol, int maxDatapoints, DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryTickDatapoints(symbol, maxDatapoints, dataDirection, requestId, datapointsPerSend);
-            return GetMessagesAsync(request, _historicalMessageHandler.GetTickMessages);
+            return string.IsNullOrEmpty(requestId) ? GetMessagesAsync(request, _historicalMessageHandler.GetTickMessages) : GetMessagesAsync(request, _historicalMessageHandler.GetTickMessagesWithRequestId);
         }
 
         /// <summary>
@@ -54,11 +54,11 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         /// <param name="requestId"></param>
         /// <param name="datapointsPerSend"></param>
         /// <returns></returns>
-        public Task<IEnumerable<TickMessage>> ReqHistoryTickDaysAsync(string symbol, int days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null, 
+        public Task<IEnumerable<TickMessage>> ReqHistoryTickDaysAsync(string symbol, int days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null,
             TimeSpan? endFilterTime = null, DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryTickDays(symbol, days, maxDatapoints, beginFilterTime, endFilterTime, dataDirection, requestId, datapointsPerSend);
-            return GetMessagesAsync(request, _historicalMessageHandler.GetTickMessages);
+            return string.IsNullOrEmpty(requestId) ? GetMessagesAsync(request, _historicalMessageHandler.GetTickMessages) : GetMessagesAsync(request, _historicalMessageHandler.GetTickMessagesWithRequestId);
         }
 
         /// <summary>
@@ -73,13 +73,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         /// <param name="dataDirection"></param>
         /// <param name="requestId"></param>
         /// <param name="datapointsPerSend"></param>
-        public Task<IEnumerable<TickMessage>> ReqHistoryTickTimeframeAsync(string symbol, DateTime? beginDate, DateTime? endDate, int? maxDatapoints = null, TimeSpan? beginFilterTime =  null, TimeSpan? endFilterTime = null, DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null)
+        public Task<IEnumerable<TickMessage>> ReqHistoryTickTimeframeAsync(string symbol, DateTime? beginDate, DateTime? endDate, int? maxDatapoints = null, TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null, DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null)
         {
             if (!beginDate.HasValue && !endDate.HasValue)
                 throw new ArgumentException("Begin date or End date must have value.");
 
             var request = _historicalRequestFormatter.ReqHistoryTickTimeframe(symbol, beginDate, endDate, maxDatapoints, beginFilterTime, endFilterTime, dataDirection, requestId, datapointsPerSend);
-            return GetMessagesAsync(request, _historicalMessageHandler.GetTickMessages);
+            return string.IsNullOrEmpty(requestId) ? GetMessagesAsync(request, _historicalMessageHandler.GetTickMessages) : GetMessagesAsync(request, _historicalMessageHandler.GetTickMessagesWithRequestId);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         public Task<IEnumerable<IntervalMessage>> ReqHistoryIntervalDatapointsAsync(string symbol, int interval, int maxDatapoints, DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryIntervalDatapoints(symbol, interval, maxDatapoints, dataDirection, requestId, datapointsPerSend, intervalType, labelAtBeginning);
-            return GetMessagesAsync(request, _historicalMessageHandler.GetIntervalMessages);
+            return string.IsNullOrEmpty(requestId) ? GetMessagesAsync(request, _historicalMessageHandler.GetIntervalMessages) : GetMessagesAsync(request, _historicalMessageHandler.GetIntervalMessagesWithRequestId);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryIntervalDays(symbol, interval, days, maxDatapoints, beginFilterTime, endFilterTime, dataDirection, requestId, datapointsPerSend, intervalType, labelAtBeginning);
-            return GetMessagesAsync(request, _historicalMessageHandler.GetIntervalMessages);
+            return string.IsNullOrEmpty(requestId) ? GetMessagesAsync(request, _historicalMessageHandler.GetIntervalMessages) : GetMessagesAsync(request, _historicalMessageHandler.GetIntervalMessagesWithRequestId);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         {
             var request = _historicalRequestFormatter.ReqHistoryIntervalTimeframe(symbol, interval, beginDate, endDate,
                 maxDatapoints, beginFilterTime, endFilterTime, dataDirection, requestId, datapointsPerSend, intervalType, labelAtBeginning);
-            return GetMessagesAsync(request, _historicalMessageHandler.GetIntervalMessages);
+            return string.IsNullOrEmpty(requestId) ? GetMessagesAsync(request, _historicalMessageHandler.GetIntervalMessages) : GetMessagesAsync(request, _historicalMessageHandler.GetIntervalMessagesWithRequestId);
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         public Task<IEnumerable<DailyWeeklyMonthlyMessage>> ReqHistoryDailyDatapointsAsync(string symbol, int maxDatapoints, DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryDailyDatapoints(symbol, maxDatapoints, dataDirection, requestId, datapointsPerSend);
-            return GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessages);
+            return string.IsNullOrEmpty(requestId) ? GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessages) : GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessagesWithRequestId);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
                 throw new ArgumentException("Begin date or End date must have value.");
 
             var request = _historicalRequestFormatter.ReqHistoryDailyTimeframe(symbol, beginDate, endDate, maxDatapoints, dataDirection, requestId, datapointsPerSend);
-            return GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessages);
+            return string.IsNullOrEmpty(requestId) ? GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessages) : GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessagesWithRequestId);
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         public Task<IEnumerable<DailyWeeklyMonthlyMessage>> ReqHistoryWeeklyDatapointsAsync(string symbol, int maxDatapoints, DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryWeeklyDatapoints(symbol, maxDatapoints, dataDirection, requestId, datapointsPerSend);
-            return GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessages);
+            return string.IsNullOrEmpty(requestId) ? GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessages) : GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessagesWithRequestId);
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         public Task<IEnumerable<DailyWeeklyMonthlyMessage>> ReqHistoryMonthlyDatapointsAsync(string symbol, int maxDatapoints, DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryMonthlyDatapoints(symbol, maxDatapoints, dataDirection, requestId, datapointsPerSend);
-            return GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessages);
+            return string.IsNullOrEmpty(requestId) ? GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessages) : GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessagesWithRequestId);
         }
     }
 }

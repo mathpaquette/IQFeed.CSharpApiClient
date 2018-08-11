@@ -8,8 +8,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
     {
         public const string IntervalDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
-        public IntervalMessage(DateTime timestamp, float high, float low, float open, float close, int totalVolume, int periodVolume, int numberOfTrades)
+        public IntervalMessage(DateTime timestamp, float high, float low, float open, float close, int totalVolume, int periodVolume, int numberOfTrades, string requestId = null)
         {
+            RequestId = requestId;
             Timestamp = timestamp;
             High = high;
             Low = low;
@@ -19,7 +20,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             PeriodVolume = periodVolume;
             NumberOfTrades = numberOfTrades;
         }
-
+        
+        public string RequestId { get; }
         public DateTime Timestamp { get; }
         public float High { get; }
         public float Low { get; }
@@ -44,9 +46,27 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 int.Parse(values[7], CultureInfo.InvariantCulture));
         }
 
+        public static IntervalMessage ParseWithRequestId(string message)
+        {
+            var values = message.SplitFeedMessage();
+            var requestId = values[0];
+
+            return new IntervalMessage(
+                DateTime.ParseExact(values[1], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
+                float.Parse(values[2], CultureInfo.InvariantCulture),
+                float.Parse(values[3], CultureInfo.InvariantCulture),
+                float.Parse(values[4], CultureInfo.InvariantCulture),
+                float.Parse(values[5], CultureInfo.InvariantCulture),
+                int.Parse(values[6], CultureInfo.InvariantCulture),
+                int.Parse(values[7], CultureInfo.InvariantCulture),
+                int.Parse(values[8], CultureInfo.InvariantCulture),
+                requestId);
+        }
+
         public override bool Equals(object obj)
         {
             return obj is IntervalMessage message &&
+                   RequestId == message.RequestId &&
                    Timestamp == message.Timestamp &&
                    High == message.High &&
                    Low == message.Low &&
@@ -62,6 +82,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             unchecked
             {
                 var hash = 17;
+                hash = hash * 29 + RequestId.GetHashCode();
                 hash = hash * 29 + Timestamp.GetHashCode();
                 hash = hash * 29 + High.GetHashCode();
                 hash = hash * 29 + Low.GetHashCode();
