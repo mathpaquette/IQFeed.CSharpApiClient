@@ -1,3 +1,9 @@
+### IQFeed.CSharpApiClient 1.4.1 - August 12, 2018
+##### Issues Resolved
+ * Reversed Open and Close position in IntervalMessage and DailyWeeklyMonthlyMessage
+ * Historical requests supporting RequestId parameter
+ * IntervalMessage can support larger TotalVolume
+
 ### IQFeed.CSharpApiClient 1.4.0 - August 5, 2018
 This release contains a significant amount of improvements. More importantly, we added support
 for derivative data and now supporting the latest protocol version 6.0. All messages parsing are
