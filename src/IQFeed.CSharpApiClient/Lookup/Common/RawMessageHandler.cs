@@ -61,6 +61,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
                 client.MessageReceived -= SocketClientOnMessageReceived;
                 _lookupDispatcher.Add(client);
                 ct.Dispose();
+                if (res.Task.IsFaulted)
+                    File.Delete(filename);
             }, TaskContinuationOptions.None).ConfigureAwait(false);
 
             return await res.Task.ConfigureAwait(false);
