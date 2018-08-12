@@ -8,7 +8,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
     {
         public const string IntervalDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
-        public IntervalMessage(DateTime timestamp, float high, float low, float open, float close, int totalVolume, int periodVolume, int numberOfTrades, string requestId = null)
+        public IntervalMessage(DateTime timestamp, float high, float low, float open, float close, long totalVolume, int periodVolume, int numberOfTrades, string requestId = null)
         {
             RequestId = requestId;
             Timestamp = timestamp;
@@ -27,7 +27,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public float Low { get; }
         public float Open { get; }
         public float Close { get; }
-        public int TotalVolume { get; }
+        public long TotalVolume { get; }
         public int PeriodVolume { get; }
         public int NumberOfTrades { get; }
 
@@ -41,7 +41,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 float.Parse(values[2], CultureInfo.InvariantCulture),
                 float.Parse(values[3], CultureInfo.InvariantCulture),
                 float.Parse(values[4], CultureInfo.InvariantCulture),
-                int.Parse(values[5], CultureInfo.InvariantCulture),
+                long.Parse(values[5], CultureInfo.InvariantCulture),
                 int.Parse(values[6], CultureInfo.InvariantCulture),
                 int.Parse(values[7], CultureInfo.InvariantCulture));
         }
@@ -57,7 +57,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 float.Parse(values[3], CultureInfo.InvariantCulture),
                 float.Parse(values[4], CultureInfo.InvariantCulture),
                 float.Parse(values[5], CultureInfo.InvariantCulture),
-                int.Parse(values[6], CultureInfo.InvariantCulture),
+                long.Parse(values[6], CultureInfo.InvariantCulture),
                 int.Parse(values[7], CultureInfo.InvariantCulture),
                 int.Parse(values[8], CultureInfo.InvariantCulture),
                 requestId);
