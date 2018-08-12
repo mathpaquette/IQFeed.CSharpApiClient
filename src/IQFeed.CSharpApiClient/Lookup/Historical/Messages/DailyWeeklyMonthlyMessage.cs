@@ -8,8 +8,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
     {
         public const string DailyWeeklyMonthlyDateTimeFormat = "yyyy-MM-dd";
 
-        public DailyWeeklyMonthlyMessage(DateTime timestamp, float high, float low, float open, float close, long periodVolume, int openInterest)
+        public DailyWeeklyMonthlyMessage(DateTime timestamp, float high, float low, float open, float close, long periodVolume, int openInterest, string requestId = null)
         {
+            RequestId = requestId;
             Timestamp = timestamp;
             High = high;
             Low = low;
@@ -19,6 +20,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             OpenInterest = openInterest;
         }
 
+        public string RequestId { get; }
         public DateTime Timestamp { get; }
         public float High { get; }
         public float Low { get; }
@@ -30,6 +32,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public static DailyWeeklyMonthlyMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
+
             return new DailyWeeklyMonthlyMessage(
                 DateTime.ParseExact(values[0], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture),
                 float.Parse(values[1], CultureInfo.InvariantCulture),
@@ -40,9 +43,26 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 int.Parse(values[6], CultureInfo.InvariantCulture));
         }
 
+        public static DailyWeeklyMonthlyMessage ParseWithRequestId(string message)
+        {
+            var values = message.SplitFeedMessage();
+            var requestId = values[0];
+            
+            return new DailyWeeklyMonthlyMessage(
+                DateTime.ParseExact(values[1], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture),
+                float.Parse(values[2], CultureInfo.InvariantCulture),
+                float.Parse(values[3], CultureInfo.InvariantCulture),
+                float.Parse(values[4], CultureInfo.InvariantCulture),
+                float.Parse(values[5], CultureInfo.InvariantCulture),
+                long.Parse(values[6], CultureInfo.InvariantCulture),
+                int.Parse(values[7], CultureInfo.InvariantCulture),
+                requestId);
+        }
+
         public override bool Equals(object obj)
         {
             return obj is DailyWeeklyMonthlyMessage message &&
+                   RequestId == message.RequestId &&
                    Timestamp == message.Timestamp &&
                    High == message.High &&
                    Low == message.Low && 
@@ -57,6 +77,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             unchecked
             {
                 var hash = 17;
+                hash = hash * 29 + RequestId.GetHashCode();
                 hash = hash * 29 + Timestamp.GetHashCode();
                 hash = hash * 29 + High.GetHashCode();
                 hash = hash * 29 + Low.GetHashCode();

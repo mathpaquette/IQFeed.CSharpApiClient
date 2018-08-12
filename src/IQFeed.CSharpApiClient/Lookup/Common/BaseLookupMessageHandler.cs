@@ -8,6 +8,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
 {
     public abstract class BaseLookupMessageHandler
     {
+        private static readonly string EndMessagePattern = IQFeedDefault.ProtocolEndOfMessageCharacters + IQFeedDefault.ProtocolDelimiterCharacter;
+
         protected static MessageContainer<T> ProcessMessages<T>(Func<string, T> parser, byte[] message, int count)
         {
             var messages = Encoding.ASCII.GetString(message, 0, count).SplitFeedLine();
@@ -23,7 +25,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
                     return new MessageContainer<T>(parsedMessages, true, messages[i]);
 
                 // check for end (only last message)
-                if (i == lastMsgIdx && messages[i].StartsWith(IQFeedDefault.ProtocolEndOfMessageCharacters))
+                if (i == lastMsgIdx && messages[i].EndsWith(EndMessagePattern))
                 {
                     endMsg = true;
                     break;

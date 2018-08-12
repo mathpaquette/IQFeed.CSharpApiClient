@@ -36,7 +36,7 @@ namespace IQFeed.CSharpApiClient.Example
             lookupClient.Connect();
 
             // Step 5 - Make any requests you need or want!
-            var ticksMessages = await lookupClient.Historical.ReqHistoryTickDatapointsAsync("AAPL", 100);
+            var tickMessages = await lookupClient.Historical.ReqHistoryTickDatapointsAsync("AAPL", 100);
             var ticksFilename = await lookupClient.Historical.Raw.ReqHistoryTickDatapointsAsync("AAPL", 100);
 
             // *************************************

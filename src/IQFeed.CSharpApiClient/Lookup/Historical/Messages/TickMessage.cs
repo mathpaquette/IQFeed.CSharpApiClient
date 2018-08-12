@@ -9,8 +9,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public const string TickDateTimeFormat = "yyyy-MM-dd HH:mm:ss.ffffff";
 
         public TickMessage(DateTime timestamp, float last, int lastSize, int totalVolume, float bid, float ask, 
-            long tickId, char basisForLast, int tradeMarketCenter, string tradeConditions)
+            long tickId, char basisForLast, int tradeMarketCenter, string tradeConditions, string requestId = null)
         {
+            RequestId = requestId;
             Timestamp = timestamp;
             Last = last;
             LastSize = lastSize;
@@ -23,6 +24,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             TradeConditions = tradeConditions;
         }
 
+        public string RequestId { get; }
         public DateTime Timestamp { get; }
         public float Last { get; }
         public int LastSize { get; }
@@ -51,9 +53,29 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 values[9]);
         }
 
+        public static TickMessage ParseWithRequestId(string message)
+        {
+            var values = message.SplitFeedMessage();
+            var requestId = values[0];
+
+            return new TickMessage(
+                DateTime.ParseExact(values[1], TickDateTimeFormat, CultureInfo.InvariantCulture),
+                float.Parse(values[2], CultureInfo.InvariantCulture),
+                int.Parse(values[3], CultureInfo.InvariantCulture),
+                int.Parse(values[4], CultureInfo.InvariantCulture),
+                float.Parse(values[5], CultureInfo.InvariantCulture),
+                float.Parse(values[6], CultureInfo.InvariantCulture),
+                long.Parse(values[7], CultureInfo.InvariantCulture),
+                char.Parse(values[8]),
+                int.Parse(values[9], CultureInfo.InvariantCulture),
+                values[10],
+                requestId);
+        }
+
         public override bool Equals(object obj)
         {
             return obj is TickMessage message &&
+                   RequestId == message.RequestId &&
                    Timestamp == message.Timestamp &&
                    Last == message.Last &&
                    LastSize == message.LastSize &&
@@ -71,6 +93,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             unchecked
             {
                 var hash = 17;
+                hash = hash * 29 + RequestId.GetHashCode();
                 hash = hash * 29 + Timestamp.GetHashCode();
                 hash = hash * 29 + Last.GetHashCode();
                 hash = hash * 29 + LastSize.GetHashCode();
