@@ -4,7 +4,7 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
-    public class TickMessage
+    public class TickMessage : ITickMessage
     {
         public const string TickDateTimeFormat = "yyyy-MM-dd HH:mm:ss.ffffff";
 

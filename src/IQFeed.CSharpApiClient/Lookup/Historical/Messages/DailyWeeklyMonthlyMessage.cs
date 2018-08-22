@@ -4,7 +4,7 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
-    public class DailyWeeklyMonthlyMessage
+    public class DailyWeeklyMonthlyMessage : IDailyWeeklyMonthlyMessage
     {
         public const string DailyWeeklyMonthlyDateTimeFormat = "yyyy-MM-dd";
 

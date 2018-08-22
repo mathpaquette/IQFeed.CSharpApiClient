@@ -4,7 +4,7 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
-    public class IntervalMessage
+    public class IntervalMessage : IIntervalMessage
     {
         public const string IntervalDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
