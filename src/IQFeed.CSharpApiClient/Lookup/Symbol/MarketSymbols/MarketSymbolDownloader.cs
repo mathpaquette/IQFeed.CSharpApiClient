@@ -9,6 +9,12 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.MarketSymbols
     {
         public string GetMarketSymbolsFile(string downloadPath = null, string marketSymbolsUrl = IQFeedDefault.MarketSymbolsArchiveUrl)
         {
+            // https://stackoverflow.com/questions/2859790/the-request-was-aborted-could-not-create-ssl-tls-secure-channel
+
+#if NET45
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+#endif
+
             var zipPath = downloadPath ?? Path.GetTempFileName();
             var extractPath = Path.GetDirectoryName(zipPath);
 
