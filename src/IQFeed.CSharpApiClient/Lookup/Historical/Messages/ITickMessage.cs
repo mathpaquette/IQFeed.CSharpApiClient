@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
+﻿namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
-    public interface ITickMessage
+    public interface ITickMessage : IHistoricalMessage
     {
         float Ask { get; }
         char BasisForLast { get; }
@@ -10,7 +8,6 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         float Last { get; }
         int LastSize { get; }
         long TickId { get; }
-        DateTime Timestamp { get; }
         int TotalVolume { get; }
         string TradeConditions { get; }
         int TradeMarketCenter { get; }
