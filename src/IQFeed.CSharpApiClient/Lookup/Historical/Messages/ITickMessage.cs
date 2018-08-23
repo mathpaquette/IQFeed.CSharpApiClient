@@ -1,6 +1,6 @@
 ﻿namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
-    public interface ITickMessage : IMessage
+    public interface ITickMessage : IHistoricalMessage
     {
         float Ask { get; }
         char BasisForLast { get; }

@@ -2,7 +2,7 @@
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
-    public interface IIntervalMessage : IMessage
+    public interface IIntervalMessage : IHistoricalMessage
     {
         float Close { get; }
         float High { get; }
