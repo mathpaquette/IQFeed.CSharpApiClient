@@ -4,10 +4,14 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
+    [Serializable]
     public class DailyWeeklyMonthlyMessage : IDailyWeeklyMonthlyMessage
     {
         public const string DailyWeeklyMonthlyDateTimeFormat = "yyyy-MM-dd";
-
+        private DailyWeeklyMonthlyMessage()
+        {
+            //empty constructor for serialization.
+        }
         public DailyWeeklyMonthlyMessage(DateTime timestamp, float high, float low, float open, float close, long periodVolume, int openInterest, string requestId = null)
         {
             RequestId = requestId;

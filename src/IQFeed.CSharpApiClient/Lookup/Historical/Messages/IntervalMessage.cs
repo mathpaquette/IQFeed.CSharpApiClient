@@ -4,10 +4,14 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
+    [Serializable]
     public class IntervalMessage : IIntervalMessage
     {
         public const string IntervalDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-
+        private IntervalMessage()
+        {
+            //empty constructor for serialization.
+        }
         public IntervalMessage(DateTime timestamp, float high, float low, float open, float close, long totalVolume, int periodVolume, int numberOfTrades, string requestId = null)
         {
             RequestId = requestId;
