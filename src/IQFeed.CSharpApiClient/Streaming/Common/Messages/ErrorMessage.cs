@@ -1,9 +1,16 @@
-﻿using IQFeed.CSharpApiClient.Extensions;
+﻿using System;
+using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
 {
+    [Serializable]
     public class ErrorMessage
     {
+        private ErrorMessage()
+        {
+            //empty constructor for serialization.
+        }
+
         public ErrorMessage(string error)
         {
             Error = error;

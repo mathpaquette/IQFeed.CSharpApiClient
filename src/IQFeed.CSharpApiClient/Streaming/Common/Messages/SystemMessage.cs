@@ -1,11 +1,18 @@
-﻿using IQFeed.CSharpApiClient.Extensions;
+﻿using System;
+using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
 {
+    [Serializable]
     public class SystemMessage
     {
         public string Type { get; }
         public string Message { get; }
+
+        private SystemMessage()
+        {
+            //empty constructor for serialization.
+        }
 
         public SystemMessage(string type, string message)
         {

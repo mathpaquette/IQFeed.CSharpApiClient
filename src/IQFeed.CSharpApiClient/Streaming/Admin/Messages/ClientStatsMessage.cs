@@ -4,6 +4,7 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Streaming.Admin.Messages
 {
+    [Serializable]
     public class ClientStatsMessage
     {
         public const string ClientStatsDatetimeFormat = "yyyyMMdd HHmmss";
@@ -17,7 +18,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Admin.Messages
         public float KbReceived { get; }
         public float KbSent { get; }
         public float KbQueued { get; }
-
+        private ClientStatsMessage()
+        {
+            //empty constructor for serialization.
+        }
         public ClientStatsMessage(ClientType type, int clientId, string clientName, DateTime startTime, int? symbols, int? regionalSymbols, float kbReceived, float kbSent, float kbQueued)
         {
             Type = type;

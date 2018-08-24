@@ -1,5 +1,8 @@
-﻿namespace IQFeed.CSharpApiClient.Lookup.Symbol.MarketSymbols
+﻿using System;
+
+namespace IQFeed.CSharpApiClient.Lookup.Symbol.MarketSymbols
 {
+    [Serializable]
     public class MarketSymbol
     {
         public string Symbol { get; }
@@ -11,6 +14,11 @@
         public string Frontmonth { get; }
         public string Naics { get; }
 
+        private MarketSymbol() 
+        {
+            //empty constructor for serialization.
+        }
+        
         public MarketSymbol(string symbol, string description, string exchange, string listedMarket, string securityType, string sic, string frontmonth, string naics)
         {
             Symbol = symbol;

@@ -1,9 +1,17 @@
-﻿using IQFeed.CSharpApiClient.Extensions;
+﻿using System;
+using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
 {
+    [Serializable]
     public class SymbolNotFoundMessage
     {
+
+        private SymbolNotFoundMessage()
+        {
+            //empty constructor for serialization.
+        }
+
         public SymbolNotFoundMessage(string symbol)
         {
             Symbol = symbol;

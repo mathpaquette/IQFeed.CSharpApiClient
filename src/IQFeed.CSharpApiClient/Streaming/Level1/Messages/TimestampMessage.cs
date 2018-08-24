@@ -5,10 +5,15 @@ using IQFeed.CSharpApiClient.Extensions;
 namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 {
     // T,[YYYYMMDD HH:mm:SS]<LF>
+    [Serializable]
     public class TimestampMessage
     {
         public const string TimestampMessageDateTimeFormat = "yyyyMMdd HH:mm:ss";
 
+        private TimestampMessage()
+        {
+            //empty constructor for serialization.
+        }
         public TimestampMessage(DateTime timestamp)
         {
             Timestamp = timestamp;

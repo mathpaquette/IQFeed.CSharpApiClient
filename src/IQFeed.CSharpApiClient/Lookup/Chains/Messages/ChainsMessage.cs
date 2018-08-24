@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Chains.Messages
 {
+    [Serializable]
     public class ChainsMessage<T>
     {
+        protected ChainsMessage()
+        {
+            //empty constructor for serialization.
+        }
         public ChainsMessage(IEnumerable<T> chains)
         {
             Chains = chains;

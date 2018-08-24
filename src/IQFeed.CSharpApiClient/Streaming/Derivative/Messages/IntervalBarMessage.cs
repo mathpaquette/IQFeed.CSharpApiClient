@@ -5,6 +5,7 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
 {
+    [Serializable]
     public class IntervalBarMessage
     {
         private const string IntervalBarMessageDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
@@ -14,6 +15,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
 
         private static readonly Regex IntervalBarMessageWithRequestIdRegex = new Regex(IntervalBarMessageWithRequestIdPattern);
         private static readonly Regex IntervalBarMessageWithoutRequestIdRegex = new Regex(IntervalBarMessageWithoutRequestIdPattern);
+
+        private IntervalBarMessage()
+        {
+            //empty constructor for serialization.
+        }
 
         public IntervalBarMessage(IntervalBarType type, string symbol, DateTime timestamp, float open, float high, float low, float last,
             int cummulativeVolume, int intervalVolume, int numberOfTrades, string requestId = null)

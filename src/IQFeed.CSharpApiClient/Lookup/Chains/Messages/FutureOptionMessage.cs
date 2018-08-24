@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IQFeed.CSharpApiClient.Lookup.Chains.Futures;
 
 namespace IQFeed.CSharpApiClient.Lookup.Chains.Messages
 {
+    [Serializable]
     public class FutureOptionMessage : ChainsMessage<FutureOption>
     {
+        private FutureOptionMessage() : base() 
+        {
+            //empty constructor for serialization.
+        }
         public FutureOptionMessage(IEnumerable<FutureOption> chains) : base(chains) { }
 
         public static FutureOptionMessage Parse(string message)

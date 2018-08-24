@@ -4,10 +4,15 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
+    [Serializable]
     public class TickMessage : ITickMessage
     {
         public const string TickDateTimeFormat = "yyyy-MM-dd HH:mm:ss.ffffff";
 
+        private TickMessage() 
+        {
+            //empty constructor for serialization.
+        }
         public TickMessage(DateTime timestamp, float last, int lastSize, int totalVolume, float bid, float ask, 
             long tickId, char basisForLast, int tradeMarketCenter, string tradeConditions, string requestId = null)
         {

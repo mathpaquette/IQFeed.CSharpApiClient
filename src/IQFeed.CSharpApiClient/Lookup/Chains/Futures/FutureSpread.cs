@@ -1,10 +1,11 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using IQFeed.CSharpApiClient.Lookup.Chains.Messages;
 
 namespace IQFeed.CSharpApiClient.Lookup.Chains.Futures
 {
+    [Serializable]
     public class FutureSpread
-
     {
         private const string FutureSpreadSymbolPattern = "(.*)(-)(.*)";
 
@@ -14,6 +15,11 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains.Futures
         public string Symbol { get; }
         public Future Spread1 { get; }
         public Future Spread2 { get; }
+
+        private FutureSpread()
+        {
+            //empty constructor for serialization.
+        }
 
         public FutureSpread(string symbol, Future spread1, Future spread2)
         {

@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Chains.Futures
 {
+    [Serializable]
     public class Future
     {
         private const string FutureSymbolPattern = @"(.*)([F|G|H|J|K|M|N|Q|U|V|X|Z])(\d{2})";
@@ -20,6 +21,11 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains.Futures
         /// Exact trade date has to be found using fundamental data 
         /// </summary>
         public DateTime Expiration { get; }
+
+        private Future() 
+        {
+            //empty constructor for serialization.
+        }
 
         public Future(string symbol, string futureRoot, DateTime expiration)
         {
