@@ -4,11 +4,16 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 {
+    [Serializable]
     public class UpdateSummaryMessage
     {
         public const string UpdateMessageTimeFormat = "HH:mm:ss.ffffff";
 
         // S,CURRENT UPDATE FIELDNAMES,Symbol,Most Recent Trade,Most Recent Trade Size,Most Recent Trade Time,Most Recent Trade Market Center,Total Volume,Bid,Bid Size,Ask,Ask Size,Open,High,Low,Close,Message Contents,Most Recent Trade Conditions
+        private UpdateSummaryMessage()
+        {
+            //empty constructor for serialization.
+        }
         public UpdateSummaryMessage(string symbol, float mostRecentTrade, int mostRecentTradeSize, DateTime mostRecentTradeTime, int mostRecentTradeMarketCenter, int totalVolume,
             float bid, int bidSize, float ask, int askSize, float open, float high, float low, float close, string messageContents, string mostRecentTradeConditions)
         {

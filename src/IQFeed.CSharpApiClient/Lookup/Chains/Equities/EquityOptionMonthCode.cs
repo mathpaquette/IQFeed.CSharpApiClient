@@ -2,8 +2,13 @@
 
 namespace IQFeed.CSharpApiClient.Lookup.Chains.Equities
 {
+    [Serializable]
     public class EquityOptionMonthCode
     {
+        private EquityOptionMonthCode()
+        {
+            //empty constructor for serialization.
+        }
         public EquityOptionMonthCode(int month, OptionSide side)
         {
             Month = month;

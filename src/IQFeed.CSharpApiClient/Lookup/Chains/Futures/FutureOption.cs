@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Chains.Futures
 {
+    [Serializable]
     public class FutureOption
     {
         private const string FutureOptionSymbolPattern = @"(.*)(C|P)(\d*)";
@@ -17,6 +19,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains.Futures
         public OptionSide Side { get; }
         public float StrikePrice { get; }
 
+        private FutureOption()
+        {
+            //empty constructor for serialization.
+        }
         public FutureOption(string symbol, Future future, OptionSide side, float strikePrice)
         {
             Symbol = symbol;

@@ -4,10 +4,15 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 {
+    [Serializable]
     public class RegionalUpdateMessage
     {
         public const string RegionalUpdateTimeFormat = "HH:mm:ss";
 
+        private RegionalUpdateMessage()
+        {
+            //empty constructor for serialization.
+        }
         public RegionalUpdateMessage(string symbol, string exchange, float regionalBid, int regionalBidSize, DateTime regionalBidTime, float regionalAsk, int regionalAskSize, DateTime regionalAskTime, int fractionDisplayCode, int decimalPrecision, int marketCenter)
         {
             Symbol = symbol;

@@ -4,10 +4,15 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 {
+    [Serializable]
     public class NewsMessage
     {
         public const string NewsMessageDatetimeFormat = "yyyyMMdd HHmmss";
 
+        private NewsMessage()
+        {
+            //empty constructor for serialization.
+        }
         public NewsMessage(string distributorCode, string storyId, string symbolList, DateTime timestamp, string headline)
         {
             DistributorCode = distributorCode;

@@ -3,10 +3,14 @@ using System.Globalization;
 
 namespace IQFeed.CSharpApiClient.Streaming.Admin.Messages
 {
+    [Serializable]
     public class StatsMessage
     {
         public const string StatsMessageDatetimeFormat = "MMM dd H:mmtt";
-
+        private StatsMessage()
+        {
+            //empty constructor for serialization.
+        }
         public StatsMessage(string serverIp, int serverPort, int maxSymbols, int numberOfSymbols, int clientsConnected, int secondsSinceLastUpdate, int reconnections, int attemptedReconnections, DateTime startTime, DateTime marketTime, StatsStatusType status, string iqFeedVersion, string loginId, float totalKBsRecv, float kbsPerSecRecv, float avgKBsPerSecRecv, float totalKBsSent, float kbsPerSecSent, float avgKBsPerSecSent)
         {
             ServerIp = serverIp;

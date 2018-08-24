@@ -6,10 +6,15 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 {
+    [Serializable]
     public class FundamentalMessage
     {
         public const string FundamentalDateTimeFormat = "MM/dd/yyyy";
 
+        private FundamentalMessage()
+        {
+            //empty constructor for serialization.
+        }
         public FundamentalMessage(string symbol, string exchangeId, float? pe, int? averageVolume, float? fiftyTwoWeekHigh, float? fiftyTwoWeekLow, float? calendarYearHigh, float? calendarYearLow, float? dividendYield, float? dividendAmount, float? dividendRate, DateTime? payDate, DateTime? exDividendDate, int? shortInterest, float? currentYearEarningsPerShare, float? nextYearEarningsPerShare, float? fiveYearGrowthPercentage, int? fiscalYearEnd, string companyName, string rootOptionSymbol, float? percentHeldByInstitutions, float? beta, string leaps, float? currentAssets, float? currentLiabilities, DateTime? balanceSheetDate, float? longTermDebt, float? commonSharesOutstanding, string splitFactor1, string splitFactor2, string formatCode, int? precision, int? sic, float? historicalVolatility, string securityType, string listedMarket, DateTime? fiftyTwoWeekHighDate, DateTime? fiftyTwoWeekLowDate, DateTime? calendarYearHighDate, DateTime? calendarYearLowDate, float? yearEndClose, DateTime? maturityDate, float? couponRate, DateTime? expirationDate, float? strikePrice, int? naics, string exchangeRoot, float? optionsPremiumMultiplier, int? optionsMultipleDeliverables)
         {
             Symbol = symbol;

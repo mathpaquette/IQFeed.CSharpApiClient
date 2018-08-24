@@ -7,6 +7,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains.Equities
     /// <summary>
     /// Equity and Index
     /// </summary>
+    [Serializable]
     public class EquityOption
     {
         private const string OptionSymbolPattern = @"(.{1,5})(\d{2})(\d{2})([A-Z])(.+)";
@@ -22,6 +23,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains.Equities
         public float StrikePrice { get; }
         public DateTime Expiration { get; }
         public OptionSide Side { get; }
+        private EquityOption()
+        {
+            //empty constructor for serialization.
+        }
 
         public EquityOption(string symbol, string equitySymbol, float strikePrice, DateTime expiration, OptionSide side)
         {
