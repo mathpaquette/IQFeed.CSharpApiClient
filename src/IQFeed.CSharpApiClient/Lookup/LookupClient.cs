@@ -21,7 +21,7 @@ namespace IQFeed.CSharpApiClient.Lookup
 
         public HistoricalFacade Historical { get; }
         public NewsFacade News { get; }
-        public SymbolFacade Symbol { get; }
+        public ISymbolFacade Symbol { get; }
         public ChainsFacade Chains { get; }
 
         public void Connect()

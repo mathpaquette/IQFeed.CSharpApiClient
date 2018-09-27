@@ -30,10 +30,20 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
         public void Should_Return_MarketSymbols_From_Sample_Archive_File()
         {
             // Act
-            var marketSymbols = _lookupClient.Symbol.GetAllMarketSymbols(marketSymbolsArchiveUrl: Settings.MarketSymbolsSampleUrl);
+            var marketSymbols = _lookupClient.Symbol.GetAllMarketSymbols(url: Settings.MarketSymbolsSampleUrl);
 
             // Assert
             Assert.True(marketSymbols.Count() == Settings.MarketSymbolsSampleCount);
+        }
+
+        [Test]
+        public void Should_Return_ExpiredOptions_From_Sample_Archive_File()
+        {
+            // Act
+            var expiredOptions = _lookupClient.Symbol.GetAllExpiredOptions(url: Settings.ExpiredOptionsSampleUrl);
+
+            // Assert
+            Assert.True(expiredOptions.Count() == Settings.ExpiredOptionsSampleCount);
         }
 
         [Test, Explicit]

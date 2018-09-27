@@ -12,7 +12,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol.MarketSymbols
             var marketSymbolDownloader = new MarketSymbolDownloader();
 
             // Act
-            var filename = marketSymbolDownloader.GetMarketSymbolsFile(marketSymbolsUrl: Settings.MarketSymbolsSampleUrl);
+            var filename = marketSymbolDownloader.GetFile(url: Settings.MarketSymbolsSampleUrl);
 
             // Assert
             Assert.True(filename.EndsWith("mktsymbols_v2_sample.txt"));
