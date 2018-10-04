@@ -8,4 +8,7 @@
     <ItemGroup>
       <ProjectReference Include="..\IQFeed.CSharpApiClient\IQFeed.CSharpApiClient.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Examples\StreamingLevel2\" />
+    </ItemGroup>
 </Project>

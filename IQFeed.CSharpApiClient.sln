@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A5B0360D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient.Tests", "src\IQFeed.CSharpApiClient.Tests\IQFeed.CSharpApiClient.Tests.csproj", "{D25664CF-7855-46C4-9483-8897A3926587}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient.Example", "src\IQFeed.CSharpApiClient.Example\IQFeed.CSharpApiClient.Example.csproj", "{BF59DF56-D18C-4708-9105-796A76845A8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient.Examples", "src\IQFeed.CSharpApiClient.Examples\IQFeed.CSharpApiClient.Examples.csproj", "{BF59DF56-D18C-4708-9105-796A76845A8A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient.Tests.Integration", "src\IQFeed.CSharpApiClient.Tests.Integration\IQFeed.CSharpApiClient.Tests.Integration.csproj", "{9E109863-057B-4A64-9B93-8E2FFD4E9A48}"
 EndProject

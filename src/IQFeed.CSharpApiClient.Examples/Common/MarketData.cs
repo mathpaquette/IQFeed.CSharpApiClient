@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IQFeed.CSharpApiClient.Example
+namespace IQFeed.CSharpApiClient.Examples.Common
 {
     public static class MarketData
     {

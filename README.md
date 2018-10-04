@@ -51,7 +51,7 @@ In your appSettings section, assign values to these key:
 ```
 
 ### Examples
-Check IQFeed.CSharpApiClient.Example for more examples.
+Check [IQFeed.CSharpApiClient.Examples](https://github.com/mathpaquette/IQFeed.CSharpApiClient/tree/master/src/IQFeed.CSharpApiClient.Examples) for more examples.
 
 ```
 IQFeedLauncher.Start();
