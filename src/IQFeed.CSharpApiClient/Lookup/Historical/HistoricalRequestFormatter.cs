@@ -6,7 +6,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
 {
     public class HistoricalRequestFormatter : RequestFormatter
     {
-        public const string HistoricalDataTimeFormat = "hhmmss";
+        public const string HistoricalDataTimeFormat = "HHmmSS";
         public const string HistoricalDataDateFormat = "yyyyMMdd";
         public const string HistoricalDataDatetimeFormat = "yyyyMMdd HHmmss";
 
