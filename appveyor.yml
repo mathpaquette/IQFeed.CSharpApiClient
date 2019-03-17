@@ -25,7 +25,8 @@ before_build:
   - nuget restore
   - dotnet restore
   
-test: off
+test_script:
+  - cmd: dotnet test .\src\IQFeed.CSharpApiClient.Tests\IQFeed.CSharpApiClient.Tests.csproj
   
 build:
   project: IQFeed.CSharpApiClient.sln
