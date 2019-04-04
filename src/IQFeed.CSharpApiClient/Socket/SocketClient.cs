@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+
 using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Socket
@@ -25,7 +27,7 @@ namespace IQFeed.CSharpApiClient.Socket
             IPHostEntry host = Dns.GetHostEntry(hostname);
 
             // Addres of the host.
-            IPAddress[] addressList = host.AddressList;
+            IPAddress[] addressList = host.AddressList.Where(a => a.AddressFamily == AddressFamily.InterNetwork).ToArray();
 
             _bufferSize = bufferSize;
 
