@@ -26,8 +26,10 @@ namespace IQFeed.CSharpApiClient.Socket
             // Get host related information.
             IPHostEntry host = Dns.GetHostEntry(hostname);
 
-            // Addres of the host.
-            IPAddress[] addressList = host.AddressList.Where(a => a.AddressFamily == AddressFamily.InterNetwork).ToArray();
+            // Address of the host.
+            IPAddress[] addressList = SocketClient.ForceIpv4 
+                ? host.AddressList.Where(a => a.AddressFamily == AddressFamily.InterNetwork).ToArray() 
+                : host.AddressList;
 
             _bufferSize = bufferSize;
 
@@ -39,7 +41,6 @@ namespace IQFeed.CSharpApiClient.Socket
             _socketMessageEventArgs = new SocketMessageEventArgs();
             _readEventArgs = new SocketAsyncEventArgs();
         }
-
 
         public void Connect()
         {
@@ -76,6 +77,8 @@ namespace IQFeed.CSharpApiClient.Socket
                 throw new SocketException((int)SocketError.NotConnected);
             }
         }
+
+        public static bool ForceIpv4 { get; set; } = false;
 
         // This method is called whenever a receive or send operation is completed on a socket 
         //
