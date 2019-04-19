@@ -78,7 +78,7 @@ namespace IQFeed.CSharpApiClient.Socket
             }
         }
 
-        public static bool ForceIpv4 { get; set; } = false;
+        public static bool ForceIpv4 { get; set; }
 
         // This method is called whenever a receive or send operation is completed on a socket 
         //
