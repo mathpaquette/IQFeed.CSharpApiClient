@@ -12,7 +12,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Client
         [Test]
         [TestCase(true)]
         [TestCase(false)]
-        public void AdminClient_can_connect_and_terminate_without_error_forceIpv4(bool forceIpv4)
+        public static void AdminClient_can_connect_and_terminate_without_error_forceIpv4(bool forceIpv4)
         {
             // Arrange
             SocketClient.ForceIpv4 = forceIpv4;
@@ -33,7 +33,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Client
         [Test]
         [TestCase(true)]
         [TestCase(false)]
-        public void DerivativeClient_can_connect_and_terminate_without_error_forceIpv4(bool forceIpv4)
+        public static void DerivativeClient_can_connect_and_terminate_without_error_forceIpv4(bool forceIpv4)
         {
             // Arrange
             SocketClient.ForceIpv4 = forceIpv4;
@@ -54,7 +54,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Client
         [Test]
         [TestCase(true)]
         [TestCase(false)]
-        public void Level1Client_can_connect_and_terminate_without_error_forceIpv4(bool forceIpv4)
+        public static void Level1Client_can_connect_and_terminate_without_error_forceIpv4(bool forceIpv4)
         {
             // Arrange
             SocketClient.ForceIpv4 = forceIpv4;
@@ -75,7 +75,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Client
         [Test]
         [TestCase(true)]
         [TestCase(false)]
-        public void LookupClient_can_connect_and_terminate_without_error_forceIpv4(bool forceIpv4)
+        public static void LookupClient_can_connect_and_terminate_without_error_forceIpv4(bool forceIpv4)
         {
             // Arrange
             SocketClient.ForceIpv4 = forceIpv4;
