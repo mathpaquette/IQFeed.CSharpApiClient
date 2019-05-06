@@ -5,9 +5,9 @@ using IQFeed.CSharpApiClient.Streaming.Derivative;
 using IQFeed.CSharpApiClient.Streaming.Level1;
 using NUnit.Framework;
 
-namespace IQFeed.CSharpApiClient.Tests.Integration.Client
+namespace IQFeed.CSharpApiClient.Tests.Integration.Connectivity
 {
-    public class ClientTests
+    public static class ClientTests
     {
         [Test]
         [TestCase(true)]
