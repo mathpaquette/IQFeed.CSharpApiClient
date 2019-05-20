@@ -36,7 +36,16 @@ namespace IQFeed.CSharpApiClient.Lookup
             var newsFacade = new NewsFacade();
 
             // Symbol
-            var symbolFacade = new SymbolFacade(new MarketSymbolDownloader(), new MarketSymbolReader(), new ExpiredOptionDownloader(), new ExpiredOptionReader());
+            var symbolFacade = new SymbolFacade(
+                new SymbolRequestFormatter(),
+                lookupDispatcher,
+                errorMessageHandler,
+                new SymbolMessageHandler(),
+                new MarketSymbolDownloader(), 
+                new MarketSymbolReader(), 
+                new ExpiredOptionDownloader(), 
+                new ExpiredOptionReader(),
+                timeoutMs);
 
             // Chains
             var chainsFacade = new ChainsFacade(new ChainsRequestFormatter(), new ChainsMessageHandler(), lookupDispatcher, errorMessageHandler, timeoutMs);
