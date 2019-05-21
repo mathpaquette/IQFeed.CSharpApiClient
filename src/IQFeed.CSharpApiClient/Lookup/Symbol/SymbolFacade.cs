@@ -2,13 +2,14 @@
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Lookup.Common;
+using IQFeed.CSharpApiClient.Lookup.Symbol.Enums;
 using IQFeed.CSharpApiClient.Lookup.Symbol.ExpiredOptions;
 using IQFeed.CSharpApiClient.Lookup.Symbol.MarketSymbols;
 using IQFeed.CSharpApiClient.Lookup.Symbol.Messages;
 
 namespace IQFeed.CSharpApiClient.Lookup.Symbol
 {
-    public class SymbolFacade : BaseLookupFacade, ISymbolFacade<IEnumerable<ListedMarketMessage>, IEnumerable<TradeConditionMessage>>
+    public class SymbolFacade : BaseLookupFacade, ISymbolFacade
     {
         private readonly SymbolRequestFormatter _symbolRequestFormatter;
         private readonly SymbolMessageHandler _symbolMessageHandler;
@@ -49,6 +50,22 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
             return _expiredOptionReader.GetExpiredOptions(filename, header);
         }
 
+        /// <summary>
+        /// SBF - Request the Symbols By Filter
+        /// </summary>
+        /// <param name="fieldToSearch">Field to perform search on (either Symbols or Descriptions)</param>
+        /// <param name="searchString">Search value</param>
+        /// <param name="filterType">Optional filter type (ListedMarket or SecurityType)</param>
+        /// <param name="requestId">Optional request id</param>
+        /// <returns>Symbol By Filter messages</returns>
+        public Task<IEnumerable<SymbolByFilterMessage>> ReqSymbolsByFilterAsync(FieldToSearch fieldToSearch, string searchString, FilterType? filterType, IEnumerable<int> filterValues, string requestId = null)
+        {
+            var request = _symbolRequestFormatter.ReqSymbolsByFilter(fieldToSearch, searchString, filterType, filterValues, requestId);
+            return string.IsNullOrEmpty(requestId)
+                ? GetMessagesAsync(request, _symbolMessageHandler.GetSymbolByFilterMessages)
+                : GetMessagesAsync(request, _symbolMessageHandler.GetSymbolByFilterMessagesWithRequestId);
+        }
+
         public Task<IEnumerable<ListedMarketMessage>> ReqListedMarketsAsync(string requestId = null)
         {
             var request = _symbolRequestFormatter.ReqListedMarkets(requestId);
@@ -57,7 +74,15 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
                 : GetMessagesAsync(request, _symbolMessageHandler.GetListedMarketMessagesWithRequestId);
         }
 
-        public Task<IEnumerable<TradeConditionMessage>> ReqTradeConditionssAsync(string requestId = null)
+        public Task<IEnumerable<SecurityTypeMessage>> ReqSecurityTypesAsync(string requestId = null)
+        {
+            var request = _symbolRequestFormatter.ReqSecurityTypes(requestId);
+            return string.IsNullOrEmpty(requestId)
+                ? GetMessagesAsync(request, _symbolMessageHandler.GetSecurityTypeMessages)
+                : GetMessagesAsync(request, _symbolMessageHandler.GetSecurityTypeMessagesWithRequestId);
+        }
+
+        public Task<IEnumerable<TradeConditionMessage>> ReqTradeConditionsAsync(string requestId = null)
         {
             var request = _symbolRequestFormatter.ReqTradeConditions(requestId);
             return string.IsNullOrEmpty(requestId) 

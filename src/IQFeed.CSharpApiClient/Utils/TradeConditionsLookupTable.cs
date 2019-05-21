@@ -17,7 +17,7 @@ namespace IQFeed.CSharpApiClient.Utils
         public TradeConditionsLookupTable(LookupClient lookupClient)
         {
             // get the trade conditions
-            var tradeConditions = lookupClient.Symbol.ReqTradeConditionssAsync().GetAwaiter().GetResult().ToArray();
+            var tradeConditions = lookupClient.Symbol.ReqTradeConditionsAsync().GetAwaiter().GetResult().ToArray();
 
             // get the maximum value of the trade condition id
             int maxId = tradeConditions.Length > 0 ? tradeConditions.Max(lm => lm.TradeConditionId) : -1;
