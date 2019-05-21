@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using IQFeed.CSharpApiClient.Lookup;
+using IQFeed.CSharpApiClient.Lookup.Symbol.Enums;
 using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
@@ -44,6 +45,40 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
 
             // Assert
             Assert.True(expiredOptions.Count() == Settings.ExpiredOptionsSampleCount);
+        }
+
+        [Test]
+        public void Should_Return_Listed_Markets()
+        {
+            // Act
+            var markets = _lookupClient.Symbol.ReqListedMarketsAsync().GetAwaiter().GetResult();
+
+            // Assert
+            Assert.True(markets.Count() > 0);
+        }
+
+        [Test]
+        public void Should_Return_Security_Types()
+        {
+            // Act
+            var securityTypes = _lookupClient.Symbol.ReqSecurityTypesAsync().GetAwaiter().GetResult();
+
+            // Assert
+            Assert.True(securityTypes.Count() > 0);
+            Assert.True(securityTypes.Where(st => st.ShortName == "EQUITY").Count() == 1);
+        }
+
+        [Test]
+        public void Should_Return_Equity_Symbols()
+        {
+            // Act
+            var equitySymbols = _lookupClient.Symbol
+                .ReqSymbolsByFilterAsync(FieldToSearch.Symbols, "*", FilterType.SecurityTypes, new int[] { 1 })
+                .GetAwaiter().GetResult();
+
+            // Assert
+            Assert.True(equitySymbols.Count() > 0);
+            Assert.True(equitySymbols.Where(st => st.Symbol == "AAPL").Count() == 1);
         }
 
         [Test, Explicit]

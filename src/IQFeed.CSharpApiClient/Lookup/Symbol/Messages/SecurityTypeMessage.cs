@@ -3,37 +3,37 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 {
-    public class TradeConditionMessage : ITradeCondition
+    public class SecurityTypeMessage : ISecurityType
     {
-        public TradeConditionMessage(int tradeConditionId, string shortName, string longName, string requestId = null)
+        public SecurityTypeMessage(int securityTypeId, string shortName, string longName, string requestId = null)
         {
             RequestId = requestId;
-            TradeConditionId = tradeConditionId;
+            SecurityTypeId = securityTypeId;
             ShortName = shortName;
             LongName = longName;
         }
 
         public string RequestId { get; }
-        public int TradeConditionId { get; }
+        public int SecurityTypeId { get; }
         public string ShortName { get; }
         public string LongName { get; }
 
-        public static TradeConditionMessage Parse(string message)
+        public static SecurityTypeMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
 
-            return new TradeConditionMessage(
+            return new SecurityTypeMessage(
                 int.Parse(values[0], CultureInfo.InvariantCulture), 
                 values[1], 
                 values[2]);
         }
 
-        public static TradeConditionMessage ParseWithRequestId(string message)
+        public static SecurityTypeMessage ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
             var requestId = values[0];
 
-            return new TradeConditionMessage(
+            return new SecurityTypeMessage(
                 int.Parse(values[1], CultureInfo.InvariantCulture),
                 values[2],
                 values[3],
@@ -42,9 +42,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 
         public override bool Equals(object obj)
         {
-            return obj is TradeConditionMessage message &&
+            return obj is SecurityTypeMessage message &&
                    RequestId == message.RequestId &&
-                   TradeConditionId == message.TradeConditionId &&
+                   SecurityTypeId == message.SecurityTypeId &&
                    ShortName == message.ShortName &&
                    LongName == message.LongName;
         }
@@ -55,7 +55,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
             {
                 var hash = 17;
                 hash = hash * 29 + RequestId.GetHashCode();
-                hash = hash * 29 + TradeConditionId.GetHashCode();
+                hash = hash * 29 + SecurityTypeId.GetHashCode();
                 hash = hash * 29 + ShortName.GetHashCode();
                 hash = hash * 29 + LongName.GetHashCode();
                 return hash;
@@ -64,7 +64,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 
         public override string ToString()
         {
-            return $"{ShortName}({TradeConditionId})";
+            return $"{ShortName}({SecurityTypeId})";
         }
     }
 }
