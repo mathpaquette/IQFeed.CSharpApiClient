@@ -81,6 +81,18 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
             Assert.True(equitySymbols.Where(st => st.Symbol == "AAPL").Count() == 1);
         }
 
+        [Test]
+        public void Should_Not_Find_Missing_Equity_Symbol()
+        {
+            // Act
+            var equitySymbols = _lookupClient.Symbol
+                .ReqSymbolsByFilterAsync(FieldToSearch.Symbols, "TTDZ", FilterType.SecurityTypes, new int[] { 1 })
+                .GetAwaiter().GetResult();
+
+            // Assert
+            Assert.True(equitySymbols.Count() == 0);
+        }
+
         [Test, Explicit]
         public void Should_Return_Distinctive_Properties_From_Archive_File()
         {
