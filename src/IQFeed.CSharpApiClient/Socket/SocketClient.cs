@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -10,6 +11,8 @@ namespace IQFeed.CSharpApiClient.Socket
     {
         public event EventHandler<SocketMessageEventArgs> MessageReceived;
         public event EventHandler Connected;
+
+        public static bool ForceIPv4 { get; set; } = true;
 
         private bool _disposed;
         private readonly IPEndPoint _hostEndPoint;
@@ -25,7 +28,9 @@ namespace IQFeed.CSharpApiClient.Socket
             IPHostEntry host = Dns.GetHostEntry(hostname);
 
             // Addres of the host.
-            IPAddress[] addressList = host.AddressList;
+            IPAddress[] addressList = ForceIPv4 ?
+                host.AddressList.Where(ip => ip.AddressFamily == AddressFamily.InterNetwork).ToArray() :
+                host.AddressList;
 
             _bufferSize = bufferSize;
 
