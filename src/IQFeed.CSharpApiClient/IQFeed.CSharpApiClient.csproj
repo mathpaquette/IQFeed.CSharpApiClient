@@ -11,9 +11,9 @@
         <PackageTags>DTN IQFeed Socket API (Client)</PackageTags>
         <RepositoryUrl>https://github.com/mathpaquette/IQFeed.CSharpApiClient</RepositoryUrl>
         <PackageProjectUrl>https://github.com/mathpaquette/IQFeed.CSharpApiClient</PackageProjectUrl>
-        <PackageLicenseUrl>https://raw.githubusercontent.com/mathpaquette/IQFeed.CSharpApiClient/master/LICENSE</PackageLicenseUrl>
-        <Copyright>Copyright © 2018 Mathieu Paquette</Copyright>
-        <Description>IQFeed.CSharpApiClient is fastest and the most well designed C# DTN IQFeed socket API connector available to the open source community!</Description>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <Copyright>Copyright © 2019 Mathieu Paquette</Copyright>
+        <Description>IQFeed.CSharpApiClient is fastest and the most well-designed C# DTN IQFeed socket API connector available to the open source community!</Description>
         <AssemblyVersion>1.0.0.0</AssemblyVersion>
         <FileVersion>1.0.0.0</FileVersion>
         <Version>1.0.0</Version>
@@ -26,5 +26,8 @@
     </ItemGroup>
     <ItemGroup Condition="'$(TargetFramework)'=='net45'">
       <Reference Include="System.Configuration" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="../../LICENSE" Pack="true" PackagePath="" />
     </ItemGroup>
 </Project>
