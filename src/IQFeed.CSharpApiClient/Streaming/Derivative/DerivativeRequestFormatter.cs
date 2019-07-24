@@ -11,7 +11,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
         public string ReqBarWatch(string symbol, int interval, DateTime? beginDate = null, int? maxDaysOfDatapoints = null, int? maxDatapoints = null, 
             TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null, string requestId = null, DerivativeIntervalType? intervalType = null, int? updateInterval = null)
         {
-            var request = $"BW,{symbol.ToUpper()},{interval},{beginDate?.ToString(DerivativeDatetimeFormat)},{maxDaysOfDatapoints},{maxDatapoints},{beginFilterTime?.ToString(DerivativeTimeFormat)},{endFilterTime?.ToString(DerivativeTimeFormat)},{requestId},{intervalType?.ToString().ToLower()},{updateInterval},{IQFeedDefault.ProtocolTerminatingCharacters}";
+            // BW,[Symbol],[Interval],[BeginDate BeginTime],[MaxDaysOfDatapoints],[MaxDatapoints],[BeginFilterTime],[EndFilterTime],[RequestID],[Interval Type],[Reserved],[UpdateInterval] 
+            var request = $"BW,{symbol.ToUpper()},{interval},{beginDate?.ToString(DerivativeDatetimeFormat)},{maxDaysOfDatapoints},{maxDatapoints},{beginFilterTime?.ToString(DerivativeTimeFormat)},{endFilterTime?.ToString(DerivativeTimeFormat)},{requestId},{intervalType?.ToString().ToLower()},,{updateInterval}{IQFeedDefault.ProtocolTerminatingCharacters}";
             return request;
         }
 
