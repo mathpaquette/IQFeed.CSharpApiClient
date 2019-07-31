@@ -1,3 +1,8 @@
+### IQFeed.CSharpApiClient 1.4.4 - July 31, 2019
+##### Issues Resolved
+ * Fixed ReqBarWatch request format from derivative data
+ * Removed deprecated license warning in VS2017+
+
 ### IQFeed.CSharpApiClient 1.4.1 - August 12, 2018
 ##### Issues Resolved
  * Reversed Open and Close position in IntervalMessage and DailyWeeklyMonthlyMessage
