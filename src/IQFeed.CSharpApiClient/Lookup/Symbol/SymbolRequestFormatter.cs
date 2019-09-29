@@ -12,7 +12,21 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
             var fieldToSearchFormat = ((char)fieldToSearch).ToString();
             var filterTypeFormat = filterType.HasValue ? ((char)filterType).ToString() : string.Empty;
             var filterValuesFormat = filterType.HasValue ? string.Join(" ", filterValues) : string.Empty;
-            var request = $"SBF,{fieldToSearchFormat},{searchString},{filterTypeFormat},{filterValuesFormat}{IQFeedDefault.ProtocolTerminatingCharacters}";
+            var request = $"SBF,{fieldToSearchFormat},{searchString},{filterTypeFormat},{filterValuesFormat},{requestId}{IQFeedDefault.ProtocolTerminatingCharacters}";
+            return request;
+        }
+
+        public string ReqSymbolsBySicCode(string searchString, string requestId = null)
+        {
+            // SBS,[Search String],[RequestID]<CR><LF>
+            var request = $"SBS,{searchString},{requestId}{IQFeedDefault.ProtocolTerminatingCharacters}";
+            return request;
+        }
+
+        public string ReqSymbolsByNiacCode(string searchString, string requestId = null)
+        {
+            // SBN,[Search String],[RequestID]<CR><LF>
+            var request = $"SBN,{searchString},{requestId}{IQFeedDefault.ProtocolTerminatingCharacters}";
             return request;
         }
 
@@ -34,6 +48,20 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
         {
             // STC,[RequestID]<CR><LF> 
             var request = $"STC,{requestId}{IQFeedDefault.ProtocolTerminatingCharacters}";
+            return request;
+        }
+
+        public string ReqSicCodes(string requestId = null)
+        {
+            // SSC,[RequestID]<CR><LF>
+            var request = $"SSC,{requestId}{IQFeedDefault.ProtocolTerminatingCharacters}";
+            return request;
+        }
+
+        public string ReqNiacCodes(string requestId = null)
+        {
+            // SNC,[RequestID]<CR><LF>
+            var request = $"SNC,{requestId}{IQFeedDefault.ProtocolTerminatingCharacters}";
             return request;
         }
     }

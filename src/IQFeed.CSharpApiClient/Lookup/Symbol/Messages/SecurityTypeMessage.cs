@@ -54,7 +54,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
             unchecked
             {
                 var hash = 17;
-                hash = hash * 29 + RequestId.GetHashCode();
+                hash = hash * 29 + RequestId != null ? RequestId.GetHashCode() : 0;
                 hash = hash * 29 + SecurityTypeId.GetHashCode();
                 hash = hash * 29 + ShortName.GetHashCode();
                 hash = hash * 29 + LongName.GetHashCode();

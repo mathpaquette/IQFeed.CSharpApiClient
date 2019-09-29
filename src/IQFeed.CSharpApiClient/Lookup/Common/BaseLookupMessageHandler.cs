@@ -85,10 +85,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
             }
             else
             {
-                return message.Length > 2 // there are 2 or more characters
-                    && message[0] == IQFeedDefault.PrototolErrorCharacter // first one is the error marker
-                    && message[1] == IQFeedDefault.ProtocolDelimiterCharacter // the next one is a delimiter
-                    && message.StartsWith(NoDataIndicator);
+                return message.StartsWith(NoDataIndicator);
             }
         }
     }

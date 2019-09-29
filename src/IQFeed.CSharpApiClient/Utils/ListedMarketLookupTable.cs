@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using IQFeed.CSharpApiClient.Lookup;
 using IQFeed.CSharpApiClient.Lookup.Symbol.Messages;
 
@@ -27,6 +28,11 @@ namespace IQFeed.CSharpApiClient.Utils
         }
 
         /// <summary>
+        /// Gets all listed markets
+        /// </summary>
+        public IEnumerable<IListedMarket> All => this.lookupTable.Where(lm => lm != null);
+
+        /// <summary>
         /// Gets the listed market for the given id
         /// </summary>
         /// <param name="listedMarketId">Listed market id</param>
@@ -35,7 +41,7 @@ namespace IQFeed.CSharpApiClient.Utils
         {
             get
             {
-                return listedMarketId >= 0 || listedMarketId < lookupTable.Length
+                return listedMarketId >= 0 && listedMarketId < lookupTable.Length
                     ? lookupTable[listedMarketId]
                     : null;
             }

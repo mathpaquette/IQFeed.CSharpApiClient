@@ -5,13 +5,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 {
     public class ListedMarketMessage : IListedMarket
     {
-        public ListedMarketMessage(int listedMarketId, string shortName, string longName, string groupID, string shortGroupName, string requestId = null)
+        public ListedMarketMessage(int listedMarketId, string shortName, string longName, int groupID, string shortGroupName, string requestId = null)
         {
             RequestId = requestId;
             ListedMarketId = listedMarketId;
             ShortName = shortName;
             LongName = longName;
-            GroupID = groupID;
+            GroupId = groupID;
             ShortGroupName = shortGroupName;
         }
 
@@ -19,7 +19,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
         public int ListedMarketId { get; }
         public string ShortName { get; }
         public string LongName { get; }
-        public string GroupID { get; }
+        public int GroupId { get; }
         public string ShortGroupName { get; }
 
         public static ListedMarketMessage Parse(string message)
@@ -30,7 +30,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
                 int.Parse(values[0], CultureInfo.InvariantCulture),
                 values[1],
                 values[2],
-                values[3],
+                int.Parse(values[3], CultureInfo.InvariantCulture),
                 values[4]);
         }
 
@@ -43,7 +43,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
                 int.Parse(values[1], CultureInfo.InvariantCulture),
                 values[2],
                 values[3],
-                values[4],
+                int.Parse(values[4], CultureInfo.InvariantCulture),
                 values[5],
                 requestId);
         }
@@ -55,7 +55,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
                    ListedMarketId == message.ListedMarketId &&
                    ShortName == message.ShortName &&
                    LongName == message.LongName &&
-                   GroupID == message.GroupID &&
+                   GroupId == message.GroupId &&
                    ShortGroupName == message.ShortGroupName;
         }
 
@@ -64,11 +64,11 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
             unchecked
             {
                 var hash = 17;
-                hash = hash * 29 + RequestId.GetHashCode();
+                hash = hash * 29 + RequestId != null ? RequestId.GetHashCode() : 0;
                 hash = hash * 29 + ListedMarketId.GetHashCode();
                 hash = hash * 29 + ShortName.GetHashCode();
                 hash = hash * 29 + LongName.GetHashCode();
-                hash = hash * 29 + GroupID.GetHashCode();
+                hash = hash * 29 + GroupId.GetHashCode();
                 hash = hash * 29 + ShortGroupName.GetHashCode();
                 return hash;
             }

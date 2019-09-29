@@ -5,7 +5,7 @@
         int ListedMarketId { get; }
         string ShortName { get; }
         string LongName { get; }        
-        string GroupID { get; }
+        int GroupId { get; }
         string ShortGroupName { get; }        
     }
 }

@@ -32,6 +32,11 @@ namespace IQFeed.CSharpApiClient.Utils
         }
 
         /// <summary>
+        /// Gets all trade conditions
+        /// </summary>
+        public IEnumerable<ITradeCondition> All => this.lookupTable.Where(tc => tc != null);
+
+        /// <summary>
         /// Gets the trade condition for the given id
         /// </summary>
         /// <param name="tradeConditionId">Trade condition id</param>
@@ -67,11 +72,16 @@ namespace IQFeed.CSharpApiClient.Utils
             return tradeConditionsList.ToArray();
         }
 
-        private static int ParseTradeConditionHexValue(string tradeCondition)
+        /// <summary>
+        /// Parses a single trade condition hex value and returns the corresponding integer
+        /// </summary>
+        /// <param name="tradeConditionHexValue">Single trade condition hex value</param>
+        /// <returns>Trade condition int value</returns>
+        private static int ParseTradeConditionHexValue(string tradeConditionHexValue)
         {
-            if(!int.TryParse(tradeCondition, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int tradeConditionId))
+            if(!int.TryParse(tradeConditionHexValue, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int tradeConditionId))
             {
-                throw new ArgumentException("Invalid Trade Condition value format: " + tradeCondition);
+                throw new ArgumentException("Invalid Trade Condition value format: " + tradeConditionHexValue);
             }
 
             return tradeConditionId;

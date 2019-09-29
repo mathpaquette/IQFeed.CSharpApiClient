@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Lookup.Common;
@@ -50,20 +51,32 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
             return _expiredOptionReader.GetExpiredOptions(filename, header);
         }
 
-        /// <summary>
-        /// SBF - Request the Symbols By Filter
-        /// </summary>
-        /// <param name="fieldToSearch">Field to perform search on (either Symbols or Descriptions)</param>
-        /// <param name="searchString">Search value</param>
-        /// <param name="filterType">Optional filter type (ListedMarket or SecurityType)</param>
-        /// <param name="requestId">Optional request id</param>
-        /// <returns>Symbol By Filter messages</returns>
         public Task<IEnumerable<SymbolByFilterMessage>> ReqSymbolsByFilterAsync(FieldToSearch fieldToSearch, string searchString, FilterType? filterType, IEnumerable<int> filterValues, string requestId = null)
         {
             var request = _symbolRequestFormatter.ReqSymbolsByFilter(fieldToSearch, searchString, filterType, filterValues, requestId);
             return string.IsNullOrEmpty(requestId)
                 ? GetMessagesAsync(request, _symbolMessageHandler.GetSymbolByFilterMessages)
                 : GetMessagesAsync(request, _symbolMessageHandler.GetSymbolByFilterMessagesWithRequestId);
+        }
+
+        public Task<IEnumerable<SymbolBySicCodeMessage>> ReqSymbolsBySicCodeAsync(string sicCodePrefix, string requestId = null)
+        {
+            if(sicCodePrefix == null) throw new ArgumentNullException(nameof(sicCodePrefix));
+            if(sicCodePrefix.Length < 2) throw new ArgumentException("Value should have at least 2 characters!", nameof(sicCodePrefix));
+            var request = _symbolRequestFormatter.ReqSymbolsBySicCode(sicCodePrefix, requestId);
+            return string.IsNullOrEmpty(requestId)
+                ? GetMessagesAsync(request, _symbolMessageHandler.GetSymbolBySicCodeMessages)
+                : GetMessagesAsync(request, _symbolMessageHandler.GetSymbolBySicCodeMessagesWithRequestId);
+        }
+
+        public Task<IEnumerable<SymbolByNiacCodeMessage>> ReqSymbolsByNiacCodeAsync(string niacCodePrefix, string requestId = null)
+        {
+            if(niacCodePrefix == null) throw new ArgumentNullException(nameof(niacCodePrefix));
+            if(niacCodePrefix.Length < 2) throw new ArgumentException("Value should have at least 2 characters!", nameof(niacCodePrefix));
+            var request = _symbolRequestFormatter.ReqSymbolsByNiacCode(niacCodePrefix, requestId);
+            return string.IsNullOrEmpty(requestId)
+                ? GetMessagesAsync(request, _symbolMessageHandler.GetSymbolByNiacCodeMessages)
+                : GetMessagesAsync(request, _symbolMessageHandler.GetSymbolByNiacCodeMessagesWithRequestId);
         }
 
         public Task<IEnumerable<ListedMarketMessage>> ReqListedMarketsAsync(string requestId = null)
@@ -88,6 +101,22 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
             return string.IsNullOrEmpty(requestId) 
                 ? GetMessagesAsync(request, _symbolMessageHandler.GetTradeConditionMessages) 
                 : GetMessagesAsync(request, _symbolMessageHandler.GetTradeConditionMessagesWithRequestId);
+        }
+
+        public Task<IEnumerable<SicCodeInfoMessage>> ReqSicCodesAsync(string requestId = null)
+        {
+            var request = _symbolRequestFormatter.ReqSicCodes(requestId);
+            return string.IsNullOrEmpty(requestId)
+                ? GetMessagesAsync(request, _symbolMessageHandler.GetSicCodeInfoMessages)
+                : GetMessagesAsync(request, _symbolMessageHandler.GetSicCodeInfoMessagesWithRequestId);
+        }
+
+        public Task<IEnumerable<NiacCodeInfoMessage>> ReqNiacCodesAsync(string requestId = null)
+        {
+            var request = _symbolRequestFormatter.ReqNiacCodes(requestId);
+            return string.IsNullOrEmpty(requestId)
+                ? GetMessagesAsync(request, _symbolMessageHandler.GetNiacCodeInfoMessages)
+                : GetMessagesAsync(request, _symbolMessageHandler.GetNiacCodeInfoMessagesWithRequestId);
         }
     }
 }

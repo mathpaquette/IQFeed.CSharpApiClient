@@ -16,6 +16,26 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
             return ProcessMessages(SymbolByFilterMessage.ParseWithRequestId, message, count, true);
         }
 
+        public MessageContainer<SymbolBySicCodeMessage> GetSymbolBySicCodeMessages(byte[] message, int count)
+        {
+            return ProcessMessages(SymbolBySicCodeMessage.Parse, message, count, false);
+        }
+
+        public MessageContainer<SymbolBySicCodeMessage> GetSymbolBySicCodeMessagesWithRequestId(byte[] message, int count)
+        {
+            return ProcessMessages(SymbolBySicCodeMessage.ParseWithRequestId, message, count, true);
+        }
+
+        public MessageContainer<SymbolByNiacCodeMessage> GetSymbolByNiacCodeMessages(byte[] message, int count)
+        {
+            return ProcessMessages(SymbolByNiacCodeMessage.Parse, message, count, false);
+        }
+
+        public MessageContainer<SymbolByNiacCodeMessage> GetSymbolByNiacCodeMessagesWithRequestId(byte[] message, int count)
+        {
+            return ProcessMessages(SymbolByNiacCodeMessage.ParseWithRequestId, message, count, true);
+        }
+
         public MessageContainer<ListedMarketMessage> GetListedMarketMessages(byte[] message, int count)
         {
             return ProcessMessages(ListedMarketMessage.Parse, message, count, false);
@@ -44,6 +64,26 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
         public MessageContainer<TradeConditionMessage> GetTradeConditionMessagesWithRequestId(byte[] message, int count)
         {
             return ProcessMessages(TradeConditionMessage.ParseWithRequestId, message, count, true);
+        }
+
+        public MessageContainer<SicCodeInfoMessage> GetSicCodeInfoMessages(byte[] message, int count)
+        {
+            return ProcessMessages(SicCodeInfoMessage.Parse, message, count, false);
+        }
+
+        public MessageContainer<SicCodeInfoMessage> GetSicCodeInfoMessagesWithRequestId(byte[] message, int count)
+        {
+            return ProcessMessages(SicCodeInfoMessage.ParseWithRequestId, message, count, true);
+        }
+
+        public MessageContainer<NiacCodeInfoMessage> GetNiacCodeInfoMessages(byte[] message, int count)
+        {
+            return ProcessMessages(NiacCodeInfoMessage.Parse, message, count, false);
+        }
+
+        public MessageContainer<NiacCodeInfoMessage> GetNiacCodeInfoMessagesWithRequestId(byte[] message, int count)
+        {
+            return ProcessMessages(NiacCodeInfoMessage.ParseWithRequestId, message, count, true);
         }
     }
 }
