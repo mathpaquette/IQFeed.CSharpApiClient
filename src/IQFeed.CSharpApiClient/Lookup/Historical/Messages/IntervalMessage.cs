@@ -82,7 +82,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             unchecked
             {
                 var hash = 17;
-                hash = hash * 29 + RequestId.GetHashCode();
+                hash = hash * 29 + RequestId != null ? RequestId.GetHashCode() : 0;
                 hash = hash * 29 + Timestamp.GetHashCode();
                 hash = hash * 29 + High.GetHashCode();
                 hash = hash * 29 + Low.GetHashCode();

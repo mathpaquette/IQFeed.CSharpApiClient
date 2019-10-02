@@ -126,7 +126,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
             unchecked
             {
                 var hash = 17;
-                hash = hash * 29 + RequestId.GetHashCode();
+                hash = hash * 29 + RequestId != null ? RequestId.GetHashCode() : 0;
                 hash = hash * 29 + Type.GetHashCode();
                 hash = hash * 29 + Symbol.GetHashCode();
                 hash = hash * 29 + Timestamp.GetHashCode();

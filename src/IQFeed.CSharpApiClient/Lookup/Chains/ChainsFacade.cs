@@ -58,7 +58,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
 
             var request = _chainsRequestFormatter.ReqChainIndexEquityOption(symbol, optionSideFilter, monthCodes, nearMonths, binaryOptionFilter, optionFilter, filterValue1, filterValue2, requestId);
             var messages = await GetMessagesAsync(request, _chainsMessageHandler.GetEquityOptionMessages).ConfigureAwait(false);
-            return messages.First().Chains;
+            return messages.FirstOrDefault()?.Chains;
         }
     }
 }
