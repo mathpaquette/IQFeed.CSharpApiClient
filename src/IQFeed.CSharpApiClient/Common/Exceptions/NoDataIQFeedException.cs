@@ -3,6 +3,6 @@
     // ReSharper disable once InconsistentNaming
     public class NoDataIQFeedException : IQFeedException
     {
-        public NoDataIQFeedException(string exception, string errorMessage) : base(exception, errorMessage) { }
+        public NoDataIQFeedException(string message) : base(message) { }
     }
 }

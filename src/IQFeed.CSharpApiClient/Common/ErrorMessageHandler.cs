@@ -1,5 +1,4 @@
 ﻿using IQFeed.CSharpApiClient.Common.Exceptions;
-using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Common
 {
@@ -7,14 +6,12 @@ namespace IQFeed.CSharpApiClient.Common
     {
         public IQFeedException GetException(string errorMessage)
         {
-            var values = errorMessage.SplitFeedMessage();
-            var exception = values[1];
-            switch (exception)
+            switch (errorMessage)
             {
                 case "!NO_DATA!":
-                    return new NoDataIQFeedException(exception, errorMessage);
+                    return new NoDataIQFeedException(errorMessage);
                 default:
-                    return new IQFeedException(exception, errorMessage);
+                    return new IQFeedException(errorMessage);
             }
         }
     }
