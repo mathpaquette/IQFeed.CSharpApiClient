@@ -20,7 +20,7 @@ namespace IQFeed.CSharpApiClient
         public const char PrototolErrorCharacter = 'E';
 
         /// <summary>
-        /// Regex pattern for matching and extracting error from the message
+        /// Regex pattern for matching error messages
         /// </summary>
         public static readonly Regex ErrorMatchingPattern = 
             new Regex($@"^{PrototolErrorCharacter}{ProtocolDelimiterCharacter}.*{ProtocolDelimiterCharacter}{{0,2}}$");
