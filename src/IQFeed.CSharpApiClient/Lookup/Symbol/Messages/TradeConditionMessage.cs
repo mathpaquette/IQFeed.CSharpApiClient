@@ -3,7 +3,7 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 {
-    public class TradeConditionMessage : ITradeCondition
+    public class TradeConditionMessage
     {
         public TradeConditionMessage(int tradeConditionId, string shortName, string longName, string requestId = null)
         {

@@ -3,7 +3,7 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 {
-    public class SymbolBySicCodeMessage : ISymbolBySicCodeMessage
+    public class SymbolBySicCodeMessage
     {
         public SymbolBySicCodeMessage(int sicCode, string symbol, int listedMarketId, int securityTypeId, string description, string requestId = null)
         {

@@ -129,11 +129,27 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         }
 
         [Test, MaxTime(TimeoutMs)]
-        public async Task Should_Return_EmptyResult_When_Historical_Invalid_Symbol()
+        public void Should_Throw_NoDataIQFeedException_When_Historical_Getting_Error()
         {
-            var historyTickDatapoints = await _lookupClient.Historical.ReqHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints);
-            Assert.IsNotNull(historyTickDatapoints);
-            Assert.AreEqual(0, historyTickDatapoints.Count());
+            var ex = Assert.ThrowsAsync<NoDataIQFeedException>(
+                async () => await _lookupClient.Historical.ReqHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints));
+        }
+
+        [Test, MaxTime(TimeoutMs)]
+        public void Should_Throw_NoDataIQFeedException_When_Historical_WithRequestId_Getting_Error()
+        {
+            var ex = Assert.ThrowsAsync<NoDataIQFeedException>(
+                async () => await _lookupClient.Historical.ReqHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints, requestId: "zzz"));
+        }
+
+        [Test, MaxTime(TimeoutMs)]
+        public void Should_Throw_IQFeedException_When_Historical_With_Illegal_Argument_Getting_Error()
+        {
+            // let's try to break the protocol
+            // we need to add argument validation for all requests
+            // basically no string parameter should contain commas...
+            var ex = Assert.ThrowsAsync<IQFeedException>(
+                async () => await _lookupClient.Historical.ReqHistoryTickDatapointsAsync("INVALID,SYMBOL,NAME", Datapoints));
         }
     }
 }

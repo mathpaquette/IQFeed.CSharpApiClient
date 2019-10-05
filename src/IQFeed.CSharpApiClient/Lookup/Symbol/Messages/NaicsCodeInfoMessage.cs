@@ -3,7 +3,7 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 {
-    public class NaicsCodeInfoMessage : INaicsCodeInfoMessage
+    public class NaicsCodeInfoMessage
     {
         public NaicsCodeInfoMessage(int naicsCode, string description, string requestId = null)
         {

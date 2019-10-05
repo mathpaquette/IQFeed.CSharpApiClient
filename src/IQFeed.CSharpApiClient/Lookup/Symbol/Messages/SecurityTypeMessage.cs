@@ -3,7 +3,7 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 {
-    public class SecurityTypeMessage : ISecurityType
+    public class SecurityTypeMessage
     {
         public SecurityTypeMessage(int securityTypeId, string shortName, string longName, string requestId = null)
         {

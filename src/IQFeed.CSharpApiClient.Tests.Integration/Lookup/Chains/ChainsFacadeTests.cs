@@ -68,10 +68,10 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Chains
         }
 
         [Test, MaxTime(TimeoutMs)]
-        public async Task Should_ReturnNull_When_ReqChainIndexEquityOptionAsync_InvalidSymbol()
+        public void Should_Throw_IQFeedException_When_Chains_Getting_Error()
         {
-            var equityIndexOptions = await _lookupClient.Chains.ReqChainIndexEquityOptionAsync("INVALID_SYMBOL_NAME", OptionSideFilterType.CP, string.Empty, 4);
-            Assert.IsNull(equityIndexOptions);
+            var ex = Assert.ThrowsAsync<NoDataIQFeedException>(
+                async () => await _lookupClient.Chains.ReqChainIndexEquityOptionAsync("INVALID_SYMBOL_NAME", OptionSideFilterType.CP, string.Empty, 4));
         }
     }
 }
