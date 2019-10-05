@@ -8,7 +8,7 @@ using IQFeed.CSharpApiClient.Socket;
 
 namespace IQFeed.CSharpApiClient.Lookup.Common
 {
-    public class RawMessageHandler
+    public class RawMessageHandler : BaseLookupMessageHandler
     {
         private readonly LookupDispatcher _lookupDispatcher;
         private readonly ErrorMessageHandler _errorMessageHandler;
@@ -25,6 +25,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
             _timeoutMs = timeoutMs;
         }
 
+        // TODO(mathip): add support for requestId parsing.
         public async Task<string> GetFilenameAsync(string request)
         {
             var client = await _lookupDispatcher.TakeAsync();
@@ -40,9 +41,16 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
                 // check for errors
                 if (args.Message[0] == IQFeedDefault.PrototolErrorCharacter && args.Message[1] == IQFeedDefault.ProtocolDelimiterCharacter)
                 {
-                    var errorMessage = Encoding.ASCII.GetString(args.Message, 0, args.Count);
-                    res.TrySetException(_errorMessageHandler.GetException(errorMessage));
-                    return;
+                    // at this level, we might have true negative, further checks needed
+                    var messages = Encoding.ASCII.GetString(args.Message, 0, args.Count).SplitFeedLine();
+                    var errorMessage = ParseErrorMessage(messages);
+
+                    if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        // error has been confirmed
+                        res.TrySetException(_errorMessageHandler.GetException(errorMessage));
+                        return;
+                    }
                 }
                 
                 binaryWriter.Write(args.Message, 0, args.Count);

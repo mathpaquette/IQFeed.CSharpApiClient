@@ -103,7 +103,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         }
 
         [Test, MaxTime(TimeoutMs)]
-        public void Should_Throw_IQFeedException_When_Historical_Getting_Error()
+        public void Should_Throw_NoDataIQFeedException_When_Historical_Has_No_Data()
         {
             var ex = Assert.ThrowsAsync<NoDataIQFeedException>(async () => await _lookupClient.Historical.Raw.ReqHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints));
         }
