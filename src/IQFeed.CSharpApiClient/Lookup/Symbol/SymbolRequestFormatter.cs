@@ -12,7 +12,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
             var fieldToSearchFormat = ((char)fieldToSearch).ToString();
             var filterTypeFormat = filterType.HasValue ? ((char)filterType).ToString() : string.Empty;
             var filterValuesFormat = filterType.HasValue ? string.Join(" ", filterValues) : string.Empty;
-            var request = $"SBF,{fieldToSearchFormat},{searchString},{filterTypeFormat},{filterValuesFormat},{requestId}{IQFeedDefault.ProtocolTerminatingCharacters}";
+            var request = $"SBF,{fieldToSearchFormat},{searchString.ToUpper()},{filterTypeFormat},{filterValuesFormat},{requestId}{IQFeedDefault.ProtocolTerminatingCharacters}";
             return request;
         }
 

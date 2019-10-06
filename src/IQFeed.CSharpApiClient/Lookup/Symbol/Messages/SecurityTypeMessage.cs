@@ -64,7 +64,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 
         public override string ToString()
         {
-            return $"{ShortName}({SecurityTypeId})";
+            return $"{nameof(SecurityTypeId)}: {SecurityTypeId}, {nameof(ShortName)}: {ShortName}, {nameof(LongName)}: {LongName}";
         }
     }
 }

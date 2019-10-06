@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace IQFeed.CSharpApiClient
+﻿namespace IQFeed.CSharpApiClient
 {
     // ReSharper disable once InconsistentNaming
     public class IQFeedDefault
@@ -18,12 +16,6 @@ namespace IQFeed.CSharpApiClient
         public const char ProtocolDelimiterCharacter = ',';
 
         public const char PrototolErrorCharacter = 'E';
-
-        /// <summary>
-        /// Regex pattern for matching error messages
-        /// </summary>
-        public static readonly Regex ErrorMatchingPattern = 
-            new Regex($@"^{PrototolErrorCharacter}{ProtocolDelimiterCharacter}.*{ProtocolDelimiterCharacter}{{0,2}}$");
 
         public const int Level1Port = 5009;
         public const int LookupPort = 9100;

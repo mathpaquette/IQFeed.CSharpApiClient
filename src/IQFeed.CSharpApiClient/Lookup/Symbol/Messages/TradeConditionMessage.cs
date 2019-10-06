@@ -61,10 +61,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
                 return hash;
             }
         }
-
         public override string ToString()
         {
-            return $"{ShortName}({TradeConditionId})";
+            return $"{nameof(TradeConditionId)}: {TradeConditionId}, {nameof(ShortName)}: {ShortName}, {nameof(LongName)}: {LongName}";
         }
     }
 }

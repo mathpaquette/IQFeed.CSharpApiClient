@@ -16,16 +16,16 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Symbol
         }
 
         [Test]
-        public void ReqSymbolsByFilter_Symbols_And_SecutiryTypes()
+        public void ReqSymbolsByFilter_Symbols_And_SecurityTypes()
         {
-            var request = _symbolRequestFormatter.ReqSymbolsByFilter(FieldToSearch.Symbols, "AAPL", FilterType.SecurityTypes, new int[] { 1 });
+            var request = _symbolRequestFormatter.ReqSymbolsByFilter(FieldToSearch.Symbols, "aapl", FilterType.SecurityTypes, new int[] { 1 });
             Assert.AreEqual("SBF,s,AAPL,t,1,\r\n", request);
         }
 
         [Test]
-        public void ReqSymbolsByFilter_Symbols_And_SecutiryTypes_WithRequestId()
+        public void ReqSymbolsByFilter_Symbols_And_SecurityTypes_WithRequestId()
         {
-            var request = _symbolRequestFormatter.ReqSymbolsByFilter(FieldToSearch.Symbols, "AAPL", FilterType.SecurityTypes, new int[] { 1 }, "abcd");
+            var request = _symbolRequestFormatter.ReqSymbolsByFilter(FieldToSearch.Symbols, "aapl", FilterType.SecurityTypes, new int[] { 1 }, "abcd");
             Assert.AreEqual("SBF,s,AAPL,t,1,abcd\r\n", request);
         }
 
@@ -33,7 +33,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Symbol
         public void ReqSymbolsByFilter_Description_And_ListedMarkets()
         {
             var request = _symbolRequestFormatter.ReqSymbolsByFilter(FieldToSearch.Descriptions, "Apple", FilterType.ListedMarkets, new int[] { 1, 2, 3 });
-            Assert.AreEqual("SBF,d,Apple,e,1 2 3,\r\n", request);
+            Assert.AreEqual("SBF,d,APPLE,e,1 2 3,\r\n", request);
         }
 
         [Test]

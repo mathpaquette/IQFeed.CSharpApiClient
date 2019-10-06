@@ -8,82 +8,82 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
     {
         public MessageContainer<SymbolByFilterMessage> GetSymbolByFilterMessages(byte[] message, int count)
         {
-            return ProcessMessages(SymbolByFilterMessage.Parse, message, count, false);
+            return ProcessMessages(SymbolByFilterMessage.Parse, ParseErrorMessage, message, count);
         }
 
         public MessageContainer<SymbolByFilterMessage> GetSymbolByFilterMessagesWithRequestId(byte[] message, int count)
         {
-            return ProcessMessages(SymbolByFilterMessage.ParseWithRequestId, message, count, true);
+            return ProcessMessages(SymbolByFilterMessage.ParseWithRequestId, ParseErrorMessageWithRequestId, message, count);
         }
 
         public MessageContainer<SymbolBySicCodeMessage> GetSymbolBySicCodeMessages(byte[] message, int count)
         {
-            return ProcessMessages(SymbolBySicCodeMessage.Parse, message, count, false);
+            return ProcessMessages(SymbolBySicCodeMessage.Parse, ParseErrorMessage, message, count);
         }
 
         public MessageContainer<SymbolBySicCodeMessage> GetSymbolBySicCodeMessagesWithRequestId(byte[] message, int count)
         {
-            return ProcessMessages(SymbolBySicCodeMessage.ParseWithRequestId, message, count, true);
+            return ProcessMessages(SymbolBySicCodeMessage.ParseWithRequestId, ParseErrorMessageWithRequestId, message, count);
         }
 
         public MessageContainer<SymbolByNaicsCodeMessage> GetSymbolByNaicsCodeMessages(byte[] message, int count)
         {
-            return ProcessMessages(SymbolByNaicsCodeMessage.Parse, message, count, false);
+            return ProcessMessages(SymbolByNaicsCodeMessage.Parse, ParseErrorMessage, message, count);
         }
 
         public MessageContainer<SymbolByNaicsCodeMessage> GetSymbolByNaicsCodeMessagesWithRequestId(byte[] message, int count)
         {
-            return ProcessMessages(SymbolByNaicsCodeMessage.ParseWithRequestId, message, count, true);
+            return ProcessMessages(SymbolByNaicsCodeMessage.ParseWithRequestId, ParseErrorMessageWithRequestId, message, count);
         }
 
         public MessageContainer<ListedMarketMessage> GetListedMarketMessages(byte[] message, int count)
         {
-            return ProcessMessages(ListedMarketMessage.Parse, message, count, false);
+            return ProcessMessages(ListedMarketMessage.Parse, ParseErrorMessage, message, count);
         }
 
         public MessageContainer<ListedMarketMessage> GetListedMarketMessagesWithRequestId(byte[] message, int count)
         {
-            return ProcessMessages(ListedMarketMessage.ParseWithRequestId, message, count, true);
+            return ProcessMessages(ListedMarketMessage.ParseWithRequestId, ParseErrorMessageWithRequestId, message, count);
         }
 
         public MessageContainer<SecurityTypeMessage> GetSecurityTypeMessages(byte[] message, int count)
         {
-            return ProcessMessages(SecurityTypeMessage.Parse, message, count, false);
+            return ProcessMessages(SecurityTypeMessage.Parse, ParseErrorMessage, message, count);
         }
 
         public MessageContainer<SecurityTypeMessage> GetSecurityTypeMessagesWithRequestId(byte[] message, int count)
         {
-            return ProcessMessages(SecurityTypeMessage.ParseWithRequestId, message, count, true);
+            return ProcessMessages(SecurityTypeMessage.ParseWithRequestId, ParseErrorMessageWithRequestId, message, count);
         }
 
         public MessageContainer<TradeConditionMessage> GetTradeConditionMessages(byte[] message, int count)
         {
-            return ProcessMessages(TradeConditionMessage.Parse, message, count, false);
+            return ProcessMessages(TradeConditionMessage.Parse, ParseErrorMessage, message, count);
         }
 
         public MessageContainer<TradeConditionMessage> GetTradeConditionMessagesWithRequestId(byte[] message, int count)
         {
-            return ProcessMessages(TradeConditionMessage.ParseWithRequestId, message, count, true);
+            return ProcessMessages(TradeConditionMessage.ParseWithRequestId, ParseErrorMessageWithRequestId, message, count);
         }
 
         public MessageContainer<SicCodeInfoMessage> GetSicCodeInfoMessages(byte[] message, int count)
         {
-            return ProcessMessages(SicCodeInfoMessage.Parse, message, count, false);
+            return ProcessMessages(SicCodeInfoMessage.Parse, ParseErrorMessage, message, count);
         }
 
         public MessageContainer<SicCodeInfoMessage> GetSicCodeInfoMessagesWithRequestId(byte[] message, int count)
         {
-            return ProcessMessages(SicCodeInfoMessage.ParseWithRequestId, message, count, true);
+            return ProcessMessages(SicCodeInfoMessage.ParseWithRequestId, ParseErrorMessageWithRequestId, message, count);
         }
 
         public MessageContainer<NaicsCodeInfoMessage> GetNaicsCodeInfoMessages(byte[] message, int count)
         {
-            return ProcessMessages(NaicsCodeInfoMessage.Parse, message, count, false);
+            return ProcessMessages(NaicsCodeInfoMessage.Parse, ParseErrorMessage, message, count);
         }
 
         public MessageContainer<NaicsCodeInfoMessage> GetNaicsCodeInfoMessagesWithRequestId(byte[] message, int count)
         {
-            return ProcessMessages(NaicsCodeInfoMessage.ParseWithRequestId, message, count, true);
+            return ProcessMessages(NaicsCodeInfoMessage.ParseWithRequestId, ParseErrorMessageWithRequestId, message, count);
         }
     }
 }

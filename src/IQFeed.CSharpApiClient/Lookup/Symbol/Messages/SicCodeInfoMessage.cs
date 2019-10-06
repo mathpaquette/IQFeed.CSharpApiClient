@@ -58,7 +58,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 
         public override string ToString()
         {
-            return $"{Description}({SicCode})";
+            return $"{nameof(SicCode)}: {SicCode}, {nameof(Description)}: {Description}";
         }
     }
 }

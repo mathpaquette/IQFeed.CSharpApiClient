@@ -73,5 +73,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
                 return hash;
             }
         }
+
+        public override string ToString()
+        {
+            return $"{nameof(ListedMarketId)}: {ListedMarketId}, {nameof(ShortName)}: {ShortName}, {nameof(LongName)}: {LongName}, {nameof(GroupId)}: {GroupId}, {nameof(ShortGroupName)}: {ShortGroupName}";
+        }
     }
 }

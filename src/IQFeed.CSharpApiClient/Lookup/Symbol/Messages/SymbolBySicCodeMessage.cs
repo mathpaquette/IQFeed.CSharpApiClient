@@ -73,10 +73,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
                 return hash;
             }
         }
-
         public override string ToString()
         {
-            return $"{Symbol}";
+            return $"{nameof(SicCode)}: {SicCode}, {nameof(Symbol)}: {Symbol}, {nameof(ListedMarketId)}: {ListedMarketId}, {nameof(SecurityTypeId)}: {SecurityTypeId}, {nameof(Description)}: {Description}";
         }
     }
 }

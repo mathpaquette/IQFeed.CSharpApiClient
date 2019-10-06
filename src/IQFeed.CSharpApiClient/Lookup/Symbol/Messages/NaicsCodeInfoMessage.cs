@@ -55,10 +55,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
                 return hash;
             }
         }
-
+        
         public override string ToString()
         {
-            return $"{Description}({NaicsCode})";
+            return $"{nameof(NaicsCode)}: {NaicsCode}, {nameof(Description)}: {Description}";
         }
     }
 }
