@@ -1,5 +1,7 @@
 # IQFeed CSharp Api Client #
-[![Build status](https://ci.appveyor.com/api/projects/status/6u1f245xxvkri7s2/branch/master?svg=true)](https://ci.appveyor.com/project/mathpaquette/iqfeed-csharpapiclient/branch/master) [![NuGet Version and Downloads count](https://buildstats.info/nuget/IQFeed.CSharpApiClient)](https://www.nuget.org/packages/IQFeed.CSharpApiClient) 
+[![Build status](https://ci.appveyor.com/api/projects/status/6u1f245xxvkri7s2/branch/master?svg=true)](https://ci.appveyor.com/project/mathpaquette/iqfeed-csharpapiclient/branch/master)
+[![NuGet Version and Downloads count](https://buildstats.info/nuget/IQFeed.CSharpApiClient)](https://www.nuget.org/packages/IQFeed.CSharpApiClient)
+[![Gitter](https://badges.gitter.im/IQFeed-CSharpApiClient/public.svg)](https://gitter.im/IQFeed-CSharpApiClient/public)
 
 IQFeed.CSharpApiClient is fastest and the most well designed C# DTN IQFeed socket API connector available to the open source community! Currently supporting the latest stable IQFeed protocol version 6.0.
 
@@ -15,6 +17,7 @@ If you appreciate this project, please star :star: it now!
   - [Configuration](#configuration)
   - [Examples](#examples)
 - [IQFeed API support status](#iqfeed-api-support-status)
+- [Support](#support)
 - [Contributing](#contributing)
 
 ## Features
@@ -72,6 +75,9 @@ var ticksMessages = await lookupClient.Historical.ReqHistoryTickDatapointsAsync(
 - [ ] News data
 - [x] Symbol Lookup data
 - [x] Chains Lookup data
+ 
+ # Support
+ For support request, you can create an issue on GitHub or join our [Gitter](https://gitter.im/IQFeed-CSharpApiClient/public) chat.
  
  # Contributing
  Pull requests are welcome! Don't hesitate to open an issue if something goes wrong.
