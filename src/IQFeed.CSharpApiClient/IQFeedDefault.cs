@@ -9,7 +9,9 @@
 
         public const string ProtocolTerminatingCharacters = "\r\n";
         public const string ProtocolEndOfMessageCharacters = "!ENDMSG!";
-
+        public const string ProtocolNoDataCharacters = "!NO_DATA!";
+        public const string ProtocolSyntaxErrorCharacters = "!SYNTAX_ERROR!";
+        
         public const char ProtocolLineFeedCharacter ='\n';
         public const char ProtocolDelimiterCharacter = ',';
 

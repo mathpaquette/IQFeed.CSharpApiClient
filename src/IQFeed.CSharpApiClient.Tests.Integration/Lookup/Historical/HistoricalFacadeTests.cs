@@ -129,9 +129,28 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         }
 
         [Test, MaxTime(TimeoutMs)]
-        public void Should_Throw_IQFeedException_When_Historical_Getting_Error()
+        public void Should_Throw_NoDataIQFeedException_When_Historical_Getting_Error()
         {
-            var ex = Assert.ThrowsAsync<NoDataIQFeedException>(async () => await _lookupClient.Historical.ReqHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints));
+            var ex = Assert.ThrowsAsync<NoDataIQFeedException>(
+                async () => await _lookupClient.Historical.ReqHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints));
+        }
+
+        [Test, MaxTime(TimeoutMs)]
+        public void Should_Throw_NoDataIQFeedException_When_Historical_With_RequestId_Getting_Error()
+        {
+            var ex = Assert.ThrowsAsync<NoDataIQFeedException>(
+                async () => await _lookupClient.Historical.ReqHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints, requestId: "zzz"));
+        }
+
+        [Test, MaxTime(TimeoutMs)]
+        public void Should_Throw_IQFeedException_When_Historical_With_Illegal_Argument_Getting_Error()
+        {
+            // let's try to break the protocol
+            // we need to add argument validation for all requests - this should ideally throw ArgumentException
+            // and we should do the checks before sending wrong protocol messages to IQ Feed
+            // no string parameter should contain commas...
+            var ex = Assert.ThrowsAsync<IQFeedException>(
+                async () => await _lookupClient.Historical.ReqHistoryTickDatapointsAsync("INVALID,SYMBOL,NAME", Datapoints));
         }
     }
 }
