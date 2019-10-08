@@ -16,10 +16,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
         public HistoricalFacade(
             HistoricalRequestFormatter historicalRequestFormatter,
             LookupDispatcher lookupDispatcher,
-            ErrorMessageHandler errorMessageHandler,
+            ExceptionFactory exceptionFactory,
             HistoricalMessageHandler historicalMessageHandler,
             HistoricalRawFacade historicalRawFacade,
-            int timeoutMs) : base(lookupDispatcher, errorMessageHandler, timeoutMs)
+            int timeoutMs) : base(lookupDispatcher, exceptionFactory, timeoutMs)
         {
             _historicalMessageHandler = historicalMessageHandler;
             _historicalRequestFormatter = historicalRequestFormatter;

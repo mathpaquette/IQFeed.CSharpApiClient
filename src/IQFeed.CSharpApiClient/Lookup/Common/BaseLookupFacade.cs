@@ -10,13 +10,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
     public abstract class BaseLookupFacade
     {
         private readonly LookupDispatcher _lookupDispatcher;
-        private readonly ErrorMessageHandler _errorMessageHandler;
+        private readonly ExceptionFactory _exceptionFactory;
         private readonly int _timeoutMs;
 
-        protected BaseLookupFacade(LookupDispatcher lookupDispatcher, ErrorMessageHandler errorMessageHandler, int timeoutMs)
+        protected BaseLookupFacade(LookupDispatcher lookupDispatcher, ExceptionFactory exceptionFactory, int timeoutMs)
         {
             _lookupDispatcher = lookupDispatcher;
-            _errorMessageHandler = errorMessageHandler;
+            _exceptionFactory = exceptionFactory;
             _timeoutMs = timeoutMs;
         }
 
@@ -35,7 +35,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
 
                 if (container.ErrorMessage != null)
                 {
-                    res.TrySetException(_errorMessageHandler.GetException(container.ErrorMessage));
+                    res.TrySetException(_exceptionFactory.CreateNew(container.ErrorMessage, container.MessageTrace));
                     return;
                 }
 

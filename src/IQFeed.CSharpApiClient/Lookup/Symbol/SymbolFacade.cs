@@ -23,13 +23,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
         public SymbolFacade(
             SymbolRequestFormatter symbolRequestFormatter,
             LookupDispatcher lookupDispatcher,
-            ErrorMessageHandler errorMessageHandler,
+            ExceptionFactory exceptionFactory,
             SymbolMessageHandler symbolMessageHandler,
             MarketSymbolDownloader marketSymbolDownloader, 
             MarketSymbolReader marketSymbolReader,
             ExpiredOptionDownloader expiredOptionDownloader,
             ExpiredOptionReader expiredOptionReader,
-            int timeoutMs) : base(lookupDispatcher, errorMessageHandler, timeoutMs)
+            int timeoutMs) : base(lookupDispatcher, exceptionFactory, timeoutMs)
         {
             _symbolRequestFormatter = symbolRequestFormatter;
             _symbolMessageHandler = symbolMessageHandler;
