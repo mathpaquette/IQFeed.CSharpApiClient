@@ -17,8 +17,8 @@ namespace IQFeed.CSharpApiClient.Lookup
             // Common
             var requestFormatter = new RequestFormatter();
             var lookupDispatcher = new LookupDispatcher(host, port, bufferSize, IQFeedDefault.ProtocolVersion, numberOfClients, requestFormatter);
-            var errorMessageHandler = new ErrorMessageHandler();
-            var rawMessageHandler = new RawMessageHandler(lookupDispatcher, errorMessageHandler, timeoutMs);
+            var exceptionFactory = new ExceptionFactory();
+            var rawMessageHandler = new RawMessageHandler(lookupDispatcher, exceptionFactory, timeoutMs);
 
             // Historical
             var historicalDataRequestFormatter = new HistoricalRequestFormatter();
@@ -26,7 +26,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             var historicalFacade = new HistoricalFacade(
                 historicalDataRequestFormatter,
                 lookupDispatcher,
-                errorMessageHandler,
+                exceptionFactory,
                 new HistoricalMessageHandler(),
                 historicalRawFace,
                 timeoutMs
@@ -39,7 +39,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             var symbolFacade = new SymbolFacade(
                 new SymbolRequestFormatter(),
                 lookupDispatcher,
-                errorMessageHandler,
+                exceptionFactory,
                 new SymbolMessageHandler(),
                 new MarketSymbolDownloader(), 
                 new MarketSymbolReader(), 
@@ -48,7 +48,7 @@ namespace IQFeed.CSharpApiClient.Lookup
                 timeoutMs);
 
             // Chains
-            var chainsFacade = new ChainsFacade(new ChainsRequestFormatter(), new ChainsMessageHandler(), lookupDispatcher, errorMessageHandler, timeoutMs);
+            var chainsFacade = new ChainsFacade(new ChainsRequestFormatter(), new ChainsMessageHandler(), lookupDispatcher, exceptionFactory, timeoutMs);
 
             return new LookupClient(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade);
         }

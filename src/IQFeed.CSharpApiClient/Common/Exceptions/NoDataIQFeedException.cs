@@ -3,6 +3,8 @@
     // ReSharper disable once InconsistentNaming
     public class NoDataIQFeedException : IQFeedException
     {
-        public NoDataIQFeedException(string message) : base(message) { }
+        private const string NoDataMessage = "IQFeed doesn't have any data for the request sent.";
+
+        public NoDataIQFeedException(string errorMessage, string messageTrace) : base(NoDataMessage, errorMessage, messageTrace) { }
     }
 }

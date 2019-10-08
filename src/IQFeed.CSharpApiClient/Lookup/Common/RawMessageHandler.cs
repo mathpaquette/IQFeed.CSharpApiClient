@@ -11,17 +11,17 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
     public class RawMessageHandler : BaseLookupMessageHandler
     {
         private readonly LookupDispatcher _lookupDispatcher;
-        private readonly ErrorMessageHandler _errorMessageHandler;
+        private readonly ExceptionFactory _exceptionFactory;
 
         private readonly int _timeoutMs;
         private readonly byte[] _endOfMsgBytes;
 
-        public RawMessageHandler(LookupDispatcher lookupDispatcher, ErrorMessageHandler errorMessageHandler, int timeoutMs)
+        public RawMessageHandler(LookupDispatcher lookupDispatcher, ExceptionFactory exceptionFactory, int timeoutMs)
         {
             _endOfMsgBytes = Encoding.ASCII.GetBytes(IQFeedDefault.ProtocolEndOfMessageCharacters + IQFeedDefault.ProtocolDelimiterCharacter + IQFeedDefault.ProtocolTerminatingCharacters);
 
             _lookupDispatcher = lookupDispatcher;
-            _errorMessageHandler = errorMessageHandler;
+            _exceptionFactory = exceptionFactory;
             _timeoutMs = timeoutMs;
         }
 
@@ -42,13 +42,14 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
                 if (args.Message[0] == IQFeedDefault.PrototolErrorCharacter && args.Message[1] == IQFeedDefault.ProtocolDelimiterCharacter)
                 {
                     // at this level, we might have true negative, further checks needed
-                    var messages = Encoding.ASCII.GetString(args.Message, 0, args.Count).SplitFeedLine();
+                    var received = Encoding.ASCII.GetString(args.Message, 0, args.Count);
+                    var messages = received.SplitFeedLine();
                     var errorMessage = ParseErrorMessage(messages);
 
                     if (!string.IsNullOrEmpty(errorMessage))
                     {
                         // error has been confirmed
-                        res.TrySetException(_errorMessageHandler.GetException(errorMessage));
+                        res.TrySetException(_exceptionFactory.CreateNew(errorMessage, received));
                         return;
                     }
                 }

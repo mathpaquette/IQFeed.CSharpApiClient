@@ -22,7 +22,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
 
             if (!string.IsNullOrEmpty(errorMsg))
             {
-                return new MessageContainer<T>(parsedMessages, true, errorMsg);
+                var messageTrace = Encoding.ASCII.GetString(message, 0, count);
+                return new MessageContainer<T>(parsedMessages, true, errorMsg, messageTrace);
             }
 
             for (var i = 0; i < messages.Length; i++)

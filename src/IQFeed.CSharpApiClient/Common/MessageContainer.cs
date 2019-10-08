@@ -7,12 +7,20 @@ namespace IQFeed.CSharpApiClient.Common
         public IEnumerable<T> Messages { get; }
         public bool End { get; }
         public string ErrorMessage { get; }
+        public string MessageTrace { get; }
 
-        public MessageContainer(IEnumerable<T> messages, bool end, string errorMessage = null)
+        public MessageContainer(IEnumerable<T> messages, bool end)
+        {
+            Messages = messages;
+            End = end;
+        }
+
+        public MessageContainer(IEnumerable<T> messages, bool end, string errorMessage, string messageTrace)
         {
             Messages = messages;
             End = end;
             ErrorMessage = errorMessage;
+            MessageTrace = messageTrace;
         }
     }
 }
