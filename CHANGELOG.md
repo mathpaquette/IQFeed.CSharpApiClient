@@ -1,5 +1,6 @@
-### IQFeed.CSharpApiClient 1.4.5 - October 10, 2019
+### IQFeed.CSharpApiClient 1.4.6 - October 10, 2019
 * Added Symbol and Market Info Lookup support
+* Added more information when throwing IQFeed exception
 
 ##### Issues Resolved
  * Added better error detection to avoid true negative with request Id and some edge cases.
