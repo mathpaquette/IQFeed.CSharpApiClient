@@ -1,7 +1,9 @@
 # IQFeed CSharp Api Client #
+[![Gitter](https://badges.gitter.im/IQFeed-CSharpApiClient/public.svg)](https://gitter.im/IQFeed-CSharpApiClient/public)
+
+
 [![Build status](https://ci.appveyor.com/api/projects/status/6u1f245xxvkri7s2/branch/master?svg=true)](https://ci.appveyor.com/project/mathpaquette/iqfeed-csharpapiclient/branch/master)
 [![NuGet Version and Downloads count](https://buildstats.info/nuget/IQFeed.CSharpApiClient)](https://www.nuget.org/packages/IQFeed.CSharpApiClient)
-[![Gitter](https://badges.gitter.im/IQFeed-CSharpApiClient/public.svg)](https://gitter.im/IQFeed-CSharpApiClient/public)
 
 IQFeed.CSharpApiClient is fastest and the most well designed C# DTN IQFeed socket API connector available to the open source community! Currently supporting the latest stable IQFeed protocol version 6.0.
 
@@ -26,7 +28,7 @@ If you appreciate this project, please star :star: it now!
 - Handle multiple socket connections for at least 50% performance increase when requesting lookup data
 - Sockets are using [SocketAsyncEventArgs](https://msdn.microsoft.com/en-us/library/system.net.sockets.socketasynceventargs(v=vs.110).aspx) for maximum performance and trying to reduce pressure on GC
 - Support for .NET Core 2.0
-- No dependency
+- No 3rd party dependency
 
 ## Usage
 ### Installation
@@ -35,7 +37,7 @@ If you appreciate this project, please star :star: it now!
 ### Configuration
 Now, you need to set your API credentials and product id somewhere. You have 2 options, in your user environment variables or app.config.
 
-##### User environment variables
+#### User environment variables
 - Run `rundll32 sysdm.cpl,EditEnvironmentVariables` to open the Environment Variables
 - In your User variables, create 4 new ones:
   - IQCONNECT_LOGIN
@@ -43,7 +45,7 @@ Now, you need to set your API credentials and product id somewhere. You have 2 o
   - IQCONNECT_PRODUCT_ID
   - IQCONNECT_PRODUCT_VERSION (not mandatory, will fallback to 1.0.0.0)
 
-##### app.config
+#### app.config
 In your appSettings section, assign values to these key:
 ```
 <appSettings>
@@ -65,19 +67,19 @@ var ticksMessages = await lookupClient.Historical.ReqHistoryTickDatapointsAsync(
 ```
 
 ### IQFeed API support status
-##### Streaming data
+#### Streaming data
 - [x] Level 1 data
 - [ ] Level 2 data
 - [x] Derivative data
 - [x] Admin data
-##### Lookup data
+#### Lookup data
 - [x] Historical data
 - [ ] News data
 - [x] Symbol Lookup data
 - [x] Chains Lookup data
  
- # Support
+ ## Support
  For support request, you can create an issue on GitHub or join our [Gitter](https://gitter.im/IQFeed-CSharpApiClient/public) chat.
  
- # Contributing
+ ## Contributing
  Pull requests are welcome! Don't hesitate to open an issue if something goes wrong.
