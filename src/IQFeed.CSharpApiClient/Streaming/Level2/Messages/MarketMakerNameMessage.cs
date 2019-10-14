@@ -1,37 +1,30 @@
-﻿using System;
-using System.Globalization;
-using IQFeed.CSharpApiClient.Extensions;
+﻿using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
 {
-    public class NameLevelQueryResponseMessage
+    public class MarketMakerNameMessage
     {
-        public NameLevelQueryResponseMessage(string mmID, string description)
+        public MarketMakerNameMessage(string mmid, string description)
         {
-            MMID = mmID;
+            MMID = mmid;
             Description = description;
         }
 
         public string MMID { get; }
         public string Description { get; }
 
-        public override string ToString()
-        {
-            return $"{MMID} {Description}";
-        }
-
-        public static NameLevelQueryResponseMessage Parse(string message)
+        public static MarketMakerNameMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
-            var mmID = values[1];
+            var mmid = values[1];
             var description = values[2];
 
-            return new NameLevelQueryResponseMessage(mmID, description);
+            return new MarketMakerNameMessage(mmid, description);
         }
 
         public override bool Equals(object obj)
         {
-            return obj is NameLevelQueryResponseMessage message &&
+            return obj is MarketMakerNameMessage message &&
                    MMID == message.MMID &&
                    Description == message.Description;
         }
@@ -45,6 +38,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
                 hash = hash * 29 + Description.GetHashCode();
                 return hash;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(MMID)}: {MMID}, {nameof(Description)}: {Description}";
         }
     }
 }

@@ -2,12 +2,11 @@
 using System.Globalization;
 using IQFeed.CSharpApiClient.Extensions;
 
-namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
+namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
 {
     // T,[YYYYMMDD HH:mm:SS]<LF>
     public class TimestampMessage
     {
-        static char[] chr = { '\r' };
         public const string TimestampMessageDateTimeFormat = "yyyyMMdd HH:mm:ss";
 
         public TimestampMessage(DateTime timestamp)
@@ -20,8 +19,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
         public static TimestampMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
-            
-            DateTime.TryParseExact(values[1].TrimEnd(chr), TimestampMessageDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var timestamp);
+
+            DateTime.TryParseExact(values[1], TimestampMessageDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var timestamp);
             return new TimestampMessage(timestamp);
         }
 

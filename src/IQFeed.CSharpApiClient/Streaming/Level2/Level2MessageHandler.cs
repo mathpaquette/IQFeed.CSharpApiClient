@@ -8,16 +8,16 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
     public class Level2MessageHandler : ILevel2Event
     {
         public event Action<UpdateSummaryMessage> Summary;
-        public event Action<NameLevelQueryResponseMessage> QueryResponse;
+        public event Action<UpdateSummaryMessage> Update;
+        public event Action<TimestampMessage> Timestamp;
+        public event Action<MarketMakerNameMessage> Query;
         public event Action<SymbolNotFoundMessage> SymbolNotFound;
         public event Action<SystemMessage> System;
         public event Action<ErrorMessage> Error;
-        public event Action<TimestampMessage> Timestamp;
-        public event Action<UpdateSummaryMessage> Update;
 
         public void ProcessMessages(byte[] messageBytes, int count)
         {
-            string[] messages = Encoding.ASCII.GetString(messageBytes, 0, count - 1).Split(IQFeedDefault.ProtocolLineFeedCharacter);
+            var messages = Encoding.ASCII.GetString(messageBytes, 0, count - 1).Split(IQFeedDefault.ProtocolLineFeedCharacter);
 
             for (int i = 0; i < messages.Length; i++)
             {
@@ -34,7 +34,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
                         ProcessTimestampMessage(message);
                         break;
                     case 'M': // A Market Maker name OR order book level query response message.
-                        ProcessNameLevelQueryResponseMessage(message);
+                        ProcessMarketMakerNameMessage(message);
                         break;
                     case 'S': // A system message
                         ProcessSystemMessage(message);
@@ -45,7 +45,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
                     case 'E': // An error message
                         ProcessErrorMessage(message);
                         break;
-                    case 'O': // A depeprecated message included only for backwards compatability
+                    case 'O': // A deprecated message included only for backward compability
                         break;
                     default:
                         throw new Exception("Unknown type of level 2 message received.");
@@ -71,10 +71,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             Timestamp?.Invoke(timestampMessage);
         }
 
-        private void ProcessNameLevelQueryResponseMessage(string msg)
+        private void ProcessMarketMakerNameMessage(string msg)
         {
-            var nameLevelQueryResponseMessage = NameLevelQueryResponseMessage.Parse(msg);
-            QueryResponse?.Invoke(nameLevelQueryResponseMessage);
+            var marketMakerNameMessage = MarketMakerNameMessage.Parse(msg);
+            Query?.Invoke(marketMakerNameMessage);
         }
 
         private void ProcessSystemMessage(string msg)

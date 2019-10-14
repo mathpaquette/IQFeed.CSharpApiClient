@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Examples.Common;
+using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level1;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
@@ -33,7 +34,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel1
             level1Client.Update += Level1ClientOnSummary;
             level1Client.Timestamp += Level1ClientOnTimestamp;
 
-            // Step 6 - Make your streaming Leve1 requests
+            // Step 6 - Make your streaming Level 1 requests
             level1Client.ReqWatch("AAPL");
 
             Console.WriteLine("Watching APPL for the next 30 seconds... Please be patient ;-)\n");

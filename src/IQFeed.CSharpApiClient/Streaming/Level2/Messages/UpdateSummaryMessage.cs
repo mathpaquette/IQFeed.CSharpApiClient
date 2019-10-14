@@ -10,7 +10,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
         public const string UpdateMessageDateFormat = "yyyy-MM-dd";
 
         public UpdateSummaryMessage(string symbol,
-                                    string mmID,
+                                    string mmid,
                                     float bid,
                                     float ask,
                                     int bidSize,
@@ -24,7 +24,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
                                     string endOfMessageGroup)
         {
             Symbol = symbol;
-            MMID = mmID;
+            MMID = mmid;
             Bid = bid;
             Ask = ask;
             BidSize = bidSize;
@@ -52,17 +52,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
         public string AskInfoValid { get; }
         public string EndOfMessageGroup { get; }
 
-        public override string ToString()
-        {
-            return $"{Symbol} {MMID} {Bid:f2} {Ask:f2} {BidSize,8:d} {AskSize,8:d} {BidTime: HH:mm:ss.ffffff} " +
-                   $"{Date: MM/dd/yyyy} {ConditionCode} {AskTime: HH:mm:ss.ffffff} {BidInfoValid} {AskInfoValid} {EndOfMessageGroup} ";
-        }//MM/dd/yyyy
-
         public static UpdateSummaryMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
             var symbol = values[1];
-            var mmID = values[2];
+            var mmid = values[2];
             float.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var bid);
             float.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out var ask);
             int.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var bidSize);
@@ -77,7 +71,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
 
             return new UpdateSummaryMessage(
                 symbol,
-                mmID,
+                mmid,
                 bid,
                 ask,
                 bidSize,
@@ -132,6 +126,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
                 hash = hash * 29 + EndOfMessageGroup.GetHashCode();
                 return hash;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(Symbol)}: {Symbol}, {nameof(MMID)}: {MMID}, {nameof(Bid)}: {Bid}, {nameof(Ask)}: {Ask}, {nameof(BidSize)}: {BidSize}, {nameof(AskSize)}: {AskSize}, {nameof(BidTime)}: {BidTime}, {nameof(Date)}: {Date}, {nameof(ConditionCode)}: {ConditionCode}, {nameof(AskTime)}: {AskTime}, {nameof(BidInfoValid)}: {BidInfoValid}, {nameof(AskInfoValid)}: {AskInfoValid}, {nameof(EndOfMessageGroup)}: {EndOfMessageGroup}";
         }
     }
 }

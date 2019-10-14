@@ -6,7 +6,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level2
 {
     public class Level2ClientTests
     {
-        private const string Symbol = "@ESM19";
+        private const string Symbol = "@ES#";
         private ILevel2Client _level2Client;
 
         public Level2ClientTests()

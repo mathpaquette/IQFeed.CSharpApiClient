@@ -1,24 +1,24 @@
 ﻿using System;
+using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 using IQFeed.CSharpApiClient.Tests.Common;
 using IQFeed.CSharpApiClient.Tests.Common.TestCases;
 using NUnit.Framework;
 
-namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2.Messages
+namespace IQFeed.CSharpApiClient.Tests.Streaming.Common.Messages
 {
     public class TimestampMessageTests
     {
         [Test, TestCaseSource(typeof(CultureNameTestCase), nameof(CultureNameTestCase.CultureNames))]
-        public void Should_Parse_TimestampMessage_Culture_Independant(string cultureName)
+        public void Should_Parse_TimestampMessage_Culture_Independent(string cultureName)
         {
             // Arrange
             TestHelper.SetThreadCulture(cultureName);
-            char[] chr = { '\r' };
-            var message = "T,20190417 14:18:31\r";
+            var message = "T,20180709 14:18:31";
 
             // Act
-            var timestampMessageParsed = TimestampMessage.Parse(message.TrimEnd(chr));
-            var timestampMessage = new TimestampMessage(new DateTime(2019, 04, 17, 14, 18, 31));
+            var timestampMessageParsed = TimestampMessage.Parse(message);
+            var timestampMessage = new TimestampMessage(new DateTime(2018, 07, 09, 14, 18, 31));
 
             // Assert
             Assert.AreEqual(timestampMessageParsed, timestampMessage);

@@ -1,6 +1,4 @@
-﻿using System.Text;
-using IQFeed.CSharpApiClient.Common;
-using IQFeed.CSharpApiClient.Extensions;
+﻿using IQFeed.CSharpApiClient.Common;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level2
 {
@@ -11,29 +9,24 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             return $"w{symbol.ToUpper()}{IQFeedDefault.ProtocolTerminatingCharacters}";
         }
 
+        public string ReqMarketMakerNameById(string mmid)
+        {
+            return $"m{mmid.ToUpper()}{IQFeedDefault.ProtocolTerminatingCharacters}";
+        }
+
         public string ReqUnwatch(string symbol)
         {
             return $"r{symbol.ToUpper()}{IQFeedDefault.ProtocolTerminatingCharacters}";
         }
 
-        public string ReqTimestamp()
-        {
-            return $"T{IQFeedDefault.ProtocolTerminatingCharacters}";
-        }
-
         public string ReqServerConnect()
         {
-            return $"S,CONNECT{IQFeedDefault.ProtocolTerminatingCharacters}";
+            return $"c{IQFeedDefault.ProtocolTerminatingCharacters}";
         }
 
         public string ReqServerDisconnect()
         {
-            return $"S,DISCONNECT{IQFeedDefault.ProtocolTerminatingCharacters}";
-        }
-
-        public string ReqMMID(string mmID)
-        {
-            return $"m{mmID.ToUpper()}{ IQFeedDefault.ProtocolTerminatingCharacters}";
+            return $"x{IQFeedDefault.ProtocolTerminatingCharacters}";
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Examples.Common;
+using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level2;
 using IQFeed.CSharpApiClient.Streaming.Level2.Messages;
 
@@ -30,14 +31,14 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel2
             level2Client.Update += Level2ClientOnSummary;
             level2Client.Timestamp += Level2ClientOnTimestamp;
 
-            // Step 6 - Make your streaming Leve1 requests
-            level2Client.ReqWatch("@ESM19");
+            // Step 6 - Make your streaming Level 2 requests
+            level2Client.ReqWatch("@ES#");
 
-            Console.WriteLine("Watching @ESM19 for the next 20 seconds... Please be patient ;-)\n");
-            await Task.Delay(TimeSpan.FromSeconds(20));
+            Console.WriteLine("Watching @ES# for the next 30 seconds... Please be patient ;-)\n");
+            await Task.Delay(TimeSpan.FromSeconds(30));
 
             // Step 7 - Unwatch and unregister events
-            level2Client.ReqUnwatch("@ESM19");
+            level2Client.ReqUnwatch("@ES#");
 
             level2Client.Summary -= Level2ClientOnSummary;
             level2Client.Update -= Level2ClientOnSummary;
