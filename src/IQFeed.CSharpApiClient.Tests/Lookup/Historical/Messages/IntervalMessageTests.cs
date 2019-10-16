@@ -9,7 +9,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
     public class IntervalMessageTests
     {
         [Test, TestCaseSource(typeof(CultureNameTestCase), nameof(CultureNameTestCase.CultureNames))]
-        public void Should_Parse_IntervalMessage_Culture_Independant(string cultureName)
+        public void Should_Parse_IntervalMessage_Culture_Independent(string cultureName)
         {
             // Arrange
             TestHelper.SetThreadCulture(cultureName);

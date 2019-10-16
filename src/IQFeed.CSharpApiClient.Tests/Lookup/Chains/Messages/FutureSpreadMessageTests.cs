@@ -12,7 +12,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Chains.Messages
     public class FutureSpreadMessageTests
     {
         [Test, TestCaseSource(typeof(CultureNameTestCase), nameof(CultureNameTestCase.CultureNames))]
-        public void Should_Parse_FutureSpreadMessage_Culture_Independant(string cultureName)
+        public void Should_Parse_FutureSpreadMessage_Culture_Independent(string cultureName)
         {
             // Arrange
             TestHelper.SetThreadCulture(cultureName);

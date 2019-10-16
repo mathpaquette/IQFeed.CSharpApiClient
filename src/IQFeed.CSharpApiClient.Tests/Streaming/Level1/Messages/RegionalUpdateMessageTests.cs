@@ -9,7 +9,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
     public class RegionalUpdateMessageTests
     {
         [Test, TestCaseSource(typeof(CultureNameTestCase), nameof(CultureNameTestCase.CultureNames))]
-        public void Should_Parse_RegionalUpdateMessage_Culture_Independant(string cultureName)
+        public void Should_Parse_RegionalUpdateMessage_Culture_Independent(string cultureName)
         {
             // Arrange
             TestHelper.SetThreadCulture(cultureName);
