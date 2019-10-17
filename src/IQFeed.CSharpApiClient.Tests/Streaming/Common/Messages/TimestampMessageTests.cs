@@ -1,10 +1,11 @@
 ﻿using System;
+using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 using IQFeed.CSharpApiClient.Tests.Common;
 using IQFeed.CSharpApiClient.Tests.Common.TestCases;
 using NUnit.Framework;
 
-namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
+namespace IQFeed.CSharpApiClient.Tests.Streaming.Common.Messages
 {
     public class TimestampMessageTests
     {

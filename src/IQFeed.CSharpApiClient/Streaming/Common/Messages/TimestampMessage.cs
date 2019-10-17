@@ -2,7 +2,7 @@
 using System.Globalization;
 using IQFeed.CSharpApiClient.Extensions;
 
-namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
+namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
 {
     // T,[YYYYMMDD HH:mm:SS]<LF>
     public class TimestampMessage
