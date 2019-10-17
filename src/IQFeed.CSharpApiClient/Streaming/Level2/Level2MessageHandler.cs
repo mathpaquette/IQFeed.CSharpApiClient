@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level2.Messages;
 
@@ -17,7 +18,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
 
         public void ProcessMessages(byte[] messageBytes, int count)
         {
-            var messages = Encoding.ASCII.GetString(messageBytes, 0, count - 1).Split(IQFeedDefault.ProtocolLineFeedCharacter);
+            var messages = Encoding.ASCII.GetString(messageBytes, 0, count).SplitFeedLine();
 
             for (int i = 0; i < messages.Length; i++)
             {

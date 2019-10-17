@@ -30,7 +30,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
                 "EBAY1901K31,EBAY1901K32,EBAY1901K32.5,EBAY1901K33,EBAY1901K33.5,EBAY1901K34,EBAY1901K34.5,EBAY1901K35,EBAY1901K35.5,EBAY1901K36,EBAY1901K36.5,EBAY1901K37, \r\n",
                 "!ENDMSG!,"
             };
-            var messagesBytes = TestHelper.GetMessagesBytes(messages);
+            var messagesBytes = TestHelper.GetMessageBytes(messages);
 
             // Act
             var container = _baseLookupMessageHandlerTestClass.ProcessMessages(_parserFunc, _errorParserFunc, messagesBytes, messagesBytes.Length);
@@ -48,7 +48,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
                 "E,!NO_DATA!,,\r\n",
                 "!ENDMSG!,"
             };
-            var messagesBytes = TestHelper.GetMessagesBytes(messages);
+            var messagesBytes = TestHelper.GetMessageBytes(messages);
 
             // Act
             var container = _baseLookupMessageHandlerTestClass.ProcessMessages(_parserFunc, _errorParserFunc, messagesBytes, messagesBytes.Length);
@@ -66,7 +66,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
                 "EBAY1901K31,EBAY1901K32,EBAY1901K32.5,EBAY1901K33,EBAY1901K33.5,EBAY1901K34,EBAY1901K34.5,EBAY1901K35,EBAY1901K35.5,EBAY1901K36,EBAY1901K36.5,EBAY1901K37, \r\n",
                 "!ENDMSG!,"
             };
-            var messagesBytes = TestHelper.GetMessagesBytes(messages);
+            var messagesBytes = TestHelper.GetMessageBytes(messages);
 
             // Act
             _baseLookupMessageHandlerTestClass.ProcessMessages(_parserFunc, _errorParserFunc, messagesBytes, messagesBytes.Length);
@@ -84,7 +84,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
                 "E,!NO_DATA!,,\r\n",
                 "!ENDMSG!,"
             };
-            var messagesBytes = TestHelper.GetMessagesBytes(messages);
+            var messagesBytes = TestHelper.GetMessageBytes(messages);
             _errorParserFunc(Arg.Any<string[]>()).Returns("!ENDMSG!");
 
             // Act

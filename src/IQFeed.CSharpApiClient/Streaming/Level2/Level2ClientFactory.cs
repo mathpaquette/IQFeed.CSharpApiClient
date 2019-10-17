@@ -4,7 +4,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
 {
     public static class Level2ClientFactory
     {
-        public static Level2Client CreateNew(string host = IQFeedDefault.Hostname, int port = IQFeedDefault.Level2Port, int snapshotTimeoutMs = Level2Default.SnapshotTimeoutMs)
+        public static Level2Client CreateNew(
+            string host = IQFeedDefault.Hostname, 
+            int port = IQFeedDefault.Level2Port,
+            int snapshotTimeoutMs = Level2Default.SnapshotTimeoutMs)
         {
             var socketClient = new SocketClient(host, port);
             var level2RequestFormatter = new Level2RequestFormatter();

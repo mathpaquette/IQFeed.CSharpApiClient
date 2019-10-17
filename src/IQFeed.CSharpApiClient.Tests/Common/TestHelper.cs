@@ -15,9 +15,14 @@ namespace IQFeed.CSharpApiClient.Tests.Common
             Thread.CurrentThread.CurrentUICulture = culture;
         }
 
-        public static byte[] GetMessagesBytes(IEnumerable<string> messages)
+        public static byte[] GetMessageBytes(IEnumerable<string> messages)
         {
             return Encoding.ASCII.GetBytes(messages.Aggregate((acc, msg) => acc += msg));
+        }
+
+        public static byte[] GetMessageBytes(string message)
+        {
+            return GetMessageBytes(new List<string>() { message });
         }
     }
 }

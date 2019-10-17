@@ -27,6 +27,11 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel2
             level2Client.Connect();
 
             // Step 5 - Register to appropriate events
+
+            // ** IMPORTANT ** you should always subscribe to System event
+            level2Client.System += Level2ClientOnSystem;
+            level2Client.Error += Level2ClientOnError;
+
             level2Client.Summary += Level2ClientOnSummary;
             level2Client.Update += Level2ClientOnSummary;
             level2Client.Timestamp += Level2ClientOnTimestamp;
@@ -51,6 +56,16 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel2
         }
 
         private void Level2ClientOnSummary(UpdateSummaryMessage msg)
+        {
+            Console.WriteLine(msg);
+        }
+
+        private void Level2ClientOnError(ErrorMessage msg)
+        {
+            Console.WriteLine(msg);
+        }
+
+        private void Level2ClientOnSystem(SystemMessage msg)
         {
             Console.WriteLine(msg);
         }
