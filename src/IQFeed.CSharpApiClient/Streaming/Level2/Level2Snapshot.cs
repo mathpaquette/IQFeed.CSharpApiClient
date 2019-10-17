@@ -1,6 +1,8 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Socket;
+using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level2.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level2
@@ -20,32 +22,46 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             _timeoutMs = timeoutMs;
         }
 
-        public Task<UpdateSummaryMessage> GetUpdateSummarySnapshotAsync(string symbol)
+        public Task<IEnumerable<UpdateSummaryMessage>> GetSummarySnapshotAsync(string symbol)
         {
-            return GetUpdateSummaryMessageAsync(symbol);
+            return GetSummaryMessageAsync(symbol);
         }
 
-        private async Task<UpdateSummaryMessage> GetUpdateSummaryMessageAsync(string symbol)
+        private async Task<IEnumerable<UpdateSummaryMessage>> GetSummaryMessageAsync(string symbol)
         {
             var ct = new CancellationTokenSource(_timeoutMs);
-            var res = new TaskCompletionSource<UpdateSummaryMessage>();
+            var res = new TaskCompletionSource<IEnumerable<UpdateSummaryMessage>>();
             ct.Token.Register(() => res.TrySetCanceled(), false);
 
-            void Level2ClientOnUpdate(UpdateSummaryMessage updateSummaryMessage)
+            var summaryMessages = new List<UpdateSummaryMessage>();
+
+            void Level2ClientOnSummary(UpdateSummaryMessage updateSummaryMessage)
             {
                 if (updateSummaryMessage.Symbol == symbol)
-                    res.TrySetResult(updateSummaryMessage);
+                {
+                    summaryMessages.Add(updateSummaryMessage);
+                }
             }
 
-            _level2MessageHandler.Summary += Level2ClientOnUpdate;
-            _level2MessageHandler.Update += Level2ClientOnUpdate;
+            void Level2ClientOnTimestamp(TimestampMessage timestampMessage)
+            {
+                // summary messages are received sequentially in a batch meaning that they won't interfere with other messages
+                // we can use this assumption and complete the receive process when at least one summary message has been received.
+                if (summaryMessages.Count > 0)
+                {
+                    res.TrySetResult(summaryMessages);
+                }
+            }
+
+            _level2MessageHandler.Summary += Level2ClientOnSummary;
+            _level2MessageHandler.Timestamp += Level2ClientOnTimestamp;
             ReqWatch(symbol);
 
             await res.Task.ContinueWith(x =>
             {
-                _level2MessageHandler.Summary -= Level2ClientOnUpdate;
-                _level2MessageHandler.Update -= Level2ClientOnUpdate;
                 ReqUnwatch(symbol);
+                _level2MessageHandler.Timestamp -= Level2ClientOnTimestamp;
+                _level2MessageHandler.Summary -= Level2ClientOnSummary;
                 ct.Dispose();
             }, TaskContinuationOptions.None).ConfigureAwait(false);
 

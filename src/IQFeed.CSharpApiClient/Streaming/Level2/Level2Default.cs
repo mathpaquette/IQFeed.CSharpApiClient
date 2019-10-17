@@ -2,6 +2,6 @@
 {
     public class Level2Default
     {
-        public const int SnapshotTimeoutMs = 1000;
+        public const int SnapshotTimeoutMs = 2000;
     }
 }

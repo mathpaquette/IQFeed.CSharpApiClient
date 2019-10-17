@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
@@ -33,11 +34,15 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             add => _level2MessageHandler.Update += value;
             remove => _level2MessageHandler.Update -= value;
         }
-
         public event Action<MarketMakerNameMessage> Query
         {
             add => _level2MessageHandler.Query += value;
             remove => _level2MessageHandler.Query -= value;
+        }
+        public event Action<SystemMessage> System
+        {
+            add => _level2MessageHandler.System += value;
+            remove => _level2MessageHandler.System -= value;
         }
 
         private readonly SocketClient _socketClient;
@@ -45,7 +50,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
         private readonly Level2MessageHandler _level2MessageHandler;
         private readonly ILevel2Snapshot _level2Snapshot;
 
-        public Level2Client(SocketClient socketClient, Level2RequestFormatter level2RequestFormatter, Level2MessageHandler level2MessageHandler, ILevel2Snapshot level2Snapshot)
+        public Level2Client(
+            SocketClient socketClient, 
+            Level2RequestFormatter level2RequestFormatter, 
+            Level2MessageHandler level2MessageHandler, 
+            ILevel2Snapshot level2Snapshot)
         {
             _level2Snapshot = level2Snapshot;
             _socketClient = socketClient;
@@ -80,9 +89,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             _socketClient.Send(request);
         }
 
-        public Task<UpdateSummaryMessage> GetUpdateSummarySnapshotAsync(string symbol)
+        public Task<IEnumerable<UpdateSummaryMessage>> GetSummarySnapshotAsync(string symbol)
         {
-            return _level2Snapshot.GetUpdateSummarySnapshotAsync(symbol.ToUpper());
+            return _level2Snapshot.GetSummarySnapshotAsync(symbol.ToUpper());
         }
 
         public void ReqMarketMakerNameById(string mmid)
