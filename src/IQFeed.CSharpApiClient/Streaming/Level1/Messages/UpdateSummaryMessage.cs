@@ -9,13 +9,28 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         public const string UpdateMessageTimeFormat = "HH:mm:ss.ffffff";
 
         // S,CURRENT UPDATE FIELDNAMES,Symbol,Most Recent Trade,Most Recent Trade Size,Most Recent Trade Time,Most Recent Trade Market Center,Total Volume,Bid,Bid Size,Ask,Ask Size,Open,High,Low,Close,Message Contents,Most Recent Trade Conditions
-        public UpdateSummaryMessage(string symbol, float mostRecentTrade, int mostRecentTradeSize, DateTime mostRecentTradeTime, int mostRecentTradeMarketCenter, int totalVolume,
-            float bid, int bidSize, float ask, int askSize, float open, float high, float low, float close, string messageContents, string mostRecentTradeConditions)
+        public UpdateSummaryMessage(
+            string symbol,
+            float mostRecentTrade,
+            int mostRecentTradeSize,
+            DateTime mostRecentTradeTime,
+            int mostRecentTradeMarketCenter,
+            int totalVolume,
+            float bid,
+            int bidSize,
+            float ask,
+            int askSize,
+            float open,
+            float high,
+            float low,
+            float close,
+            string messageContents,
+            string mostRecentTradeConditions)
         {
             Symbol = symbol;
             MostRecentTrade = mostRecentTrade;
             MostRecentTradeSize = mostRecentTradeSize;
-            MostRecentTradeTime = mostRecentTradeTime;
+            MostRecentTradeTime = mostRecentTradeTime.TimeOfDay;
             MostRecentTradeMarketCenter = mostRecentTradeMarketCenter;
             TotalVolume = totalVolume;
             Bid = bid;
@@ -33,7 +48,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         public string Symbol { get; }
         public float MostRecentTrade { get; }
         public int MostRecentTradeSize { get; }
-        public DateTime MostRecentTradeTime { get; }
+        public TimeSpan MostRecentTradeTime { get; }
         public int MostRecentTradeMarketCenter { get; }
         public int TotalVolume { get; }
         public float Bid { get; }
@@ -98,7 +113,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                    Symbol == message.Symbol &&
                    MostRecentTrade == message.MostRecentTrade &&
                    MostRecentTradeSize == message.MostRecentTradeSize &&
-                   MostRecentTradeTime.TimeOfDay == message.MostRecentTradeTime.TimeOfDay &&
+                   MostRecentTradeTime == message.MostRecentTradeTime &&
                    MostRecentTradeMarketCenter == message.MostRecentTradeMarketCenter &&
                    TotalVolume == message.TotalVolume &&
                    Bid == message.Bid &&
@@ -121,7 +136,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 hash = hash * 29 + Symbol.GetHashCode();
                 hash = hash * 29 + MostRecentTrade.GetHashCode();
                 hash = hash * 29 + MostRecentTradeSize.GetHashCode();
-                hash = hash * 29 + MostRecentTradeTime.TimeOfDay.GetHashCode();
+                hash = hash * 29 + MostRecentTradeTime.GetHashCode();
                 hash = hash * 29 + MostRecentTradeMarketCenter.GetHashCode();
                 hash = hash * 29 + TotalVolume.GetHashCode();
                 hash = hash * 29 + Bid.GetHashCode();
