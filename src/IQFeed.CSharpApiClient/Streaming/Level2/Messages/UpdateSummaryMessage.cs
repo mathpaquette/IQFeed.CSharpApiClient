@@ -9,19 +9,20 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
         public const string UpdateMessageTimeFormat = "HH:mm:ss.ffffff";
         public const string UpdateMessageDateFormat = "yyyy-MM-dd";
 
-        public UpdateSummaryMessage(string symbol,
-                                    string mmid,
-                                    float bid,
-                                    float ask,
-                                    int bidSize,
-                                    int askSize,
-                                    DateTime bidTime,
-                                    DateTime date,
-                                    string conditionCode,
-                                    DateTime askTime,
-                                    string bidInfoValid,
-                                    string askInfoValid,
-                                    string endOfMessageGroup)
+        public UpdateSummaryMessage(
+            string symbol,
+            string mmid,
+            float bid,
+            float ask,
+            int bidSize,
+            int askSize,
+            DateTime bidTime,
+            DateTime date,
+            string conditionCode,
+            DateTime askTime,
+            char bidInfoValid,
+            char askInfoValid,
+            char endOfMessageGroup)
         {
             Symbol = symbol;
             MMID = mmid;
@@ -48,9 +49,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
         public DateTime Date { get; }
         public string ConditionCode { get; }
         public TimeSpan AskTime { get; }
-        public string BidInfoValid { get; }
-        public string AskInfoValid { get; }
-        public string EndOfMessageGroup { get; }
+        public char BidInfoValid { get; }
+        public char AskInfoValid { get; }
+        public char EndOfMessageGroup { get; }
 
         public static UpdateSummaryMessage Parse(string message)
         {
@@ -65,9 +66,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
             DateTime.TryParseExact(values[8], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date);
             var conditionCode = values[9];
             DateTime.TryParseExact(values[10], UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var askTime);
-            var bidInfoValid = values[11];
-            var askInfoValid = values[12];
-            var endOfMessageGroup = values[13];
+            char.TryParse(values[11], out var bidInfoValid);
+            char.TryParse(values[12], out var askInfoValid); 
+            char.TryParse(values[13], out var endOfMessageGroup);
 
             return new UpdateSummaryMessage(
                 symbol,
