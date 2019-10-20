@@ -29,10 +29,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
             Ask = ask;
             BidSize = bidSize;
             AskSize = askSize;
-            BidTime = bidTime;
+            BidTime = bidTime.TimeOfDay;
             Date = date;
             ConditionCode = conditionCode;
-            AskTime = askTime;
+            AskTime = askTime.TimeOfDay;
             BidInfoValid = bidInfoValid;
             AskInfoValid = askInfoValid;
             EndOfMessageGroup = endOfMessageGroup;
@@ -44,10 +44,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
         public float Ask { get; }
         public int BidSize { get; }
         public int AskSize { get; }
-        public DateTime BidTime { get; }
+        public TimeSpan BidTime { get; }
         public DateTime Date { get; }
         public string ConditionCode { get; }
-        public DateTime AskTime { get; }
+        public TimeSpan AskTime { get; }
         public string BidInfoValid { get; }
         public string AskInfoValid { get; }
         public string EndOfMessageGroup { get; }

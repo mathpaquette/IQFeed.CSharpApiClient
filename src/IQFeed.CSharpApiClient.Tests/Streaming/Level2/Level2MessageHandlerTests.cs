@@ -24,19 +24,11 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
         {
             // Arrange
             var message = TestHelper.GetMessageBytes("Z,@ES#,MD01,2982.25,2982.5,99,238,12:49:52.696621,2019-10-18,52,12:49:52.541104,T,T,F,\r\n");
-            var expectedMessage = new UpdateSummaryMessage(
-                "@ES#",
-                "MD01",
-                2982.25f,
-                2982.5f,
-                99,
-                238,
-                DateTime.ParseExact("12:49:52.696621", UpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture),
-                new DateTime(2019, 10, 18),
-                "52",
-                DateTime.ParseExact("12:49:52.541104", UpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture),
-                "T", "T", "F");
+            DateTime.TryParseExact("12:49:52.696621", UpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var askTime);
+            var date = new DateTime(2019, 10, 18);
+            DateTime.TryParseExact("12:49:52.541104", UpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var bidTime);
 
+            var expectedMessage = new UpdateSummaryMessage("@ES#", "MD01", 2982.25f, 2982.5f, 99, 238, askTime, date, "52", bidTime, "T", "T", "F");
             UpdateSummaryMessage updateSummaryMessage = null;
             _level2MessageHandler.Summary += msg =>
             {
@@ -54,20 +46,12 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
         public void Should_Receive_Update()
         {
             // Arrange
-            var message = TestHelper.GetMessageBytes("2,@ES#,MD01,2982.25,2982.5,99,238,12:49:52.696621,2019-10-18,52,12:49:52.541104,T,T,F,\r\n");
-            var expectedMessage = new UpdateSummaryMessage(
-                "@ES#",
-                "MD01",
-                2982.25f,
-                2982.5f,
-                99,
-                238,
-                DateTime.ParseExact("12:49:52.696621", UpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture),
-                new DateTime(2019, 10, 18),
-                "52",
-                DateTime.ParseExact("12:49:52.541104", UpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture),
-                "T", "T", "F");
+            var message = TestHelper.GetMessageBytes("2,@ES#,MD01,2982.25,2982.5,99,238,12:49:52.696622,2019-10-18,52,12:49:52.541105,T,T,F,\r\n");
+            DateTime.TryParseExact("12:49:52.696622", UpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var askTime);
+            var date = new DateTime(2019, 10, 18);
+            DateTime.TryParseExact("12:49:52.541105", UpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var bidTime);
 
+            var expectedMessage = new UpdateSummaryMessage("@ES#", "MD01", 2982.25f, 2982.5f, 99, 238, askTime, date, "52", bidTime, "T", "T", "F");
             UpdateSummaryMessage updateSummaryMessage = null;
             _level2MessageHandler.Update += msg =>
             {
