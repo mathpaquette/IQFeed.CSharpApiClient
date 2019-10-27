@@ -69,7 +69,7 @@ var ticksMessages = await lookupClient.Historical.ReqHistoryTickDatapointsAsync(
 ### IQFeed API support status
 #### Streaming data
 - [x] Level 1 data
-- [ ] Level 2 data
+- [x] Level 2 data :new:
 - [x] Derivative data
 - [x] Admin data
 #### Lookup data
