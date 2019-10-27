@@ -1,3 +1,7 @@
+### IQFeed.CSharpApiClient 1.5.0 - October 27, 2019
+* Added Level 2 data support
+* Replaced DateTime for time in L1 and L2 UpdateSummaryMessage with TimeSpan for better readability
+
 ### IQFeed.CSharpApiClient 1.4.6 - October 10, 2019
 * Added Symbol and Market Info Lookup support
 * Added more information when throwing IQFeed exception
@@ -28,9 +32,8 @@ for derivative data and now supporting the latest protocol version 6.0. All mess
 * Added NumberOfTrades in IntervalMessage
 * Added DataDirection enum parameter for all historical request
 
-
 ##### Issues Resolved
  * Messages parsing are now culture independent
- * #16 LookupClient BufferSize can be customized
+ * LookupClient BufferSize can be customized
  * DailyWeeklyMonthlyMessage can handle large value
- * Workaround for test converage
+ * Workaround for test coverage
