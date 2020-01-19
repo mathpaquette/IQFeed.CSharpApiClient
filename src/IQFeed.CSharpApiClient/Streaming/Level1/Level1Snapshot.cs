@@ -5,14 +5,14 @@ using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
-    public class Level1Snapshot : ILevel1Snapshot
+    public class Level1Snapshot<T> : ILevel1Snapshot<T>
     {
         private readonly SocketClient _socketClient;
         private readonly Level1RequestFormatter _level1RequestFormatter;
-        private readonly Level1MessageHandler _level1MessageHandler;
+        private readonly ILevel1MessageHandler<T> _level1MessageHandler;
         private readonly int _timeoutMs;
 
-        public Level1Snapshot(SocketClient socketClient, Level1RequestFormatter level1RequestFormatter, Level1MessageHandler level1MessageHandler, int timeoutMs)
+        public Level1Snapshot(SocketClient socketClient, Level1RequestFormatter level1RequestFormatter, ILevel1MessageHandler<T> level1MessageHandler, int timeoutMs)
         {
             _socketClient = socketClient;
             _level1RequestFormatter = level1RequestFormatter;
@@ -25,7 +25,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return GetFundamentalMessageAsync(symbol);
         }
 
-        public Task<UpdateSummaryMessage> GetUpdateSummarySnapshotAsync(string symbol)
+        public Task<UpdateSummaryMessage<T>> GetUpdateSummarySnapshotAsync(string symbol)
         {
             return GetUpdateSummaryMessageAsync(symbol);
         }
@@ -55,13 +55,13 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return await res.Task.ConfigureAwait(false);
         }
 
-        private async Task<UpdateSummaryMessage> GetUpdateSummaryMessageAsync(string symbol)
+        private async Task<UpdateSummaryMessage<T>> GetUpdateSummaryMessageAsync(string symbol)
         {
             var ct = new CancellationTokenSource(_timeoutMs);
-            var res = new TaskCompletionSource<UpdateSummaryMessage>();
+            var res = new TaskCompletionSource<UpdateSummaryMessage<T>>();
             ct.Token.Register(() => res.TrySetCanceled(), false);
 
-            void Level1ClientOnUpdate(UpdateSummaryMessage updateSummaryMessage)
+            void Level1ClientOnUpdate(UpdateSummaryMessage<T> updateSummaryMessage)
             {
                 if (updateSummaryMessage.Symbol == symbol)
                     res.TrySetResult(updateSummaryMessage);

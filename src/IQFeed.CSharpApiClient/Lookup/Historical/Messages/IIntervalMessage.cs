@@ -2,13 +2,13 @@
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
-    public interface IIntervalMessage : IHistoricalMessage
+    public interface IIntervalMessage<T> : IHistoricalMessage
     {
-        float Close { get; }
-        float High { get; }
-        float Low { get; }
+        T Close { get; }
+        T High { get; }
+        T Low { get; }
         int NumberOfTrades { get; }
-        float Open { get; }
+        T Open { get; }
         int PeriodVolume { get; }
         long TotalVolume { get; }
     }

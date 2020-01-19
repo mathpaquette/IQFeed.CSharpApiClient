@@ -11,7 +11,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Derivative
         private const int TimeoutMs = 30000;
         private const string Symbol = "AAPL";
         private const int Interval = 5;
-        private IDerivativeClient _derivativeClient;
+        private IDerivativeClient<decimal> _derivativeClient;
 
         public DerivativeClientTests()
         {

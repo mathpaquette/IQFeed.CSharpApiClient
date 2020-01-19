@@ -4,12 +4,24 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
 {
     public class DerivativeClientFactory
     {
-        public static DerivativeClient CreateNew(string host = IQFeedDefault.Hostname, int port = IQFeedDefault.DerivativePort, int bufferSize = DerivativeDefault.BufferSize)
+        public static DerivativeClient<decimal> CreateNew()
         {
-            return new DerivativeClient(
-                new SocketClient(host, port, bufferSize), 
-                new DerivativeRequestFormatter(), 
+            return CreateNew(
+                IQFeedDefault.Hostname,
+                IQFeedDefault.DerivativePort,
+                DerivativeDefault.BufferSize,
                 new DerivativeMessageHandler());
+        }
+        public static DerivativeClient<T> CreateNew<T>(
+            string host,
+            int port,
+            int bufferSize,
+            IDerivativeMessageHandler<T> derivativeMessageHandler)
+        {
+            return new DerivativeClient<T>(
+                new SocketClient(host, port, bufferSize),
+                new DerivativeRequestFormatter(),
+                derivativeMessageHandler);
         }
     }
 }

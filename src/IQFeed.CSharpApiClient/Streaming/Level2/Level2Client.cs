@@ -7,9 +7,9 @@ using IQFeed.CSharpApiClient.Streaming.Level2.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level2
 {
-    public class Level2Client : ILevel2Client
+    public class Level2Client<T> : ILevel2Client<T>
     {
-        public event Action<UpdateSummaryMessage> Summary
+        public event Action<UpdateSummaryMessage<T>> Summary
         {
             add => _level2MessageHandler.Summary += value;
             remove => _level2MessageHandler.Summary -= value;
@@ -29,7 +29,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             add => _level2MessageHandler.Timestamp += value;
             remove => _level2MessageHandler.Timestamp -= value;
         }
-        public event Action<UpdateSummaryMessage> Update
+        public event Action<UpdateSummaryMessage<T>> Update
         {
             add => _level2MessageHandler.Update += value;
             remove => _level2MessageHandler.Update -= value;
@@ -47,14 +47,14 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
 
         private readonly SocketClient _socketClient;
         private readonly Level2RequestFormatter _level2RequestFormatter;
-        private readonly Level2MessageHandler _level2MessageHandler;
-        private readonly ILevel2Snapshot _level2Snapshot;
+        private readonly ILevel2MessageHandler<T> _level2MessageHandler;
+        private readonly ILevel2Snapshot<T> _level2Snapshot;
 
         public Level2Client(
             SocketClient socketClient, 
             Level2RequestFormatter level2RequestFormatter, 
-            Level2MessageHandler level2MessageHandler, 
-            ILevel2Snapshot level2Snapshot)
+            ILevel2MessageHandler<T> level2MessageHandler, 
+            ILevel2Snapshot<T> level2Snapshot)
         {
             _level2Snapshot = level2Snapshot;
             _socketClient = socketClient;
@@ -89,7 +89,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             _socketClient.Send(request);
         }
 
-        public Task<IEnumerable<UpdateSummaryMessage>> GetSummarySnapshotAsync(string symbol)
+        public Task<IEnumerable<UpdateSummaryMessage<T>>> GetSummarySnapshotAsync(string symbol)
         {
             return _level2Snapshot.GetSummarySnapshotAsync(symbol.ToUpper());
         }

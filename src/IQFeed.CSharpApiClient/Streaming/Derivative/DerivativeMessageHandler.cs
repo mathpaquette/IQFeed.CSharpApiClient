@@ -3,15 +3,14 @@ using System.Text;
 using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Derivative.Messages;
-using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Derivative
 {
-    public class DerivativeMessageHandler : IDerivativeEvent
+    public class DerivativeMessageHandler : IDerivativeMessageHandler<decimal>
     {
         public event Action<SystemMessage> System;
         public event Action<ErrorMessage> Error;
-        public event Action<IntervalBarMessage> IntervalBar;
+        public event Action<IntervalBarMessage<decimal>> IntervalBar;
         public event Action<SymbolNotFoundMessage> SymbolNotFound;
 
         public void ProcessMessages(byte[] messageBytes, int count)

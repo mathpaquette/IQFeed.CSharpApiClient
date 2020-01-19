@@ -2,7 +2,7 @@
 
 namespace IQFeed.CSharpApiClient.Streaming.Level2
 {
-    public interface ILevel2Client : IClient, ILevel2Event, ILevel2Snapshot
+    public interface ILevel2Client<T> : IClient, ILevel2Event<T>, ILevel2Snapshot<T>
     {
         void ReqWatch(string symbol);
         void ReqMarketMakerNameById(string mmid);

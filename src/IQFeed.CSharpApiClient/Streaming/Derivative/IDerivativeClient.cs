@@ -3,7 +3,7 @@ using IQFeed.CSharpApiClient.Common.Interfaces;
 
 namespace IQFeed.CSharpApiClient.Streaming.Derivative
 {
-    public interface IDerivativeClient: IClient, IDerivativeEvent
+    public interface IDerivativeClient<T>: IClient, IDerivativeEvent<T>
     {
         void SetClientName(string name);
 

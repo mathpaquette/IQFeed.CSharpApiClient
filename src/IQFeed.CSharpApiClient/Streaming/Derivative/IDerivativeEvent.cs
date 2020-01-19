@@ -5,10 +5,10 @@ using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Derivative
 {
-    public interface IDerivativeEvent
+    public interface IDerivativeEvent<T>
     {
         event Action<ErrorMessage> Error;
-        event Action<IntervalBarMessage> IntervalBar;
+        event Action<IntervalBarMessage<T>> IntervalBar;
         event Action<SymbolNotFoundMessage> SymbolNotFound;
         event Action<SystemMessage> System;
     }

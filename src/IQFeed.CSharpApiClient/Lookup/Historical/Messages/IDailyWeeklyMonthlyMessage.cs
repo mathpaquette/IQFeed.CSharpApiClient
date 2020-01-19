@@ -2,12 +2,12 @@
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
-    public interface IDailyWeeklyMonthlyMessage : IHistoricalMessage
+    public interface IDailyWeeklyMonthlyMessage<T> : IHistoricalMessage
     {
-        float Close { get; }
-        float High { get; }
-        float Low { get; }
-        float Open { get; }
+        T Close { get; }
+        T High { get; }
+        T Low { get; }
+        T Open { get; }
         int OpenInterest { get; }
         long PeriodVolume { get; }
     }

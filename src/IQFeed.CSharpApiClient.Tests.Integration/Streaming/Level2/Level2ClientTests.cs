@@ -19,7 +19,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level2
         private const int TimeoutMs = 15000;
         private const string Symbol = "AAPL";
         private const string MarketMarkerId = "MD02";
-        private ILevel2Client _level2Client;
+        private ILevel2Client<decimal> _level2Client;
 
         public Level2ClientTests()
         {

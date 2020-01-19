@@ -17,11 +17,11 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentHistorical
         public string Name => typeof(ConcurrentHistoricalExample).Name;
         private const int NumberOfConcurrentClients = 15;
 
-        private readonly ConcurrentDictionary<string, List<DailyWeeklyMonthlyMessage>> _dailyMessagesBySymbol;
+        private readonly ConcurrentDictionary<string, List<DailyWeeklyMonthlyMessage<decimal>>> _dailyMessagesBySymbol;
 
         public ConcurrentHistoricalExample() : base(LookupClientFactory.CreateNew(NumberOfConcurrentClients), NumberOfConcurrentClients)
         {
-            _dailyMessagesBySymbol = new ConcurrentDictionary<string, List<DailyWeeklyMonthlyMessage>>();
+            _dailyMessagesBySymbol = new ConcurrentDictionary<string, List<DailyWeeklyMonthlyMessage<decimal>>>();
         }
 
         public void Run()

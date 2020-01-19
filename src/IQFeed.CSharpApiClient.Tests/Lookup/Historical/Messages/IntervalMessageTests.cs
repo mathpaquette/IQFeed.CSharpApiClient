@@ -16,7 +16,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
             var message = $"2018-06-29 16:12:40,185.2500,185.2600,185.2700,185.2800,{long.MaxValue},100,0,";
 
             // Act
-            var intervalMessage = new IntervalMessage(new DateTime(2018, 06, 29, 16, 12, 40), 185.25f, 185.26f, 185.27f, 185.28f, long.MaxValue, 100, 0);
+            var intervalMessage = new IntervalMessage<decimal>(new DateTime(2018, 06, 29, 16, 12, 40), 185.25m, 185.26m, 185.27m, 185.28m, long.MaxValue, 100, 0);
             var intervalMessageFromValues = IntervalMessage.Parse(message);
 
             // Assert
