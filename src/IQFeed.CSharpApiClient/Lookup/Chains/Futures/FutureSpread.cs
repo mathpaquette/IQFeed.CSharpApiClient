@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using IQFeed.CSharpApiClient.Lookup.Chains.Messages;
 
 namespace IQFeed.CSharpApiClient.Lookup.Chains.Futures
 {

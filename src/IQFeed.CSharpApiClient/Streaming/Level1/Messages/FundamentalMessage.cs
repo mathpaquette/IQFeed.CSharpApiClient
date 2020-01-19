@@ -10,7 +10,56 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
     {
         public const string FundamentalDateTimeFormat = "MM/dd/yyyy";
 
-        public FundamentalMessage(string symbol, string exchangeId, float? pe, int? averageVolume, float? fiftyTwoWeekHigh, float? fiftyTwoWeekLow, float? calendarYearHigh, float? calendarYearLow, float? dividendYield, float? dividendAmount, float? dividendRate, DateTime? payDate, DateTime? exDividendDate, int? shortInterest, float? currentYearEarningsPerShare, float? nextYearEarningsPerShare, float? fiveYearGrowthPercentage, int? fiscalYearEnd, string companyName, string rootOptionSymbol, float? percentHeldByInstitutions, float? beta, string leaps, float? currentAssets, float? currentLiabilities, DateTime? balanceSheetDate, float? longTermDebt, float? commonSharesOutstanding, string splitFactor1, string splitFactor2, string formatCode, int? precision, int? sic, float? historicalVolatility, string securityType, string listedMarket, DateTime? fiftyTwoWeekHighDate, DateTime? fiftyTwoWeekLowDate, DateTime? calendarYearHighDate, DateTime? calendarYearLowDate, float? yearEndClose, DateTime? maturityDate, float? couponRate, DateTime? expirationDate, float? strikePrice, int? naics, string exchangeRoot, float? optionsPremiumMultiplier, int? optionsMultipleDeliverables)
+        public FundamentalMessage(
+            string symbol,
+            string exchangeId,
+            decimal? pe,
+            int? averageVolume,
+            decimal? fiftyTwoWeekHigh,
+            decimal? fiftyTwoWeekLow,
+            decimal? calendarYearHigh,
+            decimal? calendarYearLow,
+            decimal? dividendYield,
+            decimal? dividendAmount,
+            decimal? dividendRate,
+            DateTime? payDate,
+            DateTime? exDividendDate,
+            int? shortInterest,
+            decimal? currentYearEarningsPerShare,
+            decimal? nextYearEarningsPerShare,
+            decimal? fiveYearGrowthPercentage,
+            int? fiscalYearEnd,
+            string companyName,
+            string rootOptionSymbol,
+            decimal? percentHeldByInstitutions,
+            decimal? beta,
+            string leaps,
+            decimal? currentAssets,
+            decimal? currentLiabilities,
+            DateTime? balanceSheetDate,
+            decimal? longTermDebt,
+            decimal? commonSharesOutstanding,
+            string splitFactor1,
+            string splitFactor2,
+            string formatCode,
+            int? precision,
+            int? sic,
+            decimal? historicalVolatility,
+            string securityType,
+            string listedMarket,
+            DateTime? fiftyTwoWeekHighDate,
+            DateTime? fiftyTwoWeekLowDate,
+            DateTime? calendarYearHighDate,
+            DateTime? calendarYearLowDate,
+            decimal? yearEndClose,
+            DateTime? maturityDate,
+            decimal? couponRate,
+            DateTime? expirationDate,
+            decimal? strikePrice,
+            int? naics,
+            string exchangeRoot,
+            decimal? optionsPremiumMultiplier,
+            int? optionsMultipleDeliverables)
         {
             Symbol = symbol;
             ExchangeId = exchangeId;
@@ -63,85 +112,86 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             OptionsMultipleDeliverables = optionsMultipleDeliverables;
         }
 
-        public string Symbol { get; }                           // 0
-        public string ExchangeId { get; }                      // 1
-        public float? PE { get; }                               // 2
-        public int? AverageVolume { get; }                     // 3
+        public string Symbol { get; }                               // 0
+        public string ExchangeId { get; }                           // 1
+        public decimal? PE { get; }                                 // 2
+        public int? AverageVolume { get; }                          // 3
         /// <summary>
         /// 52-week high
         /// </summary>
-        public float? FiftyTwoWeekHigh { get; }                    // 4
+        public decimal? FiftyTwoWeekHigh { get; }                   // 4
         /// <summary>
         /// 52-week low
         /// </summary>
-        public float? FiftyTwoWeekLow { get; }                     // 5
-        public float? CalendarYearHigh { get; }               // 6
-        public float? CalendarYearLow { get; }                // 7
-        public float? DividendYield { get; }                   // 8
-        public float? DividendAmount { get; }                  // 9
-        public float? DividendRate { get; }                    // 10
-        public DateTime? PayDate { get; }                      // 11
-        public DateTime? ExDividendDate { get; }              // 12
-        // (Reserved)                                           // 13
-        // (Reserved)                                           // 14
-        // (Reserved)                                           // 15
-        public int? ShortInterest { get; }                     // 16
-        // (Reserved)                                           // 17
-        public float? CurrentYearEarningsPerShare { get; }  // 18
-        public float? NextYearEarningsPerShare { get; }     // 19
-        public float? FiveYearGrowthPercentage { get; }      // 20
-        public int? FiscalYearEnd { get; }                    // 21
-        // (Reserved)                                           // 22
-        public string CompanyName { get; }                     // 23
-        public string RootOptionSymbol { get; }               // 24
-        public float? PercentHeldByInstitutions { get; }     // 25
-        public float? Beta { get; }                             // 26
-        public string Leaps { get; }                            // 27
-        public float? CurrentAssets { get; }                   // 28
-        public float? CurrentLiabilities { get; }              // 29
-        public DateTime? BalanceSheetDate { get; }            // 30
-        public float? LongTermDebt { get; }                   // 31
-        public float? CommonSharesOutstanding { get; }        // 32
-        // (Reserved)                                           // 33
-        public string SplitFactor1 { get; }                   // 34
-        public string SplitFactor2 { get; }                   // 35
-        // (Reserved)                                           // 36
-        // (Reserved)                                           // 37
-        public string FormatCode { get; }                      // 38
-        public int? Precision { get; }                          // 39   
-        public int? SIC { get; }                                // 40
-        public float? HistoricalVolatility { get; }            // 41
-        public string SecurityType { get; }                    // 42
-        public string ListedMarket { get; }                    // 43
-        public DateTime? FiftyTwoWeekHighDate { get; }            // 44
-        public DateTime? FiftyTwoWeekLowDate { get; }             // 45
-        public DateTime? CalendarYearHighDate { get; }       // 46
-        public DateTime? CalendarYearLowDate { get; }        // 47
-        public float? YearEndClose { get; }                   // 48
-        public DateTime? MaturityDate { get; }                 // 49
-        public float? CouponRate { get; }                      // 50
-        public DateTime? ExpirationDate { get; }               // 51
-        public float? StrikePrice { get; }                     // 52
-        public int? NAICS { get; }                              // 53
-        public string ExchangeRoot { get; }                    // 54
-        public float? OptionsPremiumMultiplier { get; }       // 55
-        public int? OptionsMultipleDeliverables { get; }      // 56
+        public decimal? FiftyTwoWeekLow { get; }                    // 5
+        public decimal? CalendarYearHigh { get; }                   // 6
+        public decimal? CalendarYearLow { get; }                    // 7
+        public decimal? DividendYield { get; }                      // 8
+        public decimal? DividendAmount { get; }                     // 9
+        public decimal? DividendRate { get; }                       // 10
+        public DateTime? PayDate { get; }                           // 11
+        public DateTime? ExDividendDate { get; }                    // 12
+        // (Reserved)                                               // 13
+        // (Reserved)                                               // 14
+        // (Reserved)                                               // 15
+        public int? ShortInterest { get; }                          // 16
+        // (Reserved)                                               // 17
+        public decimal? CurrentYearEarningsPerShare { get; }        // 18
+        public decimal? NextYearEarningsPerShare { get; }           // 19
+        public decimal? FiveYearGrowthPercentage { get; }           // 20
+        public int? FiscalYearEnd { get; }                          // 21
+        // (Reserved)                                               // 22
+        public string CompanyName { get; }                          // 23
+        public string RootOptionSymbol { get; }                     // 24
+        public decimal? PercentHeldByInstitutions { get; }          // 25
+        public decimal? Beta { get; }                               // 26
+        public string Leaps { get; }                                // 27
+        public decimal? CurrentAssets { get; }                      // 28
+        public decimal? CurrentLiabilities { get; }                 // 29
+        public DateTime? BalanceSheetDate { get; }                  // 30
+        public decimal? LongTermDebt { get; }                       // 31
+        public decimal? CommonSharesOutstanding { get; }            // 32
+        // (Reserved)                                               // 33
+        public string SplitFactor1 { get; }                         // 34
+        public string SplitFactor2 { get; }                         // 35
+        // (Reserved)                                               // 36
+        // (Reserved)                                               // 37
+        public string FormatCode { get; }                           // 38
+        public int? Precision { get; }                              // 39   
+        public int? SIC { get; }                                    // 40
+        public decimal? HistoricalVolatility { get; }               // 41
+        public string SecurityType { get; }                         // 42
+        public string ListedMarket { get; }                         // 43
+        public DateTime? FiftyTwoWeekHighDate { get; }              // 44
+        public DateTime? FiftyTwoWeekLowDate { get; }               // 45
+        public DateTime? CalendarYearHighDate { get; }              // 46
+        public DateTime? CalendarYearLowDate { get; }               // 47
+        public decimal? YearEndClose { get; }                       // 48
+        public DateTime? MaturityDate { get; }                      // 49
+        public decimal? CouponRate { get; }                         // 50
+        public DateTime? ExpirationDate { get; }                    // 51
+        public decimal? StrikePrice { get; }                        // 52
+        public int? NAICS { get; }                                  // 53
+        public string ExchangeRoot { get; }                         // 54
+        public decimal? OptionsPremiumMultiplier { get; }           // 55
+        public int? OptionsMultipleDeliverables { get; }            // 56
 
         public static FundamentalMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
+
             return new FundamentalMessage(
                 values[1].NullIfEmpty(),
                 values[2].NullIfEmpty(),
-                values[3].ToNullableFloat(),
+                values[3].ToNullableDecimal(),
                 values[4].ToNullableInt(),
-                values[5].ToNullableFloat(),
-                values[6].ToNullableFloat(),
-                values[7].ToNullableFloat(),
-                values[8].ToNullableFloat(),
-                values[9].ToNullableFloat(),
-                values[10].ToNullableFloat(),
-                values[11].ToNullableFloat(),
+                values[5].ToNullableDecimal(),
+                values[6].ToNullableDecimal(),
+                values[7].ToNullableDecimal(),
+                values[8].ToNullableDecimal(),
+                values[9].ToNullableDecimal(),
+                values[10].ToNullableDecimal(),
+                values[11].ToNullableDecimal(),
                 values[12].ToNullableDateTime(FundamentalDateTimeFormat),
                 values[13].ToNullableDateTime(FundamentalDateTimeFormat),
                 //// (Reserved)
@@ -149,21 +199,21 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 //// (Reserved)
                 values[17].ToNullableInt(),
                 //// (Reserved)
-                values[19].ToNullableFloat(),
-                values[20].ToNullableFloat(),
-                values[21].ToNullableFloat(),
+                values[19].ToNullableDecimal(),
+                values[20].ToNullableDecimal(),
+                values[21].ToNullableDecimal(),
                 values[22].ToNullableInt(),
                 //// (Reserved)    
                 values[24].NullIfEmpty(),
                 values[25].NullIfEmpty(),
-                values[26].ToNullableFloat(),
-                values[27].ToNullableFloat(),
+                values[26].ToNullableDecimal(),
+                values[27].ToNullableDecimal(),
                 values[28].NullIfEmpty(),
-                values[29].ToNullableFloat(),
-                values[30].ToNullableFloat(),
+                values[29].ToNullableDecimal(),
+                values[30].ToNullableDecimal(),
                 values[31].ToNullableDateTime(FundamentalDateTimeFormat),
-                values[32].ToNullableFloat(),
-                values[33].ToNullableFloat(),
+                values[32].ToNullableDecimal(),
+                values[33].ToNullableDecimal(),
                 //// (Reserved)
                 values[35].NullIfEmpty(),
                 values[36].NullIfEmpty(),
@@ -172,77 +222,78 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 values[39].NullIfEmpty(),
                 values[40].ToNullableInt(),
                 values[41].ToNullableInt(),
-                values[42].ToNullableFloat(),
+                values[42].ToNullableDecimal(),
                 values[43].NullIfEmpty(),
                 values[44].NullIfEmpty(),
                 values[45].ToNullableDateTime(FundamentalDateTimeFormat),
                 values[46].ToNullableDateTime(FundamentalDateTimeFormat),
                 values[47].ToNullableDateTime(FundamentalDateTimeFormat),
                 values[48].ToNullableDateTime(FundamentalDateTimeFormat),
-                values[49].ToNullableFloat(),
+                values[49].ToNullableDecimal(),
                 values[50].ToNullableDateTime(FundamentalDateTimeFormat),
-                values[51].ToNullableFloat(),
+                values[51].ToNullableDecimal(),
                 values[52].ToNullableDateTime(FundamentalDateTimeFormat),
-                values[53].ToNullableFloat(),
+                values[53].ToNullableDecimal(),
                 values[54].ToNullableInt(),
                 values[55].NullIfEmpty(),
-                values[56].ToNullableFloat(),
+                values[56].ToNullableDecimal(),
                 values[57].ToNullableInt()
             );
         }
+
 
         public override bool Equals(object obj)
         {
             return obj is FundamentalMessage message &&
                    Symbol == message.Symbol &&
                    ExchangeId == message.ExchangeId &&
-                   EqualityComparer<float?>.Default.Equals(PE, message.PE) &&
-                   EqualityComparer<int?>.Default.Equals(AverageVolume, message.AverageVolume) &&
-                   EqualityComparer<float?>.Default.Equals(FiftyTwoWeekHigh, message.FiftyTwoWeekHigh) &&
-                   EqualityComparer<float?>.Default.Equals(FiftyTwoWeekLow, message.FiftyTwoWeekLow) &&
-                   EqualityComparer<float?>.Default.Equals(CalendarYearHigh, message.CalendarYearHigh) &&
-                   EqualityComparer<float?>.Default.Equals(CalendarYearLow, message.CalendarYearLow) &&
-                   EqualityComparer<float?>.Default.Equals(DividendYield, message.DividendYield) &&
-                   EqualityComparer<float?>.Default.Equals(DividendAmount, message.DividendAmount) &&
-                   EqualityComparer<float?>.Default.Equals(DividendRate, message.DividendRate) &&
-                   EqualityComparer<DateTime?>.Default.Equals(PayDate, message.PayDate) &&
-                   EqualityComparer<DateTime?>.Default.Equals(ExDividendDate, message.ExDividendDate) &&
-                   EqualityComparer<int?>.Default.Equals(ShortInterest, message.ShortInterest) &&
-                   EqualityComparer<float?>.Default.Equals(CurrentYearEarningsPerShare, message.CurrentYearEarningsPerShare) &&
-                   EqualityComparer<float?>.Default.Equals(NextYearEarningsPerShare, message.NextYearEarningsPerShare) &&
-                   EqualityComparer<float?>.Default.Equals(FiveYearGrowthPercentage, message.FiveYearGrowthPercentage) &&
-                   EqualityComparer<int?>.Default.Equals(FiscalYearEnd, message.FiscalYearEnd) &&
+                   PE == message.PE &&
+                   AverageVolume == message.AverageVolume &&
+                   FiftyTwoWeekHigh == message.FiftyTwoWeekHigh &&
+                   FiftyTwoWeekLow == message.FiftyTwoWeekLow &&
+                   CalendarYearHigh == message.CalendarYearHigh &&
+                   CalendarYearLow == message.CalendarYearLow &&
+                   DividendYield == message.DividendYield &&
+                   DividendAmount == message.DividendAmount &&
+                   DividendRate == message.DividendRate &&
+                   PayDate == message.PayDate &&
+                   ExDividendDate == message.ExDividendDate &&
+                   ShortInterest == message.ShortInterest &&
+                   CurrentYearEarningsPerShare == message.CurrentYearEarningsPerShare &&
+                   NextYearEarningsPerShare == message.NextYearEarningsPerShare &&
+                   FiveYearGrowthPercentage == message.FiveYearGrowthPercentage &&
+                   FiscalYearEnd == message.FiscalYearEnd &&
                    CompanyName == message.CompanyName &&
                    RootOptionSymbol == message.RootOptionSymbol &&
-                   EqualityComparer<float?>.Default.Equals(PercentHeldByInstitutions, message.PercentHeldByInstitutions) &&
-                   EqualityComparer<float?>.Default.Equals(Beta, message.Beta) &&
+                   PercentHeldByInstitutions == message.PercentHeldByInstitutions &&
+                   Beta == message.Beta &&
                    Leaps == message.Leaps &&
-                   EqualityComparer<float?>.Default.Equals(CurrentAssets, message.CurrentAssets) &&
-                   EqualityComparer<float?>.Default.Equals(CurrentLiabilities, message.CurrentLiabilities) &&
-                   EqualityComparer<DateTime?>.Default.Equals(BalanceSheetDate, message.BalanceSheetDate) &&
-                   EqualityComparer<float?>.Default.Equals(LongTermDebt, message.LongTermDebt) &&
-                   EqualityComparer<float?>.Default.Equals(CommonSharesOutstanding, message.CommonSharesOutstanding) &&
+                   CurrentAssets == message.CurrentAssets &&
+                   CurrentLiabilities == message.CurrentLiabilities &&
+                   BalanceSheetDate == message.BalanceSheetDate &&
+                   LongTermDebt == message.LongTermDebt &&
+                   CommonSharesOutstanding == message.CommonSharesOutstanding &&
                    SplitFactor1 == message.SplitFactor1 &&
                    SplitFactor2 == message.SplitFactor2 &&
                    FormatCode == message.FormatCode &&
-                   EqualityComparer<int?>.Default.Equals(Precision, message.Precision) &&
-                   EqualityComparer<int?>.Default.Equals(SIC, message.SIC) &&
-                   EqualityComparer<float?>.Default.Equals(HistoricalVolatility, message.HistoricalVolatility) &&
+                   Precision == message.Precision &&
+                   SIC == message.SIC &&
+                   HistoricalVolatility == message.HistoricalVolatility &&
                    SecurityType == message.SecurityType &&
                    ListedMarket == message.ListedMarket &&
-                   EqualityComparer<DateTime?>.Default.Equals(FiftyTwoWeekHighDate, message.FiftyTwoWeekHighDate) &&
-                   EqualityComparer<DateTime?>.Default.Equals(FiftyTwoWeekLowDate, message.FiftyTwoWeekLowDate) &&
-                   EqualityComparer<DateTime?>.Default.Equals(CalendarYearHighDate, message.CalendarYearHighDate) &&
-                   EqualityComparer<DateTime?>.Default.Equals(CalendarYearLowDate, message.CalendarYearLowDate) &&
-                   EqualityComparer<float?>.Default.Equals(YearEndClose, message.YearEndClose) &&
-                   EqualityComparer<DateTime?>.Default.Equals(MaturityDate, message.MaturityDate) &&
-                   EqualityComparer<float?>.Default.Equals(CouponRate, message.CouponRate) &&
-                   EqualityComparer<DateTime?>.Default.Equals(ExpirationDate, message.ExpirationDate) &&
-                   EqualityComparer<float?>.Default.Equals(StrikePrice, message.StrikePrice) &&
-                   EqualityComparer<int?>.Default.Equals(NAICS, message.NAICS) &&
+                   FiftyTwoWeekHighDate == message.FiftyTwoWeekHighDate &&
+                   FiftyTwoWeekLowDate == message.FiftyTwoWeekLowDate &&
+                   CalendarYearHighDate == message.CalendarYearHighDate &&
+                   CalendarYearLowDate == message.CalendarYearLowDate &&
+                   YearEndClose == message.YearEndClose &&
+                   MaturityDate == message.MaturityDate &&
+                   CouponRate == message.CouponRate &&
+                   ExpirationDate == message.ExpirationDate &&
+                   StrikePrice == message.StrikePrice &&
+                   NAICS == message.NAICS &&
                    ExchangeRoot == message.ExchangeRoot &&
-                   EqualityComparer<float?>.Default.Equals(OptionsPremiumMultiplier, message.OptionsPremiumMultiplier) &&
-                   EqualityComparer<int?>.Default.Equals(OptionsMultipleDeliverables, message.OptionsMultipleDeliverables);
+                   OptionsPremiumMultiplier == message.OptionsPremiumMultiplier &&
+                   OptionsMultipleDeliverables == message.OptionsMultipleDeliverables;
         }
 
         public override int GetHashCode()
@@ -252,52 +303,52 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 var hash = 17;
                 hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(Symbol);
                 hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(ExchangeId);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(PE);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(PE);
                 hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(AverageVolume);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(FiftyTwoWeekHigh);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(FiftyTwoWeekLow);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(CalendarYearHigh);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(CalendarYearLow);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(DividendYield);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(DividendAmount);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(DividendRate);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(FiftyTwoWeekHigh);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(FiftyTwoWeekLow);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(CalendarYearHigh);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(CalendarYearLow);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(DividendYield);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(DividendAmount);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(DividendRate);
                 hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(PayDate);
                 hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(ExDividendDate);
                 hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(ShortInterest);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(CurrentYearEarningsPerShare);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(NextYearEarningsPerShare);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(FiveYearGrowthPercentage);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(CurrentYearEarningsPerShare);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(NextYearEarningsPerShare);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(FiveYearGrowthPercentage);
                 hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(FiscalYearEnd);
                 hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(CompanyName);
                 hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(RootOptionSymbol);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(PercentHeldByInstitutions);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(Beta);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(PercentHeldByInstitutions);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(Beta);
                 hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(Leaps);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(CurrentAssets);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(CurrentLiabilities);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(CurrentAssets);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(CurrentLiabilities);
                 hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(BalanceSheetDate);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(LongTermDebt);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(CommonSharesOutstanding);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(LongTermDebt);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(CommonSharesOutstanding);
                 hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(SplitFactor1);
                 hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(SplitFactor2);
                 hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(FormatCode);
                 hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(Precision);
                 hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(SIC);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(HistoricalVolatility);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(HistoricalVolatility);
                 hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(SecurityType);
                 hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(ListedMarket);
                 hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(FiftyTwoWeekHighDate);
                 hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(FiftyTwoWeekLowDate);
                 hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(CalendarYearHighDate);
                 hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(CalendarYearLowDate);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(YearEndClose);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(YearEndClose);
                 hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(MaturityDate);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(CouponRate);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(CouponRate);
                 hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(ExpirationDate);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(StrikePrice);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(StrikePrice);
                 hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(NAICS);
                 hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(ExchangeRoot);
-                hash = hash * 29 + EqualityComparer<float?>.Default.GetHashCode(OptionsPremiumMultiplier);
+                hash = hash * 29 + EqualityComparer<decimal?>.Default.GetHashCode(OptionsPremiumMultiplier);
                 hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(OptionsMultipleDeliverables);
                 return hash;
             }

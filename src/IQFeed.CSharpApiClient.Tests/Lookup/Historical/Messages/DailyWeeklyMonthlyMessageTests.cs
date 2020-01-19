@@ -16,7 +16,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
             var message = "2018-04-27,164.3300,160.6300,164.0000,162.3200,35655839,0,";
 
             // Act
-            var dailyWeeklyMonthlyMessage = new DailyWeeklyMonthlyMessage(new DateTime(2018,04,27), 164.33f, 160.63f, 164f, 162.32f, 35655839, 0);
+            var dailyWeeklyMonthlyMessage = new DailyWeeklyMonthlyMessage<decimal>(new DateTime(2018,04,27), 164.33m, 160.63m, 164m, 162.32m, 35655839, 0);
             var dailyWeeklyMonthlyMessageFromValues = DailyWeeklyMonthlyMessage.Parse(message);
 
             // Assert

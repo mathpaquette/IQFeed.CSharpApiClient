@@ -1,4 +1,5 @@
 ﻿using System;
+using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 using IQFeed.CSharpApiClient.Tests.Common;
 using IQFeed.CSharpApiClient.Tests.Common.TestCases;
@@ -17,10 +18,25 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
 
             // Act
             var fundementalMessageParsed = FundamentalMessage.Parse(message);
-            var fundamentalMessage = new FundamentalMessage("MSFT", "5", 65.6f, 28624000, 97.95f, 67.14f, 97.95f, 83.83f, null, null, null, null, null, null, 1.49f, null, 0.06f, 6, "MICROSOFT", "MSFT", 76.8f, 1.27f, null, 159851, 64527, new DateTime(2018, 03, 31), 76073, 7683198, "0.50 02/18/2003", "0.50 03/29/1999", "14", 4, 7372, 24.82f, "1", "21", new DateTime(2018, 05, 10), new DateTime(2017, 05, 18), new DateTime(2018, 05, 10), new DateTime(2018, 02, 09), 85.54f, null, null, null, null, 511210, null, null, null);
+            var fundamentalMessage = new FundamentalMessage("MSFT", "5", 65.6m, 28624000, 97.95m, 67.14m, 97.95m, 83.83m, null, null, null, null, null, null, 1.49m, null, 0.06m, 6, "MICROSOFT", "MSFT", 76.8m, 1.27m, null, 159851, 64527, new DateTime(2018, 03, 31), 76073, 7683198, "0.50 02/18/2003", "0.50 03/29/1999", "14", 4, 7372, 24.82m, "1", "21", new DateTime(2018, 05, 10), new DateTime(2017, 05, 18), new DateTime(2018, 05, 10), new DateTime(2018, 02, 09), 85.54m, null, null, null, null, 511210, null, null, null);
 
             // Assert
             Assert.AreEqual(fundementalMessageParsed, fundamentalMessage);
+        }
+
+        [Test]
+        public void Should_Get_Different_HashCode()
+        {
+            // Arrange
+            var fundamental1 = new FundamentalMessage("MSFT", "5", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            var fundamental2 = new FundamentalMessage("MSFT", "5", "1.0".ToNullableDecimal(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+            // Act
+            var hashCode1 = fundamental1.GetHashCode();
+            var hashCode2 = fundamental2.GetHashCode();
+
+            // Assert
+            Assert.AreNotEqual(hashCode1, hashCode2);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
 {
     public class SymbolFacadeTests
     {
-        private LookupClient _lookupClient;
+        private LookupClient<decimal> _lookupClient;
 
         public SymbolFacadeTests()
         {

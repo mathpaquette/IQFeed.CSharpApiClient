@@ -28,8 +28,8 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
             var date = new DateTime(2019, 10, 18);
             DateTime.TryParseExact("12:49:52.541104", UpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var bidTime);
 
-            var expectedMessage = new UpdateSummaryMessage("@ES#", "MD01", 2982.25f, 2982.5f, 99, 238, askTime, date, "52", bidTime, 'T', 'T', 'F');
-            UpdateSummaryMessage updateSummaryMessage = null;
+            var expectedMessage = new UpdateSummaryMessage<decimal>("@ES#", "MD01", 2982.25m, 2982.5m, 99, 238, askTime, date, "52", bidTime, 'T', 'T', 'F');
+            UpdateSummaryMessage<decimal> updateSummaryMessage = null;
             _level2MessageHandler.Summary += msg =>
             {
                 updateSummaryMessage = msg;
@@ -51,8 +51,8 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
             var date = new DateTime(2019, 10, 18);
             DateTime.TryParseExact("12:49:52.541105", UpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var bidTime);
 
-            var expectedMessage = new UpdateSummaryMessage("@ES#", "MD01", 2982.25f, 2982.5f, 99, 238, askTime, date, "52", bidTime, 'T', 'T', 'F');
-            UpdateSummaryMessage updateSummaryMessage = null;
+            var expectedMessage = new UpdateSummaryMessage<decimal>("@ES#", "MD01", 2982.25m, 2982.5m, 99, 238, askTime, date, "52", bidTime, 'T', 'T', 'F');
+            UpdateSummaryMessage<decimal> updateSummaryMessage = null;
             _level2MessageHandler.Update += msg =>
             {
                 updateSummaryMessage = msg;

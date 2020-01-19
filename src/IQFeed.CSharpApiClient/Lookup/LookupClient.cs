@@ -6,11 +6,16 @@ using IQFeed.CSharpApiClient.Lookup.Symbol;
 
 namespace IQFeed.CSharpApiClient.Lookup
 {
-    public class LookupClient: IClient
+    public class LookupClient<T>: IClient
     {
         private readonly LookupDispatcher _lookupDispatcher;
 
-        public LookupClient(LookupDispatcher lookupDispatcher, HistoricalFacade historical, NewsFacade news, SymbolFacade symbol, ChainsFacade chains)
+        public LookupClient(
+            LookupDispatcher lookupDispatcher, 
+            HistoricalFacade<T> historical, 
+            NewsFacade news, 
+            SymbolFacade symbol, 
+            ChainsFacade chains)
         {
             _lookupDispatcher = lookupDispatcher;
             Historical = historical;
@@ -19,7 +24,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             Chains = chains;
         }
 
-        public HistoricalFacade Historical { get; }
+        public HistoricalFacade<T> Historical { get; }
         public NewsFacade News { get; }
         public SymbolFacade Symbol { get; }
         public ChainsFacade Chains { get; }

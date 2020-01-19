@@ -19,7 +19,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
             // Act
             var updateSummaryMessageParsed = UpdateSummaryMessage.Parse(message);
             DateTime.TryParseExact("19:59:14.503633", UpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var timestamp);
-            var updateSummaryMessage = new UpdateSummaryMessage("AAPL", 188.35f, 52500, timestamp, 19, 0, 188.25f, 100, 188.36f, 100, 0, 0, 0, 187.97f, "Cbacv", "8801");
+            var updateSummaryMessage = new UpdateSummaryMessage<decimal>("AAPL", 188.35m, 52500, timestamp, 19, 0, 188.25m, 100, 188.36m, 100, 0, 0, 0, 187.97m, "Cbacv", "8801");
 
             // Assert
             Assert.AreEqual(updateSummaryMessageParsed, updateSummaryMessage);

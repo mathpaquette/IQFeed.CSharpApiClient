@@ -20,7 +20,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
             var tickMessageParsed = TickMessage.Parse(message);
 
             var timestamp = DateTime.ParseExact("2018-04-17 17:51:22.123456", TickMessage.TickDateTimeFormat, CultureInfo.InvariantCulture);
-            var tickMessage = new TickMessage(timestamp, 96.07f, 1061909, 0, 0.0f, 0.0f, 4145784264, 'O', 19, "143A");
+            var tickMessage = new TickMessage<decimal>(timestamp, 96.07m, 1061909, 0, 0.0m, 0.0m, 4145784264, 'O', 19, "143A");
 
             // Assert
             Assert.AreEqual(tickMessageParsed, tickMessage);

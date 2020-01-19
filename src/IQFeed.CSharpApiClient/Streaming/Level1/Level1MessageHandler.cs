@@ -5,16 +5,16 @@ using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
-    public class Level1MessageHandler : ILevel1Event
+    public class Level1MessageHandler : ILevel1MessageHandler<decimal>
     {
         public event Action<FundamentalMessage> Fundamental;
-        public event Action<UpdateSummaryMessage> Summary;
+        public event Action<UpdateSummaryMessage<decimal>> Summary;
         public event Action<SystemMessage> System;
         public event Action<SymbolNotFoundMessage> SymbolNotFound;
         public event Action<ErrorMessage> Error;
         public event Action<TimestampMessage> Timestamp;
-        public event Action<UpdateSummaryMessage> Update;
-        public event Action<RegionalUpdateMessage> Regional;
+        public event Action<UpdateSummaryMessage<decimal>> Update;
+        public event Action<RegionalUpdateMessage<decimal>> Regional;
         public event Action<NewsMessage> News;
 
         public void ProcessMessages(byte[] messageBytes, int count)

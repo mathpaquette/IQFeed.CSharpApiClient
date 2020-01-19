@@ -29,6 +29,20 @@ namespace IQFeed.CSharpApiClient.Extensions
             return null;
         }
 
+        public static double? ToNullableDouble(this string s)
+        {
+            if (double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var d))
+                return d;
+            return null;
+        }
+
+        public static decimal? ToNullableDecimal(this string s)
+        {
+            if (decimal.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var d))
+                return d;
+            return null;
+        }
+
         public static DateTime? ToNullableDateTime(this string s, string format)
         {
             if (DateTime.TryParseExact(s, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out var d))

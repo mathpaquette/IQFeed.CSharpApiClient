@@ -11,8 +11,23 @@ namespace IQFeed.CSharpApiClient.Lookup
 {
     public static class LookupClientFactory
     {
-        public static LookupClient CreateNew(string host = IQFeedDefault.Hostname, int port = IQFeedDefault.LookupPort,
-            int timeoutMs = LookupDefault.TimeoutMs, int numberOfClients = 1, int bufferSize = LookupDefault.BufferSize)
+        public static LookupClient<decimal> CreateNew()
+        {
+            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.LookupPort, LookupDefault.TimeoutMs, 1, LookupDefault.BufferSize, new HistoricalMessageHandler());
+        }
+
+        public static LookupClient<decimal> CreateNew(int numberOfClients)
+        {
+            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.LookupPort, LookupDefault.TimeoutMs, numberOfClients, LookupDefault.BufferSize, new HistoricalMessageHandler());
+        }
+
+        public static LookupClient<T> CreateNew<T>(
+            string host,
+            int port,
+            int timeoutMs,
+            int numberOfClients,
+            int bufferSize,
+            IHistoricalMessageHandler<T> historicalMessageHandler)
         {
             // Common
             var requestFormatter = new RequestFormatter();
@@ -23,11 +38,11 @@ namespace IQFeed.CSharpApiClient.Lookup
             // Historical
             var historicalDataRequestFormatter = new HistoricalRequestFormatter();
             var historicalRawFace = new HistoricalRawFacade(historicalDataRequestFormatter, rawMessageHandler);
-            var historicalFacade = new HistoricalFacade(
+            var historicalFacade = new HistoricalFacade<T>(
                 historicalDataRequestFormatter,
                 lookupDispatcher,
                 exceptionFactory,
-                new HistoricalMessageHandler(),
+                historicalMessageHandler,
                 historicalRawFace,
                 timeoutMs
             );
@@ -41,21 +56,16 @@ namespace IQFeed.CSharpApiClient.Lookup
                 lookupDispatcher,
                 exceptionFactory,
                 new SymbolMessageHandler(),
-                new MarketSymbolDownloader(), 
-                new MarketSymbolReader(), 
-                new ExpiredOptionDownloader(), 
+                new MarketSymbolDownloader(),
+                new MarketSymbolReader(),
+                new ExpiredOptionDownloader(),
                 new ExpiredOptionReader(),
                 timeoutMs);
 
             // Chains
             var chainsFacade = new ChainsFacade(new ChainsRequestFormatter(), new ChainsMessageHandler(), lookupDispatcher, exceptionFactory, timeoutMs);
 
-            return new LookupClient(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade);
-        }
-
-        public static LookupClient CreateNew(int numberOfClients)
-        {
-            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.LookupPort, LookupDefault.TimeoutMs, numberOfClients);
+            return new LookupClient<T>(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade);
         }
     }
 }

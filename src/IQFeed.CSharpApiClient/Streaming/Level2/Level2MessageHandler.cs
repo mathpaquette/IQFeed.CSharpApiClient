@@ -6,10 +6,10 @@ using IQFeed.CSharpApiClient.Streaming.Level2.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level2
 {
-    public class Level2MessageHandler : ILevel2Event
+    public class Level2MessageHandler : ILevel2MessageHandler<decimal>
     {
-        public event Action<UpdateSummaryMessage> Summary;
-        public event Action<UpdateSummaryMessage> Update;
+        public event Action<UpdateSummaryMessage<decimal>> Summary;
+        public event Action<UpdateSummaryMessage<decimal>> Update;
         public event Action<TimestampMessage> Timestamp;
         public event Action<MarketMakerNameMessage> Query;
         public event Action<SymbolNotFoundMessage> SymbolNotFound;

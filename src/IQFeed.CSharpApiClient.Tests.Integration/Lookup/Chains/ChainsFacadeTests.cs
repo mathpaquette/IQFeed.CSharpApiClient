@@ -17,7 +17,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Chains
         private const string EquitySymbol = "EBAY";
         private const string FutureSymbol = "@ES";
 
-        private LookupClient _lookupClient;
+        private LookupClient<decimal> _lookupClient;
         private readonly string _years;
 
         public ChainsFacadeTests()
