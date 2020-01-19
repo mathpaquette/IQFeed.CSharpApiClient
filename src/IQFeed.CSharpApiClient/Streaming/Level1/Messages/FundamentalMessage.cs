@@ -112,69 +112,69 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             OptionsMultipleDeliverables = optionsMultipleDeliverables;
         }
 
-        public string Symbol { get; }                               // 0
-        public string ExchangeId { get; }                           // 1
-        public decimal? PE { get; }                                 // 2
-        public int? AverageVolume { get; }                          // 3
+        public string Symbol { get; private set; }                               // 0
+        public string ExchangeId { get; private set; }                           // 1
+        public decimal? PE { get; private set; }                                 // 2
+        public int? AverageVolume { get; private set; }                          // 3
         /// <summary>
         /// 52-week high
         /// </summary>
-        public decimal? FiftyTwoWeekHigh { get; }                   // 4
+        public decimal? FiftyTwoWeekHigh { get; private set; }                   // 4
         /// <summary>
         /// 52-week low
         /// </summary>
-        public decimal? FiftyTwoWeekLow { get; }                    // 5
-        public decimal? CalendarYearHigh { get; }                   // 6
-        public decimal? CalendarYearLow { get; }                    // 7
-        public decimal? DividendYield { get; }                      // 8
-        public decimal? DividendAmount { get; }                     // 9
-        public decimal? DividendRate { get; }                       // 10
-        public DateTime? PayDate { get; }                           // 11
-        public DateTime? ExDividendDate { get; }                    // 12
+        public decimal? FiftyTwoWeekLow { get; private set; }                    // 5
+        public decimal? CalendarYearHigh { get; private set; }                   // 6
+        public decimal? CalendarYearLow { get; private set; }                    // 7
+        public decimal? DividendYield { get; private set; }                      // 8
+        public decimal? DividendAmount { get; private set; }                     // 9
+        public decimal? DividendRate { get; private set; }                       // 10
+        public DateTime? PayDate { get; private set; }                           // 11
+        public DateTime? ExDividendDate { get; private set; }                    // 12
         // (Reserved)                                               // 13
         // (Reserved)                                               // 14
         // (Reserved)                                               // 15
-        public int? ShortInterest { get; }                          // 16
+        public int? ShortInterest { get; private set; }                          // 16
         // (Reserved)                                               // 17
-        public decimal? CurrentYearEarningsPerShare { get; }        // 18
-        public decimal? NextYearEarningsPerShare { get; }           // 19
-        public decimal? FiveYearGrowthPercentage { get; }           // 20
-        public int? FiscalYearEnd { get; }                          // 21
+        public decimal? CurrentYearEarningsPerShare { get; private set; }        // 18
+        public decimal? NextYearEarningsPerShare { get; private set; }           // 19
+        public decimal? FiveYearGrowthPercentage { get; private set; }           // 20
+        public int? FiscalYearEnd { get; private set; }                          // 21
         // (Reserved)                                               // 22
-        public string CompanyName { get; }                          // 23
-        public string RootOptionSymbol { get; }                     // 24
-        public decimal? PercentHeldByInstitutions { get; }          // 25
-        public decimal? Beta { get; }                               // 26
-        public string Leaps { get; }                                // 27
-        public decimal? CurrentAssets { get; }                      // 28
-        public decimal? CurrentLiabilities { get; }                 // 29
-        public DateTime? BalanceSheetDate { get; }                  // 30
-        public decimal? LongTermDebt { get; }                       // 31
-        public decimal? CommonSharesOutstanding { get; }            // 32
+        public string CompanyName { get; private set; }                          // 23
+        public string RootOptionSymbol { get; private set; }                     // 24
+        public decimal? PercentHeldByInstitutions { get; private set; }          // 25
+        public decimal? Beta { get; private set; }                               // 26
+        public string Leaps { get; private set; }                                // 27
+        public decimal? CurrentAssets { get; private set; }                      // 28
+        public decimal? CurrentLiabilities { get; private set; }                 // 29
+        public DateTime? BalanceSheetDate { get; private set; }                  // 30
+        public decimal? LongTermDebt { get; private set; }                       // 31
+        public decimal? CommonSharesOutstanding { get; private set; }            // 32
         // (Reserved)                                               // 33
-        public string SplitFactor1 { get; }                         // 34
-        public string SplitFactor2 { get; }                         // 35
+        public string SplitFactor1 { get; private set; }                         // 34
+        public string SplitFactor2 { get; private set; }                         // 35
         // (Reserved)                                               // 36
         // (Reserved)                                               // 37
-        public string FormatCode { get; }                           // 38
-        public int? Precision { get; }                              // 39   
-        public int? SIC { get; }                                    // 40
-        public decimal? HistoricalVolatility { get; }               // 41
-        public string SecurityType { get; }                         // 42
-        public string ListedMarket { get; }                         // 43
-        public DateTime? FiftyTwoWeekHighDate { get; }              // 44
-        public DateTime? FiftyTwoWeekLowDate { get; }               // 45
-        public DateTime? CalendarYearHighDate { get; }              // 46
-        public DateTime? CalendarYearLowDate { get; }               // 47
-        public decimal? YearEndClose { get; }                       // 48
-        public DateTime? MaturityDate { get; }                      // 49
-        public decimal? CouponRate { get; }                         // 50
-        public DateTime? ExpirationDate { get; }                    // 51
-        public decimal? StrikePrice { get; }                        // 52
-        public int? NAICS { get; }                                  // 53
-        public string ExchangeRoot { get; }                         // 54
-        public decimal? OptionsPremiumMultiplier { get; }           // 55
-        public int? OptionsMultipleDeliverables { get; }            // 56
+        public string FormatCode { get; private set; }                           // 38
+        public int? Precision { get; private set; }                              // 39   
+        public int? SIC { get; private set; }                                    // 40
+        public decimal? HistoricalVolatility { get; private set; }               // 41
+        public string SecurityType { get; private set; }                         // 42
+        public string ListedMarket { get; private set; }                         // 43
+        public DateTime? FiftyTwoWeekHighDate { get; private set; }              // 44
+        public DateTime? FiftyTwoWeekLowDate { get; private set; }               // 45
+        public DateTime? CalendarYearHighDate { get; private set; }              // 46
+        public DateTime? CalendarYearLowDate { get; private set; }               // 47
+        public decimal? YearEndClose { get; private set; }                       // 48
+        public DateTime? MaturityDate { get; private set; }                      // 49
+        public decimal? CouponRate { get; private set; }                         // 50
+        public DateTime? ExpirationDate { get; private set; }                    // 51
+        public decimal? StrikePrice { get; private set; }                        // 52
+        public int? NAICS { get; private set; }                                  // 53
+        public string ExchangeRoot { get; private set; }                         // 54
+        public decimal? OptionsPremiumMultiplier { get; private set; }           // 55
+        public int? OptionsMultipleDeliverables { get; private set; }            // 56
 
         public static FundamentalMessage Parse(string message)
         {

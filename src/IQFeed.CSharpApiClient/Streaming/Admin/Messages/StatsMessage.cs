@@ -30,25 +30,25 @@ namespace IQFeed.CSharpApiClient.Streaming.Admin.Messages
             AvgKBsPerSecSent = avgKBsPerSecSent;
         }
 
-        public string ServerIp { get; }
-        public int ServerPort { get; }
-        public int MaxSymbols { get; }
-        public int NumberOfSymbols { get; }
-        public int ClientsConnected { get; }
-        public int SecondsSinceLastUpdate { get; }
-        public int Reconnections { get; }
-        public int AttemptedReconnections { get; }
-        public DateTime StartTime { get; }
-        public DateTime MarketTime { get; }
-        public StatsStatusType Status { get; }
-        public string IQFeedVersion { get; }
-        public string LoginId { get; }
-        public float TotalKBsRecv { get; }
-        public float KBsPerSecRecv { get; }
-        public float AvgKBsPerSecRecv { get; }
-        public float TotalKBsSent { get; }
-        public float KBsPerSecSent { get; }
-        public float AvgKBsPerSecSent { get; }
+        public string ServerIp { get; private set; }
+        public int ServerPort { get; private set; }
+        public int MaxSymbols { get; private set; }
+        public int NumberOfSymbols { get; private set; }
+        public int ClientsConnected { get; private set; }
+        public int SecondsSinceLastUpdate { get; private set; }
+        public int Reconnections { get; private set; }
+        public int AttemptedReconnections { get; private set; }
+        public DateTime StartTime { get; private set; }
+        public DateTime MarketTime { get; private set; }
+        public StatsStatusType Status { get; private set; }
+        public string IQFeedVersion { get; private set; }
+        public string LoginId { get; private set; }
+        public float TotalKBsRecv { get; private set; }
+        public float KBsPerSecRecv { get; private set; }
+        public float AvgKBsPerSecRecv { get; private set; }
+        public float TotalKBsSent { get; private set; }
+        public float KBsPerSecSent { get; private set; }
+        public float AvgKBsPerSecSent { get; private set; }
 
         public static StatsMessage CreateStatsMessage(string[] values)
         {

@@ -14,7 +14,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
             Timestamp = timestamp;
         }
 
-        public DateTime Timestamp { get; }
+        public DateTime Timestamp { get; private set; }
 
         public static TimestampMessage Parse(string message)
         {

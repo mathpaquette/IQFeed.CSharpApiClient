@@ -9,7 +9,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
             Error = error;
         }
 
-        public string Error { get; }
+        public string Error { get; private set; }
 
         public static ErrorMessage Parse(string message)
         {

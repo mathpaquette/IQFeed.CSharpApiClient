@@ -6,6 +6,6 @@
         {
             UserPassword = userPassword;
         }
-        public string UserPassword { get; }
+        public string UserPassword { get; private set; }
     }
 }

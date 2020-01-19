@@ -10,7 +10,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains.Messages
             Chains = chains;
         }
 
-        public IEnumerable<T> Chains { get; }
+        public IEnumerable<T> Chains { get; private set; }
 
         protected static IEnumerable<string> GetSymbols(string message)
         {

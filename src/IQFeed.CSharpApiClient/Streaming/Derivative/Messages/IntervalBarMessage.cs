@@ -94,29 +94,29 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
             NumberOfTrades = numberOfTrades;
         }
 
-        public string RequestId { get; }
-        public IntervalBarType Type { get; }
-        public string Symbol { get; }
-        public DateTime Timestamp { get; }
-        public T Open { get; }
-        public T High { get; }
-        public T Low { get; }
-        public T Last { get; }
+        public string RequestId { get; private set; }
+        public IntervalBarType Type { get; private set; }
+        public string Symbol { get; private set; }
+        public DateTime Timestamp { get; private set; }
+        public T Open { get; private set; }
+        public T High { get; private set; }
+        public T Low { get; private set; }
+        public T Last { get; private set; }
 
         /// <summary>
         /// Last cummulative volume in the interval
         /// </summary>
-        public int CummulativeVolume { get; }
+        public int CummulativeVolume { get; private set; }
 
         /// <summary>
         /// Interval volume for the interval
         /// </summary>
-        public int IntervalVolume { get; }
+        public int IntervalVolume { get; private set; }
 
         /// <summary>
         /// Number of trades in the interval (only valid for tick interval)
         /// </summary>
-        public int NumberOfTrades { get; }
+        public int NumberOfTrades { get; private set; }
 
 
 

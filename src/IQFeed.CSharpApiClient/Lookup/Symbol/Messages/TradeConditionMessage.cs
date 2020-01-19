@@ -13,10 +13,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
             LongName = longName;
         }
 
-        public string RequestId { get; }
-        public int TradeConditionId { get; }
-        public string ShortName { get; }
-        public string LongName { get; }
+        public string RequestId { get; private set; }
+        public int TradeConditionId { get; private set; }
+        public string ShortName { get; private set; }
+        public string LongName { get; private set; }
 
         public static TradeConditionMessage Parse(string message)
         {
