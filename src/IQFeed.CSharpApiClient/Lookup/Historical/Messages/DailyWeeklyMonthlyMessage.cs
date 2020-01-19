@@ -53,14 +53,14 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             OpenInterest = openInterest;
         }
 
-        public string RequestId { get; }
-        public DateTime Timestamp { get; }
-        public T High { get; }
-        public T Low { get; }
-        public T Open { get; }
-        public T Close { get; }
-        public long PeriodVolume { get; }
-        public int OpenInterest { get; }
+        public string RequestId { get; private set; }
+        public DateTime Timestamp { get; private set; }
+        public T High { get; private set; }
+        public T Low { get; private set; }
+        public T Open { get; private set; }
+        public T Close { get; private set; }
+        public long PeriodVolume { get; private set; }
+        public int OpenInterest { get; private set; }
 
         public override bool Equals(object obj)
         {

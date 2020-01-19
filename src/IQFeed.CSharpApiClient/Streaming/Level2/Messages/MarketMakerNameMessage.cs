@@ -10,8 +10,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
             Description = description;
         }
 
-        public string MMID { get; }
-        public string Description { get; }
+        public string MMID { get; private set; }
+        public string Description { get; private set; }
 
         public static MarketMakerNameMessage Parse(string message)
         {

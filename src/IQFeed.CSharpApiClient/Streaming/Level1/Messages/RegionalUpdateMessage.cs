@@ -68,17 +68,17 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             MarketCenter = marketCenter;
         }
 
-        public string Symbol { get; }
-        public string Exchange { get; }
-        public T RegionalBid { get; }
-        public int RegionalBidSize { get; }
-        public DateTime RegionalBidTime { get; }
-        public T RegionalAsk { get; }
-        public int RegionalAskSize { get; }
-        public DateTime RegionalAskTime { get; }
-        public int FractionDisplayCode { get; }
-        public int DecimalPrecision { get; }
-        public int MarketCenter { get; }
+        public string Symbol { get; private set; }
+        public string Exchange { get; private set; }
+        public T RegionalBid { get; private set; }
+        public int RegionalBidSize { get; private set; }
+        public DateTime RegionalBidTime { get; private set; }
+        public T RegionalAsk { get; private set; }
+        public int RegionalAskSize { get; private set; }
+        public DateTime RegionalAskTime { get; private set; }
+        public int FractionDisplayCode { get; private set; }
+        public int DecimalPrecision { get; private set; }
+        public int MarketCenter { get; private set; }
 
         
 

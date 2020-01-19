@@ -8,15 +8,15 @@ namespace IQFeed.CSharpApiClient.Streaming.Admin.Messages
     {
         public const string ClientStatsDatetimeFormat = "yyyyMMdd HHmmss";
 
-        public ClientType Type { get; }
-        public int ClientId { get; }
-        public string ClientName { get; }
-        public DateTime StartTime { get; }
-        public int? Symbols { get; }
-        public int? RegionalSymbols { get; }
-        public float KbReceived { get; }
-        public float KbSent { get; }
-        public float KbQueued { get; }
+        public ClientType Type { get; private set; }
+        public int ClientId { get; private set; }
+        public string ClientName { get; private set; }
+        public DateTime StartTime { get; private set; }
+        public int? Symbols { get; private set; }
+        public int? RegionalSymbols { get; private set; }
+        public float KbReceived { get; private set; }
+        public float KbSent { get; private set; }
+        public float KbQueued { get; private set; }
 
         public ClientStatsMessage(ClientType type, int clientId, string clientName, DateTime startTime, int? symbols, int? regionalSymbols, float kbReceived, float kbSent, float kbQueued)
         {

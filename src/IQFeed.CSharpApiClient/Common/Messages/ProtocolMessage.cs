@@ -2,7 +2,7 @@
 {
     public class ProtocolMessage
     {
-        public string Version { get; }
+        public string Version { get; private set; }
 
         public ProtocolMessage(string version)
         {

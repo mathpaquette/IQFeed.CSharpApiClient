@@ -12,9 +12,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
             Description = description;
         }
 
-        public string RequestId { get; }
-        public int NaicsCode { get; }
-        public string Description { get; }        
+        public string RequestId { get; private set; }
+        public int NaicsCode { get; private set; }
+        public string Description { get; private set; }        
 
         public static NaicsCodeInfoMessage Parse(string message)
         {

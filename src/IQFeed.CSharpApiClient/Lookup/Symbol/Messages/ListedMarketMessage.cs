@@ -15,12 +15,12 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
             ShortGroupName = shortGroupName;
         }
 
-        public string RequestId { get; }
-        public int ListedMarketId { get; }
-        public string ShortName { get; }
-        public string LongName { get; }
-        public int GroupId { get; }
-        public string ShortGroupName { get; }
+        public string RequestId { get; private set; }
+        public int ListedMarketId { get; private set; }
+        public string ShortName { get; private set; }
+        public string LongName { get; private set; }
+        public int GroupId { get; private set; }
+        public string ShortGroupName { get; private set; }
 
         public static ListedMarketMessage Parse(string message)
         {

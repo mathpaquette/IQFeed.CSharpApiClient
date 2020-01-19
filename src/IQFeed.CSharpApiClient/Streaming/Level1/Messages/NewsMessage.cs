@@ -17,11 +17,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             Headline = headline;
         }
 
-        public string DistributorCode { get; }
-        public string StoryId { get; }
-        public string SymbolList { get; }
-        public DateTime Timestamp { get; }
-        public string Headline { get; }
+        public string DistributorCode { get; private set; }
+        public string StoryId { get; private set; }
+        public string SymbolList { get; private set; }
+        public DateTime Timestamp { get; private set; }
+        public string Headline { get; private set; }
 
         public static NewsMessage Parse(string message)
         {

@@ -77,19 +77,19 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
             EndOfMessageGroup = endOfMessageGroup;
         }
 
-        public string Symbol { get; }
-        public string MMID { get; }
-        public T Bid { get; }
-        public T Ask { get; }
-        public int BidSize { get; }
-        public int AskSize { get; }
-        public TimeSpan BidTime { get; }
-        public DateTime Date { get; }
-        public string ConditionCode { get; }
-        public TimeSpan AskTime { get; }
-        public char BidInfoValid { get; }
-        public char AskInfoValid { get; }
-        public char EndOfMessageGroup { get; }
+        public string Symbol { get; private set; }
+        public string MMID { get; private set; }
+        public T Bid { get; private set; }
+        public T Ask { get; private set; }
+        public int BidSize { get; private set; }
+        public int AskSize { get; private set; }
+        public TimeSpan BidTime { get; private set; }
+        public DateTime Date { get; private set; }
+        public string ConditionCode { get; private set; }
+        public TimeSpan AskTime { get; private set; }
+        public char BidInfoValid { get; private set; }
+        public char AskInfoValid { get; private set; }
+        public char EndOfMessageGroup { get; private set; }
 
         public override bool Equals(object obj)
         {

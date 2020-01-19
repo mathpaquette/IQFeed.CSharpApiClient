@@ -63,17 +63,17 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             TradeConditions = tradeConditions;
         }
 
-        public string RequestId { get; }
-        public DateTime Timestamp { get; }
-        public T Last { get; }
-        public int LastSize { get; }
-        public int TotalVolume { get; }
-        public T Bid { get; }
-        public T Ask { get; }
-        public long TickId { get; }
-        public char BasisForLast { get; }
-        public int TradeMarketCenter { get; }
-        public string TradeConditions { get; }
+        public string RequestId { get; private set; }
+        public DateTime Timestamp { get; private set; }
+        public T Last { get; private set; }
+        public int LastSize { get; private set; }
+        public int TotalVolume { get; private set; }
+        public T Bid { get; private set; }
+        public T Ask { get; private set; }
+        public long TickId { get; private set; }
+        public char BasisForLast { get; private set; }
+        public int TradeMarketCenter { get; private set; }
+        public string TradeConditions { get; private set; }
 
         public override bool Equals(object obj)
         {

@@ -56,15 +56,15 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             NumberOfTrades = numberOfTrades;
         }
 
-        public string RequestId { get; }
-        public DateTime Timestamp { get; }
-        public T High { get; }
-        public T Low { get; }
-        public T Open { get; }
-        public T Close { get; }
-        public long TotalVolume { get; }
-        public int PeriodVolume { get; }
-        public int NumberOfTrades { get; }
+        public string RequestId { get; private set; }
+        public DateTime Timestamp { get; private set; }
+        public T High { get; private set; }
+        public T Low { get; private set; }
+        public T Open { get; private set; }
+        public T Close { get; private set; }
+        public long TotalVolume { get; private set; }
+        public int PeriodVolume { get; private set; }
+        public int NumberOfTrades { get; private set; }
 
         public override bool Equals(object obj)
         {

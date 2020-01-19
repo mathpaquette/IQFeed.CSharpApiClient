@@ -9,7 +9,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
             Symbol = symbol;
         }
 
-        public string Symbol { get; }
+        public string Symbol { get; private set; }
 
         public static SymbolNotFoundMessage Parse(string message)
         {

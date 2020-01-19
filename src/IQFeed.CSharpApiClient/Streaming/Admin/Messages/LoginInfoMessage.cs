@@ -2,7 +2,7 @@
 {
     public class LoginInfoMessage
     {
-        public LoginInfoMessageType Type { get; }
+        public LoginInfoMessageType Type { get; private set; }
 
         public LoginInfoMessage(LoginInfoMessageType type)
         {

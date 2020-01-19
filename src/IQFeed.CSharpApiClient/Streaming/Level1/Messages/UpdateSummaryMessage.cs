@@ -89,22 +89,22 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             MostRecentTradeConditions = mostRecentTradeConditions;
         }
 
-        public string Symbol { get; }
-        public T MostRecentTrade { get; }
-        public int MostRecentTradeSize { get; }
-        public TimeSpan MostRecentTradeTime { get; }
-        public int MostRecentTradeMarketCenter { get; }
-        public int TotalVolume { get; }
-        public T Bid { get; }
-        public int BidSize { get; }
-        public T Ask { get; }
-        public int AskSize { get; }
-        public T Open { get; }
-        public T High { get; }
-        public T Low { get; }
-        public T Close { get; }
-        public string MessageContents { get; }
-        public string MostRecentTradeConditions { get; }
+        public string Symbol { get; private set; }
+        public T MostRecentTrade { get; private set; }
+        public int MostRecentTradeSize { get; private set; }
+        public TimeSpan MostRecentTradeTime { get; private set; }
+        public int MostRecentTradeMarketCenter { get; private set; }
+        public int TotalVolume { get; private set; }
+        public T Bid { get; private set; }
+        public int BidSize { get; private set; }
+        public T Ask { get; private set; }
+        public int AskSize { get; private set; }
+        public T Open { get; private set; }
+        public T High { get; private set; }
+        public T Low { get; private set; }
+        public T Close { get; private set; }
+        public string MessageContents { get; private set; }
+        public string MostRecentTradeConditions { get; private set; }
 
         public override string ToString()
         {

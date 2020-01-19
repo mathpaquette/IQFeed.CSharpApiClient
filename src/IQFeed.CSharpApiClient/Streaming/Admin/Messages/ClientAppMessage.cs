@@ -2,7 +2,7 @@
 {
     public class ClientAppMessage
     {
-        public ClientAppMessageType Type { get; }
+        public ClientAppMessageType Type { get; private set; }
 
         public ClientAppMessage(ClientAppMessageType type)
         {

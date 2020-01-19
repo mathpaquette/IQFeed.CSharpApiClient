@@ -4,8 +4,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
 {
     public class SystemMessage
     {
-        public string Type { get; }
-        public string Message { get; }
+        public string Type { get; private set; }
+        public string Message { get; private set; }
 
         public SystemMessage(string type, string message)
         {

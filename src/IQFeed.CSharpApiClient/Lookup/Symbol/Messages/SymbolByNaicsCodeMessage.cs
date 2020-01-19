@@ -15,12 +15,12 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
             Description = description;
         }
 
-        public string RequestId { get; }
-        public int NaicsCode { get; }
-        public string Symbol { get; }
-        public int ListedMarketId { get; }
-        public int SecurityTypeId { get; }
-        public string Description { get; }
+        public string RequestId { get; private set; }
+        public int NaicsCode { get; private set; }
+        public string Symbol { get; private set; }
+        public int ListedMarketId { get; private set; }
+        public int SecurityTypeId { get; private set; }
+        public string Description { get; private set; }
 
         public static SymbolByNaicsCodeMessage Parse(string message)
         {

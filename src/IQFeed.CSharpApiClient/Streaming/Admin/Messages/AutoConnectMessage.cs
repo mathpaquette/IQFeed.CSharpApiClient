@@ -2,7 +2,7 @@
 {
     public class AutoConnectMessage
     {
-        public AutoConnectMessageType Type { get; }
+        public AutoConnectMessageType Type { get; private set; }
 
         public AutoConnectMessage(AutoConnectMessageType type)
         {
