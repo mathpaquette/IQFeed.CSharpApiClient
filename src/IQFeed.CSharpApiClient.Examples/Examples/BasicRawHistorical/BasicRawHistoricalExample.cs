@@ -31,7 +31,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.BasicRawHistorical
             lookupClient.Connect();
 
             // Step 5 - Make raw request!
-            var tmpFilename = await lookupClient.Historical.Raw.ReqHistoryTickDatapointsAsync(Symbol, 1000);
+            var tmpFilename = await lookupClient.Historical.Raw.GetHistoryTickDatapointsAsync(Symbol, 1000);
 
             // Step 6 - Move the file
             var basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DownloadBasePath);

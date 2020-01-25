@@ -51,7 +51,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
             return _expiredOptionReader.GetExpiredOptions(filename, header);
         }
 
-        public Task<IEnumerable<SymbolByFilterMessage>> ReqSymbolsByFilterAsync(FieldToSearch fieldToSearch, string searchString, FilterType? filterType, IEnumerable<int> filterValues, string requestId = null)
+        public Task<IEnumerable<SymbolByFilterMessage>> GetSymbolsByFilterAsync(FieldToSearch fieldToSearch, string searchString, FilterType? filterType, IEnumerable<int> filterValues, string requestId = null)
         {
             var request = _symbolRequestFormatter.ReqSymbolsByFilter(fieldToSearch, searchString, filterType, filterValues, requestId);
             return string.IsNullOrEmpty(requestId)
@@ -59,7 +59,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
                 : GetMessagesAsync(request, _symbolMessageHandler.GetSymbolByFilterMessagesWithRequestId);
         }
 
-        public Task<IEnumerable<SymbolBySicCodeMessage>> ReqSymbolsBySicCodeAsync(string sicCodePrefix, string requestId = null)
+        public Task<IEnumerable<SymbolBySicCodeMessage>> GetSymbolsBySicCodeAsync(string sicCodePrefix, string requestId = null)
         {
             if(sicCodePrefix == null) throw new ArgumentNullException(nameof(sicCodePrefix));
             if(sicCodePrefix.Length < 2) throw new ArgumentException("Value should have at least 2 characters!", nameof(sicCodePrefix));
@@ -69,7 +69,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
                 : GetMessagesAsync(request, _symbolMessageHandler.GetSymbolBySicCodeMessagesWithRequestId);
         }
 
-        public Task<IEnumerable<SymbolByNaicsCodeMessage>> ReqSymbolsByNaicsCodeAsync(string naicsCodePrefix, string requestId = null)
+        public Task<IEnumerable<SymbolByNaicsCodeMessage>> GetSymbolsByNaicsCodeAsync(string naicsCodePrefix, string requestId = null)
         {
             if(naicsCodePrefix == null) throw new ArgumentNullException(nameof(naicsCodePrefix));
             if(naicsCodePrefix.Length < 2) throw new ArgumentException("Value should have at least 2 characters!", nameof(naicsCodePrefix));
@@ -79,7 +79,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
                 : GetMessagesAsync(request, _symbolMessageHandler.GetSymbolByNaicsCodeMessagesWithRequestId);
         }
 
-        public Task<IEnumerable<ListedMarketMessage>> ReqListedMarketsAsync(string requestId = null)
+        public Task<IEnumerable<ListedMarketMessage>> GetListedMarketsAsync(string requestId = null)
         {
             var request = _symbolRequestFormatter.ReqListedMarkets(requestId);
             return string.IsNullOrEmpty(requestId) 
@@ -87,7 +87,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
                 : GetMessagesAsync(request, _symbolMessageHandler.GetListedMarketMessagesWithRequestId);
         }
 
-        public Task<IEnumerable<SecurityTypeMessage>> ReqSecurityTypesAsync(string requestId = null)
+        public Task<IEnumerable<SecurityTypeMessage>> GetSecurityTypesAsync(string requestId = null)
         {
             var request = _symbolRequestFormatter.ReqSecurityTypes(requestId);
             return string.IsNullOrEmpty(requestId)
@@ -95,7 +95,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
                 : GetMessagesAsync(request, _symbolMessageHandler.GetSecurityTypeMessagesWithRequestId);
         }
 
-        public Task<IEnumerable<TradeConditionMessage>> ReqTradeConditionsAsync(string requestId = null)
+        public Task<IEnumerable<TradeConditionMessage>> GetTradeConditionsAsync(string requestId = null)
         {
             var request = _symbolRequestFormatter.ReqTradeConditions(requestId);
             return string.IsNullOrEmpty(requestId) 
@@ -103,7 +103,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
                 : GetMessagesAsync(request, _symbolMessageHandler.GetTradeConditionMessagesWithRequestId);
         }
 
-        public Task<IEnumerable<SicCodeInfoMessage>> ReqSicCodesAsync(string requestId = null)
+        public Task<IEnumerable<SicCodeInfoMessage>> GetSicCodesAsync(string requestId = null)
         {
             var request = _symbolRequestFormatter.ReqSicCodes(requestId);
             return string.IsNullOrEmpty(requestId)
@@ -111,7 +111,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
                 : GetMessagesAsync(request, _symbolMessageHandler.GetSicCodeInfoMessagesWithRequestId);
         }
 
-        public Task<IEnumerable<NaicsCodeInfoMessage>> ReqNaicsCodesAsync(string requestId = null)
+        public Task<IEnumerable<NaicsCodeInfoMessage>> GetNaicsCodesAsync(string requestId = null)
         {
             var request = _symbolRequestFormatter.ReqNaicsCodes(requestId);
             return string.IsNullOrEmpty(requestId)

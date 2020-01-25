@@ -64,7 +64,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentHistorical
 
                 try
                 {
-                    var dailyMessages = await LookupClient.Historical.ReqHistoryDailyDatapointsAsync(symbol, 100);
+                    var dailyMessages = await LookupClient.Historical.GetHistoryDailyDatapointsAsync(symbol, 100);
                     _dailyMessagesBySymbol.TryAdd(symbol, dailyMessages.ToList());
                 }
                 catch (NoDataIQFeedException) { }

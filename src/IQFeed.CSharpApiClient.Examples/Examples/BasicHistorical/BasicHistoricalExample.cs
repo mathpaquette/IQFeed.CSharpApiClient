@@ -28,9 +28,9 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.BasicHistorical
             lookupClient.Connect();
 
             // Step 5 - Make any requests you need or want!
-            var tickMessages = await lookupClient.Historical.ReqHistoryTickDatapointsAsync("AAPL", 100);
-            var intervalMessage = await lookupClient.Historical.ReqHistoryIntervalDaysAsync("AAPL", 5, 10, 100);
-            var dailyMessages = await lookupClient.Historical.ReqHistoryDailyDatapointsAsync("AAPL", 100);
+            var tickMessages = await lookupClient.Historical.GetHistoryTickDatapointsAsync("AAPL", 100);
+            var intervalMessage = await lookupClient.Historical.GetHistoryIntervalDaysAsync("AAPL", 5, 10, 100);
+            var dailyMessages = await lookupClient.Historical.GetHistoryDailyDatapointsAsync("AAPL", 100);
 
             Console.WriteLine($"Fetched {tickMessages.Count()} Tick messages");
             Console.WriteLine($"Fetched {intervalMessage.Count()} Interval messages");
