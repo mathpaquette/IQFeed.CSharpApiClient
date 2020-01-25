@@ -19,21 +19,21 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             _historicalRequestFormatter = historicalRequestFormatter;
         }
 
-        public Task<string> ReqHistoryTickDatapointsAsync(string symbol, int maxDatapoints, DataDirection? dataDirection = null, string requestId = null,
+        public Task<string> GetHistoryTickDatapointsAsync(string symbol, int maxDatapoints, DataDirection? dataDirection = null, string requestId = null,
             int? datapointsPerSend = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryTickDatapoints(symbol, maxDatapoints, dataDirection, requestId, datapointsPerSend);
             return _rawMessageHandler.GetFilenameAsync(request);
         }
 
-        public Task<string> ReqHistoryTickDaysAsync(string symbol, int days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null,
+        public Task<string> GetHistoryTickDaysAsync(string symbol, int days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null,
             TimeSpan? endFilterTime = null, DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryTickDays(symbol, days, maxDatapoints, beginFilterTime, endFilterTime, dataDirection, requestId, datapointsPerSend);
             return _rawMessageHandler.GetFilenameAsync(request);
         }
 
-        public Task<string> ReqHistoryTickTimeframeAsync(string symbol, DateTime? beginDate, DateTime? endDate, int? maxDatapoints = null,
+        public Task<string> GetHistoryTickTimeframeAsync(string symbol, DateTime? beginDate, DateTime? endDate, int? maxDatapoints = null,
             TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null, DataDirection? dataDirection = null,
             string requestId = null, int? datapointsPerSend = null)
         {
@@ -44,14 +44,14 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             return _rawMessageHandler.GetFilenameAsync(request);
         }
 
-        public Task<string> ReqHistoryIntervalDatapointsAsync(string symbol, int interval, int maxDatapoints, DataDirection? dataDirection = null,
+        public Task<string> GetHistoryIntervalDatapointsAsync(string symbol, int interval, int maxDatapoints, DataDirection? dataDirection = null,
             string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryIntervalDatapoints(symbol, interval, maxDatapoints, dataDirection, requestId, datapointsPerSend, intervalType);
             return _rawMessageHandler.GetFilenameAsync(request);
         }
 
-        public Task<string> ReqHistoryIntervalDaysAsync(string symbol, int interval, int days, int? maxDatapoints = null,
+        public Task<string> GetHistoryIntervalDaysAsync(string symbol, int interval, int days, int? maxDatapoints = null,
             TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null, DataDirection? dataDirection = null,
             string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
@@ -59,7 +59,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             return _rawMessageHandler.GetFilenameAsync(request);
         }
 
-        public Task<string> ReqHistoryIntervalTimeframeAsync(string symbol, int interval, DateTime? beginDate, DateTime? endDate,
+        public Task<string> GetHistoryIntervalTimeframeAsync(string symbol, int interval, DateTime? beginDate, DateTime? endDate,
             int? maxDatapoints = null, TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null,
             DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null,
             HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
@@ -69,14 +69,14 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             return _rawMessageHandler.GetFilenameAsync(request);
         }
 
-        public Task<string> ReqHistoryDailyDatapointsAsync(string symbol, int maxDatapoints, DataDirection? dataDirection = null,
+        public Task<string> GetHistoryDailyDatapointsAsync(string symbol, int maxDatapoints, DataDirection? dataDirection = null,
             string requestId = null, int? datapointsPerSend = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryDailyDatapoints(symbol, maxDatapoints, dataDirection, requestId, datapointsPerSend);
             return _rawMessageHandler.GetFilenameAsync(request);
         }
 
-        public Task<string> ReqHistoryDailyTimeframeAsync(string symbol, DateTime? beginDate, DateTime? endDate, int? maxDatapoints = null,
+        public Task<string> GetHistoryDailyTimeframeAsync(string symbol, DateTime? beginDate, DateTime? endDate, int? maxDatapoints = null,
             DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null)
         {
             if (!beginDate.HasValue && !endDate.HasValue)
@@ -86,14 +86,14 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             return _rawMessageHandler.GetFilenameAsync(request);
         }
 
-        public Task<string> ReqHistoryWeeklyDatapointsAsync(string symbol, int maxDatapoints, DataDirection? dataDirection = null,
+        public Task<string> GetHistoryWeeklyDatapointsAsync(string symbol, int maxDatapoints, DataDirection? dataDirection = null,
             string requestId = null, int? datapointsPerSend = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryWeeklyDatapoints(symbol, maxDatapoints, dataDirection, requestId, datapointsPerSend);
             return _rawMessageHandler.GetFilenameAsync(request);
         }
 
-        public Task<string> ReqHistoryMonthlyDatapointsAsync(string symbol, int maxDatapoints, DataDirection? dataDirection = null,
+        public Task<string> GetHistoryMonthlyDatapointsAsync(string symbol, int maxDatapoints, DataDirection? dataDirection = null,
             string requestId = null, int? datapointsPerSend = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryMonthlyDatapoints(symbol, maxDatapoints, dataDirection, requestId, datapointsPerSend);

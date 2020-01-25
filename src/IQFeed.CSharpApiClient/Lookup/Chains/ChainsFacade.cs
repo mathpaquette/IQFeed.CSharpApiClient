@@ -20,7 +20,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
             _chainsRequestFormatter = chainsRequestFormatter;
         }
 
-        public async Task<IEnumerable<Future>> ReqChainFutureAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null)
+        public async Task<IEnumerable<Future>> GetChainFutureAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null)
         {
             if (!string.IsNullOrEmpty(requestId))
                 throw new NotSupportedException("RequestId parsing isn't supported for Chains!");
@@ -30,7 +30,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
             return messages.First().Chains;
         }
 
-        public async Task<IEnumerable<FutureSpread>> ReqChainFutureSpreadsAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null)
+        public async Task<IEnumerable<FutureSpread>> GetChainFutureSpreadsAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null)
         {
             if (!string.IsNullOrEmpty(requestId))
                 throw new NotSupportedException("RequestId parsing isn't supported for Chains!");
@@ -40,7 +40,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
             return messages.First().Chains;
         }
 
-        public async Task<IEnumerable<FutureOption>> ReqChainFutureOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, string years, int? nearMonths = null, string requestId = null)
+        public async Task<IEnumerable<FutureOption>> GetChainFutureOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, string years, int? nearMonths = null, string requestId = null)
         {
             if (!string.IsNullOrEmpty(requestId))
                 throw new NotSupportedException("RequestId parsing isn't supported for Chains!");
@@ -50,7 +50,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
             return messages.First().Chains;
         }
 
-        public async Task<IEnumerable<EquityOption>> ReqChainIndexEquityOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, int? nearMonths = null, BinaryOptionFilterType binaryOptionFilter = BinaryOptionFilterType.Include,
+        public async Task<IEnumerable<EquityOption>> GetChainIndexEquityOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, int? nearMonths = null, BinaryOptionFilterType binaryOptionFilter = BinaryOptionFilterType.Include,
             OptionFilterType optionFilter = OptionFilterType.None, int? filterValue1 = null, int? filterValue2 = null, string requestId = null)
         {
             if (!string.IsNullOrEmpty(requestId))

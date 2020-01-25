@@ -46,7 +46,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
             var sw = Stopwatch.StartNew();
             foreach (var symbol in Symbols)
             {
-                var tickMessageTask = _lookupClient.Historical.ReqHistoryTickDatapointsAsync(symbol, Datapoints);
+                var tickMessageTask = _lookupClient.Historical.GetHistoryTickDatapointsAsync(symbol, Datapoints);
                 tickMessageTasks.Add(tickMessageTask);
             }
             await Task.WhenAll(tickMessageTasks);
@@ -72,7 +72,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
             var sw = Stopwatch.StartNew();
             foreach (var symbol in Symbols)
             {
-                var tickMessages = await _lookupClient.Historical.ReqHistoryTickDatapointsAsync(symbol, Datapoints);
+                var tickMessages = await _lookupClient.Historical.GetHistoryTickDatapointsAsync(symbol, Datapoints);
                 listOfTickMessages.Add(tickMessages);
             }
             sw.Stop();

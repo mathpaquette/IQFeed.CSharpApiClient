@@ -12,7 +12,7 @@
         /// Default buffer size for Lookup SocketClient
         /// Note: SocketClients connected to the lookup port, we need to assign them larger buffer
         /// than usual because since we're waiting for the \r\n pattern to notify upper layer that we
-        /// completed a new message, some particular responses such on ReqChainIndexEquityOptionAsync
+        /// completed a new message, some particular responses such on GetChainIndexEquityOptionAsync
         /// IQFeed will return on the same line all matching symbols causing overflow
         /// </summary>
         public const int BufferSize = 32 * 1024;

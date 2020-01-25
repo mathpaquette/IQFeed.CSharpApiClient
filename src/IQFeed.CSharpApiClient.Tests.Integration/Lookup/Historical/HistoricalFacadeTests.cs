@@ -38,28 +38,28 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_TickMessages_When_ReqHistoryTickDatapointsAsync()
         {
-            var tickMessages = await _lookupClient.Historical.ReqHistoryTickDatapointsAsync(Symbol, Datapoints);
+            var tickMessages = await _lookupClient.Historical.GetHistoryTickDatapointsAsync(Symbol, Datapoints);
             Assert.AreEqual(tickMessages.Count(), Datapoints);
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_TickMessages_With_RequestId_When_ReqHistoryTickDatapointsAsync_Using_RequestId()
         {
-            var tickMessages = await _lookupClient.Historical.ReqHistoryTickDatapointsAsync(Symbol, Datapoints, requestId: RequestId);
+            var tickMessages = await _lookupClient.Historical.GetHistoryTickDatapointsAsync(Symbol, Datapoints, requestId: RequestId);
             Assert.AreEqual(tickMessages.First().RequestId, RequestId);
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_TickMessages_When_ReqHistoryTickDaysAsync()
         {
-            var tickMessages = await _lookupClient.Historical.ReqHistoryTickDaysAsync(Symbol, int.MaxValue, Datapoints);
+            var tickMessages = await _lookupClient.Historical.GetHistoryTickDaysAsync(Symbol, int.MaxValue, Datapoints);
             Assert.AreEqual(tickMessages.Count(), Datapoints);
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_TickMessages_When_ReqHistoryTickTimeframeAsync()
         {
-            var tickMessages = await _lookupClient.Historical.ReqHistoryTickTimeframeAsync(Symbol, null, DateTime.Now.Date, Datapoints);
+            var tickMessages = await _lookupClient.Historical.GetHistoryTickTimeframeAsync(Symbol, null, DateTime.Now.Date, Datapoints);
             Assert.Greater(tickMessages.Count(), 0);
         }
         
@@ -67,28 +67,28 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_IntervalMessages_When_ReqHistoryIntervalDatapointsAsync()
         {
-            var intervalMessages = await _lookupClient.Historical.ReqHistoryIntervalDatapointsAsync(Symbol, 5, Datapoints);
+            var intervalMessages = await _lookupClient.Historical.GetHistoryIntervalDatapointsAsync(Symbol, 5, Datapoints);
             Assert.AreEqual(intervalMessages.Count(), Datapoints);
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_IntervalMessages_With_RequestId_When_ReqHistoryIntervalDatapointsAsync_Using_RequestId()
         {
-            var intervalMessages = await _lookupClient.Historical.ReqHistoryIntervalDatapointsAsync(Symbol, 5, Datapoints, requestId: RequestId);
+            var intervalMessages = await _lookupClient.Historical.GetHistoryIntervalDatapointsAsync(Symbol, 5, Datapoints, requestId: RequestId);
             Assert.AreEqual(intervalMessages.First().RequestId, RequestId);
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_IntervalMessages_When_ReqHistoryIntervalDaysAsync()
         {
-            var intervalMessages = await _lookupClient.Historical.ReqHistoryIntervalDaysAsync(Symbol, 5, int.MaxValue, Datapoints);
+            var intervalMessages = await _lookupClient.Historical.GetHistoryIntervalDaysAsync(Symbol, 5, int.MaxValue, Datapoints);
             Assert.AreEqual(intervalMessages.Count(), Datapoints);
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_IntervalMessages_When_ReqHistoryIntervalTimeframeAsync()
         {
-            var intervalMessages = await _lookupClient.Historical.ReqHistoryIntervalTimeframeAsync(Symbol, 5, null, DateTime.Now.Date);
+            var intervalMessages = await _lookupClient.Historical.GetHistoryIntervalTimeframeAsync(Symbol, 5, null, DateTime.Now.Date);
             Assert.Greater(intervalMessages.Count(), 0);
         }
 
@@ -96,35 +96,35 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_DailyWeeklyMonthlyMessages_When_ReqHistoryDailyDatapointsAsync()
         {
-            var dailyWeeklyMonthlyMessages = await _lookupClient.Historical.ReqHistoryDailyDatapointsAsync(Symbol, Datapoints);
+            var dailyWeeklyMonthlyMessages = await _lookupClient.Historical.GetHistoryDailyDatapointsAsync(Symbol, Datapoints);
             Assert.AreEqual(dailyWeeklyMonthlyMessages.Count(), Datapoints);
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_DailyWeeklyMonthlyMessages_With_RequestId_When_ReqHistoryDailyDatapointsAsync_Using_RequestId()
         {
-            var dailyWeeklyMonthlyMessages = await _lookupClient.Historical.ReqHistoryDailyDatapointsAsync(Symbol, Datapoints, requestId: RequestId);
+            var dailyWeeklyMonthlyMessages = await _lookupClient.Historical.GetHistoryDailyDatapointsAsync(Symbol, Datapoints, requestId: RequestId);
             Assert.AreEqual(dailyWeeklyMonthlyMessages.First().RequestId, RequestId);
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_DailyWeeklyMonthlyMessages_When_ReqHistoryDailyTimeframeAsync()
         {
-            var dailyWeeklyMonthlyMessages = await _lookupClient.Historical.ReqHistoryDailyTimeframeAsync(Symbol, null, DateTime.Today.Date);
+            var dailyWeeklyMonthlyMessages = await _lookupClient.Historical.GetHistoryDailyTimeframeAsync(Symbol, null, DateTime.Today.Date);
             Assert.Greater(dailyWeeklyMonthlyMessages.Count(), 0);
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_DailyWeeklyMonthlyMessages_When_ReqHistoryWeeklyDatapointsAsync()
         {
-            var dailyWeeklyMonthlyMessages = await _lookupClient.Historical.ReqHistoryWeeklyDatapointsAsync(Symbol, Datapoints);
+            var dailyWeeklyMonthlyMessages = await _lookupClient.Historical.GetHistoryWeeklyDatapointsAsync(Symbol, Datapoints);
             Assert.AreEqual(dailyWeeklyMonthlyMessages.Count(), Datapoints);
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_DailyWeeklyMonthlyMessages_When_ReqHistoryMonthlyDatapointsAsync()
         {
-            var dailyWeeklyMonthlyMessages = await _lookupClient.Historical.ReqHistoryMonthlyDatapointsAsync(Symbol, Datapoints);
+            var dailyWeeklyMonthlyMessages = await _lookupClient.Historical.GetHistoryMonthlyDatapointsAsync(Symbol, Datapoints);
             Assert.AreEqual(dailyWeeklyMonthlyMessages.Count(), Datapoints);
         }
 
@@ -132,14 +132,14 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         public void Should_Throw_NoDataIQFeedException_When_Historical_Getting_Error()
         {
             var ex = Assert.ThrowsAsync<NoDataIQFeedException>(
-                async () => await _lookupClient.Historical.ReqHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints));
+                async () => await _lookupClient.Historical.GetHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints));
         }
 
         [Test, MaxTime(TimeoutMs)]
         public void Should_Throw_NoDataIQFeedException_When_Historical_With_RequestId_Getting_Error()
         {
             var ex = Assert.ThrowsAsync<NoDataIQFeedException>(
-                async () => await _lookupClient.Historical.ReqHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints, requestId: "zzz"));
+                async () => await _lookupClient.Historical.GetHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints, requestId: "zzz"));
         }
 
         [Test, MaxTime(TimeoutMs)]
@@ -150,7 +150,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
             // and we should do the checks before sending wrong protocol messages to IQ Feed
             // no string parameter should contain commas...
             var ex = Assert.ThrowsAsync<IQFeedException>(
-                async () => await _lookupClient.Historical.ReqHistoryTickDatapointsAsync("INVALID,SYMBOL,NAME", Datapoints));
+                async () => await _lookupClient.Historical.GetHistoryTickDatapointsAsync("INVALID,SYMBOL,NAME", Datapoints));
         }
     }
 }

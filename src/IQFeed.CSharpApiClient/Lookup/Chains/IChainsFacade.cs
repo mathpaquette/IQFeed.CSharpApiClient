@@ -16,7 +16,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
         /// <param name="nearMonths"></param>
         /// <param name="requestId"></param>
         /// <returns></returns>
-        Task<IEnumerable<Future>> ReqChainFutureAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null);
+        Task<IEnumerable<Future>> GetChainFutureAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null);
 
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
         /// <param name="nearMonths"></param>
         /// <param name="requestId"></param>
         /// <returns></returns>
-        Task<IEnumerable<FutureSpread>> ReqChainFutureSpreadsAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null);
+        Task<IEnumerable<FutureSpread>> GetChainFutureSpreadsAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null);
 
         /// <summary>
         /// CFO - Request a Future Option Chain from IQFeed
@@ -40,7 +40,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
         /// <param name="nearMonths"></param>
         /// <param name="requestId"></param>
         /// <returns></returns>
-        Task<IEnumerable<FutureOption>> ReqChainFutureOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, string years, int? nearMonths = null, string requestId = null);
+        Task<IEnumerable<FutureOption>> GetChainFutureOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, string years, int? nearMonths = null, string requestId = null);
 
         /// <summary>
         /// CEO - Request an Index or Equity Option Chain from IQFeed
@@ -55,6 +55,6 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
         /// <param name="filterValue2"></param>
         /// <param name="requestId"></param>
         /// <returns></returns>
-        Task<IEnumerable<EquityOption>> ReqChainIndexEquityOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, int? nearMonths = null, BinaryOptionFilterType binaryOptionFilter = BinaryOptionFilterType.Include, OptionFilterType optionFilter = OptionFilterType.None, int? filterValue1 = null, int? filterValue2 = null, string requestId = null);
+        Task<IEnumerable<EquityOption>> GetChainIndexEquityOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, int? nearMonths = null, BinaryOptionFilterType binaryOptionFilter = BinaryOptionFilterType.Include, OptionFilterType optionFilter = OptionFilterType.None, int? filterValue1 = null, int? filterValue2 = null, string requestId = null);
     }
 }

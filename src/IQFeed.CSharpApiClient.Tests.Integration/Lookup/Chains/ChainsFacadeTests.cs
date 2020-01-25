@@ -42,28 +42,28 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Chains
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_Futures_When_ReqChainFutureAsync()
         {
-            var futureMessages = await _lookupClient.Chains.ReqChainFutureAsync(FutureSymbol, string.Empty, _years, 24);
+            var futureMessages = await _lookupClient.Chains.GetChainFutureAsync(FutureSymbol, string.Empty, _years, 24);
             Assert.IsInstanceOf<Future>(futureMessages.First());
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_FutureSpreads_When_ReqChainFutureSpreadsAsync()
         {
-            var futureSpreadMessages = await _lookupClient.Chains.ReqChainFutureSpreadsAsync(FutureSymbol, string.Empty, _years, 24);
+            var futureSpreadMessages = await _lookupClient.Chains.GetChainFutureSpreadsAsync(FutureSymbol, string.Empty, _years, 24);
             Assert.IsInstanceOf<FutureSpread>(futureSpreadMessages.First());
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_FutureOptions_When_ReqChainFutureOptionAsync()
         {
-            var futureOptionMessages = await _lookupClient.Chains.ReqChainFutureOptionAsync(FutureSymbol, OptionSideFilterType.CP, string.Empty, _years, 12);
+            var futureOptionMessages = await _lookupClient.Chains.GetChainFutureOptionAsync(FutureSymbol, OptionSideFilterType.CP, string.Empty, _years, 12);
             Assert.IsInstanceOf<FutureOption>(futureOptionMessages.First());
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_EquityIndexOptions_When_ReqChainIndexEquityOptionAsync()
         {
-            var equityIndexOptions = await _lookupClient.Chains.ReqChainIndexEquityOptionAsync(EquitySymbol, OptionSideFilterType.CP, string.Empty, 4);
+            var equityIndexOptions = await _lookupClient.Chains.GetChainIndexEquityOptionAsync(EquitySymbol, OptionSideFilterType.CP, string.Empty, 4);
             Assert.IsInstanceOf<EquityOption>(equityIndexOptions.First());
         }
 
@@ -71,7 +71,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Chains
         public void Should_Throw_IQFeedException_When_Chains_Getting_Error()
         {
             var ex = Assert.ThrowsAsync<NoDataIQFeedException>(
-                async () => await _lookupClient.Chains.ReqChainIndexEquityOptionAsync("INVALID_SYMBOL_NAME", OptionSideFilterType.CP, string.Empty, 4));
+                async () => await _lookupClient.Chains.GetChainIndexEquityOptionAsync("INVALID_SYMBOL_NAME", OptionSideFilterType.CP, string.Empty, 4));
         }
     }
 }

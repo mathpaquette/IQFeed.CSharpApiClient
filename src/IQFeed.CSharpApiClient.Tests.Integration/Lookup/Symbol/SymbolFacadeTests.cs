@@ -54,7 +54,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
         public async Task Should_Return_ListedMarkets()
         {
             // Act
-            var markets = await _lookupClient.Symbol.ReqListedMarketsAsync();
+            var markets = await _lookupClient.Symbol.GetListedMarketsAsync();
 
             // Assert
             Assert.Greater(markets.Count(), 0);
@@ -64,7 +64,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
         public async Task Should_Return_SecurityTypes()
         {
             // Act
-            var securityTypes = await _lookupClient.Symbol.ReqSecurityTypesAsync();
+            var securityTypes = await _lookupClient.Symbol.GetSecurityTypesAsync();
 
             // Assert
             Assert.AreEqual(1, securityTypes.Where(st => st.ShortName == "EQUITY").Count());
@@ -74,7 +74,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
         public async Task Should_Return_TradeConditions()
         {
             // Act
-            var tradeConditions = await _lookupClient.Symbol.ReqTradeConditionsAsync();
+            var tradeConditions = await _lookupClient.Symbol.GetTradeConditionsAsync();
 
             // Assert
             Assert.AreEqual(1, tradeConditions.Where(st => st.ShortName == "REGULAR").Count());
@@ -84,7 +84,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
         public async Task Should_Return_SicCodes()
         {
             // Act
-            var sicCodes = await _lookupClient.Symbol.ReqSicCodesAsync();
+            var sicCodes = await _lookupClient.Symbol.GetSicCodesAsync();
 
             // Assert
             Assert.AreEqual("ELECTRONIC COMPUTERS", sicCodes.Where(c => c.SicCode == 3571).Single().Description);
@@ -94,7 +94,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
         public async Task Should_Return_NaicsCodes()
         {
             // Act
-            var naicsCodes = await _lookupClient.Symbol.ReqNaicsCodesAsync();
+            var naicsCodes = await _lookupClient.Symbol.GetNaicsCodesAsync();
 
             // Assert
             Assert.AreEqual("Radio and Television Broadcasting and Wireless Communications Equipment Manufacturing", 
@@ -106,7 +106,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
         {
             // Act
             var equitySymbols = await _lookupClient.Symbol
-                .ReqSymbolsByFilterAsync(FieldToSearch.Symbols, "AA", FilterType.SecurityTypes, new int[] { 1 });
+                .GetSymbolsByFilterAsync(FieldToSearch.Symbols, "AA", FilterType.SecurityTypes, new int[] { 1 });
 
             // Assert
             Assert.AreEqual(1, equitySymbols.Where(st => st.Symbol == "AAPL").Count());
@@ -117,7 +117,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
         {
             // Act
             var equitySymbols = await _lookupClient.Symbol
-                .ReqSymbolsByFilterAsync(FieldToSearch.Symbols, "AAPL", FilterType.SecurityTypes, new int[] { 2 });
+                .GetSymbolsByFilterAsync(FieldToSearch.Symbols, "AAPL", FilterType.SecurityTypes, new int[] { 2 });
 
             // Assert
             Assert.AreEqual(equitySymbols.Count(), equitySymbols.Where(st => st.Symbol.StartsWith("AAPL")).Count());
@@ -127,7 +127,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
         public async Task Should_Return_Symbols_By_SicCode()
         {
             // Act
-            var symbolsBySicCode = await _lookupClient.Symbol.ReqSymbolsBySicCodeAsync("3571");
+            var symbolsBySicCode = await _lookupClient.Symbol.GetSymbolsBySicCodeAsync("3571");
 
             // Assert
             Assert.AreEqual(symbolsBySicCode.Count(), symbolsBySicCode.Where(st => st.SicCode.ToString().StartsWith("3571")).Count());
@@ -137,21 +137,21 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
         public void Should_Throw_Exceptions_When_Null_SicCodePrefix()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(async () => await _lookupClient.Symbol.ReqSymbolsBySicCodeAsync(null));            
+            Assert.ThrowsAsync<ArgumentNullException>(async () => await _lookupClient.Symbol.GetSymbolsBySicCodeAsync(null));            
         }
 
         [Test]
         public void Should_Throw_Exceptions_When_Short_SicCodePrefix()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentException>(async () => await _lookupClient.Symbol.ReqSymbolsBySicCodeAsync("1"));
+            Assert.ThrowsAsync<ArgumentException>(async () => await _lookupClient.Symbol.GetSymbolsBySicCodeAsync("1"));
         }
 
         [Test]
         public async Task Should_Return_Symbols_By_NaicsCode_And_RequestId()
         {
             // Act
-            var symbolsByNaicsCode = await _lookupClient.Symbol.ReqSymbolsByNaicsCodeAsync("33", "reqId2");
+            var symbolsByNaicsCode = await _lookupClient.Symbol.GetSymbolsByNaicsCodeAsync("33", "reqId2");
 
             // Assert
             Assert.AreEqual(symbolsByNaicsCode.Count(), 
@@ -162,21 +162,21 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
         public void Should_Throw_Exceptions_When_Null_NaicsCodePrefix()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(async () => await _lookupClient.Symbol.ReqSymbolsByNaicsCodeAsync(null));
+            Assert.ThrowsAsync<ArgumentNullException>(async () => await _lookupClient.Symbol.GetSymbolsByNaicsCodeAsync(null));
         }
 
         [Test]
         public void Should_Throw_Exceptions_When_Short_NaicsCodePrefix()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentException>(async () => await _lookupClient.Symbol.ReqSymbolsByNaicsCodeAsync("2"));
+            Assert.ThrowsAsync<ArgumentException>(async () => await _lookupClient.Symbol.GetSymbolsByNaicsCodeAsync("2"));
         }
 
         [Test]
         public void Should_Throw_NoDataIQFeedException_For_Missing_Equity_Symbol()
         {
             var ex = Assert.ThrowsAsync<NoDataIQFeedException>(
-                async () => await _lookupClient.Symbol.ReqSymbolsByFilterAsync(FieldToSearch.Symbols, "GZZZZZZ", FilterType.SecurityTypes, new int[] { 1 }));
+                async () => await _lookupClient.Symbol.GetSymbolsByFilterAsync(FieldToSearch.Symbols, "GZZZZZZ", FilterType.SecurityTypes, new int[] { 1 }));
         }
 
         [Test, Explicit]

@@ -36,7 +36,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.MessageHandlers
             lookupClient.Connect();
 
             // retrieve IEnumerable<TickMessage<double>>
-            var doubleTicks = (await lookupClient.Historical.ReqHistoryTickDatapointsAsync("AAPL", 1000)).ToList();
+            var doubleTicks = (await lookupClient.Historical.GetHistoryTickDatapointsAsync("AAPL", 1000)).ToList();
 
             // convert TickMessage<double> to TickMessage<float>
             var floatTick = doubleTicks.First().ToFloat();

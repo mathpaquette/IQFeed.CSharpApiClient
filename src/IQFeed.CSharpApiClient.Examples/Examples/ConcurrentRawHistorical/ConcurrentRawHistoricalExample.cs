@@ -80,7 +80,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentRawHistorical
             try
             {
                 // Using the "raw" historical facade will save received data directly to the disk
-                var tmpFilename = await LookupClient.Historical.Raw.ReqHistoryTickDaysAsync(symbol, TickDays, MaxDatapoints);
+                var tmpFilename = await LookupClient.Historical.Raw.GetHistoryTickDaysAsync(symbol, TickDays, MaxDatapoints);
                 MoveDownloadFile(tmpFilename, symbol, DataType.Tick);
             }
             catch (NoDataIQFeedException) { }
@@ -94,7 +94,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentRawHistorical
         {
             try
             {
-                var tmpFilename = await LookupClient.Historical.Raw.ReqHistoryIntervalDaysAsync(symbol, IntervalInSeconds, IntervalDays, MaxDatapoints);
+                var tmpFilename = await LookupClient.Historical.Raw.GetHistoryIntervalDaysAsync(symbol, IntervalInSeconds, IntervalDays, MaxDatapoints);
                 MoveDownloadFile(tmpFilename, symbol, DataType.Interval);
             }
             catch (NoDataIQFeedException) { }
@@ -108,7 +108,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentRawHistorical
         {
             try
             {
-                var tmpFilename = await LookupClient.Historical.Raw.ReqHistoryDailyDatapointsAsync(symbol, EodDays);
+                var tmpFilename = await LookupClient.Historical.Raw.GetHistoryDailyDatapointsAsync(symbol, EodDays);
                 MoveDownloadFile(tmpFilename, symbol, DataType.EOD);
             }
             catch (NoDataIQFeedException) { }
