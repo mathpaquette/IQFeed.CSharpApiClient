@@ -7,26 +7,13 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
 {
     public abstract class IntervalBarMessage
     {
-        private const string IntervalBarMessageDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+        public const string IntervalBarMessageDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
-        private const string IntervalBarMessageWithRequestIdPattern = @"^.*,B[U|H|C],.*,.*,.*,.*,.*,.*,.*,.*,.*,$";
-        private const string IntervalBarMessageWithoutRequestIdPattern = @"^B[U|H|C],.*,.*,.*,.*,.*,.*,.*,.*,.*,$";
+        public const string IntervalBarMessageWithRequestIdPattern = @"^.*,B[U|H|C],.*,.*,.*,.*,.*,.*,.*,.*,.*,$";
+        public const string IntervalBarMessageWithoutRequestIdPattern = @"^B[U|H|C],.*,.*,.*,.*,.*,.*,.*,.*,.*,$";
 
-        private static readonly Regex IntervalBarMessageWithRequestIdRegex = new Regex(IntervalBarMessageWithRequestIdPattern);
-        private static readonly Regex IntervalBarMessageWithoutRequestIdRegex = new Regex(IntervalBarMessageWithoutRequestIdPattern);
-
-        public static bool TryParse(string message, out IntervalBarMessage<decimal> intervalBarMessage)
-        {
-            intervalBarMessage = null;
-
-            if (IntervalBarMessageWithoutRequestIdRegex.IsMatch(message))
-                intervalBarMessage = Parse(message);
-
-            else if (IntervalBarMessageWithRequestIdRegex.IsMatch(message))
-                intervalBarMessage = ParseWithRequestId(message);
-
-            return intervalBarMessage != null;
-        }
+        public static readonly Regex IntervalBarMessageWithRequestIdRegex = new Regex(IntervalBarMessageWithRequestIdPattern);
+        public static readonly Regex IntervalBarMessageWithoutRequestIdRegex = new Regex(IntervalBarMessageWithoutRequestIdPattern);
 
         public static IntervalBarMessage<decimal> Parse(string message)
         {
@@ -64,6 +51,80 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
 
             return new IntervalBarMessage<decimal>(type, symbol, timestamp, open, high, low, last, cummulativeVolume, intervalVolume, numberOfTrades, requestId);
         }
+
+        public static IntervalBarMessage<double> ParseDouble(string message)
+        {
+            var values = message.SplitFeedMessage();
+
+            Enum.TryParse(values[0].Substring(1), out IntervalBarType type);
+            var symbol = values[1];
+            DateTime.TryParseExact(values[2], IntervalBarMessageDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var timestamp);
+            double.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var open);
+            double.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out var high);
+            double.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var low);
+            double.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var last);
+            int.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var cummulativeVolume);
+            int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out var intervalVolume);
+            int.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var numberOfTrades);
+
+            return new IntervalBarMessage<double>(type, symbol, timestamp, open, high, low, last, cummulativeVolume, intervalVolume, numberOfTrades);
+        }
+
+        public static IntervalBarMessage<double> ParseDoubleWithRequestId(string message)
+        {
+            var values = message.SplitFeedMessage();
+
+            var requestId = values[0];
+            Enum.TryParse(values[1].Substring(1), out IntervalBarType type);
+            var symbol = values[2];
+            DateTime.TryParseExact(values[3], IntervalBarMessageDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var timestamp);
+            double.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out var open);
+            double.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var high);
+            double.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var low);
+            double.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var last);
+            int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out var cummulativeVolume);
+            int.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var intervalVolume);
+            int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out var numberOfTrades);
+
+            return new IntervalBarMessage<double>(type, symbol, timestamp, open, high, low, last, cummulativeVolume, intervalVolume, numberOfTrades, requestId);
+        }
+
+        public static IntervalBarMessage<float> ParseFloat(string message)
+        {
+            var values = message.SplitFeedMessage();
+
+            Enum.TryParse(values[0].Substring(1), out IntervalBarType type);
+            var symbol = values[1];
+            DateTime.TryParseExact(values[2], IntervalBarMessageDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var timestamp);
+            float.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var open);
+            float.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out var high);
+            float.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var low);
+            float.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var last);
+            int.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var cummulativeVolume);
+            int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out var intervalVolume);
+            int.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var numberOfTrades);
+
+            return new IntervalBarMessage<float>(type, symbol, timestamp, open, high, low, last, cummulativeVolume, intervalVolume, numberOfTrades);
+        }
+
+        public static IntervalBarMessage<float> ParseFloatWithRequestId(string message)
+        {
+            var values = message.SplitFeedMessage();
+
+            var requestId = values[0];
+            Enum.TryParse(values[1].Substring(1), out IntervalBarType type);
+            var symbol = values[2];
+            DateTime.TryParseExact(values[3], IntervalBarMessageDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var timestamp);
+            float.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out var open);
+            float.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var high);
+            float.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var low);
+            float.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var last);
+            int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out var cummulativeVolume);
+            int.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var intervalVolume);
+            int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out var numberOfTrades);
+
+            return new IntervalBarMessage<float>(type, symbol, timestamp, open, high, low, last, cummulativeVolume, intervalVolume, numberOfTrades, requestId);
+        }
     }
 
     public class IntervalBarMessage<T> : IIntervalBarMessage<T>
@@ -81,7 +142,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
             int numberOfTrades,
             string requestId = null)
         {
-            RequestId = requestId;
             Type = type;
             Symbol = symbol;
             Timestamp = timestamp;
@@ -92,6 +152,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
             CummulativeVolume = cummulativeVolume;
             IntervalVolume = intervalVolume;
             NumberOfTrades = numberOfTrades;
+            RequestId = requestId;
         }
 
         public string RequestId { get; private set; }
@@ -117,8 +178,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
         /// Number of trades in the interval (only valid for tick interval)
         /// </summary>
         public int NumberOfTrades { get; private set; }
-
-
 
         public override bool Equals(object obj)
         {

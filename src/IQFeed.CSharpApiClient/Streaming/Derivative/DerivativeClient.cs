@@ -1,6 +1,7 @@
 ﻿using System;
 using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
+using IQFeed.CSharpApiClient.Streaming.Derivative.Handlers;
 using IQFeed.CSharpApiClient.Streaming.Derivative.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Derivative

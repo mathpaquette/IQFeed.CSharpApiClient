@@ -48,6 +48,85 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             );
         }
 
+        public static UpdateSummaryMessage<double> ParseDouble(string message)
+        {
+            var values = message.SplitFeedMessage();
+            var symbol = values[1];                                                                                                                            // field 2
+            double.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTrade);                                        // field 71
+            int.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeSize);                                           // field 72
+            DateTime.TryParseExact(values[4], UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var mostRecentTradeTime);
+            int.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeMarketCenter);                                   // field 75
+            int.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var totalVolume);                                                   // field 7
+            double.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var bid);                                                    // field 11
+            int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out var bidSize);                                                       // field 13
+            double.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var ask);                                                    // field 12
+            int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out var askSize);                                                      // field 14
+            double.TryParse(values[11], NumberStyles.Any, CultureInfo.InvariantCulture, out var open);                                                  // field 20
+            double.TryParse(values[12], NumberStyles.Any, CultureInfo.InvariantCulture, out var high);                                                  // field 9
+            double.TryParse(values[13], NumberStyles.Any, CultureInfo.InvariantCulture, out var low);                                                   // field 10
+            double.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
+            var messageContents = values[15];                                                                                                                  // field 80
+            var mostRecentTradeConditions = values[16];                                                                                                        // field 74
+
+            return new UpdateSummaryMessage<double>(
+                symbol,
+                mostRecentTrade,
+                mostRecentTradeSize,
+                mostRecentTradeTime,
+                mostRecentTradeMarketCenter,
+                totalVolume,
+                bid,
+                bidSize,
+                ask,
+                askSize,
+                open,
+                high,
+                low,
+                close,
+                messageContents,
+                mostRecentTradeConditions
+            );
+        }
+
+        public static UpdateSummaryMessage<float> ParseFloat(string message)
+        {
+            var values = message.SplitFeedMessage();
+            var symbol = values[1];                                                                                                                            // field 2
+            float.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTrade);                                        // field 71
+            int.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeSize);                                           // field 72
+            DateTime.TryParseExact(values[4], UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var mostRecentTradeTime);
+            int.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeMarketCenter);                                   // field 75
+            int.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var totalVolume);                                                   // field 7
+            float.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var bid);                                                    // field 11
+            int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out var bidSize);                                                       // field 13
+            float.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var ask);                                                    // field 12
+            int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out var askSize);                                                      // field 14
+            float.TryParse(values[11], NumberStyles.Any, CultureInfo.InvariantCulture, out var open);                                                  // field 20
+            float.TryParse(values[12], NumberStyles.Any, CultureInfo.InvariantCulture, out var high);                                                  // field 9
+            float.TryParse(values[13], NumberStyles.Any, CultureInfo.InvariantCulture, out var low);                                                   // field 10
+            float.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
+            var messageContents = values[15];                                                                                                                  // field 80
+            var mostRecentTradeConditions = values[16];                                                                                                        // field 74
+
+            return new UpdateSummaryMessage<float>(
+                symbol,
+                mostRecentTrade,
+                mostRecentTradeSize,
+                mostRecentTradeTime,
+                mostRecentTradeMarketCenter,
+                totalVolume,
+                bid,
+                bidSize,
+                ask,
+                askSize,
+                open,
+                high,
+                low,
+                close,
+                messageContents,
+                mostRecentTradeConditions
+            );
+        }
     }
 
     public class UpdateSummaryMessage<T> : UpdateSummaryMessage, IUpdateSummaryMessage<T>

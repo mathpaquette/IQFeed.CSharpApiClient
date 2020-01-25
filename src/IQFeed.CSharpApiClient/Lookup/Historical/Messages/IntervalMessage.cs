@@ -39,6 +39,70 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 int.Parse(values[8], CultureInfo.InvariantCulture),
                 requestId);
         }
+
+        public static IntervalMessage<double> ParseDouble(string message)
+        {
+            var values = message.SplitFeedMessage();
+
+            return new IntervalMessage<double>(
+                DateTime.ParseExact(values[0], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
+                double.Parse(values[1], CultureInfo.InvariantCulture),
+                double.Parse(values[2], CultureInfo.InvariantCulture),
+                double.Parse(values[3], CultureInfo.InvariantCulture),
+                double.Parse(values[4], CultureInfo.InvariantCulture),
+                long.Parse(values[5], CultureInfo.InvariantCulture),
+                int.Parse(values[6], CultureInfo.InvariantCulture),
+                int.Parse(values[7], CultureInfo.InvariantCulture));
+        }
+
+        public static IntervalMessage<double> ParseDoubleWithRequestId(string message)
+        {
+            var values = message.SplitFeedMessage();
+            var requestId = values[0];
+
+            return new IntervalMessage<double>(
+                DateTime.ParseExact(values[1], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
+                double.Parse(values[2], CultureInfo.InvariantCulture),
+                double.Parse(values[3], CultureInfo.InvariantCulture),
+                double.Parse(values[4], CultureInfo.InvariantCulture),
+                double.Parse(values[5], CultureInfo.InvariantCulture),
+                long.Parse(values[6], CultureInfo.InvariantCulture),
+                int.Parse(values[7], CultureInfo.InvariantCulture),
+                int.Parse(values[8], CultureInfo.InvariantCulture),
+                requestId);
+        }
+
+        public static IntervalMessage<float> ParseFloat(string message)
+        {
+            var values = message.SplitFeedMessage();
+
+            return new IntervalMessage<float>(
+                DateTime.ParseExact(values[0], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
+                float.Parse(values[1], CultureInfo.InvariantCulture),
+                float.Parse(values[2], CultureInfo.InvariantCulture),
+                float.Parse(values[3], CultureInfo.InvariantCulture),
+                float.Parse(values[4], CultureInfo.InvariantCulture),
+                long.Parse(values[5], CultureInfo.InvariantCulture),
+                int.Parse(values[6], CultureInfo.InvariantCulture),
+                int.Parse(values[7], CultureInfo.InvariantCulture));
+        }
+
+        public static IntervalMessage<float> ParseFloatWithRequestId(string message)
+        {
+            var values = message.SplitFeedMessage();
+            var requestId = values[0];
+
+            return new IntervalMessage<float>(
+                DateTime.ParseExact(values[1], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
+                float.Parse(values[2], CultureInfo.InvariantCulture),
+                float.Parse(values[3], CultureInfo.InvariantCulture),
+                float.Parse(values[4], CultureInfo.InvariantCulture),
+                float.Parse(values[5], CultureInfo.InvariantCulture),
+                long.Parse(values[6], CultureInfo.InvariantCulture),
+                int.Parse(values[7], CultureInfo.InvariantCulture),
+                int.Parse(values[8], CultureInfo.InvariantCulture),
+                requestId);
+        }
     }
 
     public class IntervalMessage<T> : IntervalMessage, IIntervalMessage<T>

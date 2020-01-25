@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
+using IQFeed.CSharpApiClient.Streaming.Level2.Handlers;
 using IQFeed.CSharpApiClient.Streaming.Level2.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level2
