@@ -42,6 +42,74 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
                 endOfMessageGroup
             );
         }
+
+        public static UpdateSummaryMessage<double> ParseDouble(string message)
+        {
+            var values = message.SplitFeedMessage();
+            var symbol = values[1];
+            var mmid = values[2];
+            double.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var bid);
+            double.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out var ask);
+            int.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var bidSize);
+            int.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var askSize);
+            DateTime.TryParseExact(values[7], UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var bidTime);
+            DateTime.TryParseExact(values[8], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date);
+            var conditionCode = values[9];
+            DateTime.TryParseExact(values[10], UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var askTime);
+            char.TryParse(values[11], out var bidInfoValid);
+            char.TryParse(values[12], out var askInfoValid);
+            char.TryParse(values[13], out var endOfMessageGroup);
+
+            return new UpdateSummaryMessage<double>(
+                symbol,
+                mmid,
+                bid,
+                ask,
+                bidSize,
+                askSize,
+                bidTime,
+                date,
+                conditionCode,
+                askTime,
+                bidInfoValid,
+                askInfoValid,
+                endOfMessageGroup
+            );
+        }
+
+        public static UpdateSummaryMessage<float> ParseFloat(string message)
+        {
+            var values = message.SplitFeedMessage();
+            var symbol = values[1];
+            var mmid = values[2];
+            float.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var bid);
+            float.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out var ask);
+            int.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var bidSize);
+            int.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var askSize);
+            DateTime.TryParseExact(values[7], UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var bidTime);
+            DateTime.TryParseExact(values[8], "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date);
+            var conditionCode = values[9];
+            DateTime.TryParseExact(values[10], UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var askTime);
+            char.TryParse(values[11], out var bidInfoValid);
+            char.TryParse(values[12], out var askInfoValid);
+            char.TryParse(values[13], out var endOfMessageGroup);
+
+            return new UpdateSummaryMessage<float>(
+                symbol,
+                mmid,
+                bid,
+                ask,
+                bidSize,
+                askSize,
+                bidTime,
+                date,
+                conditionCode,
+                askTime,
+                bidInfoValid,
+                askInfoValid,
+                endOfMessageGroup
+            );
+        }
     }
 
 

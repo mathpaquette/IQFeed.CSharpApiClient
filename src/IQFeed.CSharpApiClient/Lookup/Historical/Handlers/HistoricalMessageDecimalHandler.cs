@@ -2,9 +2,9 @@
 using IQFeed.CSharpApiClient.Lookup.Common;
 using IQFeed.CSharpApiClient.Lookup.Historical.Messages;
 
-namespace IQFeed.CSharpApiClient.Lookup.Historical
+namespace IQFeed.CSharpApiClient.Lookup.Historical.Handlers
 {
-    public class HistoricalMessageHandler : BaseLookupMessageHandler, IHistoricalMessageHandler<decimal>
+    public class HistoricalMessageDecimalHandler : BaseLookupMessageHandler, IHistoricalMessageHandler<decimal>
     {
         public MessageContainer<TickMessage<decimal>> GetTickMessages(byte[] message, int count)
         {

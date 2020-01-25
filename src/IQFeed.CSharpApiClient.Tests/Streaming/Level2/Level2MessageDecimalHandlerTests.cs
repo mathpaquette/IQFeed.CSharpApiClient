@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Globalization;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level2;
+using IQFeed.CSharpApiClient.Streaming.Level2.Handlers;
 using IQFeed.CSharpApiClient.Streaming.Level2.Messages;
 using IQFeed.CSharpApiClient.Tests.Common;
 using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
 {
-    class Level2MessageHandlerTests
+    class Level2MessageDecimalHandlerTests
     {
-        private Level2MessageHandler _level2MessageHandler;
+        private Level2MessageDecimalHandler _level2MessageDecimalHandler;
 
         [SetUp]
         public void SetUp()
         {
-            _level2MessageHandler = new Level2MessageHandler();
+            _level2MessageDecimalHandler = new Level2MessageDecimalHandler();
         }
 
         [Test]
@@ -30,13 +31,13 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
 
             var expectedMessage = new UpdateSummaryMessage<decimal>("@ES#", "MD01", 2982.25m, 2982.5m, 99, 238, askTime, date, "52", bidTime, 'T', 'T', 'F');
             UpdateSummaryMessage<decimal> updateSummaryMessage = null;
-            _level2MessageHandler.Summary += msg =>
+            _level2MessageDecimalHandler.Summary += msg =>
             {
                 updateSummaryMessage = msg;
             };
 
             // Act
-            _level2MessageHandler.ProcessMessages(message, message.Length);
+            _level2MessageDecimalHandler.ProcessMessages(message, message.Length);
 
             // Assert
             Assert.AreEqual(updateSummaryMessage, expectedMessage);
@@ -53,13 +54,13 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
 
             var expectedMessage = new UpdateSummaryMessage<decimal>("@ES#", "MD01", 2982.25m, 2982.5m, 99, 238, askTime, date, "52", bidTime, 'T', 'T', 'F');
             UpdateSummaryMessage<decimal> updateSummaryMessage = null;
-            _level2MessageHandler.Update += msg =>
+            _level2MessageDecimalHandler.Update += msg =>
             {
                 updateSummaryMessage = msg;
             };
 
             // Act
-            _level2MessageHandler.ProcessMessages(message, message.Length);
+            _level2MessageDecimalHandler.ProcessMessages(message, message.Length);
 
             // Assert
             Assert.AreEqual(updateSummaryMessage, expectedMessage);
@@ -73,13 +74,13 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
             var expectedMessage = new TimestampMessage(new DateTime(2019, 10, 18, 12, 49, 55));
 
             TimestampMessage timestampMessage = null;
-            _level2MessageHandler.Timestamp += msg =>
+            _level2MessageDecimalHandler.Timestamp += msg =>
             {
                 timestampMessage = msg;
             };
 
             // Act
-            _level2MessageHandler.ProcessMessages(message, message.Length);
+            _level2MessageDecimalHandler.ProcessMessages(message, message.Length);
 
             // Assert
             Assert.AreEqual(timestampMessage, expectedMessage);
@@ -93,13 +94,13 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
             var expectedMessage = new MarketMakerNameMessage("MD02", "Market depth 2");
 
             MarketMakerNameMessage marketMakerNameMessage = null;
-            _level2MessageHandler.Query += msg =>
+            _level2MessageDecimalHandler.Query += msg =>
             {
                 marketMakerNameMessage = msg;
             };
 
             // Act
-            _level2MessageHandler.ProcessMessages(message, message.Length);
+            _level2MessageDecimalHandler.ProcessMessages(message, message.Length);
 
             // Assert
             Assert.AreEqual(marketMakerNameMessage, expectedMessage);
@@ -113,13 +114,13 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
             var expectedMessage = new SystemMessage("SERVER CONNECTED", "S,SERVER CONNECTED");
 
             SystemMessage systemMessage = null;
-            _level2MessageHandler.System += msg =>
+            _level2MessageDecimalHandler.System += msg =>
             {
                 systemMessage = msg;
             };
 
             // Act
-            _level2MessageHandler.ProcessMessages(message, message.Length);
+            _level2MessageDecimalHandler.ProcessMessages(message, message.Length);
 
             // Assert
             Assert.AreEqual(systemMessage, expectedMessage);
@@ -133,13 +134,13 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
             var expectedMessage = new SymbolNotFoundMessage("INVALID_SYMBOL_NAME");
 
             SymbolNotFoundMessage symbolNotFoundMessage = null;
-            _level2MessageHandler.SymbolNotFound += msg =>
+            _level2MessageDecimalHandler.SymbolNotFound += msg =>
             {
                 symbolNotFoundMessage = msg;
             };
 
             // Act
-            _level2MessageHandler.ProcessMessages(message, message.Length);
+            _level2MessageDecimalHandler.ProcessMessages(message, message.Length);
 
             // Assert
             Assert.AreEqual(symbolNotFoundMessage, expectedMessage);
@@ -153,13 +154,13 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
             var expectedMessage = new ErrorMessage("INVALID_SYMBOL_NAME");
 
             ErrorMessage errorMessage = null;
-            _level2MessageHandler.Error += msg =>
+            _level2MessageDecimalHandler.Error += msg =>
             {
                 errorMessage = msg;
             };
 
             // Act
-            _level2MessageHandler.ProcessMessages(message, message.Length);
+            _level2MessageDecimalHandler.ProcessMessages(message, message.Length);
 
             // Assert
             Assert.AreEqual(errorMessage, expectedMessage);
@@ -172,7 +173,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
             var message = TestHelper.GetMessageBytes("U,INVALID,RESPONSE\r\n");
 
             // Act
-            Assert.Throws<Exception>(() => _level2MessageHandler.ProcessMessages(message, message.Length));
+            Assert.Throws<Exception>(() => _level2MessageDecimalHandler.ProcessMessages(message, message.Length));
         }
 
         [Test]
@@ -188,10 +189,10 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
                 "\r\n"
             };
             var messageBytes = TestHelper.GetMessageBytes(messages);
-            _level2MessageHandler.Query += message => count += 1;
+            _level2MessageDecimalHandler.Query += message => count += 1;
 
             // Act
-            _level2MessageHandler.ProcessMessages(messageBytes, messageBytes.Length);
+            _level2MessageDecimalHandler.ProcessMessages(messageBytes, messageBytes.Length);
 
             // Arrange
             Assert.AreEqual(count, 2);

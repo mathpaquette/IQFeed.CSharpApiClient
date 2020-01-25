@@ -2,6 +2,7 @@
 using IQFeed.CSharpApiClient.Lookup.Chains;
 using IQFeed.CSharpApiClient.Lookup.Common;
 using IQFeed.CSharpApiClient.Lookup.Historical;
+using IQFeed.CSharpApiClient.Lookup.Historical.Handlers;
 using IQFeed.CSharpApiClient.Lookup.News;
 using IQFeed.CSharpApiClient.Lookup.Symbol;
 using IQFeed.CSharpApiClient.Lookup.Symbol.ExpiredOptions;
@@ -13,12 +14,24 @@ namespace IQFeed.CSharpApiClient.Lookup
     {
         public static LookupClient<decimal> CreateNew()
         {
-            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.LookupPort, LookupDefault.TimeoutMs, 1, LookupDefault.BufferSize, new HistoricalMessageHandler());
+            return CreateNew(
+                IQFeedDefault.Hostname,
+                IQFeedDefault.LookupPort,
+                LookupDefault.TimeoutMs,
+                1,
+                LookupDefault.BufferSize,
+                new HistoricalMessageDecimalHandler());
         }
 
         public static LookupClient<decimal> CreateNew(int numberOfClients)
         {
-            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.LookupPort, LookupDefault.TimeoutMs, numberOfClients, LookupDefault.BufferSize, new HistoricalMessageHandler());
+            return CreateNew(
+                IQFeedDefault.Hostname,
+                IQFeedDefault.LookupPort,
+                LookupDefault.TimeoutMs,
+                numberOfClients,
+                LookupDefault.BufferSize,
+                new HistoricalMessageDecimalHandler());
         }
 
         public static LookupClient<T> CreateNew<T>(

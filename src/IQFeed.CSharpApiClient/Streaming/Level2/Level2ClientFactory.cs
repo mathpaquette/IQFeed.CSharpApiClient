@@ -1,4 +1,5 @@
 ﻿using IQFeed.CSharpApiClient.Socket;
+using IQFeed.CSharpApiClient.Streaming.Level2.Handlers;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level2
 {
@@ -10,7 +11,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
                 IQFeedDefault.Hostname,
                 IQFeedDefault.Level2Port,
                 Level2Default.SnapshotTimeoutMs,
-                new Level2MessageHandler());
+                new Level2MessageDecimalHandler());
         }
 
         public static Level2Client<T> CreateNew<T>(

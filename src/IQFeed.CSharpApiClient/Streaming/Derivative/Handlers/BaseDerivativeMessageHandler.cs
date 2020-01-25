@@ -4,14 +4,25 @@ using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Derivative.Messages;
 
-namespace IQFeed.CSharpApiClient.Streaming.Derivative
+namespace IQFeed.CSharpApiClient.Streaming.Derivative.Handlers
 {
-    public class DerivativeMessageHandler : IDerivativeMessageHandler<decimal>
+    public abstract class BaseDerivativeMessageHandler<T> : IDerivativeMessageHandler<T>
     {
         public event Action<SystemMessage> System;
         public event Action<ErrorMessage> Error;
-        public event Action<IntervalBarMessage<decimal>> IntervalBar;
+        public event Action<IntervalBarMessage<T>> IntervalBar;
         public event Action<SymbolNotFoundMessage> SymbolNotFound;
+
+        private readonly Func<string, IntervalBarMessage<T>> _intervalBarMessageParser;
+        private readonly Func<string, IntervalBarMessage<T>> _intervalBarMessageWithRequestIdParser;
+
+        protected BaseDerivativeMessageHandler(
+            Func<string, IntervalBarMessage<T>> intervalBarMessageParser,
+            Func<string, IntervalBarMessage<T>> intervalBarMessageWithRequestIdParser)
+        {
+            _intervalBarMessageWithRequestIdParser = intervalBarMessageWithRequestIdParser;
+            _intervalBarMessageParser = intervalBarMessageParser;
+        }
 
         public void ProcessMessages(byte[] messageBytes, int count)
         {
@@ -22,7 +33,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
                 var message = messages[i];
 
                 // Try parsing the IntervalBarMessage pattern
-                if (IntervalBarMessage.TryParse(message, out var intervalBarMessage))
+                if (TryParse(message, out var intervalBarMessage))
                 {
                     IntervalBar?.Invoke(intervalBarMessage);
                     continue;
@@ -46,12 +57,25 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
             }
         }
 
+        private bool TryParse(string message, out IntervalBarMessage<T> intervalBarMessage)
+        {
+            intervalBarMessage = null;
+
+            if (IntervalBarMessage.IntervalBarMessageWithoutRequestIdRegex.IsMatch(message))
+                intervalBarMessage = _intervalBarMessageParser(message);
+
+            else if (IntervalBarMessage.IntervalBarMessageWithRequestIdRegex.IsMatch(message))
+                intervalBarMessage = _intervalBarMessageWithRequestIdParser(message);
+
+            return intervalBarMessage != null;
+        }
+
         private void ProcessSystemMessage(string msg)
         {
             var systemMessage = SystemMessage.Parse(msg);
             System?.Invoke(systemMessage);
         }
-        
+
         private void ProcessErrorMessage(string msg)
         {
             var errorMessage = ErrorMessage.Parse(msg);

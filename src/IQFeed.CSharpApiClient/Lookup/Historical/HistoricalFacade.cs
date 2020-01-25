@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Lookup.Common;
 using IQFeed.CSharpApiClient.Lookup.Historical.Enums;
+using IQFeed.CSharpApiClient.Lookup.Historical.Handlers;
 using IQFeed.CSharpApiClient.Lookup.Historical.Messages;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical

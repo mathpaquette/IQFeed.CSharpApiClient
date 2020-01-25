@@ -43,6 +43,78 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 values[10],
                 requestId);
         }
+
+        public static TickMessage<double> ParseDouble(string message)
+        {
+            var values = message.SplitFeedMessage();
+
+            return new TickMessage<double>(
+                DateTime.ParseExact(values[0], TickDateTimeFormat, CultureInfo.InvariantCulture),
+                double.Parse(values[1], CultureInfo.InvariantCulture),
+                int.Parse(values[2], CultureInfo.InvariantCulture),
+                int.Parse(values[3], CultureInfo.InvariantCulture),
+                double.Parse(values[4], CultureInfo.InvariantCulture),
+                double.Parse(values[5], CultureInfo.InvariantCulture),
+                long.Parse(values[6], CultureInfo.InvariantCulture),
+                char.Parse(values[7]),
+                int.Parse(values[8], CultureInfo.InvariantCulture),
+                values[9]);
+        }
+
+        public static TickMessage<double> ParseDoubleWithRequestId(string message)
+        {
+            var values = message.SplitFeedMessage();
+            var requestId = values[0];
+
+            return new TickMessage<double>(
+                DateTime.ParseExact(values[1], TickDateTimeFormat, CultureInfo.InvariantCulture),
+                double.Parse(values[2], CultureInfo.InvariantCulture),
+                int.Parse(values[3], CultureInfo.InvariantCulture),
+                int.Parse(values[4], CultureInfo.InvariantCulture),
+                double.Parse(values[5], CultureInfo.InvariantCulture),
+                double.Parse(values[6], CultureInfo.InvariantCulture),
+                long.Parse(values[7], CultureInfo.InvariantCulture),
+                char.Parse(values[8]),
+                int.Parse(values[9], CultureInfo.InvariantCulture),
+                values[10],
+                requestId);
+        }
+
+        public static TickMessage<float> ParseFloat(string message)
+        {
+            var values = message.SplitFeedMessage();
+
+            return new TickMessage<float>(
+                DateTime.ParseExact(values[0], TickDateTimeFormat, CultureInfo.InvariantCulture),
+                float.Parse(values[1], CultureInfo.InvariantCulture),
+                int.Parse(values[2], CultureInfo.InvariantCulture),
+                int.Parse(values[3], CultureInfo.InvariantCulture),
+                float.Parse(values[4], CultureInfo.InvariantCulture),
+                float.Parse(values[5], CultureInfo.InvariantCulture),
+                long.Parse(values[6], CultureInfo.InvariantCulture),
+                char.Parse(values[7]),
+                int.Parse(values[8], CultureInfo.InvariantCulture),
+                values[9]);
+        }
+
+        public static TickMessage<float> ParseFloatWithRequestId(string message)
+        {
+            var values = message.SplitFeedMessage();
+            var requestId = values[0];
+
+            return new TickMessage<float>(
+                DateTime.ParseExact(values[1], TickDateTimeFormat, CultureInfo.InvariantCulture),
+                float.Parse(values[2], CultureInfo.InvariantCulture),
+                int.Parse(values[3], CultureInfo.InvariantCulture),
+                int.Parse(values[4], CultureInfo.InvariantCulture),
+                float.Parse(values[5], CultureInfo.InvariantCulture),
+                float.Parse(values[6], CultureInfo.InvariantCulture),
+                long.Parse(values[7], CultureInfo.InvariantCulture),
+                char.Parse(values[8]),
+                int.Parse(values[9], CultureInfo.InvariantCulture),
+                values[10],
+                requestId);
+        }
     }
 
     public class TickMessage<T> : TickMessage, ITickMessage<T>

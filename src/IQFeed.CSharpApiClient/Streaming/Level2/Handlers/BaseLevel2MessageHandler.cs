@@ -4,17 +4,24 @@ using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level2.Messages;
 
-namespace IQFeed.CSharpApiClient.Streaming.Level2
+namespace IQFeed.CSharpApiClient.Streaming.Level2.Handlers
 {
-    public class Level2MessageHandler : ILevel2MessageHandler<decimal>
+    public abstract class BaseLevel2MessageHandler<T> : ILevel2MessageHandler<T>
     {
-        public event Action<UpdateSummaryMessage<decimal>> Summary;
-        public event Action<UpdateSummaryMessage<decimal>> Update;
-        public event Action<TimestampMessage> Timestamp;
-        public event Action<MarketMakerNameMessage> Query;
+        private readonly Func<string, UpdateSummaryMessage<T>> _updateSummaryMessageParser;
+
+        public event Action<UpdateSummaryMessage<T>> Summary;
+        public event Action<UpdateSummaryMessage<T>> Update;
         public event Action<SymbolNotFoundMessage> SymbolNotFound;
-        public event Action<SystemMessage> System;
+        public event Action<MarketMakerNameMessage> Query;
         public event Action<ErrorMessage> Error;
+        public event Action<TimestampMessage> Timestamp;
+        public event Action<SystemMessage> System;
+        
+        protected BaseLevel2MessageHandler(Func<string, UpdateSummaryMessage<T>> updateSummaryMessageParser)
+        {
+            _updateSummaryMessageParser = updateSummaryMessageParser;
+        }
 
         public void ProcessMessages(byte[] messageBytes, int count)
         {
@@ -56,13 +63,13 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
 
         private void ProcessSummaryMessage(string msg)
         {
-            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
+            var updateSummaryMessage = _updateSummaryMessageParser(msg);
             Summary?.Invoke(updateSummaryMessage);
         }
 
         private void ProcessUpdateMessage(string msg)
         {
-            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
+            var updateSummaryMessage = _updateSummaryMessageParser(msg);
             Update?.Invoke(updateSummaryMessage);
         }
 

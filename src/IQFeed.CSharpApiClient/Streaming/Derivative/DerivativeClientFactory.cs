@@ -1,4 +1,5 @@
 ﻿using IQFeed.CSharpApiClient.Socket;
+using IQFeed.CSharpApiClient.Streaming.Derivative.Handlers;
 
 namespace IQFeed.CSharpApiClient.Streaming.Derivative
 {
@@ -10,7 +11,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
                 IQFeedDefault.Hostname,
                 IQFeedDefault.DerivativePort,
                 DerivativeDefault.BufferSize,
-                new DerivativeMessageHandler());
+                new DerivativeMessageDecimalHandler());
         }
         public static DerivativeClient<T> CreateNew<T>(
             string host,

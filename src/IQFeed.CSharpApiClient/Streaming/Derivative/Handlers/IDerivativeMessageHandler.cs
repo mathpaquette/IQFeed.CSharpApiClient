@@ -1,4 +1,4 @@
-﻿namespace IQFeed.CSharpApiClient.Streaming.Derivative
+﻿namespace IQFeed.CSharpApiClient.Streaming.Derivative.Handlers
 {
     public interface IDerivativeMessageHandler<T> : IDerivativeEvent<T>
     {
