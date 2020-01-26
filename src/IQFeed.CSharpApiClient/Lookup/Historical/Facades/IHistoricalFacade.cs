@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Lookup.Historical.Enums;
 
-namespace IQFeed.CSharpApiClient.Lookup.Historical
+namespace IQFeed.CSharpApiClient.Lookup.Historical.Facades
 {
     public interface IHistoricalFacade<TTickMessages, TIntervalMessages, TDailyWeeklyMonthlyMessages>
     {

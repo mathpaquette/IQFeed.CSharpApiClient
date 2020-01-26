@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Examples.Common;
 using IQFeed.CSharpApiClient.Lookup;
 
-namespace IQFeed.CSharpApiClient.Examples.Examples.BasicRawHistorical
+namespace IQFeed.CSharpApiClient.Examples.Examples.BasicFileHistorical
 {
-    public class BasicRawHistoricalExample : IExampleAsync
+    public class BasicFileHistoricalExample : IExampleAsync
     {
         public bool Enable => false; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
-        public string Name => typeof(BasicRawHistoricalExample).Name;
+        public string Name => typeof(BasicFileHistoricalExample).Name;
 
         private const string DownloadBasePath = "downloads";
         private const string Symbol = "AAPL";
@@ -30,8 +30,8 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.BasicRawHistorical
             // Step 4 - Connect it
             lookupClient.Connect();
 
-            // Step 5 - Make raw request!
-            var tmpFilename = await lookupClient.Historical.Raw.GetHistoryTickDatapointsAsync(Symbol, 1000);
+            var tmpFilename = await lookupClient.Historical.File.GetHistoryTickDatapointsAsync(Symbol, 1000);
+            // Step 5 - Make file request!
 
             // Step 6 - Move the file
             var basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DownloadBasePath);

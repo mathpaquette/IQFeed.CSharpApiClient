@@ -8,7 +8,7 @@ using IQFeed.CSharpApiClient.Socket;
 
 namespace IQFeed.CSharpApiClient.Lookup.Common
 {
-    public class RawMessageHandler : BaseLookupMessageHandler
+    public class LookupMessageFileHandler : BaseLookupMessageHandler
     {
         private readonly LookupDispatcher _lookupDispatcher;
         private readonly ExceptionFactory _exceptionFactory;
@@ -16,7 +16,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
         private readonly int _timeoutMs;
         private readonly byte[] _endOfMsgBytes;
 
-        public RawMessageHandler(LookupDispatcher lookupDispatcher, ExceptionFactory exceptionFactory, int timeoutMs)
+        public LookupMessageFileHandler(LookupDispatcher lookupDispatcher, ExceptionFactory exceptionFactory, int timeoutMs)
         {
             _endOfMsgBytes = Encoding.ASCII.GetBytes(IQFeedDefault.ProtocolEndOfMessageCharacters + IQFeedDefault.ProtocolDelimiterCharacter + IQFeedDefault.ProtocolTerminatingCharacters);
 

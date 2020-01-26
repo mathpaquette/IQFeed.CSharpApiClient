@@ -7,7 +7,7 @@ using IQFeed.CSharpApiClient.Lookup.Historical.Enums;
 using IQFeed.CSharpApiClient.Lookup.Historical.Handlers;
 using IQFeed.CSharpApiClient.Lookup.Historical.Messages;
 
-namespace IQFeed.CSharpApiClient.Lookup.Historical
+namespace IQFeed.CSharpApiClient.Lookup.Historical.Facades
 {
     public class HistoricalFacade<T> : BaseLookupFacade, IHistoricalFacade<IEnumerable<TickMessage<T>>, IEnumerable<IntervalMessage<T>>, IEnumerable<DailyWeeklyMonthlyMessage<T>>>
     {
@@ -19,15 +19,18 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             LookupDispatcher lookupDispatcher,
             ExceptionFactory exceptionFactory,
             IHistoricalMessageHandler<T> historicalMessageHandler,
-            HistoricalRawFacade historicalRawFacade,
+            HistoricalFileFacade historicalFileFacade,
             int timeoutMs) : base(lookupDispatcher, exceptionFactory, timeoutMs)
         {
             _historicalMessageHandler = historicalMessageHandler;
             _historicalRequestFormatter = historicalRequestFormatter;
-            Raw = historicalRawFacade;
+            File = historicalFileFacade;
         }
 
-        public HistoricalRawFacade Raw { get; }
+        public HistoricalFileFacade File { get; }
+
+        [Obsolete("Raw property is deprecated. Please use File instead. Will be removed in next major version.")]
+        public HistoricalFileFacade Raw => File;
 
         /// <summary>
         /// HTX - Retrieves up to [MaxDatapoints] number of ticks for the specified [Symbol].

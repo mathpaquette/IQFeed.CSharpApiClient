@@ -2,6 +2,7 @@
 using IQFeed.CSharpApiClient.Lookup.Chains;
 using IQFeed.CSharpApiClient.Lookup.Common;
 using IQFeed.CSharpApiClient.Lookup.Historical;
+using IQFeed.CSharpApiClient.Lookup.Historical.Facades;
 using IQFeed.CSharpApiClient.Lookup.Historical.Handlers;
 using IQFeed.CSharpApiClient.Lookup.News;
 using IQFeed.CSharpApiClient.Lookup.Symbol;
@@ -46,17 +47,17 @@ namespace IQFeed.CSharpApiClient.Lookup
             var requestFormatter = new RequestFormatter();
             var lookupDispatcher = new LookupDispatcher(host, port, bufferSize, IQFeedDefault.ProtocolVersion, numberOfClients, requestFormatter);
             var exceptionFactory = new ExceptionFactory();
-            var rawMessageHandler = new RawMessageHandler(lookupDispatcher, exceptionFactory, timeoutMs);
+            var lookupMessageFileHandler = new LookupMessageFileHandler(lookupDispatcher, exceptionFactory, timeoutMs);
 
             // Historical
             var historicalDataRequestFormatter = new HistoricalRequestFormatter();
-            var historicalRawFace = new HistoricalRawFacade(historicalDataRequestFormatter, rawMessageHandler);
+            var historicalFileFacade = new HistoricalFileFacade(historicalDataRequestFormatter, lookupMessageFileHandler);
             var historicalFacade = new HistoricalFacade<T>(
                 historicalDataRequestFormatter,
                 lookupDispatcher,
                 exceptionFactory,
                 historicalMessageHandler,
-                historicalRawFace,
+                historicalFileFacade,
                 timeoutMs
             );
 

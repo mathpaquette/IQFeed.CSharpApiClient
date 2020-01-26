@@ -7,12 +7,12 @@ using IQFeed.CSharpApiClient.Common.Exceptions;
 using IQFeed.CSharpApiClient.Examples.Common;
 using IQFeed.CSharpApiClient.Lookup;
 
-namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentRawHistorical
+namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentFileHistorical
 {
-    public class ConcurrentRawHistoricalExample : ConcurrentHistoricalBase, IExample
+    public class ConcurrentFileHistoricalExample : ConcurrentHistoricalBase, IExample
     {
         public bool Enable => false; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
-        public string Name => typeof(ConcurrentRawHistoricalExample).Name;
+        public string Name => typeof(ConcurrentFileHistoricalExample).Name;
 
         private const int NumberOfConcurrentClients = 10;
         private const string DownloadBasePath = "downloads";
@@ -29,7 +29,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentRawHistorical
 
         private readonly string _basePath;
 
-        public ConcurrentRawHistoricalExample() : base(LookupClientFactory.CreateNew(NumberOfConcurrentClients), NumberOfConcurrentClients)
+        public ConcurrentFileHistoricalExample() : base(LookupClientFactory.CreateNew(NumberOfConcurrentClients), NumberOfConcurrentClients)
         {
             _basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DownloadBasePath, DateTime.Now.ToString("yyyyMMddHHmmss"));
         }
@@ -79,8 +79,8 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentRawHistorical
         {
             try
             {
-                // Using the "raw" historical facade will save received data directly to the disk
-                var tmpFilename = await LookupClient.Historical.Raw.GetHistoryTickDaysAsync(symbol, TickDays, MaxDatapoints);
+                // Using the "file" historical facade will save received data directly to the disk
+                var tmpFilename = await LookupClient.Historical.File.GetHistoryTickDaysAsync(symbol, TickDays, MaxDatapoints);
                 MoveDownloadFile(tmpFilename, symbol, DataType.Tick);
             }
             catch (NoDataIQFeedException) { }
@@ -94,7 +94,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentRawHistorical
         {
             try
             {
-                var tmpFilename = await LookupClient.Historical.Raw.GetHistoryIntervalDaysAsync(symbol, IntervalInSeconds, IntervalDays, MaxDatapoints);
+                var tmpFilename = await LookupClient.Historical.File.GetHistoryIntervalDaysAsync(symbol, IntervalInSeconds, IntervalDays, MaxDatapoints);
                 MoveDownloadFile(tmpFilename, symbol, DataType.Interval);
             }
             catch (NoDataIQFeedException) { }
@@ -108,7 +108,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentRawHistorical
         {
             try
             {
-                var tmpFilename = await LookupClient.Historical.Raw.GetHistoryDailyDatapointsAsync(symbol, EodDays);
+                var tmpFilename = await LookupClient.Historical.File.GetHistoryDailyDatapointsAsync(symbol, EodDays);
                 MoveDownloadFile(tmpFilename, symbol, DataType.EOD);
             }
             catch (NoDataIQFeedException) { }
