@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Examples.Common;
 using IQFeed.CSharpApiClient.Lookup;
+using IQFeed.CSharpApiClient.Lookup.Historical.Messages;
 
 namespace IQFeed.CSharpApiClient.Examples.Examples.BasicFileHistorical
 {
@@ -39,6 +41,9 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.BasicFileHistorical
 
             Directory.CreateDirectory(basePath);
             File.Move(tmpFilename, fullPath);
+
+            // Step 7 - Parse TickMessages from saved file
+            var ticks = TickMessage.ParseFromFile(fullPath).ToList();
 
             Console.WriteLine($"Saved {Symbol} ticks in {fullPath}");
         }

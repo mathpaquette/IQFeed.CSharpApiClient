@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using IQFeed.CSharpApiClient.Extensions;
+using IQFeed.CSharpApiClient.Lookup.Common;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
@@ -114,6 +116,27 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 int.Parse(values[9], CultureInfo.InvariantCulture),
                 values[10],
                 requestId);
+        }
+
+        public static IEnumerable<TickMessage<decimal>> ParseFromFile(string path, bool hasRequestId = false)
+        {
+            return hasRequestId == false
+                ? LookupMessageFileParser.ParseFromFile(Parse, path)
+                : LookupMessageFileParser.ParseFromFile(ParseWithRequestId, path);
+        }
+
+        public static IEnumerable<TickMessage<double>> ParseDoubleFromFile(string path, bool hasRequestId = false)
+        {
+            return hasRequestId == false
+                ? LookupMessageFileParser.ParseFromFile(ParseDouble, path)
+                : LookupMessageFileParser.ParseFromFile(ParseDoubleWithRequestId, path);
+        }
+
+        public static IEnumerable<TickMessage<float>> ParseFloatFromFile(string path, bool hasRequestId = false)
+        {
+            return hasRequestId == false
+                ? LookupMessageFileParser.ParseFromFile(ParseFloat, path)
+                : LookupMessageFileParser.ParseFromFile(ParseFloatWithRequestId, path);
         }
     }
 
