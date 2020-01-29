@@ -29,7 +29,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
             MarketSymbolReader marketSymbolReader,
             ExpiredOptionDownloader expiredOptionDownloader,
             ExpiredOptionReader expiredOptionReader,
-            int timeoutMs) : base(lookupDispatcher, exceptionFactory, timeoutMs)
+            TimeSpan timeout) : base(lookupDispatcher, exceptionFactory, timeout)
         {
             _symbolRequestFormatter = symbolRequestFormatter;
             _symbolMessageHandler = symbolMessageHandler;

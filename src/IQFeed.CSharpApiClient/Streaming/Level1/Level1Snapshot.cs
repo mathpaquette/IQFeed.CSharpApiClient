@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Level1.Handlers;
@@ -11,14 +12,14 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         private readonly SocketClient _socketClient;
         private readonly Level1RequestFormatter _level1RequestFormatter;
         private readonly ILevel1MessageHandler<T> _level1MessageHandler;
-        private readonly int _timeoutMs;
+        private readonly TimeSpan _timeout;
 
-        public Level1Snapshot(SocketClient socketClient, Level1RequestFormatter level1RequestFormatter, ILevel1MessageHandler<T> level1MessageHandler, int timeoutMs)
+        public Level1Snapshot(SocketClient socketClient, Level1RequestFormatter level1RequestFormatter, ILevel1MessageHandler<T> level1MessageHandler, TimeSpan timeout)
         {
+            _timeout = timeout;
             _socketClient = socketClient;
             _level1RequestFormatter = level1RequestFormatter;
             _level1MessageHandler = level1MessageHandler;
-            _timeoutMs = timeoutMs;
         }
 
         public Task<FundamentalMessage> GetFundamentalSnapshotAsync(string symbol)
@@ -33,7 +34,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
 
         private async Task<FundamentalMessage> GetFundamentalMessageAsync(string symbol)
         {
-            var ct = new CancellationTokenSource(_timeoutMs);
+            var ct = new CancellationTokenSource(_timeout);
             var res = new TaskCompletionSource<FundamentalMessage>();
             ct.Token.Register(() => res.TrySetCanceled(), false);
 
@@ -58,7 +59,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
 
         private async Task<UpdateSummaryMessage<T>> GetUpdateSummaryMessageAsync(string symbol)
         {
-            var ct = new CancellationTokenSource(_timeoutMs);
+            var ct = new CancellationTokenSource(_timeout);
             var res = new TaskCompletionSource<UpdateSummaryMessage<T>>();
             ct.Token.Register(() => res.TrySetCanceled(), false);
 

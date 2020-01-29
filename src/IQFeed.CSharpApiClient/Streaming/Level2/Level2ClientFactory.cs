@@ -1,23 +1,15 @@
-﻿using IQFeed.CSharpApiClient.Socket;
+﻿using System;
+using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Level2.Handlers;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level2
 {
     public static class Level2ClientFactory
     {
-        public static Level2Client<decimal> CreateNew()
-        {
-            return CreateNew(
-                IQFeedDefault.Hostname,
-                IQFeedDefault.Level2Port,
-                Level2Default.SnapshotTimeoutMs,
-                new Level2MessageDecimalHandler());
-        }
-
         public static Level2Client<T> CreateNew<T>(
             string host,
             int port,
-            int snapshotTimeoutMs,
+            TimeSpan snapshotTimeout,
             ILevel2MessageHandler<T> level2MessageHandler)
         {
             var socketClient = new SocketClient(host, port);
@@ -27,8 +19,23 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
                 socketClient,
                 level2RequestFormatter,
                 level2MessageHandler,
-                new Level2Snapshot<T>(socketClient, level2RequestFormatter, level2MessageHandler, snapshotTimeoutMs)
+                new Level2Snapshot<T>(socketClient, level2RequestFormatter, level2MessageHandler, snapshotTimeout)
             );
+        }
+
+        public static Level2Client<decimal> CreateNew()
+        {
+            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.Level2Port, Level2Default.SnapshotTimeout, new Level2MessageDecimalHandler());
+        }
+
+        public static Level2Client<decimal> CreateNew(string host, int port)
+        {
+            return CreateNew(host, port, Level2Default.SnapshotTimeout, new Level2MessageDecimalHandler());
+        }
+
+        public static Level2Client<decimal> CreateNew(string host, int port, TimeSpan snapshotTimeout)
+        {
+            return CreateNew(host, port, snapshotTimeout, new Level2MessageDecimalHandler());
         }
     }
 }

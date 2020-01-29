@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Socket;
@@ -13,18 +14,18 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
         private readonly SocketClient _socketClient;
         private readonly Level2RequestFormatter _level2RequestFormatter;
         private readonly ILevel2MessageHandler<T> _level2MessageHandler;
-        private readonly int _timeoutMs;
+        private readonly TimeSpan _timeout;
 
         public Level2Snapshot(
             SocketClient socketClient, 
             Level2RequestFormatter level2RequestFormatter,
             ILevel2MessageHandler<T> level2MessageHandler, 
-            int timeoutMs)
+            TimeSpan timeout)
         {
             _socketClient = socketClient;
             _level2RequestFormatter = level2RequestFormatter;
             _level2MessageHandler = level2MessageHandler;
-            _timeoutMs = timeoutMs;
+            _timeout = timeout;
         }
 
         public Task<IEnumerable<UpdateSummaryMessage<T>>> GetSummarySnapshotAsync(string symbol)
@@ -34,7 +35,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
 
         private async Task<IEnumerable<UpdateSummaryMessage<T>>> GetSummaryMessageAsync(string symbol)
         {
-            var ct = new CancellationTokenSource(_timeoutMs);
+            var ct = new CancellationTokenSource(_timeout);
             var res = new TaskCompletionSource<IEnumerable<UpdateSummaryMessage<T>>>();
             ct.Token.Register(() => res.TrySetCanceled(), false);
 

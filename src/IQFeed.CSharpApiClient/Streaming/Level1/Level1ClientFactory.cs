@@ -1,4 +1,5 @@
-﻿using IQFeed.CSharpApiClient.Socket;
+﻿using System;
+using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Level1.Handlers;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
@@ -8,7 +9,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         public static Level1Client<T> CreateNew<T>(
             string host,
             int port,
-            int snapshotTimeoutMs,
+            TimeSpan snapshotTimeout,
             ILevel1MessageHandler<T> level1MessageHandler)
         {
             var socketClient = new SocketClient(host, port);
@@ -18,18 +19,23 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                 socketClient,
                 level1RequestFormatter,
                 level1MessageHandler,
-                new Level1Snapshot<T>(socketClient, level1RequestFormatter, level1MessageHandler, snapshotTimeoutMs)
+                new Level1Snapshot<T>(socketClient, level1RequestFormatter, level1MessageHandler, snapshotTimeout)
             );
-        }
-
-        public static Level1Client<decimal> CreateNew(string host, int port, int snapshotTimeoutMs = Level1Default.SnapshotTimeoutMs)
-        {
-            return CreateNew(host, port, snapshotTimeoutMs, new Level1MessageDecimalHandler());
         }
 
         public static Level1Client<decimal> CreateNew()
         {
-            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.Level1Port, Level1Default.SnapshotTimeoutMs, new Level1MessageDecimalHandler());
+            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.Level1Port, Level1Default.SnapshotTimeout, new Level1MessageDecimalHandler());
+        }
+
+        public static Level1Client<decimal> CreateNew(string host, int port)
+        {
+            return CreateNew(host, port, Level1Default.SnapshotTimeout, new Level1MessageDecimalHandler());
+        }
+
+        public static Level1Client<decimal> CreateNew(string host, int port, TimeSpan snapshotTimeout)
+        {
+            return CreateNew(host, port, snapshotTimeout, new Level1MessageDecimalHandler());
         }
     }
 }

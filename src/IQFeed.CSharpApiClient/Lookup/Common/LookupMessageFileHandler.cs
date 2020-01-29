@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,16 +14,16 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
         private readonly LookupDispatcher _lookupDispatcher;
         private readonly ExceptionFactory _exceptionFactory;
 
-        private readonly int _timeoutMs;
+        private readonly TimeSpan _timeout;
         private readonly byte[] _endOfMsgBytes;
 
-        public LookupMessageFileHandler(LookupDispatcher lookupDispatcher, ExceptionFactory exceptionFactory, int timeoutMs)
+        public LookupMessageFileHandler(LookupDispatcher lookupDispatcher, ExceptionFactory exceptionFactory, TimeSpan timeout)
         {
             _endOfMsgBytes = Encoding.ASCII.GetBytes(IQFeedDefault.ProtocolEndOfMessageCharacters + IQFeedDefault.ProtocolDelimiterCharacter + IQFeedDefault.ProtocolTerminatingCharacters);
 
             _lookupDispatcher = lookupDispatcher;
             _exceptionFactory = exceptionFactory;
-            _timeoutMs = timeoutMs;
+            _timeout = timeout;
         }
 
         // TODO(mathip): add support for requestId parsing.
@@ -32,7 +33,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
             var filename = Path.GetRandomFileName();
             var binaryWriter = new BinaryWriter(File.Open(filename, FileMode.OpenOrCreate));
 
-            var ct = new CancellationTokenSource(_timeoutMs);
+            var ct = new CancellationTokenSource(_timeout);
             var res = new TaskCompletionSource<string>();
             ct.Token.Register(() => res.TrySetCanceled(), false);
 

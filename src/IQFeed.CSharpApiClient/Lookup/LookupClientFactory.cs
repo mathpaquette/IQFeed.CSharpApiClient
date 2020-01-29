@@ -1,4 +1,5 @@
-﻿using IQFeed.CSharpApiClient.Common;
+﻿using System;
+using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Lookup.Chains;
 using IQFeed.CSharpApiClient.Lookup.Common;
 using IQFeed.CSharpApiClient.Lookup.Historical;
@@ -13,33 +14,11 @@ namespace IQFeed.CSharpApiClient.Lookup
 {
     public static class LookupClientFactory
     {
-        public static LookupClient<decimal> CreateNew()
-        {
-            return CreateNew(
-                IQFeedDefault.Hostname,
-                IQFeedDefault.LookupPort,
-                LookupDefault.TimeoutMs,
-                1,
-                LookupDefault.BufferSize,
-                new HistoricalMessageDecimalHandler());
-        }
-
-        public static LookupClient<decimal> CreateNew(int numberOfClients)
-        {
-            return CreateNew(
-                IQFeedDefault.Hostname,
-                IQFeedDefault.LookupPort,
-                LookupDefault.TimeoutMs,
-                numberOfClients,
-                LookupDefault.BufferSize,
-                new HistoricalMessageDecimalHandler());
-        }
-
         public static LookupClient<T> CreateNew<T>(
             string host,
             int port,
-            int timeoutMs,
             int numberOfClients,
+            TimeSpan timeout,
             int bufferSize,
             IHistoricalMessageHandler<T> historicalMessageHandler)
         {
@@ -47,7 +26,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             var requestFormatter = new RequestFormatter();
             var lookupDispatcher = new LookupDispatcher(host, port, bufferSize, IQFeedDefault.ProtocolVersion, numberOfClients, requestFormatter);
             var exceptionFactory = new ExceptionFactory();
-            var lookupMessageFileHandler = new LookupMessageFileHandler(lookupDispatcher, exceptionFactory, timeoutMs);
+            var lookupMessageFileHandler = new LookupMessageFileHandler(lookupDispatcher, exceptionFactory, timeout);
 
             // Historical
             var historicalDataRequestFormatter = new HistoricalRequestFormatter();
@@ -58,7 +37,7 @@ namespace IQFeed.CSharpApiClient.Lookup
                 exceptionFactory,
                 historicalMessageHandler,
                 historicalFileFacade,
-                timeoutMs
+                timeout
             );
 
             // News
@@ -74,12 +53,56 @@ namespace IQFeed.CSharpApiClient.Lookup
                 new MarketSymbolReader(),
                 new ExpiredOptionDownloader(),
                 new ExpiredOptionReader(),
-                timeoutMs);
+                timeout);
 
             // Chains
-            var chainsFacade = new ChainsFacade(new ChainsRequestFormatter(), new ChainsMessageHandler(), lookupDispatcher, exceptionFactory, timeoutMs);
+            var chainsFacade = new ChainsFacade(new ChainsRequestFormatter(), new ChainsMessageHandler(), lookupDispatcher, exceptionFactory, timeout);
 
             return new LookupClient<T>(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade);
+        }
+
+        public static LookupClient<decimal> CreateNew()
+        {
+            return CreateNew(
+                IQFeedDefault.Hostname,
+                IQFeedDefault.LookupPort,
+                1,
+                LookupDefault.Timeout,
+                LookupDefault.BufferSize,
+                new HistoricalMessageDecimalHandler());
+        }
+
+        public static LookupClient<decimal> CreateNew(string host, int port)
+        {
+            return CreateNew(
+                host,
+                port,
+                1,
+                LookupDefault.Timeout,
+                LookupDefault.BufferSize,
+                new HistoricalMessageDecimalHandler());
+        }
+
+        public static LookupClient<decimal> CreateNew(string host, int port, int numberOfClients, TimeSpan timeout)
+        {
+            return CreateNew(
+                host,
+                port,
+                numberOfClients,
+                timeout,
+                LookupDefault.BufferSize,
+                new HistoricalMessageDecimalHandler());
+        }
+
+        public static LookupClient<decimal> CreateNew(int numberOfClients)
+        {
+            return CreateNew(
+                IQFeedDefault.Hostname,
+                IQFeedDefault.LookupPort,
+                numberOfClients,
+                LookupDefault.Timeout,
+                LookupDefault.BufferSize,
+                new HistoricalMessageDecimalHandler());
         }
     }
 }

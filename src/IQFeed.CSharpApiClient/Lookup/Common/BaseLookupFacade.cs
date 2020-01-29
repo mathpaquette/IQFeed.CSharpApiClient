@@ -11,13 +11,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
     {
         private readonly LookupDispatcher _lookupDispatcher;
         private readonly ExceptionFactory _exceptionFactory;
-        private readonly int _timeoutMs;
+        private readonly TimeSpan _timeout;
 
-        protected BaseLookupFacade(LookupDispatcher lookupDispatcher, ExceptionFactory exceptionFactory, int timeoutMs)
+        protected BaseLookupFacade(LookupDispatcher lookupDispatcher, ExceptionFactory exceptionFactory, TimeSpan timeout)
         {
             _lookupDispatcher = lookupDispatcher;
             _exceptionFactory = exceptionFactory;
-            _timeoutMs = timeoutMs;
+            _timeout = timeout;
         }
 
         protected async Task<IEnumerable<T>> GetMessagesAsync<T>(string request, Func<byte[], int, MessageContainer<T>> messageHandler)
@@ -25,7 +25,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
             var client = await _lookupDispatcher.TakeAsync();
 
             var messages = new List<T>();
-            var ct = new CancellationTokenSource(_timeoutMs);
+            var ct = new CancellationTokenSource(_timeout);
             var res = new TaskCompletionSource<IEnumerable<T>>();
             ct.Token.Register(() => res.TrySetCanceled(), false);
 

@@ -26,7 +26,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.MessageHandlers
             var level1Client = Level1ClientFactory.CreateNew(
                 IQFeedDefault.Hostname, 
                 IQFeedDefault.Level1Port,
-                Level1Default.SnapshotTimeoutMs, 
+                Level1Default.SnapshotTimeout, 
                 new Level1MessageDoubleHandler());
 
             // Connect

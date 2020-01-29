@@ -27,8 +27,8 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.MessageHandlers
             var lookupClient = LookupClientFactory.CreateNew(
                 IQFeedDefault.Hostname,
                 IQFeedDefault.LookupPort,
-                LookupDefault.TimeoutMs,
                 1,
+                LookupDefault.Timeout,
                 LookupDefault.BufferSize,
                 new HistoricalMessageDoubleHandler());
 

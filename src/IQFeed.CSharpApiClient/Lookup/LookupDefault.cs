@@ -1,4 +1,6 @@
-﻿namespace IQFeed.CSharpApiClient.Lookup
+﻿using System;
+
+namespace IQFeed.CSharpApiClient.Lookup
 {
     public class LookupDefault
     {
@@ -6,7 +8,7 @@
         /// Default timeout before canceling tasks (5 minutes)
         /// This can be changed using LookupClientFactory parameters 
         /// </summary>
-        public const int TimeoutMs = 60 * 1000 * 5;
+        public static TimeSpan Timeout = TimeSpan.FromMinutes(5);
 
         /// <summary>
         /// Default buffer size for Lookup SocketClient

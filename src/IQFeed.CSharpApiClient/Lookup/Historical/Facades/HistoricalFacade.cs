@@ -20,7 +20,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Facades
             ExceptionFactory exceptionFactory,
             IHistoricalMessageHandler<T> historicalMessageHandler,
             HistoricalFileFacade historicalFileFacade,
-            int timeoutMs) : base(lookupDispatcher, exceptionFactory, timeoutMs)
+            TimeSpan timeout) : base(lookupDispatcher, exceptionFactory, timeout)
         {
             _historicalMessageHandler = historicalMessageHandler;
             _historicalRequestFormatter = historicalRequestFormatter;
