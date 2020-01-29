@@ -5,28 +5,14 @@ using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
 {
-    public abstract class BaseLevel1MessageHandler<T> : ILevel1MessageHandler<T>
+    public abstract class BaseLevel1MessageHandler
     {
         public event Action<FundamentalMessage> Fundamental;
-        public event Action<UpdateSummaryMessage<T>> Summary;
         public event Action<SystemMessage> System;
         public event Action<SymbolNotFoundMessage> SymbolNotFound;
         public event Action<ErrorMessage> Error;
         public event Action<TimestampMessage> Timestamp;
-        public event Action<UpdateSummaryMessage<T>> Update;
-        public event Action<RegionalUpdateMessage<T>> Regional;
         public event Action<NewsMessage> News;
-
-        private readonly Func<string, UpdateSummaryMessage<T>> _updateSummaryMessageParser;
-        private readonly Func<string, RegionalUpdateMessage<T>> _regionalUpdateMessageParser;
-
-        protected BaseLevel1MessageHandler(
-            Func<string, UpdateSummaryMessage<T>> updateSummaryMessageParser,
-            Func<string, RegionalUpdateMessage<T>> regionalUpdateMessageParser)
-        {
-            _regionalUpdateMessageParser = regionalUpdateMessageParser;
-            _updateSummaryMessageParser = updateSummaryMessageParser;
-        }
 
         public void ProcessMessages(byte[] messageBytes, int count)
         {
@@ -70,28 +56,16 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
             }
         }
 
+        protected abstract void ProcessSummaryMessage(string msg);
+
+        protected abstract void ProcessUpdateMessage(string msg);
+
+        protected abstract void ProcessRegionalUpdateMessage(string msg);
+
         private void ProcessFundamentalMessage(string msg)
         {
             var fundamentalMessage = FundamentalMessage.Parse(msg);
             Fundamental?.Invoke(fundamentalMessage);
-        }
-
-        private void ProcessSummaryMessage(string msg)
-        {
-            var updateSummaryMessage = _updateSummaryMessageParser(msg);
-            Summary?.Invoke(updateSummaryMessage);
-        }
-
-        private void ProcessUpdateMessage(string msg)
-        {
-            var updateSummaryMessage = _updateSummaryMessageParser(msg);
-            Update?.Invoke(updateSummaryMessage);
-        }
-
-        private void ProcessRegionalUpdateMessage(string msg)
-        {
-            var regionUpdateMessage = _regionalUpdateMessageParser(msg);
-            Regional?.Invoke(regionUpdateMessage);
         }
 
         private void ProcessNewsMessage(string msg)

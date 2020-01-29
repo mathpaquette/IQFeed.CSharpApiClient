@@ -6,23 +6,14 @@ using IQFeed.CSharpApiClient.Streaming.Level2.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level2.Handlers
 {
-    public abstract class BaseLevel2MessageHandler<T> : ILevel2MessageHandler<T>
+    public abstract class BaseLevel2MessageHandler
     {
-        private readonly Func<string, UpdateSummaryMessage<T>> _updateSummaryMessageParser;
-
-        public event Action<UpdateSummaryMessage<T>> Summary;
-        public event Action<UpdateSummaryMessage<T>> Update;
         public event Action<SymbolNotFoundMessage> SymbolNotFound;
         public event Action<MarketMakerNameMessage> Query;
         public event Action<ErrorMessage> Error;
         public event Action<TimestampMessage> Timestamp;
         public event Action<SystemMessage> System;
         
-        protected BaseLevel2MessageHandler(Func<string, UpdateSummaryMessage<T>> updateSummaryMessageParser)
-        {
-            _updateSummaryMessageParser = updateSummaryMessageParser;
-        }
-
         public void ProcessMessages(byte[] messageBytes, int count)
         {
             var messages = Encoding.ASCII.GetString(messageBytes, 0, count).SplitFeedLine();
@@ -61,17 +52,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Handlers
             }
         }
 
-        private void ProcessSummaryMessage(string msg)
-        {
-            var updateSummaryMessage = _updateSummaryMessageParser(msg);
-            Summary?.Invoke(updateSummaryMessage);
-        }
-
-        private void ProcessUpdateMessage(string msg)
-        {
-            var updateSummaryMessage = _updateSummaryMessageParser(msg);
-            Update?.Invoke(updateSummaryMessage);
-        }
+        protected abstract void ProcessSummaryMessage(string msg);
+            
+        protected abstract void ProcessUpdateMessage(string msg);
 
         private void ProcessTimestampMessage(string msg)
         {

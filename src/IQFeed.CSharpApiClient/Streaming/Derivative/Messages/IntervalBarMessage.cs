@@ -125,6 +125,45 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
 
             return new IntervalBarMessage<float>(type, symbol, timestamp, open, high, low, last, cummulativeVolume, intervalVolume, numberOfTrades, requestId);
         }
+
+        public static bool TryParse(string message, out IntervalBarMessage<decimal> intervalBarMessage)
+        {
+            intervalBarMessage = null;
+
+            if (IntervalBarMessageWithoutRequestIdRegex.IsMatch(message))
+                intervalBarMessage = Parse(message);
+
+            else if (IntervalBarMessageWithRequestIdRegex.IsMatch(message))
+                intervalBarMessage = ParseWithRequestId(message);
+
+            return intervalBarMessage != null;
+        }
+
+        public static bool TryParse(string message, out IntervalBarMessage<double> intervalBarMessage)
+        {
+            intervalBarMessage = null;
+
+            if (IntervalBarMessageWithoutRequestIdRegex.IsMatch(message))
+                intervalBarMessage = ParseDouble(message);
+
+            else if (IntervalBarMessageWithRequestIdRegex.IsMatch(message))
+                intervalBarMessage = ParseDoubleWithRequestId(message);
+
+            return intervalBarMessage != null;
+        }
+
+        public static bool TryParse(string message, out IntervalBarMessage<float> intervalBarMessage)
+        {
+            intervalBarMessage = null;
+
+            if (IntervalBarMessageWithoutRequestIdRegex.IsMatch(message))
+                intervalBarMessage = ParseFloat(message);
+
+            else if (IntervalBarMessageWithRequestIdRegex.IsMatch(message))
+                intervalBarMessage = ParseFloatWithRequestId(message);
+
+            return intervalBarMessage != null;
+        }
     }
 
     public class IntervalBarMessage<T> : IIntervalBarMessage<T>
