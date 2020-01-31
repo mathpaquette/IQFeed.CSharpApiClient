@@ -1,11 +1,11 @@
-### IQFeed.CSharpApiClient 2.0.0 - January 25, 2020
+### IQFeed.CSharpApiClient 2.0.1 - January 30, 2020
 * Added generics on most messages for better flexibility and reuse
 * Added message handlers on most clients to support <float>, <double> and <decimal> messages.
 * Added extension methods for message conversion
 * Removed explicit framework target on net461
 
 ##### Breaking Changes
- * Migrated from float to decimal for most messages
+ * Migrated from float to double for most messages
  * Type needs to be specified for client and message instantiation
  * Renamed all Async methods with Get prefix
 
