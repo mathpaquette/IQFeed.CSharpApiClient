@@ -14,7 +14,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         private const string Symbol = "AAPL";
         private const string RequestId = "TEST";
 
-        private LookupClient<decimal> _lookupClient;
+        private LookupClient<double> _lookupClient;
 
         public HistoricalFacadeTests()
         {
@@ -135,7 +135,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
                 async () => await _lookupClient.Historical.GetHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints));
         }
 
-        [Test, MaxTime(TimeoutMs)]
+       [Test, MaxTime(TimeoutMs)]
         public void Should_Throw_NoDataIQFeedException_When_Historical_With_RequestId_Getting_Error()
         {
             var ex = Assert.ThrowsAsync<NoDataIQFeedException>(

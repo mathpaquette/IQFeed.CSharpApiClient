@@ -10,7 +10,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
     {
         public const string TickDateTimeFormat = "yyyy-MM-dd HH:mm:ss.ffffff";
 
-        public static TickMessage<decimal> Parse(string message)
+        public static TickMessage<decimal> ParseDecimal(string message)
         {
             var values = message.SplitFeedMessage();
 
@@ -27,7 +27,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 values[9]);
         }
 
-        public static TickMessage<decimal> ParseWithRequestId(string message)
+        public static TickMessage<decimal> ParseDecimalWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
             var requestId = values[0];
@@ -46,7 +46,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 requestId);
         }
 
-        public static TickMessage<double> ParseDouble(string message)
+        public static TickMessage<double> Parse(string message)
         {
             var values = message.SplitFeedMessage();
 
@@ -63,7 +63,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 values[9]);
         }
 
-        public static TickMessage<double> ParseDoubleWithRequestId(string message)
+        public static TickMessage<double> ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
             var requestId = values[0];
@@ -118,18 +118,18 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 requestId);
         }
 
-        public static IEnumerable<TickMessage<decimal>> ParseFromFile(string path, bool hasRequestId = false)
+        public static IEnumerable<TickMessage<decimal>> ParseDecimalFromFile(string path, bool hasRequestId = false)
+        {
+            return hasRequestId == false
+                ? LookupMessageFileParser.ParseFromFile(ParseDecimal, path)
+                : LookupMessageFileParser.ParseFromFile(ParseDecimalWithRequestId, path);
+        }
+
+        public static IEnumerable<TickMessage<double>> ParseFromFile(string path, bool hasRequestId = false)
         {
             return hasRequestId == false
                 ? LookupMessageFileParser.ParseFromFile(Parse, path)
                 : LookupMessageFileParser.ParseFromFile(ParseWithRequestId, path);
-        }
-
-        public static IEnumerable<TickMessage<double>> ParseDoubleFromFile(string path, bool hasRequestId = false)
-        {
-            return hasRequestId == false
-                ? LookupMessageFileParser.ParseFromFile(ParseDouble, path)
-                : LookupMessageFileParser.ParseFromFile(ParseDoubleWithRequestId, path);
         }
 
         public static IEnumerable<TickMessage<float>> ParseFloatFromFile(string path, bool hasRequestId = false)

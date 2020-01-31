@@ -16,7 +16,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         private const int NumberOfClients = 10;
         private static readonly string[] Symbols = {"SPY", "AAPL", "NFLX", "MSFT", "TSLA", "AMD", "NVDA", "MU", "BABA", "AMZN"};
 
-        private LookupClient<decimal> _lookupClient;
+        private LookupClient<double> _lookupClient;
 
         public HistoricalFacadeMultiClientTests()
         {
@@ -40,7 +40,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         public async Task Should_Return_TickMessages_When_ReqHistoryTickDatapointsAsync_Parallel()
         {
             // Arrange
-            var tickMessageTasks = new List<Task<IEnumerable<TickMessage<decimal>>>>();
+            var tickMessageTasks = new List<Task<IEnumerable<TickMessage<double>>>>();
 
             // Act
             var sw = Stopwatch.StartNew();

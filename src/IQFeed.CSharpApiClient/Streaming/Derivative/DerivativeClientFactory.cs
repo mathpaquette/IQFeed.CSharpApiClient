@@ -17,23 +17,23 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
                 derivativeMessageHandler);
         }
 
-        public static DerivativeClient<decimal> CreateNew()
+        public static DerivativeClient<double> CreateNew()
         {
             return CreateNew(
                 IQFeedDefault.Hostname,
                 IQFeedDefault.DerivativePort,
                 DerivativeDefault.BufferSize,
-                new DerivativeMessageDecimalHandler());
+                new DerivativeMessageDoubleHandler());
         }
 
-        public static DerivativeClient<decimal> CreateNew(string host, int port)
+        public static DerivativeClient<double> CreateNew(string host, int port)
         {
-            return CreateNew(host, port, DerivativeDefault.BufferSize, new DerivativeMessageDecimalHandler());
+            return CreateNew(host, port, DerivativeDefault.BufferSize, new DerivativeMessageDoubleHandler());
         }
 
-        public static DerivativeClient<decimal> CreateNew(string host, int port, int bufferSize)
+        public static DerivativeClient<double> CreateNew(string host, int port, int bufferSize)
         {
-            return CreateNew(host, port, bufferSize, new DerivativeMessageDecimalHandler());
+            return CreateNew(host, port, bufferSize, new DerivativeMessageDoubleHandler());
         }
     }
 }

@@ -61,7 +61,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             return new LookupClient<T>(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade);
         }
 
-        public static LookupClient<decimal> CreateNew()
+        public static LookupClient<double> CreateNew()
         {
             return CreateNew(
                 IQFeedDefault.Hostname,
@@ -69,10 +69,10 @@ namespace IQFeed.CSharpApiClient.Lookup
                 1,
                 LookupDefault.Timeout,
                 LookupDefault.BufferSize,
-                new HistoricalMessageDecimalHandler());
+                new HistoricalMessageDoubleHandler());
         }
 
-        public static LookupClient<decimal> CreateNew(string host, int port)
+        public static LookupClient<double> CreateNew(string host, int port)
         {
             return CreateNew(
                 host,
@@ -80,10 +80,10 @@ namespace IQFeed.CSharpApiClient.Lookup
                 1,
                 LookupDefault.Timeout,
                 LookupDefault.BufferSize,
-                new HistoricalMessageDecimalHandler());
+                new HistoricalMessageDoubleHandler());
         }
 
-        public static LookupClient<decimal> CreateNew(string host, int port, int numberOfClients, TimeSpan timeout)
+        public static LookupClient<double> CreateNew(string host, int port, int numberOfClients, TimeSpan timeout)
         {
             return CreateNew(
                 host,
@@ -91,10 +91,10 @@ namespace IQFeed.CSharpApiClient.Lookup
                 numberOfClients,
                 timeout,
                 LookupDefault.BufferSize,
-                new HistoricalMessageDecimalHandler());
+                new HistoricalMessageDoubleHandler());
         }
 
-        public static LookupClient<decimal> CreateNew(int numberOfClients)
+        public static LookupClient<double> CreateNew(int numberOfClients)
         {
             return CreateNew(
                 IQFeedDefault.Hostname,
@@ -102,7 +102,7 @@ namespace IQFeed.CSharpApiClient.Lookup
                 numberOfClients,
                 LookupDefault.Timeout,
                 LookupDefault.BufferSize,
-                new HistoricalMessageDecimalHandler());
+                new HistoricalMessageDoubleHandler());
         }
     }
 }

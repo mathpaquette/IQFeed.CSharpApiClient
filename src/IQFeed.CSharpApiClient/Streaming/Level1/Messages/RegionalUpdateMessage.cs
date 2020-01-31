@@ -8,7 +8,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
     {
         public const string RegionalUpdateTimeFormat = "HH:mm:ss";
 
-        public static RegionalUpdateMessage<decimal> Parse(string message)
+        public static RegionalUpdateMessage<decimal> ParseDecimal(string message)
         {
             var values = message.SplitFeedMessage();
 
@@ -39,7 +39,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             );
         }
 
-        public static RegionalUpdateMessage<double> ParseDouble(string message)
+        public static RegionalUpdateMessage<double> Parse(string message)
         {
             var values = message.SplitFeedMessage();
 

@@ -11,19 +11,19 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
 
         protected override void ProcessSummaryMessage(string msg)
         {
-            var updateSummaryMessage = UpdateSummaryMessage.ParseDouble(msg);
+            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
             Summary?.Invoke(updateSummaryMessage);
         }
 
         protected override void ProcessUpdateMessage(string msg)
         {
-            var updateSummaryMessage = UpdateSummaryMessage.ParseDouble(msg);
+            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
             Update?.Invoke(updateSummaryMessage);
         }
 
         protected override void ProcessRegionalUpdateMessage(string msg)
         {
-            var regionUpdateMessage = RegionalUpdateMessage.ParseDouble(msg);
+            var regionUpdateMessage = RegionalUpdateMessage.Parse(msg);
             Regional?.Invoke(regionUpdateMessage);
         }
     }

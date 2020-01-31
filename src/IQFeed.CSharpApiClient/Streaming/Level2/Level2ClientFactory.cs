@@ -23,19 +23,19 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             );
         }
 
-        public static Level2Client<decimal> CreateNew()
+        public static Level2Client<double> CreateNew()
         {
-            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.Level2Port, Level2Default.SnapshotTimeout, new Level2MessageDecimalHandler());
+            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.Level2Port, Level2Default.SnapshotTimeout, new Level2MessageDoubleHandler());
         }
 
-        public static Level2Client<decimal> CreateNew(string host, int port)
+        public static Level2Client<double> CreateNew(string host, int port)
         {
-            return CreateNew(host, port, Level2Default.SnapshotTimeout, new Level2MessageDecimalHandler());
+            return CreateNew(host, port, Level2Default.SnapshotTimeout, new Level2MessageDoubleHandler());
         }
 
-        public static Level2Client<decimal> CreateNew(string host, int port, TimeSpan snapshotTimeout)
+        public static Level2Client<double> CreateNew(string host, int port, TimeSpan snapshotTimeout)
         {
-            return CreateNew(host, port, snapshotTimeout, new Level2MessageDecimalHandler());
+            return CreateNew(host, port, snapshotTimeout, new Level2MessageDoubleHandler());
         }
     }
 }

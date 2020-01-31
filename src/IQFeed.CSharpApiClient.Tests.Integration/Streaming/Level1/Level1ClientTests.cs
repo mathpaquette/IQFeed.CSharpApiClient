@@ -7,7 +7,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level1
     public class Level1ClientTests
     {
         private const string Symbol = "AAPL";
-        private ILevel1Client<decimal> _level1Client;
+        private ILevel1Client<double> _level1Client;
 
         public Level1ClientTests()
         {

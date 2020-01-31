@@ -8,31 +8,31 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Handlers
     {
         public MessageContainer<TickMessage<decimal>> GetTickMessages(byte[] message, int count)
         {
-            return ProcessMessages(TickMessage.Parse, ParseErrorMessage, message, count);
+            return ProcessMessages(TickMessage.ParseDecimal, ParseErrorMessage, message, count);
         }
 
         public MessageContainer<TickMessage<decimal>> GetTickMessagesWithRequestId(byte[] message, int count)
         {
-            return ProcessMessages(TickMessage.ParseWithRequestId, ParseErrorMessageWithRequestId, message, count);
+            return ProcessMessages(TickMessage.ParseDecimalWithRequestId, ParseErrorMessageWithRequestId, message, count);
         }
 
         public MessageContainer<IntervalMessage<decimal>> GetIntervalMessages(byte[] message, int count)
         {
-            return ProcessMessages(IntervalMessage.Parse, ParseErrorMessage, message, count);
+            return ProcessMessages(IntervalMessage.ParseDecimal, ParseErrorMessage, message, count);
         }
 
         public MessageContainer<IntervalMessage<decimal>> GetIntervalMessagesWithRequestId(byte[] message, int count)
         {
-            return ProcessMessages(IntervalMessage.ParseWithRequestId, ParseErrorMessageWithRequestId, message, count);
+            return ProcessMessages(IntervalMessage.ParseDecimalWithRequestId, ParseErrorMessageWithRequestId, message, count);
         }
 
         public MessageContainer<DailyWeeklyMonthlyMessage<decimal>> GetDailyWeeklyMonthlyMessages(byte[] message, int count)
         {
-            return ProcessMessages(DailyWeeklyMonthlyMessage.Parse, ParseErrorMessage, message, count);
+            return ProcessMessages(DailyWeeklyMonthlyMessage.ParseDecimal, ParseErrorMessage, message, count);
         }
         public MessageContainer<DailyWeeklyMonthlyMessage<decimal>> GetDailyWeeklyMonthlyMessagesWithRequestId(byte[] message, int count)
         {
-            return ProcessMessages(DailyWeeklyMonthlyMessage.ParseWithRequestId, ParseErrorMessageWithRequestId, message, count);
+            return ProcessMessages(DailyWeeklyMonthlyMessage.ParseDecimalWithRequestId, ParseErrorMessageWithRequestId, message, count);
         }
     }
 }

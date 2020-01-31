@@ -19,11 +19,11 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains.Equities
 
         public string Symbol { get; }
         public string EquitySymbol { get; }
-        public float StrikePrice { get; }
+        public double StrikePrice { get; }
         public DateTime Expiration { get; }
         public OptionSide Side { get; }
 
-        public EquityOption(string symbol, string equitySymbol, float strikePrice, DateTime expiration, OptionSide side)
+        public EquityOption(string symbol, string equitySymbol, double strikePrice, DateTime expiration, OptionSide side)
         {
             Symbol = symbol;
             EquitySymbol = equitySymbol;
@@ -42,7 +42,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains.Equities
             var monthCode = EquityOptionMonthCode.Decode(m.Groups[ExpirationMonthComponent].Value);
             var expiration = new DateTime(year, monthCode.Month, date);
 
-            var strikePrice = float.Parse(m.Groups[StrikePriceComponent].Value, CultureInfo.InvariantCulture);
+            var strikePrice = double.Parse(m.Groups[StrikePriceComponent].Value, CultureInfo.InvariantCulture);
             var side = monthCode.Side;
 
             return new EquityOption(optionSymbol, equitySymbol, strikePrice, expiration, side);

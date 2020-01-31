@@ -13,7 +13,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Handlers
 
         public MessageContainer<TickMessage<float>> GetTickMessagesWithRequestId(byte[] message, int count)
         {
-            return ProcessMessages(TickMessage.ParseFloatWithRequestId, ParseErrorMessage, message, count);
+            return ProcessMessages(TickMessage.ParseFloatWithRequestId, ParseErrorMessageWithRequestId, message, count);
         }
 
         public MessageContainer<IntervalMessage<float>> GetIntervalMessages(byte[] message, int count)
@@ -23,7 +23,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Handlers
 
         public MessageContainer<IntervalMessage<float>> GetIntervalMessagesWithRequestId(byte[] message, int count)
         {
-            return ProcessMessages(IntervalMessage.ParseFloatWithRequestId, ParseErrorMessage, message, count);
+            return ProcessMessages(IntervalMessage.ParseFloatWithRequestId, ParseErrorMessageWithRequestId, message, count);
         }
 
         public MessageContainer<DailyWeeklyMonthlyMessage<float>> GetDailyWeeklyMonthlyMessages(byte[] message, int count)
@@ -33,7 +33,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Handlers
 
         public MessageContainer<DailyWeeklyMonthlyMessage<float>> GetDailyWeeklyMonthlyMessagesWithRequestId(byte[] message, int count)
         {
-            return ProcessMessages(DailyWeeklyMonthlyMessage.ParseFloatWithRequestId, ParseErrorMessage, message, count);
+            return ProcessMessages(DailyWeeklyMonthlyMessage.ParseFloatWithRequestId, ParseErrorMessageWithRequestId, message, count);
         }
     }
 }

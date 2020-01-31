@@ -10,13 +10,13 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Handlers
 
         protected override void ProcessSummaryMessage(string msg)
         {
-            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
+            var updateSummaryMessage = UpdateSummaryMessage.ParseDecimal(msg);
             Summary?.Invoke(updateSummaryMessage);
         }
 
         protected override void ProcessUpdateMessage(string msg)
         {
-            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
+            var updateSummaryMessage = UpdateSummaryMessage.ParseDecimal(msg);
             Update?.Invoke(updateSummaryMessage);
         }
     }

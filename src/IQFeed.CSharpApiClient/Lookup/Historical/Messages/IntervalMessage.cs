@@ -10,7 +10,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
     {
         public const string IntervalDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
-        public static IntervalMessage<decimal> Parse(string message)
+        public static IntervalMessage<decimal> ParseDecimal(string message)
         {
             var values = message.SplitFeedMessage();
 
@@ -25,7 +25,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 int.Parse(values[7], CultureInfo.InvariantCulture));
         }
 
-        public static IntervalMessage<decimal> ParseWithRequestId(string message)
+        public static IntervalMessage<decimal> ParseDecimalWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
             var requestId = values[0];
@@ -42,7 +42,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 requestId);
         }
 
-        public static IntervalMessage<double> ParseDouble(string message)
+        public static IntervalMessage<double> Parse(string message)
         {
             var values = message.SplitFeedMessage();
 
@@ -57,7 +57,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 int.Parse(values[7], CultureInfo.InvariantCulture));
         }
 
-        public static IntervalMessage<double> ParseDoubleWithRequestId(string message)
+        public static IntervalMessage<double> ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
             var requestId = values[0];
@@ -106,18 +106,18 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 requestId);
         }
 
-        public static IEnumerable<IntervalMessage<decimal>> ParseFromFile(string path, bool hasRequestId = false)
+        public static IEnumerable<IntervalMessage<decimal>> ParseDecimalFromFile(string path, bool hasRequestId = false)
+        {
+            return hasRequestId == false
+                ? LookupMessageFileParser.ParseFromFile(ParseDecimal, path)
+                : LookupMessageFileParser.ParseFromFile(ParseDecimalWithRequestId, path);
+        }
+
+        public static IEnumerable<IntervalMessage<double>> ParseFromFile(string path, bool hasRequestId = false)
         {
             return hasRequestId == false
                 ? LookupMessageFileParser.ParseFromFile(Parse, path)
                 : LookupMessageFileParser.ParseFromFile(ParseWithRequestId, path);
-        }
-
-        public static IEnumerable<IntervalMessage<double>> ParseDoubleFromFile(string path, bool hasRequestId = false)
-        {
-            return hasRequestId == false
-                ? LookupMessageFileParser.ParseFromFile(ParseDouble, path)
-                : LookupMessageFileParser.ParseFromFile(ParseDoubleWithRequestId, path);
         }
 
         public static IEnumerable<IntervalMessage<float>> ParseFloatFromFile(string path, bool hasRequestId = false)

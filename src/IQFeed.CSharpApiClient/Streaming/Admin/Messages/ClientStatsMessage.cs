@@ -14,11 +14,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Admin.Messages
         public DateTime StartTime { get; private set; }
         public int? Symbols { get; private set; }
         public int? RegionalSymbols { get; private set; }
-        public float KbReceived { get; private set; }
-        public float KbSent { get; private set; }
-        public float KbQueued { get; private set; }
+        public double KbReceived { get; private set; }
+        public double KbSent { get; private set; }
+        public double KbQueued { get; private set; }
 
-        public ClientStatsMessage(ClientType type, int clientId, string clientName, DateTime startTime, int? symbols, int? regionalSymbols, float kbReceived, float kbSent, float kbQueued)
+        public ClientStatsMessage(ClientType type, int clientId, string clientName, DateTime startTime, int? symbols, int? regionalSymbols, double kbReceived, double kbSent, double kbQueued)
         {
             Type = type;
             ClientId = clientId;
@@ -40,9 +40,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Admin.Messages
             DateTime.TryParseExact(values[4], ClientStatsDatetimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var startTime);
             var symbols = values[5].ToNullableInt();
             var regionalSymbols = values[6].ToNullableInt();
-            float.TryParse(values[7], out var kbReceived);
-            float.TryParse(values[8], out var kbSent);
-            float.TryParse(values[9], out var kbQueued);
+            double.TryParse(values[7], out var kbReceived);
+            double.TryParse(values[8], out var kbSent);
+            double.TryParse(values[9], out var kbQueued);
 
             return new ClientStatsMessage(clientType, clientId, clientName, startTime, symbols, regionalSymbols, kbReceived, kbSent, kbQueued);
         }

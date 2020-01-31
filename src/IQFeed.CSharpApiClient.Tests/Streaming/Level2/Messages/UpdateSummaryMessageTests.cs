@@ -21,7 +21,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2.Messages
             DateTime.TryParseExact("20:31:04.876740", UpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var bidTime);
             DateTime.TryParseExact("2019-04-23", UpdateSummaryMessage.UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date);
             DateTime.TryParseExact("20:31:04.876740", UpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var askTime);
-            var updateSummaryMessage = new UpdateSummaryMessage<decimal>("@ESM19", "MD01", 2938.0m, 2938.25m, 65, 23, bidTime, date, "52", askTime, 'T', 'T', 'F');
+            var updateSummaryMessage = new UpdateSummaryMessage<double>("@ESM19", "MD01", 2938.0d, 2938.25d, 65, 23, bidTime, date, "52", askTime, 'T', 'T', 'F');
 
             // Assert
             Assert.AreEqual(updateSummaryMessageParsed, updateSummaryMessage);

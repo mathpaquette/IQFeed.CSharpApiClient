@@ -7,7 +7,26 @@ namespace IQFeed.CSharpApiClient.Streaming.Admin.Messages
     {
         public const string StatsMessageDatetimeFormat = "MMM dd H:mmtt";
 
-        public StatsMessage(string serverIp, int serverPort, int maxSymbols, int numberOfSymbols, int clientsConnected, int secondsSinceLastUpdate, int reconnections, int attemptedReconnections, DateTime startTime, DateTime marketTime, StatsStatusType status, string iqFeedVersion, string loginId, float totalKBsRecv, float kbsPerSecRecv, float avgKBsPerSecRecv, float totalKBsSent, float kbsPerSecSent, float avgKBsPerSecSent)
+        public StatsMessage(
+            string serverIp, 
+            int serverPort,
+            int maxSymbols, 
+            int numberOfSymbols, 
+            int clientsConnected,
+            int secondsSinceLastUpdate,
+            int reconnections, 
+            int attemptedReconnections,
+            DateTime startTime, 
+            DateTime marketTime, 
+            StatsStatusType status,
+            string iqFeedVersion, 
+            string loginId,
+            double totalKBsRecv,
+            double kbsPerSecRecv,
+            double avgKBsPerSecRecv,
+            double totalKBsSent,
+            double kbsPerSecSent,
+            double avgKBsPerSecSent)
         {
             ServerIp = serverIp;
             ServerPort = serverPort;
@@ -43,12 +62,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Admin.Messages
         public StatsStatusType Status { get; private set; }
         public string IQFeedVersion { get; private set; }
         public string LoginId { get; private set; }
-        public float TotalKBsRecv { get; private set; }
-        public float KBsPerSecRecv { get; private set; }
-        public float AvgKBsPerSecRecv { get; private set; }
-        public float TotalKBsSent { get; private set; }
-        public float KBsPerSecSent { get; private set; }
-        public float AvgKBsPerSecSent { get; private set; }
+        public double TotalKBsRecv { get; private set; }
+        public double KBsPerSecRecv { get; private set; }
+        public double AvgKBsPerSecRecv { get; private set; }
+        public double TotalKBsSent { get; private set; }
+        public double KBsPerSecSent { get; private set; }
+        public double AvgKBsPerSecSent { get; private set; }
 
         public static StatsMessage CreateStatsMessage(string[] values)
         {
@@ -65,12 +84,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Admin.Messages
             var status = values[11] == "Connected" ? StatsStatusType.Connected : StatsStatusType.NotConnected;
             var iqFeedVersion = values[12];
             var loginId = values[13];
-            float.TryParse(values[14], out var totalKBsRecv);
-            float.TryParse(values[15], out var kBsPerSecRecv);
-            float.TryParse(values[16], out var avgKBsPerSecRecv);
-            float.TryParse(values[17], out var totalKBsSent);
-            float.TryParse(values[18], out var kBsPerSecSent);
-            float.TryParse(values[19], out var avgKBsPerSecSent);
+            double.TryParse(values[14], out var totalKBsRecv);
+            double.TryParse(values[15], out var kBsPerSecRecv);
+            double.TryParse(values[16], out var avgKBsPerSecRecv);
+            double.TryParse(values[17], out var totalKBsSent);
+            double.TryParse(values[18], out var kBsPerSecSent);
+            double.TryParse(values[19], out var avgKBsPerSecSent);
 
             return new StatsMessage(
                 serverIp,

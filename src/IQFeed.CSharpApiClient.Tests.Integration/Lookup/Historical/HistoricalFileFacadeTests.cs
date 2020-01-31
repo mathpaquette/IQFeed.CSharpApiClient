@@ -12,7 +12,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         private const int Datapoints = 100;
         private const string Symbol = "AAPL";
 
-        private LookupClient<decimal> _lookupClient;
+        private LookupClient<double> _lookupClient;
 
         public HistoricalFileFacadeTests()
         {

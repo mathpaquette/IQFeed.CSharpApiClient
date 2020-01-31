@@ -15,7 +15,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
         public static readonly Regex IntervalBarMessageWithRequestIdRegex = new Regex(IntervalBarMessageWithRequestIdPattern);
         public static readonly Regex IntervalBarMessageWithoutRequestIdRegex = new Regex(IntervalBarMessageWithoutRequestIdPattern);
 
-        public static IntervalBarMessage<decimal> Parse(string message)
+        public static IntervalBarMessage<decimal> ParseDecimal(string message)
         {
             var values = message.SplitFeedMessage();
 
@@ -33,7 +33,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
             return new IntervalBarMessage<decimal>(type, symbol, timestamp, open, high, low, last, cummulativeVolume, intervalVolume, numberOfTrades);
         }
 
-        public static IntervalBarMessage<decimal> ParseWithRequestId(string message)
+        public static IntervalBarMessage<decimal> ParseDecimalWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
 
@@ -52,7 +52,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
             return new IntervalBarMessage<decimal>(type, symbol, timestamp, open, high, low, last, cummulativeVolume, intervalVolume, numberOfTrades, requestId);
         }
 
-        public static IntervalBarMessage<double> ParseDouble(string message)
+        public static IntervalBarMessage<double> Parse(string message)
         {
             var values = message.SplitFeedMessage();
 
@@ -70,7 +70,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
             return new IntervalBarMessage<double>(type, symbol, timestamp, open, high, low, last, cummulativeVolume, intervalVolume, numberOfTrades);
         }
 
-        public static IntervalBarMessage<double> ParseDoubleWithRequestId(string message)
+        public static IntervalBarMessage<double> ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
 
@@ -131,10 +131,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
             intervalBarMessage = null;
 
             if (IntervalBarMessageWithoutRequestIdRegex.IsMatch(message))
-                intervalBarMessage = Parse(message);
+                intervalBarMessage = ParseDecimal(message);
 
             else if (IntervalBarMessageWithRequestIdRegex.IsMatch(message))
-                intervalBarMessage = ParseWithRequestId(message);
+                intervalBarMessage = ParseDecimalWithRequestId(message);
 
             return intervalBarMessage != null;
         }
@@ -144,10 +144,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
             intervalBarMessage = null;
 
             if (IntervalBarMessageWithoutRequestIdRegex.IsMatch(message))
-                intervalBarMessage = ParseDouble(message);
+                intervalBarMessage = Parse(message);
 
             else if (IntervalBarMessageWithRequestIdRegex.IsMatch(message))
-                intervalBarMessage = ParseDoubleWithRequestId(message);
+                intervalBarMessage = ParseWithRequestId(message);
 
             return intervalBarMessage != null;
         }

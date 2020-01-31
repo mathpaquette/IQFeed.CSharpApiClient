@@ -18,7 +18,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
 
             // Act
             var fundementalMessageParsed = FundamentalMessage.Parse(message);
-            var fundamentalMessage = new FundamentalMessage("MSFT", "5", 65.6m, 28624000, 97.95m, 67.14m, 97.95m, 83.83m, null, null, null, null, null, null, 1.49m, null, 0.06m, 6, "MICROSOFT", "MSFT", 76.8m, 1.27m, null, 159851, 64527, new DateTime(2018, 03, 31), 76073, 7683198, "0.50 02/18/2003", "0.50 03/29/1999", "14", 4, 7372, 24.82m, "1", "21", new DateTime(2018, 05, 10), new DateTime(2017, 05, 18), new DateTime(2018, 05, 10), new DateTime(2018, 02, 09), 85.54m, null, null, null, null, 511210, null, null, null);
+            var fundamentalMessage = new FundamentalMessage("MSFT", "5", 65.6d, 28624000, 97.95d, 67.14d, 97.95d, 83.83d, null, null, null, null, null, null, 1.49d, null, 0.06d, 6, "MICROSOFT", "MSFT", 76.8d, 1.27d, null, 159851, 64527, new DateTime(2018, 03, 31), 76073, 7683198, "0.50 02/18/2003", "0.50 03/29/1999", "14", 4, 7372, 24.82d, "1", "21", new DateTime(2018, 05, 10), new DateTime(2017, 05, 18), new DateTime(2018, 05, 10), new DateTime(2018, 02, 09), 85.54d, null, null, null, null, 511210, null, null, null);
 
             // Assert
             Assert.AreEqual(fundementalMessageParsed, fundamentalMessage);
@@ -29,7 +29,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
         {
             // Arrange
             var fundamental1 = new FundamentalMessage("MSFT", "5", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-            var fundamental2 = new FundamentalMessage("MSFT", "5", "1.0".ToNullableDecimal(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            var fundamental2 = new FundamentalMessage("MSFT", "5", "1.0".ToNullableDouble(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
             // Act
             var hashCode1 = fundamental1.GetHashCode();

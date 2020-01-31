@@ -15,9 +15,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains.Futures
         public string Symbol { get; }
         public Future Future { get; }
         public OptionSide Side { get; }
-        public float StrikePrice { get; }
+        public double StrikePrice { get; }
 
-        public FutureOption(string symbol, Future future, OptionSide side, float strikePrice)
+        public FutureOption(string symbol, Future future, OptionSide side, double strikePrice)
         {
             Symbol = symbol;
             Future = future;
@@ -30,7 +30,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains.Futures
             var m = Regex.Match(futureOptionSymbol, FutureOptionSymbolPattern);
             var future = Future.Parse(m.Groups[FutureSymbolComponent].Value);
             var optionSide = m.Groups[FutureOptionSideComponent].Value == "C" ? OptionSide.Call : OptionSide.Put;
-            var strikePrice = float.Parse(m.Groups[FutureOptionStrikePriceComponent].Value, CultureInfo.InvariantCulture) / 100f;
+            var strikePrice = double.Parse(m.Groups[FutureOptionStrikePriceComponent].Value, CultureInfo.InvariantCulture) / 100f;
 
             return new FutureOption(futureOptionSymbol, future, optionSide, strikePrice);
         }

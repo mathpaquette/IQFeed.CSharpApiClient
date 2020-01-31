@@ -8,7 +8,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
     {
         public const string UpdateMessageTimeFormat = "HH:mm:ss.ffffff";
 
-        public static UpdateSummaryMessage<decimal> Parse(string message)
+        public static UpdateSummaryMessage<decimal> ParseDecimal(string message)
         {
             var values = message.SplitFeedMessage();
             var symbol = values[1];                                                                                                                            // field 2
@@ -48,7 +48,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             );
         }
 
-        public static UpdateSummaryMessage<double> ParseDouble(string message)
+        public static UpdateSummaryMessage<double> Parse(string message)
         {
             var values = message.SplitFeedMessage();
             var symbol = values[1];                                                                                                                            // field 2
