@@ -15,9 +15,24 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages.Extensions
             return messages.Select(message => message.ToFloat());
         }
 
+        public static IEnumerable<TickMessage<decimal>> ToDecimal(this IEnumerable<ITickMessage<double>> messages)
+        {
+            return messages.Select(message => message.ToDecimal());
+        }
+
         public static IEnumerable<TickMessage<float>> ToFloat(this IEnumerable<ITickMessage<double>> messages)
         {
             return messages.Select(message => message.ToFloat());
+        }
+
+        public static IEnumerable<TickMessage<decimal>> ToDecimal(this IEnumerable<ITickMessage<float>> messages)
+        {
+            return messages.Select(message => message.ToDecimal());
+        }
+
+        public static IEnumerable<TickMessage<double>> ToDouble(this IEnumerable<ITickMessage<float>> messages)
+        {
+            return messages.Select(message => message.ToDouble());
         }
 
         public static TickMessage<double> ToDouble(this ITickMessage<decimal> message)
@@ -52,6 +67,22 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages.Extensions
                 message.RequestId);
         }
 
+        public static TickMessage<decimal> ToDecimal(this ITickMessage<double> message)
+        {
+            return new TickMessage<decimal>(
+                message.Timestamp,
+                (decimal)message.Last,
+                message.LastSize,
+                message.TotalVolume,
+                (decimal)message.Bid,
+                (decimal)message.Ask,
+                message.TickId,
+                message.BasisForLast,
+                message.TradeMarketCenter,
+                message.TradeConditions,
+                message.RequestId);
+        }
+
         public static TickMessage<float> ToFloat(this ITickMessage<double> message)
         {
             return new TickMessage<float>(
@@ -61,6 +92,38 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages.Extensions
                 message.TotalVolume, 
                 (float)message.Bid,
                 (float)message.Ask,
+                message.TickId,
+                message.BasisForLast,
+                message.TradeMarketCenter,
+                message.TradeConditions,
+                message.RequestId);
+        }
+
+        public static TickMessage<decimal> ToDecimal(this ITickMessage<float> message)
+        {
+            return new TickMessage<decimal>(
+                message.Timestamp,
+                (decimal)message.Last,
+                message.LastSize,
+                message.TotalVolume,
+                (decimal)message.Bid,
+                (decimal)message.Ask,
+                message.TickId,
+                message.BasisForLast,
+                message.TradeMarketCenter,
+                message.TradeConditions,
+                message.RequestId);
+        }
+
+        public static TickMessage<double> ToDouble(this ITickMessage<float> message)
+        {
+            return new TickMessage<double>(
+                message.Timestamp,
+                (double)message.Last,
+                message.LastSize,
+                message.TotalVolume,
+                (double)message.Bid,
+                (double)message.Ask,
                 message.TickId,
                 message.BasisForLast,
                 message.TradeMarketCenter,

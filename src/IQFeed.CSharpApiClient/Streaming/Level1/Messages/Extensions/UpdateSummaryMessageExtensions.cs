@@ -16,9 +16,24 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
             return messages.Select(message => message.ToFloat());
         }
 
+        public static IEnumerable<UpdateSummaryMessage<decimal>> ToDecimal(this IEnumerable<IUpdateSummaryMessage<double>> messages)
+        {
+            return messages.Select(message => message.ToDecimal());
+        }
+
         public static IEnumerable<UpdateSummaryMessage<float>> ToFloat(this IEnumerable<IUpdateSummaryMessage<double>> messages)
         {
             return messages.Select(message => message.ToFloat());
+        }
+
+        public static IEnumerable<UpdateSummaryMessage<decimal>> ToDecimal(this IEnumerable<IUpdateSummaryMessage<float>> messages)
+        {
+            return messages.Select(message => message.ToDecimal());
+        }
+
+        public static IEnumerable<UpdateSummaryMessage<double>> ToDouble(this IEnumerable<IUpdateSummaryMessage<float>> messages)
+        {
+            return messages.Select(message => message.ToDouble());
         }
 
         public static UpdateSummaryMessage<double> ToDouble(this IUpdateSummaryMessage<decimal> message)
@@ -63,6 +78,28 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
                 message.MostRecentTradeConditions);
         }
 
+        public static UpdateSummaryMessage<decimal> ToDecimal(this IUpdateSummaryMessage<double> message)
+
+        {
+            return new UpdateSummaryMessage<decimal>(
+                message.Symbol,
+                (decimal)message.MostRecentTrade,
+                message.MostRecentTradeSize,
+                DateTime.Now + message.MostRecentTradeTime,
+                message.MostRecentTradeMarketCenter,
+                message.TotalVolume,
+                (decimal)message.Bid,
+                message.BidSize,
+                (decimal)message.Ask,
+                message.AskSize,
+                (decimal)message.Open,
+                (decimal)message.High,
+                (decimal)message.Low,
+                (decimal)message.Close,
+                message.MessageContents,
+                message.MostRecentTradeConditions);
+        }
+
         public static UpdateSummaryMessage<float> ToFloat(this IUpdateSummaryMessage<double> message)
         {
             return new UpdateSummaryMessage<float>(
@@ -80,6 +117,49 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
                 (float)message.High,
                 (float)message.Low,
                 (float)message.Close,
+                message.MessageContents,
+                message.MostRecentTradeConditions);
+        }
+
+        public static UpdateSummaryMessage<decimal> ToDecimal(this IUpdateSummaryMessage<float> message)
+
+        {
+            return new UpdateSummaryMessage<decimal>(
+                message.Symbol,
+                (decimal)message.MostRecentTrade,
+                message.MostRecentTradeSize,
+                DateTime.Now + message.MostRecentTradeTime,
+                message.MostRecentTradeMarketCenter,
+                message.TotalVolume,
+                (decimal)message.Bid,
+                message.BidSize,
+                (decimal)message.Ask,
+                message.AskSize,
+                (decimal)message.Open,
+                (decimal)message.High,
+                (decimal)message.Low,
+                (decimal)message.Close,
+                message.MessageContents,
+                message.MostRecentTradeConditions);
+        }
+
+        public static UpdateSummaryMessage<double> ToDouble(this IUpdateSummaryMessage<float> message)
+        {
+            return new UpdateSummaryMessage<double>(
+                message.Symbol,
+                (double)message.MostRecentTrade,
+                message.MostRecentTradeSize,
+                DateTime.Now + message.MostRecentTradeTime,
+                message.MostRecentTradeMarketCenter,
+                message.TotalVolume,
+                (double)message.Bid,
+                message.BidSize,
+                (double)message.Ask,
+                message.AskSize,
+                (double)message.Open,
+                (double)message.High,
+                (double)message.Low,
+                (double)message.Close,
                 message.MessageContents,
                 message.MostRecentTradeConditions);
         }
