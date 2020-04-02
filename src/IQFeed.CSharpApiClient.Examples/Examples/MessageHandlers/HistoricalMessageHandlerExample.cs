@@ -19,10 +19,10 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.MessageHandlers
 
             // Run IQConnect launcher
             IQFeedLauncher.Start();
-            
+
             // Choose between 3 different handlers:
-            // 1- HistoricalMessageDecimalHandler   (for decimal) - default one through CreateNew
-            // 2- HistoricalMessageDoubleHandler    (for double)
+            // 1- HistoricalMessageDecimalHandler   (for decimal)
+            // 2- HistoricalMessageDoubleHandler    (for double) - default one through CreateNew
             // 3- HistoricalMessageFloatHandler     (for float)
             var lookupClient = LookupClientFactory.CreateNew(
                 IQFeedDefault.Hostname,
@@ -30,19 +30,19 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.MessageHandlers
                 1,
                 LookupDefault.Timeout,
                 LookupDefault.BufferSize,
-                new HistoricalMessageDoubleHandler());
+                new HistoricalMessageDecimalHandler());
 
             // Connect
             lookupClient.Connect();
 
-            // retrieve IEnumerable<TickMessage<double>>
-            var doubleTicks = (await lookupClient.Historical.GetHistoryTickDatapointsAsync("AAPL", 1000)).ToList();
+            // retrieve IEnumerable<TickMessage<decimal>>
+            var decimalTicks = (await lookupClient.Historical.GetHistoryTickDatapointsAsync("AAPL", 1000)).ToList();
 
-            // convert TickMessage<double> to TickMessage<float>
-            var floatTick = doubleTicks.First().ToFloat();
+            // convert TickMessage<decimal> to TickMessage<float>
+            var floatTick = decimalTicks.First().ToFloat();
 
-            // convert IEnumerable<TickMessage<double>> to IEnumerable<TickMessage<float>>
-            var floatTicks = doubleTicks.ToFloat().ToList();
+            // convert IEnumerable<TickMessage<decimal>> to IEnumerable<TickMessage<float>>
+            var floatTicks = decimalTicks.ToFloat().ToList();
         }
 
         public void Run()

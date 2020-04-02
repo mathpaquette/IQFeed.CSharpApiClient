@@ -8,7 +8,7 @@
 IQFeed.CSharpApiClient is fastest and the most well designed C# DTN IQFeed socket API connector available to the open source community! Currently supporting the latest stable IQFeed protocol version 6.0.
 
 IQFeed is an affordable and reputable Internet market data provider. For more [info](http://www.iqfeed.net/index.cfm?displayaction=developer&section=main).<br>
-**_ SPECIAL OFFER (Save \$50 - No Startup Fee) _** [Get Free Trial Now](https://www.iqfeed.net/trent/index.cfm?displayaction=start&promo=1996499)
+**SPECIAL OFFER (Save \$50 - No Startup Fee)** [Get Free Trial Now](https://www.iqfeed.net/trent/index.cfm?displayaction=start&promo=1996499)
 
 If you appreciate this project, please star :star: it now!
 
