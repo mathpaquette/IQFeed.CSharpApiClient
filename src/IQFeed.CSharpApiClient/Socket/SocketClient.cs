@@ -43,6 +43,18 @@ namespace IQFeed.CSharpApiClient.Socket
             _readEventArgs = new SocketAsyncEventArgs();
         }
 
+        public SocketClient(IPAddress host, int port, int bufferSize = 8192)
+        {
+            _bufferSize = bufferSize;
+
+            // Instantiates the endpoint and socket.
+            _hostEndPoint = new IPEndPoint(host, port);
+            _clientSocket = new System.Net.Sockets.Socket(_hostEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+            _socketMessageHandler = new SocketMessageHandler(_bufferSize, '\n'); // TODO: could be injected in the constructor
+            _socketMessageEventArgs = new SocketMessageEventArgs();
+            _readEventArgs = new SocketAsyncEventArgs();
+        }
 
         public void Connect()
         {
