@@ -13,6 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient.Exam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient.Tests.Integration", "src\IQFeed.CSharpApiClient.Tests.Integration\IQFeed.CSharpApiClient.Tests.Integration.csproj", "{9E109863-057B-4A64-9B93-8E2FFD4E9A48}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient.Extensions", "src\IQFeed.CSharpApiClient.Extensions\IQFeed.CSharpApiClient.Extensions.csproj", "{BA44F08F-2729-4FF6-B57D-057C459DD9D7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient.Extensions.Tests", "src\IQFeed.CSharpApiClient.Extensions.Tests\IQFeed.CSharpApiClient.Extensions.Tests.csproj", "{3E15DEFF-B260-48E4-BA54-67112EB68EA0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient.Extensions.Tests.Integration", "src\IQFeed.CSharpApiClient.Extensions.Tests.Integration\IQFeed.CSharpApiClient.Extensions.Tests.Integration.csproj", "{5DCBEEF9-87B2-425C-8762-87363442C6D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +41,18 @@ Global
 		{9E109863-057B-4A64-9B93-8E2FFD4E9A48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E109863-057B-4A64-9B93-8E2FFD4E9A48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E109863-057B-4A64-9B93-8E2FFD4E9A48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA44F08F-2729-4FF6-B57D-057C459DD9D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA44F08F-2729-4FF6-B57D-057C459DD9D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA44F08F-2729-4FF6-B57D-057C459DD9D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA44F08F-2729-4FF6-B57D-057C459DD9D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E15DEFF-B260-48E4-BA54-67112EB68EA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E15DEFF-B260-48E4-BA54-67112EB68EA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E15DEFF-B260-48E4-BA54-67112EB68EA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E15DEFF-B260-48E4-BA54-67112EB68EA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DCBEEF9-87B2-425C-8762-87363442C6D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DCBEEF9-87B2-425C-8762-87363442C6D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DCBEEF9-87B2-425C-8762-87363442C6D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DCBEEF9-87B2-425C-8762-87363442C6D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,6 +60,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D25664CF-7855-46C4-9483-8897A3926587} = {A5B0360D-1645-4764-9723-EFAC370A7FF1}
 		{9E109863-057B-4A64-9B93-8E2FFD4E9A48} = {A5B0360D-1645-4764-9723-EFAC370A7FF1}
+		{3E15DEFF-B260-48E4-BA54-67112EB68EA0} = {A5B0360D-1645-4764-9723-EFAC370A7FF1}
+		{5DCBEEF9-87B2-425C-8762-87363442C6D9} = {A5B0360D-1645-4764-9723-EFAC370A7FF1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DD3DC3C3-CC9C-48D7-9119-859CB98E5950}

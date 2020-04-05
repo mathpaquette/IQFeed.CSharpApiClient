@@ -27,6 +27,8 @@ before_build:
   
 test_script:
   - cmd: dotnet test .\src\IQFeed.CSharpApiClient.Tests\IQFeed.CSharpApiClient.Tests.csproj
+  - cmd: dotnet test .\src\IQFeed.CSharpApiClient.Extensions.Tests\IQFeed.CSharpApiClient.Extensions.Tests.csproj
+  - cmd: dotnet test .\src\IQFeed.CSharpApiClient.Extensions.Tests.Integration\IQFeed.CSharpApiClient.Extensions.Tests.Integration.csproj
   
 build:
   project: IQFeed.CSharpApiClient.sln
