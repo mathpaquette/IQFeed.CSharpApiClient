@@ -19,6 +19,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         void ReqUpdateFieldnames();
         void ReqCurrentUpdateFieldNames();
         void SelectUpdateFieldName(params DynamicFieldset[] fieldNames);
+        void SelectUpdateFieldNamesForAutoparse(params DynamicFieldset[] fieldNames);
         void SetLogLevels(params LoggingLevel[] logLevels);
         void ReqWatchList();
         void ReqUnwatchAll();

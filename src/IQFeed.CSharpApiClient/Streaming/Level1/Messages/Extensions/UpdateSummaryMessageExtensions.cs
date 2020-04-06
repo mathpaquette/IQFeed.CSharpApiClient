@@ -55,8 +55,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
                 (double)message.Close,
                 message.MessageContents,
                 message.MostRecentTradeConditions,
-                message.MostRecentTradeAggressor,
-                message.MostRecentTradeDayCode
+                message.DynamicFields
                 );
         }
 
@@ -79,8 +78,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
                 (float)message.Close,
                 message.MessageContents,
                 message.MostRecentTradeConditions,
-                message.MostRecentTradeAggressor,
-                message.MostRecentTradeDayCode
+                message.DynamicFields
                 );
         }
 
@@ -104,8 +102,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
                 (decimal)message.Close,
                 message.MessageContents,
                 message.MostRecentTradeConditions,
-                message.MostRecentTradeAggressor,
-                message.MostRecentTradeDayCode
+                message.DynamicFields
                 );
         }
 
@@ -128,8 +125,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
                 (float)message.Close,
                 message.MessageContents,
                 message.MostRecentTradeConditions,
-                message.MostRecentTradeAggressor,
-                message.MostRecentTradeDayCode
+                message.DynamicFields
                 );
         }
 
@@ -153,8 +149,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
                 (decimal)message.Close,
                 message.MessageContents,
                 message.MostRecentTradeConditions,
-                message.MostRecentTradeAggressor,
-                message.MostRecentTradeDayCode
+                message.DynamicFields
                 );
         }
 
@@ -177,8 +172,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
                 (double)message.Close,
                 message.MessageContents,
                 message.MostRecentTradeConditions,
-                message.MostRecentTradeAggressor,
-                message.MostRecentTradeDayCode
+                message.DynamicFields
                 );
         }
     }

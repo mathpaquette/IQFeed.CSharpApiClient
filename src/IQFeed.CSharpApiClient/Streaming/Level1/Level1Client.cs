@@ -60,12 +60,15 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         private readonly Level1RequestFormatter _level1RequestFormatter;
         private readonly ILevel1MessageHandler<T> _level1MessageHandler;
         private readonly ILevel1Snapshot<T> _level1Snapshot;
+        private readonly DynamicFieldsetHandler _dynamicFieldsetHandler;
 
         public Level1Client(
             SocketClient socketClient, 
             Level1RequestFormatter level1RequestFormatter, 
             ILevel1MessageHandler<T> level1MessageHandler, 
-            ILevel1Snapshot<T> level1Snapshot)
+            ILevel1Snapshot<T> level1Snapshot,
+            DynamicFieldsetHandler dynamicFieldsetHandler
+            )
         {
             _level1Snapshot = level1Snapshot;
             _socketClient = socketClient;
@@ -74,6 +77,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
 
             _level1RequestFormatter = level1RequestFormatter;
             _level1MessageHandler = level1MessageHandler;
+            _dynamicFieldsetHandler = dynamicFieldsetHandler;
         }
 
         public void ReqWatch(string symbol)
@@ -160,6 +164,18 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             _socketClient.Send(request);
         }
 
+        /// <summary>
+        /// Setup additional fieldnames over and above those retrieved by default. 
+        /// Retrieved fields will be available in DynamicFields dictionary.
+        /// </summary>
+        /// <param name="fieldNames">Fieldnames to be retrieved. Should NOT include the default fieldnames.</param>
+        public void SelectUpdateFieldNamesForAutoparse(params DynamicFieldset[] fieldNames)
+        {
+            _dynamicFieldsetHandler.SetFields(fieldNames);
+            var request = _level1RequestFormatter.SelectUpdateFieldName(_dynamicFieldsetHandler.GetFullFieldsetList());
+            _socketClient.Send(request);
+        }
+
         public void SetLogLevels(params LoggingLevel[] logLevels)
         {
             var request = _level1RequestFormatter.SetLogLevels(logLevels);
@@ -212,7 +228,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
 
         private void SocketClientOnMessageReceived(object sender, SocketMessageEventArgs e)
         {
-            _level1MessageHandler.ProcessMessages(e.Message, e.Count);
+            _level1MessageHandler.ProcessMessages(e.Message, e.Count, _dynamicFieldsetHandler);
         }
 
         private void SocketClientOnConnected(object sender, EventArgs eventArgs)
