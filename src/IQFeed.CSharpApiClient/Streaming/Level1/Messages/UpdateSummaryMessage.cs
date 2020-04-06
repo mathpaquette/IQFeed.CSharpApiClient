@@ -29,7 +29,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             decimal.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
             var messageContents = values[15];                                                                                                                  // field 80
             var mostRecentTradeConditions = values[16];                                                                                                        // field 74
-            var dynamicFields = ParseDynamicFields<decimal>(values, dynamicFieldsetHandler);
+            var dynamicFields = dynamicFieldsetHandler?.ParseDynamicFields<decimal>(values);
 
             return new UpdateSummaryMessage<decimal>(
                 symbol,
@@ -71,7 +71,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             double.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
             var messageContents = values[15];                                                                                                                  // field 80
             var mostRecentTradeConditions = values[16];                                                                                                        // field 74
-            var dynamicFields = ParseDynamicFields<double>(values, dynamicFieldsetHandler);
+            var dynamicFields = dynamicFieldsetHandler?.ParseDynamicFields<double>(values);
 
             return new UpdateSummaryMessage<double>(
                 symbol,
@@ -113,7 +113,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             float.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
             var messageContents = values[15];                                                                                                                  // field 80
             var mostRecentTradeConditions = values[16];                                                                                                        // field 74
-            var dynamicFields = ParseDynamicFields<float>(values, dynamicFieldsetHandler);
+            var dynamicFields = dynamicFieldsetHandler?.ParseDynamicFields<float>(values);
 
             return new UpdateSummaryMessage<float>(
                 symbol,
@@ -134,53 +134,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 mostRecentTradeConditions, 
                 dynamicFields
             );
-        }
-
-        private static IDictionary<string, object> ParseDynamicFields<TD>(string[] values, DynamicFieldsetHandler dynamicFieldsetHandler)
-        {
-            if (dynamicFieldsetHandler == null)
-            {
-                return null;
-            }
-
-            // Dynamic Fieldset Handler will contain additional fields we need to parse (in order)
-            var index = 17;
-            var dynamicFields = new Dictionary<string, object>();
-            foreach (var dynamicField in dynamicFieldsetHandler.Fields)
-            {
-                var fieldsetDescriptor = GetFieldsetDescriptionAttribute(dynamicField);
-                if (fieldsetDescriptor == null)
-                {
-                    throw new Exception($"Dynamic Field {dynamicField} has no FieldSetDescriptionAttribute!");
-                }
-
-                if (fieldsetDescriptor.Type == typeof(double))
-                {
-                    // if it's a double, then convert to T
-                    dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(values[index++], typeof(TD)));
-                }
-                else
-                {
-                    dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(values[index++], fieldsetDescriptor.Type));
-                }
-            }
-
-            return dynamicFields;
-        }
-
-        private static FieldsetDescriptionAttribute GetFieldsetDescriptionAttribute(DynamicFieldset dynamicField)
-        {
-            var members = dynamicField.GetType().GetMember(dynamicField.ToString());
-            if (members.Length > 0)
-            {
-                var attributes = members[0].GetCustomAttributes(typeof(FieldsetDescriptionAttribute), false);
-                if (attributes.Length > 0)
-                {
-                    return (FieldsetDescriptionAttribute)attributes[0];
-                }
-            }
-
-            return null;
         }
     }
 
