@@ -1,4 +1,6 @@
-﻿namespace IQFeed.CSharpApiClient
+﻿using IQFeed.CSharpApiClient.Streaming.Level1;
+
+namespace IQFeed.CSharpApiClient
 {
     // ReSharper disable once InconsistentNaming
     public class IQFeedDefault
@@ -11,8 +13,8 @@
         public const string ProtocolEndOfMessageCharacters = "!ENDMSG!";
         public const string ProtocolNoDataCharacters = "!NO_DATA!";
         public const string ProtocolSyntaxErrorCharacters = "!SYNTAX_ERROR!";
-        
-        public const char ProtocolLineFeedCharacter ='\n';
+
+        public const char ProtocolLineFeedCharacter = '\n';
         public const char ProtocolDelimiterCharacter = ',';
 
         public const char PrototolErrorCharacter = 'E';
@@ -23,5 +25,25 @@
         public const int AdminPort = 9300;
         public const int DerivativePort = 9400;
         public const int LoginPort = 60020;
+
+        public static DynamicFieldset[] DefaultLevel1SummaryFields = new[]
+        {
+            DynamicFieldset.Symbol,
+            DynamicFieldset.MostRecentTrade,
+            DynamicFieldset.MostRecentTradeSize,
+            DynamicFieldset.MostRecentTradeTime,
+            DynamicFieldset.MostRecentTradeMarketCenter,
+            DynamicFieldset.TotalVolume,
+            DynamicFieldset.Bid,
+            DynamicFieldset.BidSize,
+            DynamicFieldset.Ask,
+            DynamicFieldset.AskSize,
+            DynamicFieldset.Open,
+            DynamicFieldset.High,
+            DynamicFieldset.Low,
+            DynamicFieldset.Close,
+            DynamicFieldset.MessageContents,
+            DynamicFieldset.MostRecentTradeConditions
+        };
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 {
@@ -20,7 +21,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         T Close { get; }
         string MessageContents { get; }
         string MostRecentTradeConditions { get; }
-        int MostRecentTradeAggressor { get; }
-        int MostRecentTradeDayCode { get; }
+        IDictionary<string, object> DynamicFields { get; }
     }
 }

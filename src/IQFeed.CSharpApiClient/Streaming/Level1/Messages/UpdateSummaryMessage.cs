@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using IQFeed.CSharpApiClient.Extensions;
+using IQFeed.CSharpApiClient.Lookup.Common;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 {
@@ -8,7 +10,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
     {
         public const string UpdateMessageTimeFormat = "HH:mm:ss.ffffff";
 
-        public static UpdateSummaryMessage<decimal> ParseDecimal(string message)
+        public static UpdateSummaryMessage<decimal> ParseDecimal(string message, DynamicFieldsetHandler dynamicFieldsetHandler = null)
         {
             var values = message.SplitFeedMessage();
             var symbol = values[1];                                                                                                                            // field 2
@@ -27,8 +29,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             decimal.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
             var messageContents = values[15];                                                                                                                  // field 80
             var mostRecentTradeConditions = values[16];                                                                                                        // field 74
-            int.TryParse(values[17], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeAggressor);
-            int.TryParse(values[18], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeDayCode);
+            var dynamicFields = ParseDynamicFields<decimal>(values, dynamicFieldsetHandler);
 
             return new UpdateSummaryMessage<decimal>(
                 symbol,
@@ -47,12 +48,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 close,
                 messageContents,
                 mostRecentTradeConditions,
-                mostRecentTradeAggressor,
-                mostRecentTradeDayCode
+                dynamicFields
             );
         }
 
-        public static UpdateSummaryMessage<double> Parse(string message)
+        public static UpdateSummaryMessage<double> Parse(string message, DynamicFieldsetHandler dynamicFieldsetHandler = null)
         {
             var values = message.SplitFeedMessage();
             var symbol = values[1];                                                                                                                            // field 2
@@ -71,8 +71,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             double.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
             var messageContents = values[15];                                                                                                                  // field 80
             var mostRecentTradeConditions = values[16];                                                                                                        // field 74
-            int.TryParse(values[17], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeAggressor);
-            int.TryParse(values[18], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeDayCode);
+            var dynamicFields = ParseDynamicFields<double>(values, dynamicFieldsetHandler);
 
             return new UpdateSummaryMessage<double>(
                 symbol,
@@ -91,12 +90,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 close,
                 messageContents,
                 mostRecentTradeConditions,
-                mostRecentTradeAggressor,
-                mostRecentTradeDayCode
+                dynamicFields
             );
         }
 
-        public static UpdateSummaryMessage<float> ParseFloat(string message)
+        public static UpdateSummaryMessage<float> ParseFloat(string message, DynamicFieldsetHandler dynamicFieldsetHandler = null)
         {
             var values = message.SplitFeedMessage();
             var symbol = values[1];                                                                                                                            // field 2
@@ -115,8 +113,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             float.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
             var messageContents = values[15];                                                                                                                  // field 80
             var mostRecentTradeConditions = values[16];                                                                                                        // field 74
-            int.TryParse(values[17], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeAggressor);
-            int.TryParse(values[18], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeDayCode);
+            var dynamicFields = ParseDynamicFields<float>(values, dynamicFieldsetHandler);
 
             return new UpdateSummaryMessage<float>(
                 symbol,
@@ -134,10 +131,56 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 low,
                 close,
                 messageContents,
-                mostRecentTradeConditions,
-                mostRecentTradeAggressor,
-                mostRecentTradeDayCode
+                mostRecentTradeConditions, 
+                dynamicFields
             );
+        }
+
+        private static IDictionary<string, object> ParseDynamicFields<TD>(string[] values, DynamicFieldsetHandler dynamicFieldsetHandler)
+        {
+            if (dynamicFieldsetHandler == null)
+            {
+                return null;
+            }
+
+            // Dynamic Fieldset Handler will contain additional fields we need to parse (in order)
+            var index = 17;
+            var dynamicFields = new Dictionary<string, object>();
+            foreach (var dynamicField in dynamicFieldsetHandler.Fields)
+            {
+                var fieldsetDescriptor = GetFieldsetDescriptionAttribute(dynamicField);
+                if (fieldsetDescriptor == null)
+                {
+                    throw new Exception($"Dynamic Field {dynamicField} has no FieldSetDescriptionAttribute!");
+                }
+
+                if (fieldsetDescriptor.Type == typeof(double))
+                {
+                    // if it's a double, then convert to T
+                    dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(values[index++], typeof(TD)));
+                }
+                else
+                {
+                    dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(values[index++], fieldsetDescriptor.Type));
+                }
+            }
+
+            return dynamicFields;
+        }
+
+        private static FieldsetDescriptionAttribute GetFieldsetDescriptionAttribute(DynamicFieldset dynamicField)
+        {
+            var members = dynamicField.GetType().GetMember(dynamicField.ToString());
+            if (members.Length > 0)
+            {
+                var attributes = members[0].GetCustomAttributes(typeof(FieldsetDescriptionAttribute), false);
+                if (attributes.Length > 0)
+                {
+                    return (FieldsetDescriptionAttribute)attributes[0];
+                }
+            }
+
+            return null;
         }
     }
 
@@ -161,8 +204,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             T close,
             string messageContents,
             string mostRecentTradeConditions,
-            int mostRecentTradeAggressor,
-            int mostRecentTradeDayCode)
+            IDictionary<string, object> dynamicFields = null
+            )
         {
             Symbol = symbol;
             MostRecentTrade = mostRecentTrade;
@@ -180,8 +223,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             Close = close;
             MessageContents = messageContents;
             MostRecentTradeConditions = mostRecentTradeConditions;
-            MostRecentTradeAggressor = mostRecentTradeAggressor;
-            MostRecentTradeDayCode = mostRecentTradeDayCode;
+            DynamicFields = dynamicFields;
         }
 
         public string Symbol { get; private set; }
@@ -200,8 +242,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         public T Close { get; private set; }
         public string MessageContents { get; private set; }
         public string MostRecentTradeConditions { get; private set; }
-        public int MostRecentTradeAggressor { get; private set; }
-        public int MostRecentTradeDayCode { get; private set; }
+        public IDictionary<string, object> DynamicFields { get; private set; }
 
         public override string ToString()
         {
@@ -228,8 +269,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                    Equals(Close, message.Close) &&
                    MessageContents == message.MessageContents &&
                    MostRecentTradeConditions == message.MostRecentTradeConditions &&
-                   MostRecentTradeAggressor == message.MostRecentTradeAggressor &&
-                   MostRecentTradeDayCode == message.MostRecentTradeDayCode;
+                   ((DynamicFields == null && message.DynamicFields == null) || DynamicFields.CompareContentsWith(message.DynamicFields))
+                   ;
         }
 
         public override int GetHashCode()
@@ -253,8 +294,13 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 hash = hash * 29 + Close.GetHashCode();
                 hash = hash * 29 + MessageContents.GetHashCode();
                 hash = hash * 29 + MostRecentTradeConditions.GetHashCode();
-                hash = hash * 29 + MostRecentTradeAggressor.GetHashCode();
-                hash = hash * 29 + MostRecentTradeDayCode.GetHashCode();
+                if (DynamicFields != null)
+                {
+                    foreach (var dynamicField in DynamicFields)
+                    {
+                        hash = hash * 29 + dynamicField.GetHashCode();
+                    }
+                }
                 return hash;
             }
         }

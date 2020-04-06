@@ -16,6 +16,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
 
         public void ProcessMessages(byte[] messageBytes, int count)
         {
+            ProcessMessages(messageBytes, count, null);
+        }
+
+        public void ProcessMessages(byte[] messageBytes, int count, DynamicFieldsetHandler dynamicFieldsetHandler = null)
+        {
             string[] messages = Encoding.ASCII.GetString(messageBytes, 0, count - 1).Split(IQFeedDefault.ProtocolLineFeedCharacter);
 
             for (int i = 0; i < messages.Length; i++)
@@ -27,10 +32,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
                         ProcessFundamentalMessage(message);
                         break;
                     case 'P': // A summary message
-                        ProcessSummaryMessage(message);
+                        ProcessSummaryMessage(message, dynamicFieldsetHandler);
                         break;
                     case 'Q': // An update message
-                        ProcessUpdateMessage(message);
+                        ProcessUpdateMessage(message, dynamicFieldsetHandler);
                         break;
                     case 'R': // A regional update message
                         ProcessRegionalUpdateMessage(message);
@@ -56,9 +61,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
             }
         }
 
-        protected abstract void ProcessSummaryMessage(string msg);
+        protected abstract void ProcessSummaryMessage(string msg, DynamicFieldsetHandler dynamicFieldsetHandler);
 
-        protected abstract void ProcessUpdateMessage(string msg);
+        protected abstract void ProcessUpdateMessage(string msg, DynamicFieldsetHandler dynamicFieldsetHandler);
 
         protected abstract void ProcessRegionalUpdateMessage(string msg);
 

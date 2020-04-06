@@ -9,13 +9,13 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
         public event Action<UpdateSummaryMessage<double>> Update;
         public event Action<RegionalUpdateMessage<double>> Regional;
 
-        protected override void ProcessSummaryMessage(string msg)
+        protected override void ProcessSummaryMessage(string msg, DynamicFieldsetHandler dynamicFieldsetHandler = null)
         {
             var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
             Summary?.Invoke(updateSummaryMessage);
         }
 
-        protected override void ProcessUpdateMessage(string msg)
+        protected override void ProcessUpdateMessage(string msg, DynamicFieldsetHandler dynamicFieldsetHandler = null)
         {
             var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
             Update?.Invoke(updateSummaryMessage);
