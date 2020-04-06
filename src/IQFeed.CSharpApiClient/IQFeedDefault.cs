@@ -5,7 +5,7 @@
     {
         public const string Hostname = "localhost";
 
-        public const string ProtocolVersion = "6.0";
+        public const string ProtocolVersion = "6.1";
 
         public const string ProtocolTerminatingCharacters = "\r\n";
         public const string ProtocolEndOfMessageCharacters = "!ENDMSG!";

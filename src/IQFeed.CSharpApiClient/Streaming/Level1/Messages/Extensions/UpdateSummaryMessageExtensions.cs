@@ -54,7 +54,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
                 (double)message.Low,
                 (double)message.Close,
                 message.MessageContents,
-                message.MostRecentTradeConditions);
+                message.MostRecentTradeConditions,
+                message.MostRecentTradeAggressor,
+                message.MostRecentTradeDayCode
+                );
         }
 
         public static UpdateSummaryMessage<float> ToFloat(this IUpdateSummaryMessage<decimal> message)
@@ -75,7 +78,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
                 (float)message.Low,
                 (float)message.Close,
                 message.MessageContents,
-                message.MostRecentTradeConditions);
+                message.MostRecentTradeConditions,
+                message.MostRecentTradeAggressor,
+                message.MostRecentTradeDayCode
+                );
         }
 
         public static UpdateSummaryMessage<decimal> ToDecimal(this IUpdateSummaryMessage<double> message)
@@ -97,7 +103,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
                 (decimal)message.Low,
                 (decimal)message.Close,
                 message.MessageContents,
-                message.MostRecentTradeConditions);
+                message.MostRecentTradeConditions,
+                message.MostRecentTradeAggressor,
+                message.MostRecentTradeDayCode
+                );
         }
 
         public static UpdateSummaryMessage<float> ToFloat(this IUpdateSummaryMessage<double> message)
@@ -118,7 +127,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
                 (float)message.Low,
                 (float)message.Close,
                 message.MessageContents,
-                message.MostRecentTradeConditions);
+                message.MostRecentTradeConditions,
+                message.MostRecentTradeAggressor,
+                message.MostRecentTradeDayCode
+                );
         }
 
         public static UpdateSummaryMessage<decimal> ToDecimal(this IUpdateSummaryMessage<float> message)
@@ -140,7 +152,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
                 (decimal)message.Low,
                 (decimal)message.Close,
                 message.MessageContents,
-                message.MostRecentTradeConditions);
+                message.MostRecentTradeConditions,
+                message.MostRecentTradeAggressor,
+                message.MostRecentTradeDayCode
+                );
         }
 
         public static UpdateSummaryMessage<double> ToDouble(this IUpdateSummaryMessage<float> message)
@@ -161,7 +176,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages.Extensions
                 (double)message.Low,
                 (double)message.Close,
                 message.MessageContents,
-                message.MostRecentTradeConditions);
+                message.MostRecentTradeConditions,
+                message.MostRecentTradeAggressor,
+                message.MostRecentTradeDayCode
+                );
         }
     }
 }

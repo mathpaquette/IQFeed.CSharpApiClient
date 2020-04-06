@@ -24,7 +24,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 long.Parse(values[6], CultureInfo.InvariantCulture),
                 char.Parse(values[7]),
                 int.Parse(values[8], CultureInfo.InvariantCulture),
-                values[9]);
+                values[9],
+                int.Parse(values[10], CultureInfo.InvariantCulture),
+                int.Parse(values[11], CultureInfo.InvariantCulture)
+                );
         }
 
         public static TickMessage<decimal> ParseDecimalWithRequestId(string message)
@@ -43,6 +46,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 char.Parse(values[8]),
                 int.Parse(values[9], CultureInfo.InvariantCulture),
                 values[10],
+                int.Parse(values[11], CultureInfo.InvariantCulture),
+                int.Parse(values[12], CultureInfo.InvariantCulture),
                 requestId);
         }
 
@@ -60,7 +65,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 long.Parse(values[6], CultureInfo.InvariantCulture),
                 char.Parse(values[7]),
                 int.Parse(values[8], CultureInfo.InvariantCulture),
-                values[9]);
+                values[9],
+                int.Parse(values[10], CultureInfo.InvariantCulture),
+                int.Parse(values[11], CultureInfo.InvariantCulture)
+                );
         }
 
         public static TickMessage<double> ParseWithRequestId(string message)
@@ -79,6 +87,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 char.Parse(values[8]),
                 int.Parse(values[9], CultureInfo.InvariantCulture),
                 values[10],
+                int.Parse(values[11], CultureInfo.InvariantCulture),
+                int.Parse(values[12], CultureInfo.InvariantCulture),
                 requestId);
         }
 
@@ -96,7 +106,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 long.Parse(values[6], CultureInfo.InvariantCulture),
                 char.Parse(values[7]),
                 int.Parse(values[8], CultureInfo.InvariantCulture),
-                values[9]);
+                values[9],
+                int.Parse(values[10], CultureInfo.InvariantCulture),
+                int.Parse(values[11], CultureInfo.InvariantCulture)
+                );
         }
 
         public static TickMessage<float> ParseFloatWithRequestId(string message)
@@ -115,6 +128,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 char.Parse(values[8]),
                 int.Parse(values[9], CultureInfo.InvariantCulture),
                 values[10],
+                int.Parse(values[11], CultureInfo.InvariantCulture),
+                int.Parse(values[12], CultureInfo.InvariantCulture),
                 requestId);
         }
 
@@ -143,7 +158,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
     public class TickMessage<T> : TickMessage, ITickMessage<T>
     {
         public TickMessage(DateTime timestamp, T last, int lastSize, int totalVolume, T bid, T ask,
-            long tickId, char basisForLast, int tradeMarketCenter, string tradeConditions, string requestId = null)
+            long tickId, char basisForLast, int tradeMarketCenter, string tradeConditions, 
+            int tradeAggressor, int dayCode, string requestId = null)
         {
             RequestId = requestId;
             Timestamp = timestamp;
@@ -156,6 +172,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             BasisForLast = basisForLast;
             TradeMarketCenter = tradeMarketCenter;
             TradeConditions = tradeConditions;
+            TradeAggressor = tradeAggressor;
+            DayCode = dayCode;
         }
 
         public string RequestId { get; private set; }
@@ -169,6 +187,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public char BasisForLast { get; private set; }
         public int TradeMarketCenter { get; private set; }
         public string TradeConditions { get; private set; }
+        public int TradeAggressor { get; private set; }
+        public int DayCode { get; private set; }
 
         public override bool Equals(object obj)
         {
@@ -183,7 +203,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                    TickId == message.TickId &&
                    BasisForLast == message.BasisForLast &&
                    TradeMarketCenter == message.TradeMarketCenter &&
-                   TradeConditions == message.TradeConditions;
+                   TradeConditions == message.TradeConditions &&
+                   TradeAggressor == message.TradeAggressor &&
+                   DayCode == message.DayCode;
         }
 
         public override int GetHashCode()
@@ -202,13 +224,15 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 hash = hash * 29 + BasisForLast.GetHashCode();
                 hash = hash * 29 + TradeMarketCenter.GetHashCode();
                 hash = hash * 29 + TradeConditions.GetHashCode();
+                hash = hash * 29 + TradeAggressor.GetHashCode();
+                hash = hash * 29 + DayCode.GetHashCode();
                 return hash;
             }
         }
 
         public override string ToString()
         {
-            return $"{nameof(RequestId)}: {RequestId}, {nameof(Timestamp)}: {Timestamp}, {nameof(Last)}: {Last}, {nameof(LastSize)}: {LastSize}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(Bid)}: {Bid}, {nameof(Ask)}: {Ask}, {nameof(TickId)}: {TickId}, {nameof(BasisForLast)}: {BasisForLast}, {nameof(TradeMarketCenter)}: {TradeMarketCenter}, {nameof(TradeConditions)}: {TradeConditions}";
+            return $"{nameof(RequestId)}: {RequestId}, {nameof(Timestamp)}: {Timestamp}, {nameof(Last)}: {Last}, {nameof(LastSize)}: {LastSize}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(Bid)}: {Bid}, {nameof(Ask)}: {Ask}, {nameof(TickId)}: {TickId}, {nameof(BasisForLast)}: {BasisForLast}, {nameof(TradeMarketCenter)}: {TradeMarketCenter}, {nameof(TradeConditions)}: {TradeConditions}, {nameof(TradeAggressor)}: {TradeAggressor}, {nameof(DayCode)}: {DayCode}";
         }
     }
 }

@@ -48,6 +48,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages.Extensions
                 message.BasisForLast,
                 message.TradeMarketCenter,
                 message.TradeConditions,
+                message.TradeAggressor,
+                message.DayCode,
                 message.RequestId);
         }
 
@@ -64,6 +66,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages.Extensions
                 message.BasisForLast,
                 message.TradeMarketCenter,
                 message.TradeConditions,
+                message.TradeAggressor,
+                message.DayCode,
                 message.RequestId);
         }
 
@@ -80,6 +84,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages.Extensions
                 message.BasisForLast,
                 message.TradeMarketCenter,
                 message.TradeConditions,
+                message.TradeAggressor,
+                message.DayCode,
                 message.RequestId);
         }
 
@@ -96,6 +102,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages.Extensions
                 message.BasisForLast,
                 message.TradeMarketCenter,
                 message.TradeConditions,
+                message.TradeAggressor,
+                message.DayCode,
                 message.RequestId);
         }
 
@@ -112,6 +120,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages.Extensions
                 message.BasisForLast,
                 message.TradeMarketCenter,
                 message.TradeConditions,
+                message.TradeAggressor,
+                message.DayCode,
                 message.RequestId);
         }
 
@@ -128,6 +138,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages.Extensions
                 message.BasisForLast,
                 message.TradeMarketCenter,
                 message.TradeConditions,
+                message.TradeAggressor,
+                message.DayCode,
                 message.RequestId);
         }
     }

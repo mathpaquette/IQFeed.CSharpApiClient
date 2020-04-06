@@ -11,5 +11,7 @@
         int TotalVolume { get; }
         string TradeConditions { get; }
         int TradeMarketCenter { get; }
+        int TradeAggressor { get; }
+        int DayCode { get; }
     }
 }

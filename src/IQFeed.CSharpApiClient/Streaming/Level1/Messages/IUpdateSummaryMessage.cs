@@ -20,5 +20,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         T Close { get; }
         string MessageContents { get; }
         string MostRecentTradeConditions { get; }
+        int MostRecentTradeAggressor { get; }
+        int MostRecentTradeDayCode { get; }
     }
 }

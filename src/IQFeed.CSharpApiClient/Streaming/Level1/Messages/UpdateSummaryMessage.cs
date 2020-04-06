@@ -27,6 +27,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             decimal.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
             var messageContents = values[15];                                                                                                                  // field 80
             var mostRecentTradeConditions = values[16];                                                                                                        // field 74
+            int.TryParse(values[17], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeAggressor);
+            int.TryParse(values[18], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeDayCode);
 
             return new UpdateSummaryMessage<decimal>(
                 symbol,
@@ -44,7 +46,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 low,
                 close,
                 messageContents,
-                mostRecentTradeConditions
+                mostRecentTradeConditions,
+                mostRecentTradeAggressor,
+                mostRecentTradeDayCode
             );
         }
 
@@ -67,6 +71,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             double.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
             var messageContents = values[15];                                                                                                                  // field 80
             var mostRecentTradeConditions = values[16];                                                                                                        // field 74
+            int.TryParse(values[17], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeAggressor);
+            int.TryParse(values[18], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeDayCode);
 
             return new UpdateSummaryMessage<double>(
                 symbol,
@@ -84,7 +90,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 low,
                 close,
                 messageContents,
-                mostRecentTradeConditions
+                mostRecentTradeConditions,
+                mostRecentTradeAggressor,
+                mostRecentTradeDayCode
             );
         }
 
@@ -107,6 +115,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             float.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
             var messageContents = values[15];                                                                                                                  // field 80
             var mostRecentTradeConditions = values[16];                                                                                                        // field 74
+            int.TryParse(values[17], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeAggressor);
+            int.TryParse(values[18], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeDayCode);
 
             return new UpdateSummaryMessage<float>(
                 symbol,
@@ -124,7 +134,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 low,
                 close,
                 messageContents,
-                mostRecentTradeConditions
+                mostRecentTradeConditions,
+                mostRecentTradeAggressor,
+                mostRecentTradeDayCode
             );
         }
     }
@@ -148,7 +160,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             T low,
             T close,
             string messageContents,
-            string mostRecentTradeConditions)
+            string mostRecentTradeConditions,
+            int mostRecentTradeAggressor,
+            int mostRecentTradeDayCode)
         {
             Symbol = symbol;
             MostRecentTrade = mostRecentTrade;
@@ -166,6 +180,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             Close = close;
             MessageContents = messageContents;
             MostRecentTradeConditions = mostRecentTradeConditions;
+            MostRecentTradeAggressor = mostRecentTradeAggressor;
+            MostRecentTradeDayCode = mostRecentTradeDayCode;
         }
 
         public string Symbol { get; private set; }
@@ -184,6 +200,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         public T Close { get; private set; }
         public string MessageContents { get; private set; }
         public string MostRecentTradeConditions { get; private set; }
+        public int MostRecentTradeAggressor { get; private set; }
+        public int MostRecentTradeDayCode { get; private set; }
 
         public override string ToString()
         {
@@ -209,7 +227,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                    Equals(Low, message.Low) &&
                    Equals(Close, message.Close) &&
                    MessageContents == message.MessageContents &&
-                   MostRecentTradeConditions == message.MostRecentTradeConditions;
+                   MostRecentTradeConditions == message.MostRecentTradeConditions &&
+                   MostRecentTradeAggressor == message.MostRecentTradeAggressor &&
+                   MostRecentTradeDayCode == message.MostRecentTradeDayCode;
         }
 
         public override int GetHashCode()
@@ -233,6 +253,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 hash = hash * 29 + Close.GetHashCode();
                 hash = hash * 29 + MessageContents.GetHashCode();
                 hash = hash * 29 + MostRecentTradeConditions.GetHashCode();
+                hash = hash * 29 + MostRecentTradeAggressor.GetHashCode();
+                hash = hash * 29 + MostRecentTradeDayCode.GetHashCode();
                 return hash;
             }
         }
