@@ -42,7 +42,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_String_When_ReqHistoryTickDaysAsync()
         {
-            var tmpFilename = await _lookupClient.Historical.File.GetHistoryTickDaysAsync(Symbol, int.MaxValue, Datapoints);
+            var tmpFilename = await _lookupClient.Historical.File.GetHistoryTickDaysAsync(Symbol, Int16.MaxValue, Datapoints);
             Assert.IsNotEmpty(tmpFilename);
         }
 
@@ -63,7 +63,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_String_When_ReqHistoryIntervalDaysAsync()
         {
-            var tmpFilename = await _lookupClient.Historical.File.GetHistoryIntervalDaysAsync(Symbol, 5, int.MaxValue, Datapoints);
+            var tmpFilename = await _lookupClient.Historical.File.GetHistoryIntervalDaysAsync(Symbol, 5, Int16.MaxValue, Datapoints);
             Assert.IsNotEmpty(tmpFilename);
         }
 
