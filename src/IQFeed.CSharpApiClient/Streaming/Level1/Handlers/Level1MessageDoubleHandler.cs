@@ -11,13 +11,13 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
 
         protected override void ProcessSummaryMessage(string msg, DynamicFieldsetHandler dynamicFieldsetHandler = null)
         {
-            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
+            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg, dynamicFieldsetHandler);
             Summary?.Invoke(updateSummaryMessage);
         }
 
         protected override void ProcessUpdateMessage(string msg, DynamicFieldsetHandler dynamicFieldsetHandler = null)
         {
-            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
+            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg, dynamicFieldsetHandler);
             Update?.Invoke(updateSummaryMessage);
         }
 

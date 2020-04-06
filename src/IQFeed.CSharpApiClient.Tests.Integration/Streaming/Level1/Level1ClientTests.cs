@@ -46,5 +46,17 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level1
             // Assert
             Assert.AreEqual(updateSummaryMessage.Symbol, Symbol);
         }
+
+        [Test]
+        public async Task Should_Return_UpdateSummaryMessage_With_DynamicFields()
+        {
+            // Act
+            _level1Client.SelectUpdateFieldNamesForAutoparse(DynamicFieldset.MostRecentTradeAggressor);
+            var updateSummaryMessage = await _level1Client.GetUpdateSummarySnapshotAsync(Symbol);
+
+            // Assert
+            Assert.AreEqual(updateSummaryMessage.Symbol, Symbol);
+            Assert.IsNotNull(updateSummaryMessage.DynamicFields);
+        }
     }
 }

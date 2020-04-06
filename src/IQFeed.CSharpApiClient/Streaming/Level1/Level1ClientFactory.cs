@@ -19,7 +19,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                 socketClient,
                 level1RequestFormatter,
                 level1MessageHandler,
-                new Level1Snapshot<T>(socketClient, level1RequestFormatter, level1MessageHandler, snapshotTimeout)
+                new Level1Snapshot<T>(socketClient, level1RequestFormatter, level1MessageHandler, snapshotTimeout),
+                new DynamicFieldsetHandler()
             );
         }
 

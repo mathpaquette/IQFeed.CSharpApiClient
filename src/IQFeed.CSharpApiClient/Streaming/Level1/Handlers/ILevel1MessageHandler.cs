@@ -2,6 +2,6 @@
 {
     public interface ILevel1MessageHandler<T> : ILevel1Event<T>
     {
-        void ProcessMessages(byte[] messageBytes, int count);
+        void ProcessMessages(byte[] messageBytes, int count, DynamicFieldsetHandler dynamicFieldsetHandler = null);
     }
 }

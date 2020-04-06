@@ -8,8 +8,18 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
     public class DynamicFieldsetHandler
     {
-        public DynamicFieldsetHandler(DynamicFieldset[] fields)
+        public DynamicFieldsetHandler()
         {
+
+        }
+
+        public DynamicFieldsetHandler(params DynamicFieldset[] fields)
+        {
+            SetFields(fields);
+        }
+
+        public void SetFields(params DynamicFieldset[] fields) 
+        { 
             foreach(var field in fields)
             {
                 if (IQFeedDefault.DefaultLevel1SummaryFields.Contains(field))
@@ -23,8 +33,16 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
 
         public DynamicFieldset[] Fields { get; private set; }
 
-        public IDictionary<string, object> ParseDynamicFields<TD>(string[] values)
+        public DynamicFieldset[] GetFullFieldsetList()
         {
+            return IQFeedDefault.DefaultLevel1SummaryFields.Union(Fields).ToArray();
+        }
+
+        public IDictionary<string, object> ParseDynamicFields<T>(string[] values)
+        {
+            if (Fields == null || Fields.Length == 0)
+                return null;
+
             // Dynamic Fieldset Handler will contain additional fields we need to parse (in order)
             var index = 17;
             var dynamicFields = new Dictionary<string, object>();
@@ -36,18 +54,38 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                     throw new Exception($"Dynamic Field {dynamicField} has no FieldSetDescriptionAttribute!");
                 }
 
-                if (fieldsetDescriptor.Type == typeof(double))
+                var value = values[index++];
+                if (string.IsNullOrEmpty(value))
                 {
-                    // if it's a double, then convert to T
-                    dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(values[index++], typeof(TD)));
+                    // deal with empty string or null
+                    dynamicFields.Add(dynamicField.ToString(), GetDefault(fieldsetDescriptor.Type));
                 }
                 else
                 {
-                    dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(values[index++], fieldsetDescriptor.Type));
+                    if (fieldsetDescriptor.Type == typeof(double))
+                    {
+                        // if it's a double, then convert to T
+                        dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(values[index++], typeof(T)));
+                    }
+                    else
+                    {
+                        // otherwise just convert it
+                        dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(values[index++], fieldsetDescriptor.Type));
+                    }
                 }
             }
 
             return dynamicFields;
+        }
+
+        private object GetDefault(Type type)
+        {
+            if (type.IsValueType)
+            {
+                return Activator.CreateInstance(type);
+            }
+
+            return null;
         }
 
         private FieldsetDescriptionAttribute GetFieldsetDescriptionAttribute(DynamicFieldset dynamicField)
