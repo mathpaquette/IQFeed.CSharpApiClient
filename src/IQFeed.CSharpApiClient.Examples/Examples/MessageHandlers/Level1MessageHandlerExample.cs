@@ -20,23 +20,23 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.MessageHandlers
             IQFeedLauncher.Start();
 
             // Choose between 3 different handlers:
-            // 1- Level1MessageDecimalHandler   (for decimal) - default one through CreateNew
-            // 2- Level1MessageDoubleHandler    (for double)
+            // 1- Level1MessageDecimalHandler   (for decimal)
+            // 2- Level1MessageDoubleHandler    (for double) - default one through CreateNew
             // 3- Level1MessageFloatHandler     (for float)
             var level1Client = Level1ClientFactory.CreateNew(
                 IQFeedDefault.Hostname, 
                 IQFeedDefault.Level1Port,
                 Level1Default.SnapshotTimeout, 
-                new Level1MessageDoubleHandler());
+                new Level1MessageDecimalHandler());
 
             // Connect
             level1Client.Connect();
 
-            // retrieve UpdateSummaryMessage<double>
-            var doubleUpdateSummary = await level1Client.GetUpdateSummarySnapshotAsync("AAPL");
+            // retrieve UpdateSummaryMessage<decimal>
+            var decimalUpdateSummary = await level1Client.GetUpdateSummarySnapshotAsync("AAPL");
 
-            // convert UpdateSummaryMessage<double> to UpdateSummaryMessage<float>
-            var floatUpdateSummary = doubleUpdateSummary.ToFloat();
+            // convert UpdateSummaryMessage<decimal> to UpdateSummaryMessage<float>
+            var floatUpdateSummary = decimalUpdateSummary.ToFloat();
         }
 
         public void Run()

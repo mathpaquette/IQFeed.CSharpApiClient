@@ -15,7 +15,7 @@ namespace IQFeed.CSharpApiClient.Socket
 
                 try
                 {
-                    using (var client = new TcpClient())
+                    using (var client = new TcpClient(AddressFamily.InterNetwork))
                     {
                         var result = client.BeginConnect(host, port, null, null);
                         var success = result.AsyncWaitHandle.WaitOne(timeout);
