@@ -18,7 +18,7 @@
     </ItemGroup>
     <Target Name="CopyAppConfig" AfterTargets="Build" DependsOnTargets="Build">
       <CreateItem Include="$(OutputPath)testhost.dll.config">
-        <Output TaskParameter="Include" ItemName="FilesToCopy"/>
+        <Output TaskParameter="Include" ItemName="FilesToCopy" />
       </CreateItem>
       <Copy SourceFiles="@(FilesToCopy)" DestinationFiles="$(OutputPath)testhost.dll.config" />
     </Target>
