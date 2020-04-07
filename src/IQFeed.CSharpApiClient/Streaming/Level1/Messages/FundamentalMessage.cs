@@ -9,6 +9,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
     public class FundamentalMessage
     {
         public const string FundamentalDateTimeFormat = "MM/dd/yyyy";
+        public const string FundamentalTimeSpanFormat = "HH:mm:ss";
 
         public FundamentalMessage(
             string symbol,
@@ -59,7 +60,17 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             int? naics,
             string exchangeRoot,
             double? optionsPremiumMultiplier,
-            int? optionsMultipleDeliverables)
+            int? optionsMultipleDeliverables,
+            TimeSpan? sessionOpenTime,
+            TimeSpan? sessionCloseTime,
+            string baseCurrency,
+            string contractSize,
+            string contractMonths,
+            double? minimumTickSize,
+            DateTime? firstDeliveryDate,
+            string figi,
+            int? securitySubType
+            )
         {
             Symbol = symbol;
             ExchangeId = exchangeId;
@@ -175,6 +186,15 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         public string ExchangeRoot { get; private set; }                         // 54
         public double? OptionsPremiumMultiplier { get; private set; }           // 55
         public int? OptionsMultipleDeliverables { get; private set; }            // 56
+        public TimeSpan? SessionOpenTime { get; private set; }                  // 57
+        public TimeSpan? SessionCloseTime { get; private set; }                 // 58
+        public string BaseCurrency { get; private set; }                        // 59
+        public string ContractSize { get; private set; }                        // 60
+        public string ContractMonths { get; private set; }                      // 61
+        public double? MinimumTickSize { get; private set; }                      // 62
+        public DateTime? FirstDeliveryDate { get; private set; }                // 63
+        public string FIGI { get; private set; }                                // 64
+        public int? SecuritySubType { get; private set; }                        // 65
 
         public static FundamentalMessage Parse(string message)
         {
@@ -237,7 +257,16 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 values[54].ToNullableInt(),
                 values[55].NullIfEmpty(),
                 values[56].ToNullableDouble(),
-                values[57].ToNullableInt()
+                values[57].ToNullableInt(),
+                values[58].ToNullableTimeSpan(FundamentalTimeSpanFormat),
+                values[59].ToNullableTimeSpan(FundamentalTimeSpanFormat),
+                values[60].NullIfEmpty(),
+                values[61].NullIfEmpty(),
+                values[62],
+                values[63].ToNullableDouble(),
+                values[64].ToNullableDateTime(FundamentalDateTimeFormat),
+                values[65],
+                values[66].ToNullableInt()
             );
         }
 
@@ -293,7 +322,16 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                    NAICS == message.NAICS &&
                    ExchangeRoot == message.ExchangeRoot &&
                    OptionsPremiumMultiplier == message.OptionsPremiumMultiplier &&
-                   OptionsMultipleDeliverables == message.OptionsMultipleDeliverables;
+                   OptionsMultipleDeliverables == message.OptionsMultipleDeliverables &&
+                   SessionOpenTime == message.SessionOpenTime &&
+                   SessionCloseTime == message.SessionCloseTime &&
+                   BaseCurrency == message.BaseCurrency &&
+                   ContractSize == message.ContractSize &&
+                   ContractMonths == message.ContractMonths &&
+                   MinimumTickSize == message.MinimumTickSize &&
+                   FirstDeliveryDate == message.FirstDeliveryDate &&
+                   FIGI == message.FIGI &&
+                   SecuritySubType == message.SecuritySubType;
         }
 
         public override int GetHashCode()
@@ -350,6 +388,16 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(ExchangeRoot);
                 hash = hash * 29 + EqualityComparer<double?>.Default.GetHashCode(OptionsPremiumMultiplier);
                 hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(OptionsMultipleDeliverables);
+
+                hash = hash * 29 + EqualityComparer<TimeSpan?>.Default.GetHashCode(SessionOpenTime);
+                hash = hash * 29 + EqualityComparer<TimeSpan?>.Default.GetHashCode(SessionCloseTime);
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(BaseCurrency);
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(ContractSize);
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(ContractMonths);
+                hash = hash * 29 + EqualityComparer<double?>.Default.GetHashCode(MinimumTickSize);
+                hash = hash * 29 + EqualityComparer<DateTime?>.Default.GetHashCode(FirstDeliveryDate);
+                hash = hash * 29 + EqualityComparer<string>.Default.GetHashCode(FIGI);
+                hash = hash * 29 + EqualityComparer<int?>.Default.GetHashCode(SecuritySubType);
                 return hash;
             }
         }
