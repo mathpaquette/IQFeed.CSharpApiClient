@@ -5,6 +5,8 @@ using IQFeed.CSharpApiClient.Lookup.Common;
 using IQFeed.CSharpApiClient.Lookup.Historical;
 using IQFeed.CSharpApiClient.Lookup.Historical.Facades;
 using IQFeed.CSharpApiClient.Lookup.Historical.Handlers;
+using IQFeed.CSharpApiClient.Lookup.MarketSummary;
+using IQFeed.CSharpApiClient.Lookup.MarketSummary.Facades;
 using IQFeed.CSharpApiClient.Lookup.News;
 using IQFeed.CSharpApiClient.Lookup.Symbol;
 using IQFeed.CSharpApiClient.Lookup.Symbol.ExpiredOptions;
@@ -20,7 +22,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             int numberOfClients,
             TimeSpan timeout,
             int bufferSize,
-            IHistoricalMessageHandler<T> historicalMessageHandler)
+            IHistoricalMessageHandler<T> historicalMessageHandler) where T : struct
         {
             // Common
             var requestFormatter = new RequestFormatter();
@@ -58,7 +60,10 @@ namespace IQFeed.CSharpApiClient.Lookup
             // Chains
             var chainsFacade = new ChainsFacade(new ChainsRequestFormatter(), new ChainsMessageHandler(), lookupDispatcher, exceptionFactory, timeout);
 
-            return new LookupClient<T>(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade);
+            // MarketSummary
+            var marketSummaryFacade = new MarketSummaryFacade<T>(new MarketSummaryRequestFormatter(), lookupDispatcher, exceptionFactory, timeout);
+
+            return new LookupClient<T>(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade, marketSummaryFacade);
         }
 
         public static LookupClient<double> CreateNew()

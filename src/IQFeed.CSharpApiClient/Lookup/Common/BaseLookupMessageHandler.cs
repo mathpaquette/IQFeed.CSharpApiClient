@@ -35,7 +35,11 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
                     break;
                 }
 
-                parsedMessages.Add(parserFunc(messages[i]));
+                var parsedMessage = parserFunc(messages[i]);
+                if (parsedMessage != null)
+                { 
+                    parsedMessages.Add(parsedMessage); 
+                }
             }
 
             return new MessageContainer<T>(parsedMessages, endMsg);
@@ -54,11 +58,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
             if (possibleErrorValues[0][0] != IQFeedDefault.PrototolErrorCharacter)
                 return string.Empty;
 
-            // error message will be composed of two values (E and error)
-            if (possibleErrorValues.Length != 2)
+            // error message will be composed of two values (E and error) 
+            //  as of 6.1 this seems to be no longer true - an error message can be three values
+            //    E, ErrorCode, Error
+            if (possibleErrorValues.Length != 2 && possibleErrorValues.Length != 3)
                 return string.Empty;
 
-            return possibleErrorValues[1];
+            return possibleErrorValues.Length == 2 ? possibleErrorValues[1] : $"{possibleErrorValues[1]}: {possibleErrorValues[2]}";
         }
 
         protected string ParseErrorMessageWithRequestId(string[] messages)
