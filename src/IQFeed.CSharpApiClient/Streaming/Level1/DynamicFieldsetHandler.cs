@@ -65,12 +65,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                     if (fieldsetDescriptor.Type == typeof(double))
                     {
                         // if it's a double, then convert to T
-                        dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(values[index++], typeof(T)));
+                        dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(value, typeof(T)));
                     }
                     else
                     {
                         // otherwise just convert it
-                        dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(values[index++], fieldsetDescriptor.Type));
+                        dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(value, fieldsetDescriptor.Type));
                     }
                 }
             }
