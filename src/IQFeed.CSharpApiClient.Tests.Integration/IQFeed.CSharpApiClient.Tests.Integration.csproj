@@ -16,4 +16,7 @@
     <ItemGroup Condition="'$(TargetFramework)'=='net45'">
       <Reference Include="System.Configuration" />
     </ItemGroup>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="xcopy &quot;$(SolutionDir)data&quot; &quot;$(TargetDir)TestData&quot; /Y /I" />
+    </Target>
 </Project>
