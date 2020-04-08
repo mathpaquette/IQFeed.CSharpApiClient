@@ -24,4 +24,7 @@
         <PackagePath></PackagePath>
       </None>
     </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\IQFeed.CSharpApiClient\IQFeed.CSharpApiClient.csproj" />
+    </ItemGroup>
 </Project>
