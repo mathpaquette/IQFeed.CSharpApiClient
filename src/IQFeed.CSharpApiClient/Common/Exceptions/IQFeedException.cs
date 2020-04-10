@@ -6,6 +6,11 @@ namespace IQFeed.CSharpApiClient.Common.Exceptions
     public class IQFeedException : Exception
     {
         /// <summary>
+        /// Request sent to IQFeed
+        /// </summary>
+        public string Request { get; }
+        
+        /// <summary>
         ///  Parsed exception contained in the message
         /// </summary>
         public string ErrorMessage { get; }
@@ -15,10 +20,16 @@ namespace IQFeed.CSharpApiClient.Common.Exceptions
         /// </summary>
         public string MessageTrace { get; }
 
-        public IQFeedException(string message, string errorMessage, string messageTrace) : base(message)
+        public IQFeedException(string request, string message, string errorMessage, string messageTrace) : base(message)
         {
+            Request = request;
             ErrorMessage = errorMessage;
             MessageTrace = messageTrace;
+        }
+        
+        public override string ToString()
+        {
+            return $"{base.ToString()}, {nameof(Request)}: {Request}, {nameof(ErrorMessage)}: {ErrorMessage}, {nameof(MessageTrace)}: {MessageTrace}";
         }
     }
 }

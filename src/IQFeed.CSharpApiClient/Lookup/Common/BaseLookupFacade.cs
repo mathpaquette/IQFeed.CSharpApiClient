@@ -35,7 +35,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
 
                 if (container.ErrorMessage != null)
                 {
-                    res.TrySetException(_exceptionFactory.CreateNew(container.ErrorMessage, container.MessageTrace));
+                    res.TrySetException(_exceptionFactory.CreateNew(request, container.ErrorMessage, container.MessageTrace));
                     return;
                 }
 

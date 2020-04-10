@@ -50,7 +50,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
                     if (!string.IsNullOrEmpty(errorMessage))
                     {
                         // error has been confirmed
-                        res.TrySetException(_exceptionFactory.CreateNew(errorMessage, received));
+                        res.TrySetException(_exceptionFactory.CreateNew(request, errorMessage, received));
                         return;
                     }
                 }
