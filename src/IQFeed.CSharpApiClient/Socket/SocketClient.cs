@@ -83,10 +83,17 @@ namespace IQFeed.CSharpApiClient.Socket
 
             var tcs = new TaskCompletionSource<bool>();
             var args = new SocketAsyncEventArgs { RemoteEndPoint = _hostEndPoint };
-            args.Completed += (sender, eventArgs) => { tcs.SetResult(true); };
+
+            void onCompleted(object sender, SocketAsyncEventArgs eventArgs)
+            {
+                tcs.SetResult(true);
+            }
+
+            args.Completed += onCompleted;
 
             _clientSocket.ConnectAsync(args);
             await tcs.Task;
+            args.Completed -= onCompleted;
 
             if (!_clientSocket.Connected)
             {
@@ -143,12 +150,27 @@ namespace IQFeed.CSharpApiClient.Socket
 
             if (_clientSocket.Connected)
             {
-                var bytes = await _clientSocket.SendAsync(
-                    Encoding.ASCII.GetBytes(message), SocketFlags.None);
 
-                if (bytes <= 0)
+                var tcs = new TaskCompletionSource<bool>();
+                var args = new SocketAsyncEventArgs();
+
+                void onCompleted(object sender, SocketAsyncEventArgs eventArgs)
                 {
-                    throw new SocketException(bytes);
+                    tcs.SetResult(true);
+                }
+
+                var buffer = Encoding.ASCII.GetBytes(message);
+                args.SetBuffer(buffer, 0, buffer.Length);
+                args.Completed += onCompleted;
+
+                if (!_clientSocket.SendAsync(args))
+                {
+                    ProcessReceive(args);
+                }
+                else
+                {
+                    await tcs.Task;
+                    args.Completed -= onCompleted;
                 }
             }
             else
