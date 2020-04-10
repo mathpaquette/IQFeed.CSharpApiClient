@@ -92,6 +92,13 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
             _socketClient.Send(request);
         }
 
+        public async Task ReqBarWatchAsync(string symbol, int interval, DateTime? beginDate = null, int? maxDaysOfDatapoints = null, int? maxDatapoints = null,
+            TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null, string requestId = null, DerivativeIntervalType? intervalType = null, int? updateInterval = null)
+        {
+            var request = _derivativeRequestFormatter.ReqBarWatch(symbol, interval, beginDate, maxDaysOfDatapoints, maxDatapoints, beginFilterTime, endFilterTime, requestId, intervalType, updateInterval);
+            await _socketClient.SendAsync(request);
+        }
+
         public void ReqBarUnwatch(string symbol, string requestId)
         {
             var request = _derivativeRequestFormatter.ReqBarUnwatch(symbol, requestId);
