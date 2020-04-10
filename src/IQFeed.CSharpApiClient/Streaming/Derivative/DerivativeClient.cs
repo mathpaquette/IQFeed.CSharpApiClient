@@ -109,5 +109,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
             var request = _derivativeRequestFormatter.UnwatchAll();
             _socketClient.Send(request);
         }
+
+        public async Task UnwatchAllAsync()
+        {
+            var request = _derivativeRequestFormatter.UnwatchAll();
+            await _socketClient.SendAsync(request);
+        }
     }
 }

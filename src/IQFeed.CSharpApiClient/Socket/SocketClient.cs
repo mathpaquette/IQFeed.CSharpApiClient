@@ -129,6 +129,27 @@ namespace IQFeed.CSharpApiClient.Socket
             }
         }
 
+        public async Task SendAsync(string message)
+        {
+            if (_disposed)
+                throw new ObjectDisposedException($"Can't send because SocketClient is disposed.");
+
+            if (_clientSocket.Connected)
+            {
+                var bytes = await _clientSocket.SendAsync(
+                    Encoding.ASCII.GetBytes(message), SocketFlags.None);
+
+                if (bytes <= 0)
+                {
+                    throw new SocketException(bytes);
+                }
+            }
+            else
+            {
+                throw new SocketException((int)SocketError.NotConnected);
+            }
+        }
+
         // This method is called whenever a receive or send operation is completed on a socket 
         //
         // <param name="e">SocketAsyncEventArg associated with the completed receive operation</param>
