@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Socket
@@ -75,7 +76,43 @@ namespace IQFeed.CSharpApiClient.Socket
             }
         }
 
+        public async Task ConnectAsync()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException($"Can't connect because SocketClient is disposed.");
+
+            var tcs = new TaskCompletionSource<bool>();
+            var args = new SocketAsyncEventArgs { RemoteEndPoint = _hostEndPoint };
+            args.Completed += (sender, eventArgs) => { tcs.SetResult(true); };
+
+            _clientSocket.ConnectAsync(args);
+            await tcs.Task;
+
+            if (!_clientSocket.Connected)
+            {
+                throw new SocketException((int)args.SocketError);
+            }
+
+            Connected.RaiseEvent(this, EventArgs.Empty);
+
+            _readEventArgs.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
+            _readEventArgs.SetBuffer(new byte[_bufferSize], 0, _bufferSize);
+        }
+
         public void Disconnect() { Dispose(); }
+
+        public async Task DisconnectAsync()
+        {
+            if (_disposed)
+                return;
+
+            var tcs = new TaskCompletionSource<bool>();
+            var args = new SocketAsyncEventArgs { RemoteEndPoint = _hostEndPoint };
+            args.Completed += (sender, eventArgs) => { tcs.SetResult(true); };
+
+            _clientSocket.DisconnectAsync(args);
+            await tcs.Task;
+        }
 
         public void Send(string message)
         {

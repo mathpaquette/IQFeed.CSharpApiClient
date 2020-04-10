@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Derivative.Handlers;
@@ -63,9 +64,19 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
             _socketClient.Connect();
         }
 
+        public async Task ConnectAsync()
+        {
+            await _socketClient.ConnectAsync();
+        }
+
         public void Disconnect()
         {
             _socketClient.Disconnect();
+        }
+
+        public async Task DisconnectAsync()
+        {
+            await _socketClient.DisconnectAsync();
         }
 
         public void SetClientName(string name)
