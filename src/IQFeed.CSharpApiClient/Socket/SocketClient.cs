@@ -97,6 +97,13 @@ namespace IQFeed.CSharpApiClient.Socket
 
             _readEventArgs.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
             _readEventArgs.SetBuffer(new byte[_bufferSize], 0, _bufferSize);
+
+            // As soon as the client is connected, post a receive to the connection
+            bool willRaiseEvent = _clientSocket.ReceiveAsync(_readEventArgs);
+            if (!willRaiseEvent)
+            {
+                ProcessReceive(_readEventArgs);
+            }
         }
 
         public void Disconnect() { Dispose(); }
