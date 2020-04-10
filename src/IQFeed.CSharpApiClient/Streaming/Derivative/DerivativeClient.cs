@@ -99,10 +99,26 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
             await _socketClient.SendAsync(request);
         }
 
+        public void ReqBarUnwatch(string symbol)
+        {
+            ReqBarUnwatch(symbol, "");
+        }
+
         public void ReqBarUnwatch(string symbol, string requestId)
         {
             var request = _derivativeRequestFormatter.ReqBarUnwatch(symbol, requestId);
             _socketClient.Send(request);
+        }
+
+        public async Task ReqBarUnwatchAsync(string symbol)
+        {
+            await ReqBarUnwatchAsync(symbol, "");
+        }
+
+        public async Task ReqBarUnwatchAsync(string symbol, string requestId)
+        {
+            var request = _derivativeRequestFormatter.ReqBarUnwatch(symbol, requestId);
+            await _socketClient.SendAsync(request);
         }
 
         public void ReqWatches() // TODO: should add async method also.
