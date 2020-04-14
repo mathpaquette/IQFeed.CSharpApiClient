@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,6 +67,13 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                     {
                         // if it's a double, then convert to T
                         dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(value, typeof(T)));
+                    }
+                    else if (fieldsetDescriptor.Type == typeof(DateTime))
+                    {
+                        if (!string.IsNullOrEmpty(fieldsetDescriptor.Format))
+                            dynamicFields.Add(dynamicField.ToString(), DateTime.ParseExact(value, fieldsetDescriptor.Format, CultureInfo.InvariantCulture));
+                        else
+                            dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(value, fieldsetDescriptor.Type));
                     }
                     else
                     {

@@ -7,10 +7,13 @@ namespace IQFeed.CSharpApiClient.Streaming
         public string Name { get; }
         public Type Type { get; }
 
-        public FieldsetDescriptionAttribute(string name, Type type)
+        public string Format { get; }
+
+        public FieldsetDescriptionAttribute(string name, Type type, string optionalFormat = null)
         {
             Name = name;
             Type = type;
+            Format = optionalFormat;
         }
     }
 }
