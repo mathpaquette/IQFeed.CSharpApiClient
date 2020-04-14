@@ -72,7 +72,7 @@ Check [IQFeed.CSharpApiClient.Examples](https://github.com/mathpaquette/IQFeed.C
 IQFeedLauncher.Start();
 var lookupClient = LookupClientFactory.CreateNew();
 lookupClient.Connect();
-var ticksMessages = await lookupClient.Historical.ReqHistoryTickDatapointsAsync("AAPL", 100);
+var ticksMessages = await lookupClient.Historical.GetHistoryTickDatapointsAsync("AAPL", 100);
 ```
 
 ### IQFeed API support status
