@@ -73,7 +73,16 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                         if (!string.IsNullOrEmpty(fieldsetDescriptor.Format))
                             dynamicFields.Add(dynamicField.ToString(), DateTime.ParseExact(value, fieldsetDescriptor.Format, CultureInfo.InvariantCulture));
                         else
-                            dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(value, fieldsetDescriptor.Type));
+                        {
+                            if (value.StartsWith("99:99:99"))
+                            {
+                                dynamicFields.Add(dynamicField.ToString(), DateTime.MaxValue);
+                            }
+                            else
+                            {
+                                dynamicFields.Add(dynamicField.ToString(), Convert.ChangeType(value, fieldsetDescriptor.Type));
+                            }
+                        }
                     }
                     else
                     {
