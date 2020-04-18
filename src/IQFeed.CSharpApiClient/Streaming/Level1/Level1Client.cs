@@ -210,6 +210,16 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return _level1Snapshot.GetUpdateSummarySnapshotAsync(symbol.ToUpper());
         }
 
+        public FundamentalMessage GetFundamentalSnapshot(string symbol)
+        {
+            return _level1Snapshot.GetFundamentalSnapshot(symbol);
+        }
+
+        public UpdateSummaryMessage<T> GetUpdateSummarySnapshot(string symbol)
+        {
+            return _level1Snapshot.GetUpdateSummarySnapshot(symbol);
+        }
+
         private void SocketClientOnMessageReceived(object sender, SocketMessageEventArgs e)
         {
             _level1MessageHandler.ProcessMessages(e.Message, e.Count);

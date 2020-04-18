@@ -7,7 +7,7 @@ using IQFeed.CSharpApiClient.Lookup.Symbol.Messages;
 
 namespace IQFeed.CSharpApiClient.Lookup.Symbol
 {
-    public interface ISymbolFacade
+    public interface ISymbolFacade : ISymbolFacadeSync
     {
         IEnumerable<MarketSymbol> GetAllMarketSymbols(string url = SymbolDefault.MarketSymbolsArchiveUrl, string downloadPath = null, bool useCache = true);
 

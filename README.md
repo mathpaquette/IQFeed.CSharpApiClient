@@ -31,6 +31,7 @@ If you appreciate this project, please star :star: it now!
 - Sockets are using [SocketAsyncEventArgs](<https://msdn.microsoft.com/en-us/library/system.net.sockets.socketasynceventargs(v=vs.110).aspx>) for maximum performance and trying to reduce pressure on GC
 - Support for .NET Core 2.0
 - No 3rd party dependency
+- [Python support](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/docs/USING-WITH-PYTHON.md) :new:
 
 ## Usage
 
@@ -80,7 +81,7 @@ var tickMessages = await lookupClient.Historical.GetHistoryTickDatapointsAsync("
 #### Streaming data
 
 - [x] Level 1 data
-- [x] Level 2 data :new:
+- [x] Level 2 data
 - [x] Derivative data
 - [x] Admin data
 
