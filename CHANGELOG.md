@@ -1,3 +1,7 @@
+### IQFeed.CSharpApiClient 2.1.0 - April 18, 2020
+* Added synchronized methods to support Python .NET
+
+
 ### IQFeed.CSharpApiClient 2.0.2 - April 10, 2020
 * Added request sent to IQFeed when throwing IQFeed Exception
 ##### Issues Resolved
