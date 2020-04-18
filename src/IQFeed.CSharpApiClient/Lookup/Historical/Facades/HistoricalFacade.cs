@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
+using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Lookup.Common;
 using IQFeed.CSharpApiClient.Lookup.Historical.Enums;
 using IQFeed.CSharpApiClient.Lookup.Historical.Handlers;
@@ -203,6 +204,85 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Facades
         {
             var request = _historicalRequestFormatter.ReqHistoryMonthlyDatapoints(symbol, maxDatapoints, dataDirection, requestId, datapointsPerSend);
             return string.IsNullOrEmpty(requestId) ? GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessages) : GetMessagesAsync(request, _historicalMessageHandler.GetDailyWeeklyMonthlyMessagesWithRequestId);
+        }
+
+        public IEnumerable<TickMessage<T>> GetHistoryTickDatapoints(string symbol, int maxDatapoints, DataDirection? dataDirection = null,
+            string requestId = null, int? datapointsPerSend = null)
+        {
+            return GetHistoryTickDatapointsAsync(symbol, maxDatapoints, dataDirection, requestId, datapointsPerSend)
+                .SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<TickMessage<T>> GetHistoryTickDays(string symbol, int days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null,
+            TimeSpan? endFilterTime = null, DataDirection? dataDirection = null, string requestId = null,
+            int? datapointsPerSend = null)
+        {
+            return GetHistoryTickDaysAsync(symbol, days, maxDatapoints, beginFilterTime, endFilterTime, dataDirection,
+                requestId, datapointsPerSend).SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<TickMessage<T>> GetHistoryTickTimeframe(string symbol, DateTime? beginDate, DateTime? endDate, int? maxDatapoints = null,
+            TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null, DataDirection? dataDirection = null,
+            string requestId = null, int? datapointsPerSend = null)
+        {
+            return GetHistoryTickTimeframeAsync(symbol, beginDate, endDate, maxDatapoints, beginFilterTime,
+                endFilterTime, dataDirection, requestId, datapointsPerSend).SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<IntervalMessage<T>> GetHistoryIntervalDatapoints(string symbol, int interval, int maxDatapoints,
+            DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null,
+            HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
+        {
+            return GetHistoryIntervalDatapointsAsync(symbol, interval, maxDatapoints, dataDirection, requestId,
+                datapointsPerSend, intervalType, labelAtBeginning).SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<IntervalMessage<T>> GetHistoryIntervalDays(string symbol, int interval, int days, int? maxDatapoints = null,
+            TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null, DataDirection? dataDirection = null,
+            string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null,
+            LabelAtBeginning? labelAtBeginning = null)
+        {
+            return GetHistoryIntervalDaysAsync(symbol, interval, days, maxDatapoints, beginFilterTime, endFilterTime,
+                    dataDirection, requestId, datapointsPerSend, intervalType, labelAtBeginning)
+                .SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<IntervalMessage<T>> GetHistoryIntervalTimeframe(string symbol, int interval, DateTime? beginDate, DateTime? endDate,
+            int? maxDatapoints = null, TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null,
+            DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null,
+            HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
+        {
+            return GetHistoryIntervalTimeframeAsync(symbol, interval, beginDate, endDate, maxDatapoints,
+                beginFilterTime, endFilterTime, dataDirection, requestId, datapointsPerSend, intervalType,
+                labelAtBeginning).SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<DailyWeeklyMonthlyMessage<T>> GetHistoryDailyDatapoints(string symbol, int maxDatapoints, DataDirection? dataDirection = null,
+            string requestId = null, int? datapointsPerSend = null)
+        {
+            return GetHistoryDailyDatapointsAsync(symbol, maxDatapoints, dataDirection, requestId, datapointsPerSend)
+                .SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<DailyWeeklyMonthlyMessage<T>> GetHistoryDailyTimeframe(string symbol, DateTime? beginDate, DateTime? endDate, int? maxDatapoints = null,
+            DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null)
+        {
+            return GetHistoryDailyTimeframeAsync(symbol, beginDate, endDate, maxDatapoints, dataDirection, requestId,
+                datapointsPerSend).SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<DailyWeeklyMonthlyMessage<T>> GetHistoryWeeklyDatapoints(string symbol, int maxDatapoints, DataDirection? dataDirection = null,
+            string requestId = null, int? datapointsPerSend = null)
+        {
+            return GetHistoryWeeklyDatapointsAsync(symbol, maxDatapoints, dataDirection, requestId, datapointsPerSend)
+                .SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<DailyWeeklyMonthlyMessage<T>> GetHistoryMonthlyDatapoints(string symbol, int maxDatapoints, DataDirection? dataDirection = null,
+            string requestId = null, int? datapointsPerSend = null)
+        {
+            return GetHistoryMonthlyDatapointsAsync(symbol, maxDatapoints, dataDirection, requestId, datapointsPerSend)
+                .SynchronouslyAwaitTaskResult();
         }
     }
 }

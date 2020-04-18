@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
+using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Lookup.Common;
 using IQFeed.CSharpApiClient.Lookup.Symbol.Enums;
 using IQFeed.CSharpApiClient.Lookup.Symbol.ExpiredOptions;
@@ -117,6 +118,48 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
             return string.IsNullOrEmpty(requestId)
                 ? GetMessagesAsync(request, _symbolMessageHandler.GetNaicsCodeInfoMessages)
                 : GetMessagesAsync(request, _symbolMessageHandler.GetNaicsCodeInfoMessagesWithRequestId);
+        }
+
+        public IEnumerable<SymbolByFilterMessage> GetSymbolsByFilter(FieldToSearch fieldToSearch, string searchString, FilterType? filterType,
+            IEnumerable<int> filterValues, string requestId = null)
+        {
+            return GetSymbolsByFilterAsync(fieldToSearch, searchString, filterType, filterValues, requestId)
+                .SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<SymbolBySicCodeMessage> GetSymbolsBySicCode(string sicCodePrefix, string requestId = null)
+        {
+            return GetSymbolsBySicCodeAsync(sicCodePrefix, requestId).SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<SymbolByNaicsCodeMessage> GetSymbolsByNaicsCode(string naicsCodePrefix, string requestId = null)
+        {
+            return GetSymbolsByNaicsCodeAsync(naicsCodePrefix, requestId).SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<ListedMarketMessage> GetListedMarkets(string requestId = null)
+        {
+            return GetListedMarketsAsync(requestId).SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<SecurityTypeMessage> GetSecurityTypes(string requestId = null)
+        {
+            return GetSecurityTypesAsync(requestId).SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<TradeConditionMessage> GetTradeConditions(string requestId = null)
+        {
+            return GetTradeConditionsAsync(requestId).SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<SicCodeInfoMessage> GetSicCodes(string requestId = null)
+        {
+            return GetSicCodesAsync(requestId).SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<NaicsCodeInfoMessage> GetNaicsCodes(string requestId = null)
+        {
+            return GetNaicsCodesAsync(requestId).SynchronouslyAwaitTaskResult();
         }
     }
 }

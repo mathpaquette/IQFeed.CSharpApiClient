@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Level1.Handlers;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
@@ -30,6 +31,16 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         public Task<UpdateSummaryMessage<T>> GetUpdateSummarySnapshotAsync(string symbol)
         {
             return GetUpdateSummaryMessageAsync(symbol);
+        }
+
+        public FundamentalMessage GetFundamentalSnapshot(string symbol)
+        {
+            return GetFundamentalSnapshotAsync(symbol).SynchronouslyAwaitTaskResult();
+        }
+
+        public UpdateSummaryMessage<T> GetUpdateSummarySnapshot(string symbol)
+        {
+            return GetUpdateSummarySnapshotAsync(symbol).SynchronouslyAwaitTaskResult();
         }
 
         private async Task<FundamentalMessage> GetFundamentalMessageAsync(string symbol)
