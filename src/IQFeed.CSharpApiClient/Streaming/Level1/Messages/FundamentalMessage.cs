@@ -9,7 +9,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
     public class FundamentalMessage
     {
         public const string FundamentalDateTimeFormat = "MM/dd/yyyy";
-        public const string FundamentalTimeSpanFormat = "HH:mm:ss";
+        public const string FundamentalTimeSpanFormat = @"hh\:mm\:ss";
 
         public FundamentalMessage(
             string symbol,
@@ -120,7 +120,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             OptionsPremiumMultiplier = optionsPremiumMultiplier;
             OptionsMultipleDeliverables = optionsMultipleDeliverables;
             SessionOpenTime = sessionOpenTime;
-            SessionCloseTime = SessionCloseTime;
+            SessionCloseTime = sessionCloseTime;
             BaseCurrency = baseCurrency;
             ContractSize = contractSize;
             ContractMonths = contractMonths;
