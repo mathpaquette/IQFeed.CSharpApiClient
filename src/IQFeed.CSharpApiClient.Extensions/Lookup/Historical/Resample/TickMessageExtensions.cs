@@ -19,6 +19,16 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                 : ToHistoricalBarsAscending(tickMessages, interval);
         }
 
+        public static IEnumerable<HistoricalBar<double>> ToHistoricalBarsUncompressed(
+            this IEnumerable<ITickMessage<double>> tickMessages,
+            TimeSpan interval,
+            DataDirection direction = DataDirection.Newest)
+        {
+            return direction == DataDirection.Newest
+                ? ToHistoricalBarsUncompressedDescending(tickMessages, interval)
+                : ToHistoricalBarsUncompressedAscending(tickMessages, interval);
+        }
+
         private static IEnumerable<HistoricalBar<double>> ToHistoricalBarsAscending(this IEnumerable<ITickMessage<double>> tickMessages, TimeSpan interval)
         {
             var intervalTicks = interval.Ticks;
@@ -100,7 +110,49 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
 
         private static IEnumerable<HistoricalBar<double>> ToHistoricalBarsDescending(this IEnumerable<ITickMessage<double>> tickMessages, TimeSpan interval)
         {
-            return tickMessages.Reverse().ToHistoricalBarsAscending(interval);
+            return tickMessages.Reverse().ToHistoricalBarsAscending(interval).Reverse();
+        }
+
+        private static IEnumerable<HistoricalBar<double>> ToHistoricalBarsUncompressedAscending(this IEnumerable<ITickMessage<double>> tickMessages, TimeSpan interval)
+        {
+            var intervalTicks = interval.Ticks;
+            var nextTimestamp = new DateTime();
+            HistoricalBar<double> previousBar = null;
+
+            foreach (var bar in tickMessages.ToHistoricalBars(interval, DataDirection.Oldest))
+            {
+                if (bar.Timestamp != nextTimestamp && previousBar != null)
+                {
+                    while (bar.Timestamp != nextTimestamp)
+                    {
+                        yield return new HistoricalBar<double>()
+                        {
+                            Timestamp = nextTimestamp,
+                            Open = previousBar.Close,
+                            High = previousBar.Close,
+                            Low = previousBar.Close,
+                            Close = previousBar.Close,
+                            PeriodVolume = 0,
+                            PeriodTrade = 0,
+                            TotalVolume = previousBar.TotalVolume,
+                            TotalTrade = previousBar.TotalTrade,
+                            Wap = previousBar.Close
+                        };
+
+                        nextTimestamp = nextTimestamp.AddTicks(intervalTicks);
+                    }
+                }
+
+                previousBar = bar;
+                nextTimestamp = bar.Timestamp.AddTicks(intervalTicks);
+
+                yield return bar;
+            }
+        }
+
+        private static IEnumerable<HistoricalBar<double>> ToHistoricalBarsUncompressedDescending(this IEnumerable<ITickMessage<double>> tickMessages, TimeSpan interval)
+        {
+            return tickMessages.Reverse().ToHistoricalBarsUncompressedAscending(interval).Reverse();
         }
     }
 }
