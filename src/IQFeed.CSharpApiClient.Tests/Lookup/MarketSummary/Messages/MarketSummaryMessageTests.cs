@@ -16,14 +16,17 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
         public void Should_Parse_MarketSummaryMessage()
         {
             // Arrange
-            var message1 = "Field1,Field2,Field3,Field4";
-            var message2 = "Value1,Value2,Value3,Value4";
+            var message1 = "Symbol,Exchange,Type,Last,TradeSize,TradeDate,TradeTime";
+            var message2 = "TEST,34,9,1.52,15,20200301,130125";
             var expectedFields = new Dictionary<string, object>()
             {
-                { "Field1", "Value1" },
-                { "Field2", "Value2" },
-                { "Field3", "Value3" },
-                { "Field4", "Value4" }
+                { "Symbol", "TEST" },
+                { "Exchange", 34 },
+                { "Type", 9 },
+                { "Last", 1.52d },
+                { "TradeSize", 15 },
+                { "TradeDate", new DateTime(2020, 03, 01) },
+                { "TradeTime", new TimeSpan(13, 01, 25) }
             };
 
             var marketSummaryHandler = new MarketSummaryHandler<double>();
@@ -31,7 +34,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
             // Act
             var marketSummaryMessage1Parsed = MarketSummaryMessage<double>.Parse(message1, marketSummaryHandler);
             var marketSummaryMessage2Parsed = MarketSummaryMessage<double>.Parse(message2, marketSummaryHandler);
-            var marketSummaryMessage = new MarketSummaryMessage<double>(expectedFields);
+            var marketSummaryMessage = MarketSummaryMessage<double>.ParseFromFieldsDictionary(expectedFields, marketSummaryHandler);
 
             // Assert
             // MarketSummaryMessage1Parsed should be null, as it was the Fieldname pass

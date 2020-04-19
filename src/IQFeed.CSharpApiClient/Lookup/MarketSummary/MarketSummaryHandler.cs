@@ -15,7 +15,7 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary
 
         public MarketSummaryHandler()
         {
-            FieldNames = new List<string>();
+            FieldNames = new HashSet<string>();
             switch (typeof(T).Name)
             {
                 case "Double":
@@ -32,7 +32,8 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary
             }
         }
 
-        public List<string> FieldNames { get; private set; }
+        // Use a HashSet rather than a List here, so we can have a fast Contains to check contents later
+        public HashSet<string> FieldNames { get; private set; }
 
         public IDictionary<string, Func<string, object>> FieldConvertors { get; private set; }
 

@@ -2,7 +2,10 @@
 using IQFeed.CSharpApiClient.Lookup.Symbol;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,25 +18,19 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
     public class MarketSummaryMessage<T> where T : struct
     {
         public const string SourceDateFormat = "yyyyMMdd";
-        public const string SourceTimeFormat = "HHmmss";
+        public const string SourceTimeFormat = "hhmmss";
 
-        public MarketSummaryMessage(IDictionary<string, object> fields, string requestId = null)
-        {
-            RequestId = requestId;
-            Fields = fields;
-        }
-
-        public MarketSummaryMessage(IDictionary<string, object> fields, string symbol, int exchangeId, int type, T? last, int? tradeSize,
+        public MarketSummaryMessage(string symbol, int exchange, int type, T? last, int? tradeSize,
             int? tradedMarket, DateTime? tradeDate, TimeSpan? tradeTime, T? open, T? high, T? low, T? close,
             T? bid, int? bidMarket, int? bidSize, T? ask, int? askMarket, int? askSize, int? volume, int? pDayVolume,
-            int? upVolume, int? downVolume, int? neutralVolume, int? tradeCount, int? upTrades, int? downTrades, 
-            int? neutralTrades, T? vwap, T? mutualDiv, T? sevenDayYield, int? openInterest, 
+            int? upVolume, int? downVolume, int? neutralVolume, int? tradeCount, int? upTrades, int? downTrades,
+            int? neutralTrades, T? vwap, T? mutualDiv, T? sevenDayYield, int? openInterest,
             T? settlement, DateTime? settlementDate, DateTime? expirationDate, T? strike,
             string requestId = null)
         {
             RequestId = requestId;
             Symbol = symbol;
-            ExchangeId = exchangeId;
+            Exchange = exchange;
             Type = type;
             Last = last;
             TradeSize = tradeSize;
@@ -71,7 +68,7 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
 
         public string RequestId { get; private set; }
         public string Symbol { get; private set; }
-        public int ExchangeId { get; private set; }
+        public int Exchange { get; private set; }
         public int Type { get; private set; }
         public T? Last { get; private set; }
         public int? TradeSize { get; private set; }
@@ -83,7 +80,7 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
         public T? Low { get; private set; }
         public T? Close { get; private set; }
         public T? Bid { get; private set; }
-        public int?  BidMarket { get; private set; }
+        public int? BidMarket { get; private set; }
         public int? BidSize { get; private set; }
         public T? Ask { get; private set; }
         public int? AskMarket { get; private set; }
@@ -106,8 +103,6 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
         public DateTime? ExpirationDate { get; private set; }
         public T? Strike { get; private set; }
 
-        public IDictionary<string, object> Fields { get; private set; }
-
 
         public SecurityType SecurityType => (SecurityType)Type;
         public DateTime? TradeDateTime => (TradeDate != null && TradeTime != null) ? TradeDate.Value.Add(TradeTime.Value) : (DateTime?)null;
@@ -117,7 +112,7 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
             if (marketSummaryHandler.FieldNames.Count == 0)
             {
                 // First time through will be fieldnames
-                marketSummaryHandler.FieldNames.AddRange(message.SplitFeedMessage());
+                Array.ForEach(message.SplitFeedMessage(), m => marketSummaryHandler.FieldNames.Add(m));
                 return null;
             }
 
@@ -125,7 +120,6 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
             var values = message.SplitFeedMessage();
             var fields = ParseFields(marketSummaryHandler, values, index);
             return new MarketSummaryMessage<T>(
-                fields,
                 (string)fields["Symbol"],
                 (int)fields["Exchange"],
                 (int)fields["Type"],
@@ -169,7 +163,7 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
             if (marketSummaryHandler.FieldNames.Count == 0)
             {
                 // First time through will be fieldnames
-                marketSummaryHandler.FieldNames.AddRange(message.SplitFeedMessage());
+                Array.ForEach(message.SplitFeedMessage(), m => marketSummaryHandler.FieldNames.Add(m));
                 return null;
             }
 
@@ -179,7 +173,6 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
             var fields = ParseFields(marketSummaryHandler, values, index);
 
             return new MarketSummaryMessage<T>(
-                fields,
                 (string)fields["Symbol"],
                 (int)fields["Exchange"],
                 (int)fields["Type"],
@@ -208,7 +201,51 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
                 (int?)fields["DownTrades"],
                 (int?)fields["NeutralTrades"],
                 (T?)fields["VWAP"],
-                (T?)fields["MutureDiv"],
+                (T?)fields["MutualDiv"],
+                (T?)fields["SevenDayYield"],
+                (int?)fields["OpenInterest"],
+                (T?)fields["Settlement"],
+                (DateTime?)fields["SettlementDate"],
+                (DateTime?)fields["ExpirationDate"],
+                (T?)fields["Strike"],
+                requestId
+                );
+        }
+
+        public static MarketSummaryMessage<T> ParseFromFieldsDictionary(IDictionary<string, object> usedFields, MarketSummaryHandler<T> marketSummaryHandler, string requestId = null)
+        {
+            var fields = EnsureAllFields(usedFields, marketSummaryHandler);
+
+            return new MarketSummaryMessage<T>(
+                (string)fields["Symbol"],
+                (int)fields["Exchange"],
+                (int)fields["Type"],
+                (T?)fields["Last"],
+                (int?)fields["TradeSize"],
+                (int?)fields["TradedMarket"],
+                (DateTime?)fields["TradeDate"],
+                (TimeSpan?)fields["TradeTime"],
+                (T?)fields["Open"],
+                (T?)fields["High"],
+                (T?)fields["Low"],
+                (T?)fields["Close"],
+                (T?)fields["Bid"],
+                (int?)fields["BidMarket"],
+                (int?)fields["BidSize"],
+                (T?)fields["Ask"],
+                (int?)fields["AskMarket"],
+                (int?)fields["AskSize"],
+                (int?)fields["Volume"],
+                (int?)fields["PDayVolume"],
+                (int?)fields["UpVolume"],
+                (int?)fields["DownVolume"],
+                (int?)fields["NeutralVolume"],
+                (int?)fields["TradeCount"],
+                (int?)fields["UpTrades"],
+                (int?)fields["DownTrades"],
+                (int?)fields["NeutralTrades"],
+                (T?)fields["VWAP"],
+                (T?)fields["MutualDiv"],
                 (T?)fields["SevenDayYield"],
                 (int?)fields["OpenInterest"],
                 (T?)fields["Settlement"],
@@ -354,8 +391,42 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
         public override bool Equals(object obj)
         {
             return obj is MarketSummaryMessage<T> message &&
-                   RequestId == message.RequestId &&
-                   Fields.CompareContentsWith(message.Fields);
+                    RequestId == message.RequestId &&
+                    Symbol == message.Symbol &&
+                    Exchange == message.Exchange &&
+                    Type == message.Type &&
+                    Equals(Last, message.Last) &&
+                    TradeSize == message.TradeSize &&
+                    TradedMarket == message.TradedMarket &&
+                    TradeDate == message.TradeDate &&
+                    TradeTime == message.TradeTime &&
+                    Equals(Open, message.Open) &&
+                    Equals(High, message.High) &&
+                    Equals(Low, message.Low) &&
+                    Equals(Close, message.Close) &&
+                    Equals(Bid, message.Bid) &&
+                    BidMarket == message.BidMarket &&
+                    BidSize == message.BidSize &&
+                    Equals(Ask, message.Ask) &&
+                    AskMarket == message.AskMarket &&
+                    AskSize == message.AskSize &&
+                    Volume == message.Volume &&
+                    PDayVolume == message.PDayVolume &&
+                    UpVolume == message.UpVolume &&
+                    DownVolume == message.DownVolume &&
+                    NeutralVolume == message.NeutralVolume &&
+                    TradeCount == message.TradeCount &&
+                    UpTrades == message.UpTrades &&
+                    DownTrades == message.DownTrades &&
+                    NeutralTrades == message.NeutralTrades &&
+                    Equals(VWAP, message.VWAP) &&
+                    Equals(MutualDiv, message.MutualDiv) &&
+                    Equals(SevenDayYield, message.SevenDayYield) &&
+                    OpenInterest == message.OpenInterest &&
+                    Equals(Settlement, message.Settlement) &&
+                    SettlementDate == message.SettlementDate &&
+                    ExpirationDate == message.ExpirationDate &&
+                    Equals(Strike, message.Strike);
         }
 
         public override int GetHashCode()
@@ -364,14 +435,130 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
             {
                 var hash = 17;
                 hash = hash * 29 + RequestId != null ? RequestId.GetHashCode() : 0;
-                hash = hash * 29 + Fields.GetContentsHashCode();
+                hash = hash * 29 + Symbol != null ? Symbol.GetHashCode() : 0;
+                hash = hash * 29 + Exchange.GetHashCode();
+                hash = hash * 29 + Type.GetHashCode();
+                hash = hash * 29 + (Last != null ? Last.GetHashCode() : 0);
+                hash = hash * 29 + TradeSize != null ? TradeSize.GetHashCode() : 0;
+                hash = hash * 29 + TradedMarket != null ? TradedMarket.GetHashCode() : 0;
+                hash = hash * 29 + TradeDate.GetHashCode();
+                hash = hash * 29 + TradeTime.GetHashCode();
+                hash = hash * 29 + (Open != null ? Open.GetHashCode() : 0);
+                hash = hash * 29 + (High != null ? High.GetHashCode() : 0);
+                hash = hash * 29 + (Low != null ? Low.GetHashCode() : 0);
+                hash = hash * 29 + (Close != null ? Close.GetHashCode() : 0);
+                hash = hash * 29 + (Bid != null ? Bid.GetHashCode() : 0);
+                hash = hash * 29 + BidMarket != null ? BidMarket.GetHashCode() : 0;
+                hash = hash * 29 + BidSize != null ? BidSize.GetHashCode() : 0;
+                hash = hash * 29 + (Ask != null ? Ask.GetHashCode() : 0);
+                hash = hash * 29 + AskMarket != null ? AskMarket.GetHashCode() : 0;
+                hash = hash * 29 + AskSize != null ? AskSize.GetHashCode() : 0;
+                hash = hash * 29 + Volume != null ? Volume.GetHashCode() : 0;
+                hash = hash * 29 + PDayVolume != null ? PDayVolume.GetHashCode() : 0;
+                hash = hash * 29 + UpVolume != null ? UpVolume.GetHashCode() : 0;
+                hash = hash * 29 + DownVolume != null ? DownVolume.GetHashCode() : 0;
+                hash = hash * 29 + NeutralVolume != null ? NeutralVolume.GetHashCode() : 0;
+                hash = hash * 29 + TradeCount != null ? TradeCount.GetHashCode() : 0;
+                hash = hash * 29 + UpTrades != null ? UpTrades.GetHashCode() : 0;
+                hash = hash * 29 + DownTrades != null ? DownTrades.GetHashCode() : 0;
+                hash = hash * 29 + NeutralTrades != null ? NeutralTrades.GetHashCode() : 0;
+                hash = hash * 29 + (VWAP != null ? VWAP.GetHashCode() : 0);
+                hash = hash * 29 + (MutualDiv != null ? MutualDiv.GetHashCode() : 0);
+                hash = hash * 29 + (SevenDayYield != null ? SevenDayYield.GetHashCode() : 0);
+                hash = hash * 29 + OpenInterest != null ? OpenInterest.GetHashCode() : 0;
+                hash = hash * 29 + (Settlement != null ? Settlement.GetHashCode() : 0);
+                hash = hash * 29 + (SettlementDate != null ? SettlementDate.GetHashCode() : 0);
+                hash = hash * 29 + (ExpirationDate != null ? ExpirationDate.GetHashCode() : 0);
+                hash = hash * 29 + (Strike != null ? Strike.GetHashCode() : 0);
+
                 return hash;
             }
         }
 
+        // we won't be doing ToString in production running very often, so slow reflection is OK
         public override string ToString()
         {
-            return $"{Fields.ToString(",")}";
+            return ToStringProperties(
+                a => a.RequestId,
+                a => a.Exchange,
+                a => a.Type,
+                a => a.Last,
+                a => a.TradeSize,
+                a => a.TradedMarket,
+                a => a.TradeDate,
+                a => a.TradeTime,
+                a => a.Open,
+                a => a.High,
+                a => a.Low,
+                a => a.Close,
+                a => a.Bid,
+                a => a.BidMarket,
+                a => a.BidSize,
+                a => a.Ask,
+                a => a.AskMarket,
+                a => a.AskSize,
+                a => a.Volume,
+                a => a.PDayVolume,
+                a => a.UpVolume,
+                a => a.DownVolume,
+                a => a.NeutralVolume,
+                a => a.TradeCount,
+                a => a.UpTrades,
+                a => a.DownTrades,
+                a => a.NeutralTrades,
+                a => a.VWAP,
+                a => a.MutualDiv,
+                a => a.SevenDayYield,
+                a => a.OpenInterest,
+                a => a.Settlement,
+                a => a.SettlementDate,
+                a => a.ExpirationDate,
+                a => a.Strike
+                );
+        }
+
+        private string ToStringProperties(params Expression<Func<MarketSummaryMessage<T>, object>>[] properties)
+        {
+            var output = new StringBuilder();
+            foreach(var property in properties)
+            {
+                if (output.Length > 0)
+                {
+                    output.Append(", ");
+                }
+
+                switch (property.Body.NodeType.ToString())
+                {
+                    case "MemberAccess":
+                        var expr1 = (MemberExpression)property.Body;
+                        var prop1 = (PropertyInfo)expr1.Member;
+                        output.Append(ToStringNameValue(prop1.Name, prop1.GetValue(this)?.ToString()));
+                        break;
+
+                    default:
+                        var expr2 = (UnaryExpression)property.Body;
+                        var prop2 = (PropertyInfo)((MemberExpression)expr2.Operand).Member;
+                        output.Append(ToStringNameValue(prop2.Name, prop2.GetValue(this)?.ToString()));
+                        break;
+                }
+
+                //var expr = (DynamicExpression)property.Body;
+                //var prop = (PropertyInfo)expr..Member;
+                //output.Append(ToStringNameValue(prop.Name, prop.GetValue(this)?.ToString()));
+                //output.Append(ToStringNameValue(expr..Method.Name, expr.Method.Invoke(this, BindingFlags.Public, null, null, CultureInfo.InvariantCulture)?.ToString()));
+            }
+
+            return output.ToString();
+        }
+
+        private string ToStringNameValue(string name, string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return $"{name}: null";
+            }
+
+            return $"{name}: {value} ";
         }
 
         private static IDictionary<string, object> ParseFields(MarketSummaryHandler<T> marketSummaryHandler, string[] values, int index)
@@ -379,9 +566,29 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
             // we either have to double-buffer this through a hashtable, or use reflection which is slow
             //  the other alternative would be to just keep everything in the Dictionary, and just provide accessor properties
             var fields = new Dictionary<string, object>();
-            foreach (var fieldName in marketSummaryHandler.FieldNames)
+            foreach (var fieldName in marketSummaryHandler.FieldConvertors.Keys)
             {
-                fields.Add(fieldName, marketSummaryHandler.FieldConvertors[fieldName].Invoke(values[index++]));
+                if (marketSummaryHandler.FieldNames.Contains(fieldName))
+                {
+                    fields.Add(fieldName, marketSummaryHandler.FieldConvertors[fieldName].Invoke(values[index++]));
+                }
+                else
+                {
+                    fields.Add(fieldName, null); // we must add nulls for all unknown items to ensure the Parse does not fail
+                }
+            }
+
+            return fields;
+        }
+
+        private static IDictionary<string, object> EnsureAllFields(IDictionary<string, object> fields, MarketSummaryHandler<T> marketSummaryHandler)
+        {
+            foreach(var fieldName in marketSummaryHandler.FieldConvertors.Keys)
+            {
+                if (!fields.ContainsKey(fieldName))
+                {
+                    fields.Add(fieldName, null);
+                }
             }
 
             return fields;

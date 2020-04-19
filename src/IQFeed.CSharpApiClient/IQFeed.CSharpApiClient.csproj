@@ -20,6 +20,7 @@
     </PropertyGroup>
     <ItemGroup>
       <PackageReference Include="System.IO.Compression" Version="4.1.0" />
+      <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
     </ItemGroup>
     <ItemGroup Condition="'$(TargetFramework)'!='net45'">
       <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
