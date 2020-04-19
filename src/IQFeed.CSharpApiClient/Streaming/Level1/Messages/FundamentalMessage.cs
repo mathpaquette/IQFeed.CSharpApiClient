@@ -240,7 +240,17 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 values[57].ToNullableInt()
             );
         }
-
+        
+        public string ToCsv()
+        {
+            return $"F,{Symbol},{ExchangeId},{PE.ToInvariantString()},{AverageVolume.ToInvariantString()},{FiftyTwoWeekHigh.ToInvariantString()},{FiftyTwoWeekLow.ToInvariantString()},{CalendarYearHigh.ToInvariantString()},{CalendarYearLow.ToInvariantString()},{DividendYield.ToInvariantString()}," +
+                   $"{DividendAmount.ToInvariantString()},{DividendRate.ToInvariantString()},{PayDate.ToInvariantString(FundamentalDateTimeFormat)},{ExDividendDate.ToInvariantString(FundamentalDateTimeFormat)},{string.Empty},{string.Empty},{string.Empty},{ShortInterest},{string.Empty}," +
+                   $"{CurrentYearEarningsPerShare.ToInvariantString()},{NextYearEarningsPerShare.ToInvariantString()},{FiveYearGrowthPercentage.ToInvariantString()},{FiscalYearEnd.ToInvariantString()},{string.Empty},{CompanyName},{RootOptionSymbol},{PercentHeldByInstitutions.ToInvariantString()}," +
+                   $"{Beta.ToInvariantString()},{Leaps},{CurrentAssets.ToInvariantString()},{CurrentLiabilities.ToInvariantString()},{BalanceSheetDate.ToInvariantString(FundamentalDateTimeFormat)},{LongTermDebt.ToInvariantString()},{CommonSharesOutstanding.ToInvariantString()}," +
+                   $"{string.Empty},{SplitFactor1},{SplitFactor2},{string.Empty},{string.Empty},{FormatCode},{Precision.ToInvariantString()},{SIC.ToInvariantString()},{HistoricalVolatility.ToInvariantString()},{SecurityType},{ListedMarket},{FiftyTwoWeekHighDate.ToInvariantString(FundamentalDateTimeFormat)}," +
+                   $"{FiftyTwoWeekLowDate.ToInvariantString(FundamentalDateTimeFormat)},{CalendarYearHighDate.ToInvariantString(FundamentalDateTimeFormat)},{CalendarYearLowDate.ToInvariantString(FundamentalDateTimeFormat)},{YearEndClose.ToInvariantString()},{MaturityDate.ToInvariantString(FundamentalDateTimeFormat)}," +
+                   $"{CouponRate.ToInvariantString()},{ExpirationDate.ToInvariantString(FundamentalDateTimeFormat)},{StrikePrice.ToInvariantString()},{NAICS.ToInvariantString()},{ExchangeRoot},{OptionsPremiumMultiplier.ToInvariantString()},{OptionsMultipleDeliverables.ToInvariantString()},";
+        }
 
         public override bool Equals(object obj)
         {

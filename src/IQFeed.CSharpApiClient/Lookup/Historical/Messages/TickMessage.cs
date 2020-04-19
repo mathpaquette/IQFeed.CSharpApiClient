@@ -170,6 +170,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public int TradeMarketCenter { get; private set; }
         public string TradeConditions { get; private set; }
 
+        public string ToCsv()
+        {
+            return RequestId == null
+                ? $"{Timestamp.ToString(TickDateTimeFormat, CultureInfo.InvariantCulture)},{Convert.ToString(Last, CultureInfo.InvariantCulture)},{LastSize},{TotalVolume},{Convert.ToString(Bid, CultureInfo.InvariantCulture)},{Convert.ToString(Ask, CultureInfo.InvariantCulture)},{TickId},{BasisForLast},{TradeMarketCenter},{TradeConditions}"
+                : $"{RequestId},{Timestamp.ToString(TickDateTimeFormat, CultureInfo.InvariantCulture)},{Convert.ToString(Last, CultureInfo.InvariantCulture)},{LastSize},{TotalVolume},{Convert.ToString(Bid, CultureInfo.InvariantCulture)},{Convert.ToString(Ask, CultureInfo.InvariantCulture)},{TickId},{BasisForLast},{TradeMarketCenter},{TradeConditions}";
+        }
+
         public override bool Equals(object obj)
         {
             return obj is TickMessage<T> message &&
