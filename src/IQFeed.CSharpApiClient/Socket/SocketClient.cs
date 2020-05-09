@@ -2,9 +2,12 @@
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Extensions;
+
+[assembly: InternalsVisibleTo("IQFeed.CSharpApiClient.Tests")]
 
 namespace IQFeed.CSharpApiClient.Socket
 {
@@ -25,18 +28,10 @@ namespace IQFeed.CSharpApiClient.Socket
 
         public SocketClient(string hostname, int port, int bufferSize = 8192)
         {
-            // Get host related information.
-            IPHostEntry host = Dns.GetHostEntry(hostname);
-
-            // Addres of the host.
-            IPAddress[] addressList = ForceIPv4 ?
-                host.AddressList.Where(ip => ip.AddressFamily == AddressFamily.InterNetwork).ToArray() :
-                host.AddressList;
-
             _bufferSize = bufferSize;
 
             // Instantiates the endpoint and socket.
-            _hostEndPoint = new IPEndPoint(addressList[addressList.Length - 1], port);
+            _hostEndPoint = new IPEndPoint(GetHost(hostname), port);
             _clientSocket = new System.Net.Sockets.Socket(_hostEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             _socketMessageHandler = new SocketMessageHandler(_bufferSize, '\n'); // TODO: could be injected in the constructor
@@ -44,17 +39,22 @@ namespace IQFeed.CSharpApiClient.Socket
             _readEventArgs = new SocketAsyncEventArgs();
         }
 
-        public SocketClient(IPAddress host, int port, int bufferSize = 8192)
+        internal static IPAddress GetHost(string hostname)
         {
-            _bufferSize = bufferSize;
+            // First check if we got given an IP address. If not, then do a DNS lookup.
+            if (!IPAddress.TryParse(hostname, out IPAddress host))
+            {
+                // Get host related information.
+                IPHostEntry hostEntry = Dns.GetHostEntry(hostname);
 
-            // Instantiates the endpoint and socket.
-            _hostEndPoint = new IPEndPoint(host, port);
-            _clientSocket = new System.Net.Sockets.Socket(_hostEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                // Addres of the host.
+                IPAddress[] addressList = ForceIPv4 ?
+                    hostEntry.AddressList.Where(ip => ip.AddressFamily == AddressFamily.InterNetwork).ToArray() :
+                    hostEntry.AddressList;
+                host = addressList[addressList.Length - 1];
+            }
 
-            _socketMessageHandler = new SocketMessageHandler(_bufferSize, '\n'); // TODO: could be injected in the constructor
-            _socketMessageEventArgs = new SocketMessageEventArgs();
-            _readEventArgs = new SocketAsyncEventArgs();
+            return host;
         }
 
         public void Connect()
