@@ -61,7 +61,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
 
         public void Connect()
         {
-            _socketClient.Connect();
+            ConnectAsync().Wait();
         }
 
         public Task ConnectAsync()
@@ -71,7 +71,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
 
         public void Disconnect()
         {
-            _socketClient.Disconnect();
+            DisconnectAsync().Wait();
         }
 
         public Task DisconnectAsync()
@@ -88,8 +88,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
         public void ReqBarWatch(string symbol, int interval, DateTime? beginDate = null, int? maxDaysOfDatapoints = null, int? maxDatapoints = null,
             TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null, string requestId = null, DerivativeIntervalType? intervalType = null, int? updateInterval = null)
         {
-            var request = _derivativeRequestFormatter.ReqBarWatch(symbol, interval, beginDate, maxDaysOfDatapoints, maxDatapoints, beginFilterTime, endFilterTime, requestId, intervalType, updateInterval);
-            _socketClient.Send(request);
+            ReqBarWatchAsync(symbol, interval, beginDate, maxDaysOfDatapoints,
+                maxDatapoints, beginFilterTime, endFilterTime, requestId, intervalType,
+                updateInterval).Wait();
         }
 
         public Task ReqBarWatchAsync(string symbol, int interval, DateTime? beginDate = null, int? maxDaysOfDatapoints = null, int? maxDatapoints = null,
@@ -101,13 +102,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
 
         public void ReqBarUnwatch(string symbol)
         {
-            ReqBarUnwatch(symbol, "");
+            ReqBarUnwatchAsync(symbol).Wait();
         }
 
         public void ReqBarUnwatch(string symbol, string requestId)
         {
-            var request = _derivativeRequestFormatter.ReqBarUnwatch(symbol, requestId);
-            _socketClient.Send(request);
+            ReqBarUnwatchAsync(symbol, requestId);
         }
 
         public Task ReqBarUnwatchAsync(string symbol)
@@ -129,8 +129,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
 
         public void UnwatchAll()
         {
-            var request = _derivativeRequestFormatter.UnwatchAll();
-            _socketClient.Send(request);
+            UnwatchAllAsync().Wait();
         }
 
         public Task UnwatchAllAsync()

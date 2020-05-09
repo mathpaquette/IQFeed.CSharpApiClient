@@ -59,21 +59,7 @@ namespace IQFeed.CSharpApiClient.Socket
 
         public void Connect()
         {
-            if (_disposed)
-                throw new ObjectDisposedException($"Can't connect because SocketClient is disposed.");
-
-            _clientSocket.Connect(_hostEndPoint);
-            Connected.RaiseEvent(this, EventArgs.Empty);
-
-            _readEventArgs.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
-            _readEventArgs.SetBuffer(new byte[_bufferSize], 0, _bufferSize);
-
-            // As soon as the client is connected, post a receive to the connection 
-            bool willRaiseEvent = _clientSocket.ReceiveAsync(_readEventArgs);
-            if (!willRaiseEvent)
-            {
-                ProcessReceive(_readEventArgs);
-            }
+            ConnectAsync().Wait();
         }
 
         public async Task ConnectAsync()
@@ -111,7 +97,10 @@ namespace IQFeed.CSharpApiClient.Socket
             }
         }
 
-        public void Disconnect() { Dispose(); }
+        public void Disconnect()
+        {
+            DisconnectAsync().Wait();
+        }
 
         public async Task DisconnectAsync()
         {
@@ -129,21 +118,13 @@ namespace IQFeed.CSharpApiClient.Socket
             args.Completed += onCompleted;
             if (_clientSocket.DisconnectAsync(args)) await tcs.Task;
             args.Completed -= onCompleted;
+
+            Dispose();
         }
 
         public void Send(string message)
         {
-            if (_disposed)
-                throw new ObjectDisposedException($"Can't send because SocketClient is disposed.");
-
-            if (_clientSocket.Connected)
-            {
-                _clientSocket.Send(Encoding.ASCII.GetBytes(message));
-            }
-            else
-            {
-                throw new SocketException((int)SocketError.NotConnected);
-            }
+            SendAsync(message).Wait();
         }
 
         public async Task SendAsync(string message)
