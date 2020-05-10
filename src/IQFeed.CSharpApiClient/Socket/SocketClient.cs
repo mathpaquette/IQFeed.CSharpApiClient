@@ -59,7 +59,7 @@ namespace IQFeed.CSharpApiClient.Socket
 
         public void Connect()
         {
-            ConnectAsync().Wait();
+            ConnectAsync().GetAwaiter().GetResult();
         }
 
         public async Task ConnectAsync()
@@ -99,7 +99,7 @@ namespace IQFeed.CSharpApiClient.Socket
 
         public void Disconnect()
         {
-            DisconnectAsync().Wait();
+            DisconnectAsync().GetAwaiter().GetResult();
         }
 
         public async Task DisconnectAsync()
@@ -124,7 +124,7 @@ namespace IQFeed.CSharpApiClient.Socket
 
         public void Send(string message)
         {
-            SendAsync(message).Wait();
+            SendAsync(message).GetAwaiter().GetResult();
         }
 
         public async Task SendAsync(string message)

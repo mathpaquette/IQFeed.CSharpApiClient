@@ -61,7 +61,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
 
         public void Connect()
         {
-            ConnectAsync().Wait();
+            ConnectAsync().GetAwaiter().GetResult();
         }
 
         public Task ConnectAsync()
@@ -71,7 +71,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
 
         public void Disconnect()
         {
-            DisconnectAsync().Wait();
+            DisconnectAsync().GetAwaiter().GetResult();
         }
 
         public Task DisconnectAsync()
@@ -90,7 +90,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
         {
             ReqBarWatchAsync(symbol, interval, beginDate, maxDaysOfDatapoints,
                 maxDatapoints, beginFilterTime, endFilterTime, requestId, intervalType,
-                updateInterval).Wait();
+                updateInterval).GetAwaiter().GetResult();
         }
 
         public Task ReqBarWatchAsync(string symbol, int interval, DateTime? beginDate = null, int? maxDaysOfDatapoints = null, int? maxDatapoints = null,
@@ -102,7 +102,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
 
         public void ReqBarUnwatch(string symbol)
         {
-            ReqBarUnwatchAsync(symbol).Wait();
+            ReqBarUnwatchAsync(symbol).GetAwaiter().GetResult();
         }
 
         public void ReqBarUnwatch(string symbol, string requestId)
@@ -129,7 +129,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
 
         public void UnwatchAll()
         {
-            UnwatchAllAsync().Wait();
+            UnwatchAllAsync().GetAwaiter().GetResult();
         }
 
         public Task UnwatchAllAsync()
