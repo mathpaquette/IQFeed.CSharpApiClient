@@ -57,7 +57,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                     currentBar.TotalVolume = interval.TotalVolume;
                     currentBar.TotalTrade = totalTrade;
 
-                    currentBar.Wap += (interval.High + interval.Low + interval.Close) / 3 * interval.PeriodVolume; // VWAP estimation
+                    currentBar.VWAP += (interval.High + interval.Low + interval.Close) / 3 * interval.PeriodVolume; // VWAP estimation
                     continue;
                 }
 
@@ -69,7 +69,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                         totalTrade = 0;
                     }
 
-                    currentBar.Wap = currentBar.Wap / currentBar.PeriodVolume;
+                    currentBar.VWAP = currentBar.VWAP / currentBar.PeriodVolume;
                     yield return currentBar;
                 }
 
@@ -92,14 +92,14 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                     TotalVolume = interval.TotalVolume,
                     TotalTrade = totalTrade,
 
-                    Wap = (interval.High + interval.Low + interval.Close) / 3 * interval.PeriodVolume // VWAP estimation
+                    VWAP = (interval.High + interval.Low + interval.Close) / 3 * interval.PeriodVolume // VWAP estimation
                 };
             }
 
             // return the last created bar when last interval reached
             if (currentBar != null)
             {
-                currentBar.Wap = currentBar.Wap / currentBar.PeriodVolume;
+                currentBar.VWAP = currentBar.VWAP / currentBar.PeriodVolume;
                 yield return currentBar;
             }
         }
@@ -132,7 +132,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                             PeriodTrade = 0,
                             TotalVolume = previousBar.TotalVolume,
                             TotalTrade = previousBar.TotalTrade,
-                            Wap = previousBar.Close
+                            VWAP = previousBar.Close
                         };
 
                         nextTimestamp = nextTimestamp.AddTicks(intervalTicks);

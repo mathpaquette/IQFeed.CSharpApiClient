@@ -6,7 +6,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical
     {
         public HistoricalBar() { }
 
-        public HistoricalBar(DateTime timestamp, T open, T high, T low, T close, int periodVolume, int periodTrade, long totalVolume, int totalTrade, T wap)
+        public HistoricalBar(DateTime timestamp, T open, T high, T low, T close, int periodVolume, int periodTrade, long totalVolume, int totalTrade, T vwap)
         {
             Timestamp = timestamp;
             Open = open;
@@ -17,7 +17,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical
             PeriodTrade = periodTrade;
             TotalVolume = totalVolume;
             TotalTrade = totalTrade;
-            Wap = wap;
+            VWAP = vwap;
         }
 
         public DateTime Timestamp { get; set; }
@@ -29,11 +29,11 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical
         public int PeriodTrade { get; set; }
         public long TotalVolume { get; set; }
         public int TotalTrade { get; set; }
-        public T Wap { get; set; }
+        public T VWAP { get; set; }
 
         public override string ToString()
         {
-            return $"{nameof(Timestamp)}: {Timestamp}, {nameof(Open)}: {Open}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Close)}: {Close}, {nameof(PeriodVolume)}: {PeriodVolume}, {nameof(PeriodTrade)}: {PeriodTrade}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(TotalTrade)}: {TotalTrade}, {nameof(Wap)}: {Wap}";
+            return $"{nameof(Timestamp)}: {Timestamp}, {nameof(Open)}: {Open}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Close)}: {Close}, {nameof(PeriodVolume)}: {PeriodVolume}, {nameof(PeriodTrade)}: {PeriodTrade}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(TotalTrade)}: {TotalTrade}, {nameof(VWAP)}: {VWAP}";
         }
     }
 }

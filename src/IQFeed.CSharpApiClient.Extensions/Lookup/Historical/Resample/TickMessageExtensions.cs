@@ -77,7 +77,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                     currentBar.TotalVolume = totalVolume;
                     currentBar.TotalTrade = totalTrade;
 
-                    currentBar.Wap += tick.Last * tick.LastSize;
+                    currentBar.VWAP += tick.Last * tick.LastSize;
                     continue;
                 }
 
@@ -90,7 +90,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                         totalTrade = 1;
                     }
 
-                    currentBar.Wap = currentBar.Wap / currentBar.PeriodVolume;
+                    currentBar.VWAP = currentBar.VWAP / currentBar.PeriodVolume;
                     yield return currentBar;
                 }
 
@@ -113,7 +113,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
             // return the last created bar when last tick reached
             if (currentBar != null)
             {
-                currentBar.Wap = currentBar.Wap / currentBar.PeriodVolume;
+                currentBar.VWAP = currentBar.VWAP / currentBar.PeriodVolume;
                 yield return currentBar;
             }
         }
@@ -167,11 +167,11 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                         currentBar.TotalVolume = totalVolume;
                         currentBar.TotalTrade = totalTrade;
 
-                        currentBar.Wap += tick.Last * tick.LastSize;
+                        currentBar.VWAP += tick.Last * tick.LastSize;
                         continue;
                     }
 
-                    currentBar.Wap = currentBar.Wap / currentBar.PeriodVolume;
+                    currentBar.VWAP = currentBar.VWAP / currentBar.PeriodVolume;
                     yield return currentBar;
                 }
 
@@ -191,7 +191,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
             // return the last created bar when last tick reached
             if (currentBar != null)
             {
-                currentBar.Wap = currentBar.Wap / currentBar.PeriodVolume;
+                currentBar.VWAP = currentBar.VWAP / currentBar.PeriodVolume;
                 yield return currentBar;
             }
         }
@@ -224,7 +224,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                             PeriodTrade = 0,
                             TotalVolume = previousBar.TotalVolume,
                             TotalTrade = previousBar.TotalTrade,
-                            Wap = previousBar.Close
+                            VWAP = previousBar.Close
                         };
 
                         nextTimestamp = nextTimestamp.AddTicks(intervalTicks);
