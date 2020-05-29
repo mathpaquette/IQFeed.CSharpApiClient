@@ -74,6 +74,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
 
             _level1RequestFormatter = level1RequestFormatter;
             _level1MessageHandler = level1MessageHandler;
+
+            UpdateSummaryMessage.PrepareDynamicFieldHandlers(Level1Default.DefaultUpdateSummaryFieldNames.Split(IQFeedDefault.ProtocolDelimiterCharacter));
         }
 
         public void ReqWatch(string symbol)

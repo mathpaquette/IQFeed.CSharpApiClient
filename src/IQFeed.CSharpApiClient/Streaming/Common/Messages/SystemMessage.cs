@@ -1,4 +1,6 @@
 ﻿using IQFeed.CSharpApiClient.Extensions;
+using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
+using System.Linq;
 
 namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
 {
@@ -18,6 +20,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
             var values = message.SplitFeedMessage();
 
             return new SystemMessage(values[1], message);
+        }
+
+        public static void ProcessCurrentUpdateFieldnames(string message)
+        {
+            var fieldNames = message.SplitFeedMessage();
+            UpdateSummaryMessage.PrepareDynamicFieldHandlers(fieldNames.Skip(3).ToArray());
         }
 
         public override bool Equals(object obj)

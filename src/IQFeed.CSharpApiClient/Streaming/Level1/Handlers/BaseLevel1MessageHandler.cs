@@ -77,6 +77,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
         private void ProcessSystemMessage(string msg)
         {
             var systemMessage = SystemMessage.Parse(msg);
+            if (systemMessage.Type.Equals("CURRENT UPDATE FIELDNAMES"))
+                SystemMessage.ProcessCurrentUpdateFieldnames(systemMessage.Message);
             System?.Invoke(systemMessage);
         }
 

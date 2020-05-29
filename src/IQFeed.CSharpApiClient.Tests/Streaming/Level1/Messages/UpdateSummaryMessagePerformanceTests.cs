@@ -40,7 +40,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
 
             for (int i = 0; i < 1000000; i++)
             {
-                var parsed = UpdateSummaryMessage.Parse(Message);
+                var parsed = UpdateSummaryMessage.ParseDouble(Message);
                 messages.Add(parsed);
             }
 
