@@ -3,19 +3,18 @@ using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
-using IQFeed.CSharpApiClient.Streaming.Level1.Handlers;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
-    public class Level1Client<T> : ILevel1Client<T>
+    public class Level1Client : ILevel1Client
     {
         public event Action<FundamentalMessage> Fundamental
         {
             add => _level1MessageHandler.Fundamental += value;
             remove => _level1MessageHandler.Fundamental -= value;
         }
-        public event Action<UpdateSummaryMessage<T>> Summary
+        public event Action<UpdateSummaryMessage> Summary
         {
             add => _level1MessageHandler.Summary += value;
             remove => _level1MessageHandler.Summary -= value;
@@ -40,12 +39,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             add => _level1MessageHandler.Timestamp += value;
             remove => _level1MessageHandler.Timestamp -= value;
         }
-        public event Action<UpdateSummaryMessage<T>> Update
+        public event Action<UpdateSummaryMessage> Update
         {
             add => _level1MessageHandler.Update += value;
             remove => _level1MessageHandler.Update -= value;
         }
-        public event Action<RegionalUpdateMessage<T>> Regional
+        public event Action<RegionalUpdateMessage> Regional
         {
             add => _level1MessageHandler.Regional += value;
             remove => _level1MessageHandler.Regional -= value;
@@ -58,14 +57,14 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
 
         private readonly SocketClient _socketClient;
         private readonly Level1RequestFormatter _level1RequestFormatter;
-        private readonly ILevel1MessageHandler<T> _level1MessageHandler;
-        private readonly ILevel1Snapshot<T> _level1Snapshot;
+        private readonly ILevel1MessageHandler _level1MessageHandler;
+        private readonly ILevel1Snapshot _level1Snapshot;
 
         public Level1Client(
             SocketClient socketClient, 
             Level1RequestFormatter level1RequestFormatter, 
-            ILevel1MessageHandler<T> level1MessageHandler, 
-            ILevel1Snapshot<T> level1Snapshot)
+            ILevel1MessageHandler level1MessageHandler, 
+            ILevel1Snapshot level1Snapshot)
         {
             _level1Snapshot = level1Snapshot;
             _socketClient = socketClient;
@@ -205,7 +204,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return _level1Snapshot.GetFundamentalSnapshotAsync(symbol.ToUpper());
         }
 
-        public Task<UpdateSummaryMessage<T>> GetUpdateSummarySnapshotAsync(string symbol)
+        public Task<UpdateSummaryMessage> GetUpdateSummarySnapshotAsync(string symbol)
         {
             return _level1Snapshot.GetUpdateSummarySnapshotAsync(symbol.ToUpper());
         }
@@ -215,7 +214,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return _level1Snapshot.GetFundamentalSnapshot(symbol);
         }
 
-        public UpdateSummaryMessage<T> GetUpdateSummarySnapshot(string symbol)
+        public UpdateSummaryMessage GetUpdateSummarySnapshot(string symbol)
         {
             return _level1Snapshot.GetUpdateSummarySnapshot(symbol);
         }

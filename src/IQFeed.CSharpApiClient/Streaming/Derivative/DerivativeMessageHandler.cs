@@ -2,11 +2,13 @@
 using System.Text;
 using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
+using IQFeed.CSharpApiClient.Streaming.Derivative.Messages;
 
-namespace IQFeed.CSharpApiClient.Streaming.Derivative.Handlers
+namespace IQFeed.CSharpApiClient.Streaming.Derivative
 {
-    public abstract class BaseDerivativeMessageHandler
+    public class DerivativeMessageHandler : IDerivativeMessageHandler
     {
+        public event Action<IntervalBarMessage> IntervalBar;
         public event Action<SystemMessage> System;
         public event Action<ErrorMessage> Error;
         public event Action<SymbolNotFoundMessage> SymbolNotFound;
@@ -40,7 +42,16 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Handlers
             }
         }
 
-        protected abstract bool HasIntervalBar(string msg);
+        private bool HasIntervalBar(string msg)
+        {
+            if (IntervalBarMessage.TryParse(msg, out IntervalBarMessage intervalBarMessage))
+            {
+                IntervalBar?.Invoke(intervalBarMessage);
+                return true;
+            }
+
+            return false;
+        }
 
         private void ProcessSystemMessage(string msg)
         {

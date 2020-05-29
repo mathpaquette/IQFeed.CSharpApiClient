@@ -2,14 +2,14 @@
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 {
-    public interface IRegionalUpdateMessage<T>
+    public interface IRegionalUpdateMessage
     {
         string Symbol { get; }
         string Exchange { get; }
-        T RegionalBid { get; }
+        double RegionalBid { get; }
         int RegionalBidSize { get; }
         DateTime RegionalBidTime { get; }
-        T RegionalAsk { get; }
+        double RegionalAsk { get; }
         int RegionalAskSize { get; }
         DateTime RegionalAskTime { get; }
         int FractionDisplayCode { get; }

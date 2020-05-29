@@ -14,24 +14,24 @@ namespace IQFeed.CSharpApiClient.Lookup
 {
     public static class LookupClientFactory
     {
-        public static LookupClient<T> CreateNew<T>(
+        public static LookupClient CreateNew(
             string host,
             int port,
             int numberOfClients,
             TimeSpan timeout,
-            int bufferSize,
-            IHistoricalMessageHandler<T> historicalMessageHandler)
+            int bufferSize)
         {
             // Common
             var requestFormatter = new RequestFormatter();
             var lookupDispatcher = new LookupDispatcher(host, port, bufferSize, IQFeedDefault.ProtocolVersion, numberOfClients, requestFormatter);
             var exceptionFactory = new ExceptionFactory();
             var lookupMessageFileHandler = new LookupMessageFileHandler(lookupDispatcher, exceptionFactory, timeout);
+            var historicalMessageHandler = new HistoricalMessageHandler();
 
             // Historical
             var historicalDataRequestFormatter = new HistoricalRequestFormatter();
             var historicalFileFacade = new HistoricalFileFacade(historicalDataRequestFormatter, lookupMessageFileHandler);
-            var historicalFacade = new HistoricalFacade<T>(
+            var historicalFacade = new HistoricalFacade(
                 historicalDataRequestFormatter,
                 lookupDispatcher,
                 exceptionFactory,
@@ -58,51 +58,47 @@ namespace IQFeed.CSharpApiClient.Lookup
             // Chains
             var chainsFacade = new ChainsFacade(new ChainsRequestFormatter(), new ChainsMessageHandler(), lookupDispatcher, exceptionFactory, timeout);
 
-            return new LookupClient<T>(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade);
+            return new LookupClient(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade);
         }
 
-        public static LookupClient<double> CreateNew()
+        public static LookupClient CreateNew()
         {
             return CreateNew(
                 IQFeedDefault.Hostname,
                 IQFeedDefault.LookupPort,
                 1,
                 LookupDefault.Timeout,
-                LookupDefault.BufferSize,
-                new HistoricalMessageDoubleHandler());
+                LookupDefault.BufferSize);
         }
 
-        public static LookupClient<double> CreateNew(string host, int port)
+        public static LookupClient CreateNew(string host, int port)
         {
             return CreateNew(
                 host,
                 port,
                 1,
                 LookupDefault.Timeout,
-                LookupDefault.BufferSize,
-                new HistoricalMessageDoubleHandler());
+                LookupDefault.BufferSize);
         }
 
-        public static LookupClient<double> CreateNew(string host, int port, int numberOfClients, TimeSpan timeout)
+        public static LookupClient CreateNew(string host, int port, int numberOfClients, TimeSpan timeout)
         {
             return CreateNew(
                 host,
                 port,
                 numberOfClients,
                 timeout,
-                LookupDefault.BufferSize,
-                new HistoricalMessageDoubleHandler());
+                LookupDefault.BufferSize);
         }
 
-        public static LookupClient<double> CreateNew(int numberOfClients)
+        public static LookupClient CreateNew(int numberOfClients)
         {
             return CreateNew(
                 IQFeedDefault.Hostname,
                 IQFeedDefault.LookupPort,
                 numberOfClients,
                 LookupDefault.Timeout,
-                LookupDefault.BufferSize,
-                new HistoricalMessageDoubleHandler());
+                LookupDefault.BufferSize);
         }
     }
 }

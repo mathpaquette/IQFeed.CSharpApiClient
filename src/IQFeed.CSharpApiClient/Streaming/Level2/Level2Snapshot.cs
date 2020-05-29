@@ -4,22 +4,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
-using IQFeed.CSharpApiClient.Streaming.Level2.Handlers;
 using IQFeed.CSharpApiClient.Streaming.Level2.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level2
 {
-    public class Level2Snapshot<T> : ILevel2Snapshot<T>
+    public class Level2Snapshot : ILevel2Snapshot
     {
         private readonly SocketClient _socketClient;
         private readonly Level2RequestFormatter _level2RequestFormatter;
-        private readonly ILevel2MessageHandler<T> _level2MessageHandler;
+        private readonly ILevel2MessageHandler _level2MessageHandler;
         private readonly TimeSpan _timeout;
 
         public Level2Snapshot(
             SocketClient socketClient, 
             Level2RequestFormatter level2RequestFormatter,
-            ILevel2MessageHandler<T> level2MessageHandler, 
+            ILevel2MessageHandler level2MessageHandler, 
             TimeSpan timeout)
         {
             _socketClient = socketClient;
@@ -28,20 +27,20 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             _timeout = timeout;
         }
 
-        public Task<IEnumerable<UpdateSummaryMessage<T>>> GetSummarySnapshotAsync(string symbol)
+        public Task<IEnumerable<UpdateSummaryMessage>> GetSummarySnapshotAsync(string symbol)
         {
             return GetSummaryMessageAsync(symbol);
         }
 
-        private async Task<IEnumerable<UpdateSummaryMessage<T>>> GetSummaryMessageAsync(string symbol)
+        private async Task<IEnumerable<UpdateSummaryMessage>> GetSummaryMessageAsync(string symbol)
         {
             var ct = new CancellationTokenSource(_timeout);
-            var res = new TaskCompletionSource<IEnumerable<UpdateSummaryMessage<T>>>();
+            var res = new TaskCompletionSource<IEnumerable<UpdateSummaryMessage>>();
             ct.Token.Register(() => res.TrySetCanceled(), false);
 
-            var summaryMessages = new List<UpdateSummaryMessage<T>>();
+            var summaryMessages = new List<UpdateSummaryMessage>();
 
-            void Level2ClientOnSummary(UpdateSummaryMessage<T> updateSummaryMessage)
+            void Level2ClientOnSummary(UpdateSummaryMessage updateSummaryMessage)
             {
                 if (updateSummaryMessage.Symbol == symbol)
                 {

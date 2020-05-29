@@ -3,7 +3,7 @@ using IQFeed.CSharpApiClient.Common.Interfaces;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
-    public interface ILevel1Client<T>: IClient, ILevel1Event<T>, ILevel1Snapshot<T>
+    public interface ILevel1Client: IClient, ILevel1Event, ILevel1Snapshot
     {
         void ReqWatch(string symbol);
         void ReqTradesOnlyWatch(string symbol);

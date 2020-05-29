@@ -2,16 +2,16 @@
 
 namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
 {
-    public interface IIntervalBarMessage<T>
+    public interface IIntervalBarMessage
     {
         string RequestId { get; }
         IntervalBarType Type { get; }
         string Symbol { get; }
         DateTime Timestamp { get; }
-        T Open { get; }
-        T High { get; }
-        T Low { get; }
-        T Last { get; }
+        double Open { get; }
+        double High { get; }
+        double Low { get; }
+        double Last { get; }
 
         /// <summary>
         /// Last cummulative volume in the interval

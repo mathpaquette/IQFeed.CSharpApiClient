@@ -16,7 +16,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Derivative.Messages
             var message = "BC,AAPL,2018-01-01 09:30:00,100.01,101.23,99.98,100.93,143562,745,0";
             
             // Act
-            var intervalBarMessage = new IntervalBarMessage<double>(IntervalBarType.C, "AAPL", new DateTime(2018, 1, 1, 9, 30, 0), 100.01, 101.23, 99.98, 100.93, 143562, 745, 0);
+            var intervalBarMessage = new IntervalBarMessage(IntervalBarType.C, "AAPL", new DateTime(2018, 1, 1, 9, 30, 0), 100.01, 101.23, 99.98, 100.93, 143562, 745, 0);
             var intervalBarMessageParsed = IntervalBarMessage.Parse(message);
 
             // Assert
@@ -31,7 +31,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Derivative.Messages
             var message = "TESTREQUEST,BC,AAPL,2018-01-01 09:30:00,100.01,101.23,99.98,100.93,143562,745,0";
 
             // Act
-            var intervalBarMessage = new IntervalBarMessage<double>(IntervalBarType.C, "AAPL", new DateTime(2018, 1, 1, 9, 30, 0), 100.01, 101.23, 99.98, 100.93, 143562, 745, 0, "TESTREQUEST");
+            var intervalBarMessage = new IntervalBarMessage(IntervalBarType.C, "AAPL", new DateTime(2018, 1, 1, 9, 30, 0), 100.01, 101.23, 99.98, 100.93, 143562, 745, 0, "TESTREQUEST");
             var intervalBarMessageParsed = IntervalBarMessage.ParseWithRequestId(message);
 
             // Assert

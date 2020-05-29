@@ -22,23 +22,9 @@ namespace IQFeed.CSharpApiClient.Extensions
             return null;
         }
 
-        public static float? ToNullableFloat(this string s)
-        {
-            if (float.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var f))
-                return f;
-            return null;
-        }
-
         public static double? ToNullableDouble(this string s)
         {
             if (double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var d))
-                return d;
-            return null;
-        }
-
-        public static decimal? ToNullableDecimal(this string s)
-        {
-            if (decimal.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var d))
                 return d;
             return null;
         }
