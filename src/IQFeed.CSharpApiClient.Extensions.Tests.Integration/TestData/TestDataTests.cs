@@ -10,7 +10,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Tests.Integration.TestData
     public class TestDataTests
     {
         private static readonly string TestDataDirectory = Path.Combine(@"C:\dev\src", "TestData");
-        private LookupClient<double> _lookupClient;
+        private LookupClient _lookupClient;
 
         [SetUp]
         public void SetUp()

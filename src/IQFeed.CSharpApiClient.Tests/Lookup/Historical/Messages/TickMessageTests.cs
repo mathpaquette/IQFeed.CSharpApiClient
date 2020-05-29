@@ -17,19 +17,19 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
             _message = "2018-04-17 17:51:22.123456,96.0700,1061909,0,0.0000,0.0000,4145784264,O,19,143A";
             _messageWithRequestId = "XYZ,2018-04-17 17:51:22.123456,96.0700,1061909,0,0.0000,0.0000,4145784264,O,19,143A";
         }
-        
+
         [Test, TestCaseSource(typeof(CultureNameTestCase), nameof(CultureNameTestCase.CultureNames))]
         public void Should_Parse_TickMessage_Culture_Independent(string cultureName)
         {
             // Arrange
             TestHelper.SetThreadCulture(cultureName);
-            
+
 
             // Act
             var tickMessageParsed = TickMessage.Parse(_message);
 
             var timestamp = DateTime.ParseExact("2018-04-17 17:51:22.123456", TickMessage.TickDateTimeFormat, CultureInfo.InvariantCulture);
-            var tickMessage = new TickMessage<double>(timestamp, 96.07d, 1061909, 0, 0.0d, 0.0d, 4145784264, 'O', 19, "143A");
+            var tickMessage = new TickMessage(timestamp, 96.07, 1061909, 0, 0.0, 0.0, 4145784264, 'O', 19, "143A");
 
             // Assert
             Assert.AreEqual(tickMessageParsed, tickMessage);

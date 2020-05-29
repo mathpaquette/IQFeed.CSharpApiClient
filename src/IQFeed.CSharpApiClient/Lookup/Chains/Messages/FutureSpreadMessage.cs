@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using IQFeed.CSharpApiClient.Lookup.Chains.Futures;
 
 namespace IQFeed.CSharpApiClient.Lookup.Chains.Messages

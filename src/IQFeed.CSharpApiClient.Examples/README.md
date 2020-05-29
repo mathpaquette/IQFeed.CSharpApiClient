@@ -12,10 +12,6 @@ Advanced example showing How-To concurrently fetch and save to disk in a CSV for
 ### [ConcurrentHistoricalExample](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/ConcurrentHistorical/ConcurrentHistoricalExample.cs)
 Advanced example showing How-To concurrently fetch in memory daily messages. 
 
-### [HistoricalMessageHandlerExample](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/MessageHandlers/HistoricalMessageHandlerExample.cs)
-### [Level1MessageHandlerExample](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/MessageHandlers/Level1MessageHandlerExample.cs)
-Examples showing How-To use different message handlers based on your type requirement. Supporting <float>, <double> and <decimal> for most clients.
-
 ### [ExpiredOptionsExample](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/ExpiredOptions/ExpiredOptionsExample.cs)
 Example showing How-To retrieve Expired Options and applying filtering criteria on them.
 

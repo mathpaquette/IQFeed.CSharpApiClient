@@ -4,113 +4,17 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 {
-    public abstract class RegionalUpdateMessage
+    public class RegionalUpdateMessage : IRegionalUpdateMessage
     {
         public const string RegionalUpdateTimeFormat = "HH:mm:ss";
 
-        public static RegionalUpdateMessage<decimal> ParseDecimal(string message)
-        {
-            var values = message.SplitFeedMessage();
-
-            var symbol = values[1];
-            var exchange = values[2];
-            decimal.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalBid);
-            int.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalBidSize);
-            DateTime.TryParseExact(values[5], RegionalUpdateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var regionalBidTime);
-            decimal.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalAsk);
-            int.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalAskSize);
-            DateTime.TryParseExact(values[8], RegionalUpdateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var regionalAskTime);
-            int.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var fractionDisplayCode);
-            int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out var decimalPrecision);
-            int.TryParse(values[11], NumberStyles.Any, CultureInfo.InvariantCulture, out var marketCenter);
-
-            return new RegionalUpdateMessage<decimal>(
-                symbol,
-                exchange,
-                regionalBid,
-                regionalBidSize,
-                regionalBidTime,
-                regionalAsk,
-                regionalAskSize,
-                regionalAskTime,
-                fractionDisplayCode,
-                decimalPrecision,
-                marketCenter
-            );
-        }
-
-        public static RegionalUpdateMessage<double> Parse(string message)
-        {
-            var values = message.SplitFeedMessage();
-
-            var symbol = values[1];
-            var exchange = values[2];
-            double.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalBid);
-            int.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalBidSize);
-            DateTime.TryParseExact(values[5], RegionalUpdateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var regionalBidTime);
-            double.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalAsk);
-            int.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalAskSize);
-            DateTime.TryParseExact(values[8], RegionalUpdateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var regionalAskTime);
-            int.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var fractionDisplayCode);
-            int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out var decimalPrecision);
-            int.TryParse(values[11], NumberStyles.Any, CultureInfo.InvariantCulture, out var marketCenter);
-
-            return new RegionalUpdateMessage<double>(
-                symbol,
-                exchange,
-                regionalBid,
-                regionalBidSize,
-                regionalBidTime,
-                regionalAsk,
-                regionalAskSize,
-                regionalAskTime,
-                fractionDisplayCode,
-                decimalPrecision,
-                marketCenter
-            );
-        }
-
-        public static RegionalUpdateMessage<float> ParseFloat(string message)
-        {
-            var values = message.SplitFeedMessage();
-
-            var symbol = values[1];
-            var exchange = values[2];
-            float.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalBid);
-            int.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalBidSize);
-            DateTime.TryParseExact(values[5], RegionalUpdateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var regionalBidTime);
-            float.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalAsk);
-            int.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalAskSize);
-            DateTime.TryParseExact(values[8], RegionalUpdateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var regionalAskTime);
-            int.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var fractionDisplayCode);
-            int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out var decimalPrecision);
-            int.TryParse(values[11], NumberStyles.Any, CultureInfo.InvariantCulture, out var marketCenter);
-
-            return new RegionalUpdateMessage<float>(
-                symbol,
-                exchange,
-                regionalBid,
-                regionalBidSize,
-                regionalBidTime,
-                regionalAsk,
-                regionalAskSize,
-                regionalAskTime,
-                fractionDisplayCode,
-                decimalPrecision,
-                marketCenter
-            );
-        }
-    }
-
-    public class RegionalUpdateMessage<T> : IRegionalUpdateMessage<T>
-    {
         public RegionalUpdateMessage(
             string symbol, 
             string exchange, 
-            T regionalBid, 
+            double regionalBid, 
             int regionalBidSize, 
             DateTime regionalBidTime,
-            T regionalAsk, 
+            double regionalAsk, 
             int regionalAskSize,
             DateTime regionalAskTime,
             int fractionDisplayCode, 
@@ -132,21 +36,50 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 
         public string Symbol { get; private set; }
         public string Exchange { get; private set; }
-        public T RegionalBid { get; private set; }
+        public double RegionalBid { get; private set; }
         public int RegionalBidSize { get; private set; }
         public DateTime RegionalBidTime { get; private set; }
-        public T RegionalAsk { get; private set; }
+        public double RegionalAsk { get; private set; }
         public int RegionalAskSize { get; private set; }
         public DateTime RegionalAskTime { get; private set; }
         public int FractionDisplayCode { get; private set; }
         public int DecimalPrecision { get; private set; }
         public int MarketCenter { get; private set; }
 
-        
+        public static RegionalUpdateMessage Parse(string message)
+        {
+            var values = message.SplitFeedMessage();
+
+            var symbol = values[1];
+            var exchange = values[2];
+            double.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalBid);
+            int.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalBidSize);
+            DateTime.TryParseExact(values[5], RegionalUpdateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var regionalBidTime);
+            double.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalAsk);
+            int.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var regionalAskSize);
+            DateTime.TryParseExact(values[8], RegionalUpdateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var regionalAskTime);
+            int.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var fractionDisplayCode);
+            int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out var decimalPrecision);
+            int.TryParse(values[11], NumberStyles.Any, CultureInfo.InvariantCulture, out var marketCenter);
+
+            return new RegionalUpdateMessage(
+                symbol,
+                exchange,
+                regionalBid,
+                regionalBidSize,
+                regionalBidTime,
+                regionalAsk,
+                regionalAskSize,
+                regionalAskTime,
+                fractionDisplayCode,
+                decimalPrecision,
+                marketCenter
+            );
+        }
 
         public override bool Equals(object obj)
         {
-            return obj is RegionalUpdateMessage<T> message &&
+            return obj is RegionalUpdateMessage message &&
                    Symbol == message.Symbol &&
                    Exchange == message.Exchange &&
                    Equals(RegionalBid,message.RegionalBid) &&
