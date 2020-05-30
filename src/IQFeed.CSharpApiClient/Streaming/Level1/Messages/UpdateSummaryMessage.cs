@@ -25,19 +25,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             }
             return updateSummaryMessage;
         }
-        //DateTime.TryParseExact(values[4], UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var mostRecentTradeTime);
-        //int.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeMarketCenter);                                   // field 75
-        //int.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var totalVolume);                                                   // field 7
-        //decimal.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var bid);                                                    // field 11
-        //int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out var bidSize);                                                       // field 13
-        //decimal.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var ask);                                                    // field 12
-        //int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out var askSize);                                                      // field 14
-        //decimal.TryParse(values[11], NumberStyles.Any, CultureInfo.InvariantCulture, out var open);                                                  // field 20
-        //decimal.TryParse(values[12], NumberStyles.Any, CultureInfo.InvariantCulture, out var high);                                                  // field 9
-        //decimal.TryParse(values[13], NumberStyles.Any, CultureInfo.InvariantCulture, out var low);                                                   // field 10
-        //decimal.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
-        //var messageContents = values[15];                                                                                                                  // field 80
-        //var mostRecentTradeConditions = values[16];                                                                                                        // field 74
 
         public static UpdateSummaryMessage<double> ParseDouble(string message)
         {
@@ -50,20 +37,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             }
             return updateSummaryMessage;
         }
-        //int.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeSize);                                           // field 72
-        //DateTime.TryParseExact(values[4], UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var mostRecentTradeTime);
-        //int.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeMarketCenter);                                   // field 75
-        //int.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var totalVolume);                                                   // field 7
-        //double.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var bid);                                                    // field 11
-        //int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out var bidSize);                                                       // field 13
-        //double.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var ask);                                                    // field 12
-        //int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out var askSize);                                                      // field 14
-        //double.TryParse(values[11], NumberStyles.Any, CultureInfo.InvariantCulture, out var open);                                                  // field 20
-        //double.TryParse(values[12], NumberStyles.Any, CultureInfo.InvariantCulture, out var high);                                                  // field 9
-        //double.TryParse(values[13], NumberStyles.Any, CultureInfo.InvariantCulture, out var low);                                                   // field 10
-        //double.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
-        //var messageContents = values[15];                                                                                                                  // field 80
-        //var mostRecentTradeConditions = values[16];                                                                                                        // field 74
 
         public static UpdateSummaryMessage<float> ParseFloat(string message)
         {
@@ -76,20 +49,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             }
             return updateSummaryMessage;
         }
-        //int.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeSize);                                           // field 72
-        //DateTime.TryParseExact(values[4], UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var mostRecentTradeTime);
-        //int.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeMarketCenter);                                   // field 75
-        //int.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var totalVolume);                                                   // field 7
-        //float.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var bid);                                                    // field 11
-        //int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out var bidSize);                                                       // field 13
-        //float.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var ask);                                                    // field 12
-        //int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out var askSize);                                                      // field 14
-        //float.TryParse(values[11], NumberStyles.Any, CultureInfo.InvariantCulture, out var open);                                                  // field 20
-        //float.TryParse(values[12], NumberStyles.Any, CultureInfo.InvariantCulture, out var high);                                                  // field 9
-        //float.TryParse(values[13], NumberStyles.Any, CultureInfo.InvariantCulture, out var low);                                                   // field 10
-        //float.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
-        //var messageContents = values[15];                                                                                                                  // field 80
-        //var mostRecentTradeConditions = values[16];                                                                                                        // field 74
 
         public static void PrepareDynamicFieldHandlers(string[] currentFields)
         {
@@ -104,41 +63,81 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 switch (field)
                 {
                     case "Most Recent Trade":
-                        _decimalHandler = mostRecentTradeDecimalHandler;
-                        _doubleHandler = mostRecentTradeDoubleHandler;
-                        _floatHandler = mostRecentTradeFloatHandler;
+                        _decimalHandler = MostRecentTradeHandler;
+                        _doubleHandler = MostRecentTradeHandler;
+                        _floatHandler = MostRecentTradeHandler;
                         break;
                     case "Most Recent Trade Size":
-                        _decimalHandler = mostRecentTradeSizeHandler;
-                        _doubleHandler = mostRecentTradeSizeHandler;
-                        _floatHandler = mostRecentTradeSizeHandler;
+                        _decimalHandler = MostRecentTradeSizeHandler;
+                        _doubleHandler = MostRecentTradeSizeHandler;
+                        _floatHandler = MostRecentTradeSizeHandler;
                         break;
-                    //case "Most Recent Trade Time":
-                    //    break;
-                    //case "Most Recent Trade Market Center":
-                    //    break;
-                    //case "Total Volume":
-                    //    break;
-                    //case "Bid":
-                    //    break;
-                    //case "Bid Size":
-                    //    break;
-                    //case "Ask":
-                    //    break;
-                    //case "Ask Size":
-                    //    break;
-                    //case "Open":
-                    //    break;
-                    //case "High":
-                    //    break;
-                    //case "Low":
-                    //    break;
-                    //case "Close":
-                    //    break;
-                    //case "Message Contents":
-                    //    break;
-                    //case "Most Recent Trade Conditions":
-                    //    break;
+                    case "Most Recent Trade Time":
+                        _decimalHandler = MostRecentTradeTimeHandler;
+                        _doubleHandler = MostRecentTradeTimeHandler;
+                        _floatHandler = MostRecentTradeTimeHandler;
+                        break;
+                    case "Most Recent Trade Market Center":
+                        _decimalHandler = MostRecentTradeMarketCenterHandler;
+                        _doubleHandler = MostRecentTradeMarketCenterHandler;
+                        _floatHandler = MostRecentTradeMarketCenterHandler;
+                        break;
+                    case "Total Volume":
+                        _decimalHandler = TotalVolumeHandler;
+                        _doubleHandler = TotalVolumeHandler;
+                        _floatHandler = TotalVolumeHandler;
+                        break;
+                    case "Bid":
+                        _decimalHandler = BidHandler;
+                        _doubleHandler = BidHandler;
+                        _floatHandler = BidHandler;                        
+                        break;
+                    case "Bid Size":
+                        _decimalHandler = BidSizeHandler;
+                        _doubleHandler = BidSizeHandler;
+                        _floatHandler = BidSizeHandler;
+                        break;
+                    case "Ask":
+                        _decimalHandler = AskHandler;
+                        _doubleHandler = AskHandler;
+                        _floatHandler = AskHandler;
+                        break;
+                    case "Ask Size":
+                        _decimalHandler = AskSizeHandler;
+                        _doubleHandler = AskSizeHandler;
+                        _floatHandler = AskSizeHandler;
+                        break;
+                    case "Open":
+                        _decimalHandler = OpenHandler;
+                        _doubleHandler = OpenHandler;
+                        _floatHandler = OpenHandler;
+                        break;
+                    case "High":
+                        _decimalHandler = HighHandler;
+                        _doubleHandler = HighHandler;
+                        _floatHandler = HighHandler;
+                        break;
+                    case "Low":
+                        _decimalHandler = LowHandler;
+                        _doubleHandler = LowHandler;
+                        _floatHandler = LowHandler;
+                        break;
+                    case "Close":
+                        _decimalHandler = CloseHandler;
+                        _doubleHandler = CloseHandler;
+                        _floatHandler = CloseHandler;
+                        break;
+                    case "Message Contents":
+                        _decimalHandler = MessageContentsHandler;
+                        _doubleHandler = MessageContentsHandler;
+                        _floatHandler = MessageContentsHandler;
+                        break;
+                    case "Most Recent Trade Conditions":
+                        _decimalHandler = MostRecentTradeConditionsHandler;
+                        _doubleHandler = MostRecentTradeConditionsHandler;
+                        _floatHandler = MostRecentTradeConditionsHandler;
+                        break;
+                    //Open Interest
                     default:
                         throw new NotSupportedException($"Field {field} not supported");
                 }
@@ -151,47 +150,245 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             floatHandlers = _floatHandlers.ToArray();
         }
 
-        private static void mostRecentTradeDecimalHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
+        private static void MostRecentTradeHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
         {
-            decimal newValue;
-            decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out newValue);
+            decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal newValue);
+            updateSummaryMessage.MostRecentTrade = newValue;
+        }
+        private static void MostRecentTradeHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        {
+            double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out double newValue);
+            updateSummaryMessage.MostRecentTrade = newValue;
+        }
+        private static void MostRecentTradeHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        {
+            float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out float newValue);
             updateSummaryMessage.MostRecentTrade = newValue;
         }
 
-        private static void mostRecentTradeDoubleHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        private static void MostRecentTradeSizeHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
         {
-            double newValue;
-            double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out newValue);
-            updateSummaryMessage.MostRecentTrade = newValue;
+            int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
+            updateSummaryMessage.MostRecentTradeSize = newValue;
+        }
+        private static void MostRecentTradeSizeHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        {
+            int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
+            updateSummaryMessage.MostRecentTradeSize = newValue;
+        }
+        private static void MostRecentTradeSizeHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        {
+            int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
+            updateSummaryMessage.MostRecentTradeSize = newValue;
         }
 
-        private static void mostRecentTradeFloatHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        private static void MostRecentTradeTimeHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
         {
-            float newValue;
-            float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out newValue);
-            updateSummaryMessage.MostRecentTrade = newValue;
+            DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime newValue);
+            updateSummaryMessage.MostRecentTradeTime = newValue.TimeOfDay;
         }
-        private static void mostRecentTradeSizeHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
+        private static void MostRecentTradeTimeHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        {
+            DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime newValue);
+            updateSummaryMessage.MostRecentTradeTime = newValue.TimeOfDay;
+        }
+        private static void MostRecentTradeTimeHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        {
+            DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime newValue);
+            updateSummaryMessage.MostRecentTradeTime = newValue.TimeOfDay;
+        }
+
+        private static void MostRecentTradeMarketCenterHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
         {
             int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
-            updateSummaryMessage.MostRecentTradeSize = newValue;
+            updateSummaryMessage.MostRecentTradeMarketCenter = newValue;
         }
-        private static void mostRecentTradeSizeHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        private static void MostRecentTradeMarketCenterHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
         {
             int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
-            updateSummaryMessage.MostRecentTradeSize = newValue;
+            updateSummaryMessage.MostRecentTradeMarketCenter = newValue;
         }
-        private static void mostRecentTradeSizeHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        private static void MostRecentTradeMarketCenterHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
         {
             int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
-            updateSummaryMessage.MostRecentTradeSize = newValue;
+            updateSummaryMessage.MostRecentTradeMarketCenter = newValue;
+        }
+
+        private static void TotalVolumeHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
+        {
+            int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
+            updateSummaryMessage.TotalVolume = newValue;
+        }
+        private static void TotalVolumeHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        {
+            int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
+            updateSummaryMessage.TotalVolume = newValue;
+        }
+        private static void TotalVolumeHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        {
+            int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
+            updateSummaryMessage.TotalVolume = newValue;
+        }
+
+        private static void BidHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
+        {
+            decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal newValue);
+            updateSummaryMessage.Bid = newValue;
+        }
+        private static void BidHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        {
+            double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out double newValue);
+            updateSummaryMessage.Bid = newValue;
+        }
+        private static void BidHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        {
+            float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out float newValue);
+            updateSummaryMessage.Bid = newValue;
+        }
+
+        private static void BidSizeHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
+        {
+            int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
+            updateSummaryMessage.BidSize = newValue;
+        }
+        private static void BidSizeHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        {
+            int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
+            updateSummaryMessage.BidSize = newValue;
+        }
+        private static void BidSizeHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        {
+            int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
+            updateSummaryMessage.BidSize = newValue;
+        }
+
+        private static void AskHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
+        {
+            decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal newValue);
+            updateSummaryMessage.Ask = newValue;
+        }
+        private static void AskHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        {
+            double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out double newValue);
+            updateSummaryMessage.Ask = newValue;
+        }
+        private static void AskHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        {
+            float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out float newValue);
+            updateSummaryMessage.Ask = newValue;
+        }
+
+        private static void AskSizeHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
+        {
+            int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
+            updateSummaryMessage.AskSize = newValue;
+        }
+        private static void AskSizeHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        {
+            int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
+            updateSummaryMessage.AskSize = newValue;
+        }
+        private static void AskSizeHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        {
+            int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out int newValue);
+            updateSummaryMessage.AskSize = newValue;
+        }
+
+        private static void OpenHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
+        {
+            decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal newValue);
+            updateSummaryMessage.Open = newValue;
+        }
+        private static void OpenHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        {
+            double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out double newValue);
+            updateSummaryMessage.Open = newValue;
+        }
+        private static void OpenHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        {
+            float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out float newValue);
+            updateSummaryMessage.Open = newValue;
+        }
+
+        private static void HighHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
+        {
+            decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal newValue);
+            updateSummaryMessage.High = newValue;
+        }
+        private static void HighHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        {
+            double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out double newValue);
+            updateSummaryMessage.High = newValue;
+        }
+        private static void HighHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        {
+            float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out float newValue);
+            updateSummaryMessage.High = newValue;
+        }
+
+        private static void LowHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
+        {
+            decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal newValue);
+            updateSummaryMessage.Low = newValue;
+        }
+        private static void LowHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        {
+            double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out double newValue);
+            updateSummaryMessage.Low = newValue;
+        }
+        private static void LowHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        {
+            float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out float newValue);
+            updateSummaryMessage.Low = newValue;
+        }
+
+        private static void CloseHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
+        {
+            decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal newValue);
+            updateSummaryMessage.Close = newValue;
+        }
+        private static void CloseHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        {
+            double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out double newValue);
+            updateSummaryMessage.Close = newValue;
+        }
+        private static void CloseHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        {
+            float.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out float newValue);
+            updateSummaryMessage.Close = newValue;
+        }
+
+        private static void MessageContentsHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
+        {
+            updateSummaryMessage.MessageContents = value;
+        }
+        private static void MessageContentsHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        {
+            updateSummaryMessage.MessageContents = value;
+        }
+        private static void MessageContentsHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        {
+            updateSummaryMessage.MessageContents = value;
+        }
+
+        private static void MostRecentTradeConditionsHandler(UpdateSummaryMessage<decimal> updateSummaryMessage, string value)
+        {
+            updateSummaryMessage.MostRecentTradeConditions = value;
+        }
+        private static void MostRecentTradeConditionsHandler(UpdateSummaryMessage<double> updateSummaryMessage, string value)
+        {
+            updateSummaryMessage.MostRecentTradeConditions = value;
+        }
+        private static void MostRecentTradeConditionsHandler(UpdateSummaryMessage<float> updateSummaryMessage, string value)
+        {
+            updateSummaryMessage.MostRecentTradeConditions = value;
         }
     }
 
 
     public class UpdateSummaryMessage<T> : UpdateSummaryMessage, IUpdateSummaryMessage<T>
     {
-        public UpdateSummaryMessage(string symbol)
+        protected internal UpdateSummaryMessage(string symbol)
         {
             Symbol = symbol;
         }
@@ -249,10 +446,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         public T Close { get; protected internal set; }
         public string MessageContents { get; protected internal set; }
         public string MostRecentTradeConditions { get; protected internal set; }
+        public int OpenInterest { get; protected internal set; }
 
         public override string ToString()
         {
-            return $"{nameof(Symbol)}: {Symbol}, {nameof(MostRecentTrade)}: {MostRecentTrade}, {nameof(MostRecentTradeSize)}: {MostRecentTradeSize}, {nameof(MostRecentTradeTime)}: {MostRecentTradeTime}, {nameof(MostRecentTradeMarketCenter)}: {MostRecentTradeMarketCenter}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(Bid)}: {Bid}, {nameof(BidSize)}: {BidSize}, {nameof(Ask)}: {Ask}, {nameof(AskSize)}: {AskSize}, {nameof(Open)}: {Open}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Close)}: {Close}, {nameof(MessageContents)}: {MessageContents}, {nameof(MostRecentTradeConditions)}: {MostRecentTradeConditions}";
+            return $"{nameof(Symbol)}: {Symbol}, {nameof(MostRecentTrade)}: {MostRecentTrade}, {nameof(MostRecentTradeSize)}: {MostRecentTradeSize}, {nameof(MostRecentTradeTime)}: {MostRecentTradeTime}, {nameof(MostRecentTradeMarketCenter)}: {MostRecentTradeMarketCenter}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(Bid)}: {Bid}, {nameof(BidSize)}: {BidSize}, {nameof(Ask)}: {Ask}, {nameof(AskSize)}: {AskSize}, {nameof(Open)}: {Open}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Close)}: {Close}, {nameof(MessageContents)}: {MessageContents}, {nameof(MostRecentTradeConditions)}: {MostRecentTradeConditions}, {nameof(OpenInterest)}: {OpenInterest}";
         }
 
         public override bool Equals(object obj)
@@ -273,7 +471,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                    Equals(Low, message.Low) &&
                    Equals(Close, message.Close) &&
                    MessageContents == message.MessageContents &&
-                   MostRecentTradeConditions == message.MostRecentTradeConditions;
+                   MostRecentTradeConditions == message.MostRecentTradeConditions &&
+                   OpenInterest == message.OpenInterest;
         }
 
         public override int GetHashCode()
@@ -297,6 +496,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 hash = hash * 29 + Close.GetHashCode();
                 hash = hash * 29 + MessageContents.GetHashCode();
                 hash = hash * 29 + MostRecentTradeConditions.GetHashCode();
+                hash = hash * 29 + OpenInterest.GetHashCode();
                 return hash;
             }
         }

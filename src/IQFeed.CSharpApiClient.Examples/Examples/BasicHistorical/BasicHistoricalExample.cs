@@ -8,7 +8,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.BasicHistorical
 {
     public class BasicHistoricalExample : IExampleAsync
     {
-        public bool Enable => true; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
+        public bool Enable => false; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
         public string Name => typeof(BasicHistoricalExample).Name;
 
         public async Task RunAsync()
