@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net45;netcoreapp2.0</TargetFrameworks>
+        <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     </PropertyGroup>
     <ItemGroup>
@@ -11,12 +11,6 @@
     <ItemGroup>
       <ProjectReference Include="..\IQFeed.CSharpApiClient.Extensions\IQFeed.CSharpApiClient.Extensions.csproj" />
       <ProjectReference Include="..\IQFeed.CSharpApiClient\IQFeed.CSharpApiClient.csproj" />
-    </ItemGroup>
-    <ItemGroup Condition="'$(TargetFramework)'!='net45'">
-      <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
-    </ItemGroup>
-    <ItemGroup Condition="'$(TargetFramework)'=='net45'">
-      <Reference Include="System.Configuration" />
     </ItemGroup>
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
       <Exec Command="xcopy &quot;$(SolutionDir)data&quot; &quot;$(TargetDir)TestData&quot; /Y /I" />
