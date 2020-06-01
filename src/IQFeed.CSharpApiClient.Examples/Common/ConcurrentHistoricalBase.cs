@@ -41,7 +41,7 @@ namespace IQFeed.CSharpApiClient.Examples.Common
             var count = Symbols.Count;
             if (count % 10 != 0) return;
 
-            var progress = (InitialCount - count) / (decimal)InitialCount * 100;
+            var progress = (InitialCount - count) / (double)InitialCount * 100;
             Console.Write($"{progress}%...");
         }
 
