@@ -14,11 +14,6 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Common
         protected FileDownloaderBase(IFileModificationStrategy fileModificationStrategy)
         {
             _fileModificationStrategy = fileModificationStrategy;
-
-            // https://stackoverflow.com/questions/2859790/the-request-was-aborted-could-not-create-ssl-tls-secure-channel
-#if NET45
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-#endif
         }
 
         public string GetFile(string url, string downloadPath = null, bool useCache = true)

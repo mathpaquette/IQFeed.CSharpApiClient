@@ -4,10 +4,12 @@ using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level2.Messages;
 
-namespace IQFeed.CSharpApiClient.Streaming.Level2.Handlers
+namespace IQFeed.CSharpApiClient.Streaming.Level2
 {
-    public abstract class BaseLevel2MessageHandler
+    public class Level2MessageHandler : ILevel2MessageHandler
     {
+        public event Action<UpdateSummaryMessage> Summary;
+        public event Action<UpdateSummaryMessage> Update;
         public event Action<SymbolNotFoundMessage> SymbolNotFound;
         public event Action<MarketMakerNameMessage> Query;
         public event Action<ErrorMessage> Error;
@@ -52,9 +54,17 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Handlers
             }
         }
 
-        protected abstract void ProcessSummaryMessage(string msg);
-            
-        protected abstract void ProcessUpdateMessage(string msg);
+        private void ProcessSummaryMessage(string msg)
+        {
+            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
+            Summary?.Invoke(updateSummaryMessage);
+        }
+
+        private void ProcessUpdateMessage(string msg)
+        {
+            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
+            Update?.Invoke(updateSummaryMessage);
+        }
 
         private void ProcessTimestampMessage(string msg)
         {

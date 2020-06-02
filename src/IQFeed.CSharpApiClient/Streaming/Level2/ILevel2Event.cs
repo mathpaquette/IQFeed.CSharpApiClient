@@ -4,10 +4,10 @@ using IQFeed.CSharpApiClient.Streaming.Level2.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level2
 {
-    public interface ILevel2Event<T>
+    public interface ILevel2Event
     {
-        event Action<UpdateSummaryMessage<T>> Summary;
-        event Action<UpdateSummaryMessage<T>> Update;
+        event Action<UpdateSummaryMessage> Summary;
+        event Action<UpdateSummaryMessage> Update;
         event Action<SymbolNotFoundMessage> SymbolNotFound;
         event Action<MarketMakerNameMessage> Query;
         event Action<ErrorMessage> Error;

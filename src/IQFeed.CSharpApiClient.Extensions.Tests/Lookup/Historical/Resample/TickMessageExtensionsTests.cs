@@ -10,19 +10,19 @@ namespace IQFeed.CSharpApiClient.Extensions.Tests.Lookup.Historical.Resample
 {
     public class TickMessageExtensionsTests
     {
-        private readonly List<TickMessage<double>> _ticksAscending;
-        private readonly List<TickMessage<double>> _ticksDescending;
+        private readonly List<TickMessage> _ticksAscending;
+        private readonly List<TickMessage> _ticksDescending;
         private readonly TimeSpan _interval = TimeSpan.FromMinutes(1);
 
         public TickMessageExtensionsTests()
         {
-            _ticksAscending = new List<TickMessage<double>>()
+            _ticksAscending = new List<TickMessage>()
             {
-                new TickMessage<double>(new DateTime(2000, 01, 01, 9, 30, 4), 1, 1, 1, 1, 1, 1, 'C', 1, ""),
-                new TickMessage<double>(new DateTime(2000, 01, 01, 9, 34, 1), 1, 1, 1, 1, 1, 1, 'C', 1, ""),
+                new TickMessage(new DateTime(2000, 01, 01, 9, 30, 4), 1, 1, 1, 1, 1, 1, 'C', 1, ""),
+                new TickMessage(new DateTime(2000, 01, 01, 9, 34, 1), 1, 1, 1, 1, 1, 1, 'C', 1, ""),
             };
 
-            _ticksDescending = new List<TickMessage<double>>(_ticksAscending);
+            _ticksDescending = new List<TickMessage>(_ticksAscending);
             _ticksDescending.Reverse();
         }
 
