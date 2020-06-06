@@ -31,7 +31,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         int Delay { get; }
         string ExchangeID { get; }
         double ExtendedTrade { get; }
-        TimeSpan ExtendedTradeDate { get; }
+        DateTime ExtendedTradeDate { get; }
         int ExtendedTradeMarketCenter { get; }
         int ExtendedTradeSize { get; }
         TimeSpan ExtendedTradeTime { get; }
