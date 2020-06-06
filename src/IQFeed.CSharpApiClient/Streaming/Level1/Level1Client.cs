@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
+using System.Linq;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
@@ -18,6 +20,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         {
             add => _level1MessageHandler.Summary += value;
             remove => _level1MessageHandler.Summary -= value;
+        }
+        public event Action<UpdateSummaryMessageDynamic> SummaryDynamic
+        {
+            add => _level1MessageHandler.SummaryDynamic += value;
+            remove => _level1MessageHandler.SummaryDynamic -= value;
         }
         public event Action<SystemMessage> System
         {
@@ -44,6 +51,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             add => _level1MessageHandler.Update += value;
             remove => _level1MessageHandler.Update -= value;
         }
+        public event Action<UpdateSummaryMessageDynamic> UpdateDynamic
+        {
+            add => _level1MessageHandler.UpdateDynamic += value;
+            remove => _level1MessageHandler.UpdateDynamic -= value;
+        }
         public event Action<RegionalUpdateMessage> Regional
         {
             add => _level1MessageHandler.Regional += value;
@@ -59,12 +71,16 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         private readonly Level1RequestFormatter _level1RequestFormatter;
         private readonly ILevel1MessageHandler _level1MessageHandler;
         private readonly ILevel1Snapshot _level1Snapshot;
+        private bool _useDynamic = false;
+        private DynamicFieldset[] _dynamicFields = null;
 
         public Level1Client(
             SocketClient socketClient, 
             Level1RequestFormatter level1RequestFormatter, 
             ILevel1MessageHandler level1MessageHandler, 
-            ILevel1Snapshot level1Snapshot)
+            ILevel1Snapshot level1Snapshot,
+            DynamicFieldset[] dynamicFields = null
+        )
         {
             _level1Snapshot = level1Snapshot;
             _socketClient = socketClient;
@@ -73,6 +89,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
 
             _level1RequestFormatter = level1RequestFormatter;
             _level1MessageHandler = level1MessageHandler;
+
+            if (dynamicFields != null)
+            {
+                _useDynamic = true;
+                _dynamicFields = dynamicFields;
+            }
         }
 
         public void ReqWatch(string symbol)
@@ -153,7 +175,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             _socketClient.Send(request);
         }
 
-        public void SelectUpdateFieldName(params DynamicFieldset[] fieldNames)
+        private void SelectUpdateFieldName(params DynamicFieldset[] fieldNames)
         {
             var request = _level1RequestFormatter.SelectUpdateFieldName(fieldNames);
             _socketClient.Send(request);
@@ -228,6 +250,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         {
             var socketClient = (SocketClient)sender;
             socketClient.Send(_level1RequestFormatter.SetProtocol(IQFeedDefault.ProtocolVersion));
+            if (_useDynamic)
+            {
+                SelectUpdateFieldName(_dynamicFields.ToArray());
+            }
             socketClient.Connected -= SocketClientOnConnected;
         }
     }

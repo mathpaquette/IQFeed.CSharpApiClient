@@ -33,7 +33,8 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
             // Arrange
             var fields = new[]
             {
-                DynamicFieldset.Symbol,
+                //Feed always includes Symbol as first field, regardless of request
+                //DynamicFieldset.Symbol,
                 DynamicFieldset.MostRecentTrade,
                 DynamicFieldset.MostRecentTradeSize,
                 DynamicFieldset.MostRecentTradeTime,
@@ -55,7 +56,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
             var formatted = _level1RequestFormatter.SelectUpdateFieldName(fields);
 
             // Assert
-            Assert.AreEqual(formatted, "S,SELECT UPDATE FIELDS,Symbol,Most Recent Trade,Most Recent Trade Size,Most Recent Trade Time,Most Recent Trade Market Center,Total Volume,Bid,Bid Size,Ask,Ask Size,Open,High,Low,Close,Message Contents,Most Recent Trade Conditions\r\n");
+            Assert.AreEqual(formatted, "S,SELECT UPDATE FIELDS,Most Recent Trade,Most Recent Trade Size,Most Recent Trade Time,Most Recent Trade Market Center,Total Volume,Bid,Bid Size,Ask,Ask Size,Open,High,Low,Close,Message Contents,Most Recent Trade Conditions\r\n");
         }
     }
 }

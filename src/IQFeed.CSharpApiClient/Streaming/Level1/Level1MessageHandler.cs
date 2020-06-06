@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Collections.Generic;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
@@ -14,9 +15,22 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         public event Action<TimestampMessage> Timestamp;
         public event Action<NewsMessage> News;
         public event Action<UpdateSummaryMessage> Summary;
+        public event Action<UpdateSummaryMessageDynamic> SummaryDynamic;
         public event Action<UpdateSummaryMessage> Update;
+        public event Action<UpdateSummaryMessageDynamic> UpdateDynamic;
         public event Action<RegionalUpdateMessage> Regional;
 
+        private bool _useDynamic = false;
+        private DynamicFieldset[] _dynamicFields = null;
+
+        public Level1MessageHandler( DynamicFieldset[] dynamicFields = null)
+        {
+            if (dynamicFields != null)
+            {
+                _useDynamic = true;
+                _dynamicFields = dynamicFields;
+            }
+        }
         public void ProcessMessages(byte[] messageBytes, int count)
         {
             string[] messages = Encoding.ASCII.GetString(messageBytes, 0, count - 1).Split(IQFeedDefault.ProtocolLineFeedCharacter);
@@ -67,14 +81,30 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
 
         private void ProcessSummaryMessage(string msg)
         {
-            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
-            Summary?.Invoke(updateSummaryMessage);
+            if (!_useDynamic)
+            {
+                var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
+                Summary?.Invoke(updateSummaryMessage);
+            }
+            else
+            {
+                var updateSummaryMessageDynamic = UpdateSummaryMessageDynamic.Parse(msg, _dynamicFields);
+                SummaryDynamic?.Invoke(updateSummaryMessageDynamic);
+            }
         }
 
         private void ProcessUpdateMessage(string msg)
         {
-            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
-            Update?.Invoke(updateSummaryMessage);
+            if (!_useDynamic)
+            {
+                var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
+                Update?.Invoke(updateSummaryMessage);
+            }
+            else
+            {
+                var updateSummaryMessageDynamic = UpdateSummaryMessageDynamic.Parse(msg,_dynamicFields);
+                UpdateDynamic?.Invoke(updateSummaryMessageDynamic);
+            }
         }
 
         private void ProcessRegionalUpdateMessage(string msg)
