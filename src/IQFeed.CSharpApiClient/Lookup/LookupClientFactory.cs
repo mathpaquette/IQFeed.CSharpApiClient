@@ -4,7 +4,6 @@ using IQFeed.CSharpApiClient.Lookup.Chains;
 using IQFeed.CSharpApiClient.Lookup.Common;
 using IQFeed.CSharpApiClient.Lookup.Historical;
 using IQFeed.CSharpApiClient.Lookup.Historical.Facades;
-using IQFeed.CSharpApiClient.Lookup.Historical.Handlers;
 using IQFeed.CSharpApiClient.Lookup.News;
 using IQFeed.CSharpApiClient.Lookup.Symbol;
 using IQFeed.CSharpApiClient.Lookup.Symbol.ExpiredOptions;

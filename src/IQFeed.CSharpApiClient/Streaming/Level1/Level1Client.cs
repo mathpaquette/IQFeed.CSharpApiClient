@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
+using IQFeed.CSharpApiClient.Streaming.Level1.Handlers;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
@@ -14,7 +15,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             add => _level1MessageHandler.Fundamental += value;
             remove => _level1MessageHandler.Fundamental -= value;
         }
-        public event Action<UpdateSummaryMessage> Summary
+        public event Action<IUpdateSummaryMessage> Summary
         {
             add => _level1MessageHandler.Summary += value;
             remove => _level1MessageHandler.Summary -= value;
@@ -39,7 +40,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             add => _level1MessageHandler.Timestamp += value;
             remove => _level1MessageHandler.Timestamp -= value;
         }
-        public event Action<UpdateSummaryMessage> Update
+        public event Action<IUpdateSummaryMessage> Update
         {
             add => _level1MessageHandler.Update += value;
             remove => _level1MessageHandler.Update -= value;
@@ -155,6 +156,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
 
         public void SelectUpdateFieldName(params DynamicFieldset[] fieldNames)
         {
+            var dynamicFieldHandler = _level1MessageHandler as ILevel1MessageDynamicHandler;
+            if (dynamicFieldHandler == null)
+                throw new Exception("Level1MessageDynamicHandler is required to use DynamicFields property.");
+            
+            dynamicFieldHandler.SetDynamicFields(fieldNames);
+
             var request = _level1RequestFormatter.SelectUpdateFieldName(fieldNames);
             _socketClient.Send(request);
         }
@@ -204,7 +211,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return _level1Snapshot.GetFundamentalSnapshotAsync(symbol.ToUpper());
         }
 
-        public Task<UpdateSummaryMessage> GetUpdateSummarySnapshotAsync(string symbol)
+        public Task<IUpdateSummaryMessage> GetUpdateSummarySnapshotAsync(string symbol)
         {
             return _level1Snapshot.GetUpdateSummarySnapshotAsync(symbol.ToUpper());
         }
@@ -214,7 +221,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return _level1Snapshot.GetFundamentalSnapshot(symbol);
         }
 
-        public UpdateSummaryMessage GetUpdateSummarySnapshot(string symbol)
+        public IUpdateSummaryMessage GetUpdateSummarySnapshot(string symbol)
         {
             return _level1Snapshot.GetUpdateSummarySnapshot(symbol);
         }

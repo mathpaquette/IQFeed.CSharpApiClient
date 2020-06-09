@@ -2,7 +2,7 @@
 using IQFeed.CSharpApiClient.Lookup.Common;
 using IQFeed.CSharpApiClient.Lookup.Historical.Messages;
 
-namespace IQFeed.CSharpApiClient.Lookup.Historical.Handlers
+namespace IQFeed.CSharpApiClient.Lookup.Historical
 {
     public class HistoricalMessageHandler : BaseLookupMessageHandler, IHistoricalMessageHandler
     {

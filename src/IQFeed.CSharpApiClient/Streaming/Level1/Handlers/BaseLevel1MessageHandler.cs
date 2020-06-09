@@ -3,9 +3,9 @@ using System.Text;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
-namespace IQFeed.CSharpApiClient.Streaming.Level1
+namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
 {
-    public class Level1MessageHandler : ILevel1MessageHandler
+    public abstract class BaseLevel1MessageHandler
     {
         public event Action<FundamentalMessage> Fundamental;
         public event Action<SystemMessage> System;
@@ -13,8 +13,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         public event Action<ErrorMessage> Error;
         public event Action<TimestampMessage> Timestamp;
         public event Action<NewsMessage> News;
-        public event Action<UpdateSummaryMessage> Summary;
-        public event Action<UpdateSummaryMessage> Update;
         public event Action<RegionalUpdateMessage> Regional;
 
         public void ProcessMessages(byte[] messageBytes, int count)
@@ -59,22 +57,14 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             }
         }
 
+        protected abstract void ProcessSummaryMessage(string msg);
+
+        protected abstract void ProcessUpdateMessage(string msg);
+
         private void ProcessFundamentalMessage(string msg)
         {
             var fundamentalMessage = FundamentalMessage.Parse(msg);
             Fundamental?.Invoke(fundamentalMessage);
-        }
-
-        private void ProcessSummaryMessage(string msg)
-        {
-            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
-            Summary?.Invoke(updateSummaryMessage);
-        }
-
-        private void ProcessUpdateMessage(string msg)
-        {
-            var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
-            Update?.Invoke(updateSummaryMessage);
         }
 
         private void ProcessRegionalUpdateMessage(string msg)

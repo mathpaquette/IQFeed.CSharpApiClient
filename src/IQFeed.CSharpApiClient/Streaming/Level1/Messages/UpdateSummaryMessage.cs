@@ -61,6 +61,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         public double Close { get; private set; }
         public string MessageContents { get; private set; }
         public string MostRecentTradeConditions { get; private set; }
+        public Level1DynamicFields DynamicFields => throw new Exception("Level1MessageDynamicHandler is required to use DynamicFields property.");
 
         public static UpdateSummaryMessage Parse(string message)
         {
@@ -147,6 +148,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 return hash;
             }
         }
+
         public override string ToString()
         {
             return $"{nameof(Symbol)}: {Symbol}, {nameof(MostRecentTrade)}: {MostRecentTrade}, {nameof(MostRecentTradeSize)}: {MostRecentTradeSize}, {nameof(MostRecentTradeTime)}: {MostRecentTradeTime}, {nameof(MostRecentTradeMarketCenter)}: {MostRecentTradeMarketCenter}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(Bid)}: {Bid}, {nameof(BidSize)}: {BidSize}, {nameof(Ask)}: {Ask}, {nameof(AskSize)}: {AskSize}, {nameof(Open)}: {Open}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Close)}: {Close}, {nameof(MessageContents)}: {MessageContents}, {nameof(MostRecentTradeConditions)}: {MostRecentTradeConditions}";

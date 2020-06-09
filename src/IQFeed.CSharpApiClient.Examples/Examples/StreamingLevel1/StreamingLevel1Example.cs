@@ -54,7 +54,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel1
             Console.WriteLine(msg);
         }
 
-        private void Level1ClientOnSummary(UpdateSummaryMessage msg)
+        private void Level1ClientOnSummary(IUpdateSummaryMessage msg)
         {
             Console.WriteLine(msg);
         }
