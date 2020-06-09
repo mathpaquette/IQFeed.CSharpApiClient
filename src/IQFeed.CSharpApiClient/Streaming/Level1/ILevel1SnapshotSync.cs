@@ -6,6 +6,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
     public interface ILevel1SnapshotSync
     {
         FundamentalMessage GetFundamentalSnapshot(string symbol);
-        UpdateSummaryMessage GetUpdateSummarySnapshot(string symbol);
+        IUpdateSummaryMessage GetUpdateSummarySnapshot(string symbol);
     }
 }
