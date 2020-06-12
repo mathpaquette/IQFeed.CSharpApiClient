@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Reflection;
 using IQFeed.CSharpApiClient.Extensions;
+using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
     public class Level1DynamicFields
     {
+        public const string UpdateMessageTimeFormat = UpdateSummaryMessage.UpdateMessageTimeFormat;
+
         public double SevenDayYield { get; private set; }
         public double Ask { get; private set; }
         public double AskChange { get; private set; }
@@ -78,14 +79,226 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         public double Volatility { get; private set; }
         public double VWAP { get; private set; }
 
+        public Level1DynamicFields(
+            double sevenDayYield,
+            double ask,
+            double askChange,
+            int askMarketCenter,
+            int askSize,
+            TimeSpan askTime,
+            string availableRegions,
+            double averageMaturity,
+            double bid,
+            double bidChange,
+            int bidMarketCenter,
+            int bidSize,
+            TimeSpan bidTime,
+            double change,
+            double changeFromOpen,
+            double close,
+            double closeRange1,
+            double closeRange2,
+            string daysToExpiration,
+            string decimalPrecision,
+            int delay,
+            string exchangeID,
+            double extendedTrade,
+            DateTime extendedTradeDate,
+            int extendedTradeMarketCenter,
+            int extendedTradeSize,
+            TimeSpan extendedTradeTime,
+            double extendedTradingChange,
+            double extendedTradingDifference,
+            char financialStatusIndicator,
+            string fractionDisplayCode,
+            double high,
+            double last,
+            DateTime lastDate,
+            int lastMarketCenter,
+            int lastSize,
+            TimeSpan lastTime,
+            double low,
+            double marketCapitalization,
+            int marketOpen,
+            string messageContents,
+            double mostRecentTrade,
+            string mostRecentTradeConditions,
+            DateTime mostRecentTradeDate,
+            int mostRecentTradeMarketCenter,
+            int mostRecentTradeSize,
+            TimeSpan mostRecentTradeTime,
+            double netAssetValue,
+            int numberOfTradesToday,
+            double open,
+            int openInterest,
+            double openRange1,
+            double openRange2,
+            double percentChange,
+            double percentOffAverageVolume,
+            int previousDayVolume,
+            double priceEarningsRatio,
+            double range,
+            string restrictedCode,
+            double settle,
+            DateTime settlementDate,
+            double spread,
+            string symbol,
+            int tick,
+            int tickID,
+            int totalVolume,
+            string type,
+            double volatility,
+            double vwap)
+        {
+            SevenDayYield = sevenDayYield;
+            Ask = ask;
+            AskChange = askChange;
+            AskMarketCenter = askMarketCenter;
+            AskSize = askSize;
+            AskTime = askTime;
+            AvailableRegions = availableRegions;
+            AverageMaturity = averageMaturity;
+            Bid = bid;
+            BidChange = bidChange;
+            BidMarketCenter = bidMarketCenter;
+            BidSize = bidSize;
+            BidTime = bidTime;
+            Change = change;
+            ChangeFromOpen = changeFromOpen;
+            Close = close;
+            CloseRange1 = closeRange1;
+            CloseRange2 = closeRange2;
+            DaysToExpiration = daysToExpiration;
+            DecimalPrecision = decimalPrecision;
+            Delay = delay;
+            ExchangeID = exchangeID;
+            ExtendedTrade = extendedTrade;
+            ExtendedTradeDate = extendedTradeDate;
+            ExtendedTradeMarketCenter = extendedTradeMarketCenter;
+            ExtendedTradeSize = extendedTradeSize;
+            ExtendedTradeTime = extendedTradeTime;
+            ExtendedTradingChange = extendedTradingChange;
+            ExtendedTradingDifference = extendedTradingDifference;
+            FinancialStatusIndicator = financialStatusIndicator;
+            FractionDisplayCode = fractionDisplayCode;
+            High = high;
+            Last = last;
+            LastDate = lastDate;
+            LastMarketCenter = lastMarketCenter;
+            LastSize = lastSize;
+            LastTime = lastTime;
+            Low = low;
+            MarketCapitalization = marketCapitalization;
+            MarketOpen = marketOpen;
+            MessageContents = messageContents;
+            MostRecentTrade = mostRecentTrade;
+            MostRecentTradeConditions = mostRecentTradeConditions;
+            MostRecentTradeDate = mostRecentTradeDate;
+            MostRecentTradeMarketCenter = mostRecentTradeMarketCenter;
+            MostRecentTradeSize = mostRecentTradeSize;
+            MostRecentTradeTime = mostRecentTradeTime;
+            NetAssetValue = netAssetValue;
+            NumberOfTradesToday = numberOfTradesToday;
+            Open = open;
+            OpenInterest = openInterest;
+            OpenRange1 = openRange1;
+            OpenRange2 = openRange2;
+            PercentChange = percentChange;
+            PercentOffAverageVolume = percentOffAverageVolume;
+            PreviousDayVolume = previousDayVolume;
+            PriceEarningsRatio = priceEarningsRatio;
+            Range = range;
+            RestrictedCode = restrictedCode;
+            Settle = settle;
+            SettlementDate = settlementDate;
+            Spread = spread;
+            Symbol = symbol;
+            Tick = tick;
+            TickID = tickID;
+            TotalVolume = totalVolume;
+            Type = type;
+            Volatility = volatility;
+            VWAP = vwap;
+        }
+
         public static Level1DynamicFields Parse(string message, DynamicFieldset[] fields)
         {
             var values = message.SplitFeedMessage();
-            return new Level1DynamicFields(values, fields);
-        }
 
-        public Level1DynamicFields(string[] values, DynamicFieldset[] fields)
-        {
+            #region Variables
+
+            double sevenDayYield = default;
+            double ask = default;
+            double askChange = default;
+            int askMarketCenter = default;
+            int askSize = default;
+            TimeSpan askTime = default;
+            string availableRegions = default;
+            double averageMaturity = default;
+            double bid = default;
+            double bidChange = default;
+            int bidMarketCenter = default;
+            int bidSize = default;
+            TimeSpan bidTime = default;
+            double change = default;
+            double changeFromOpen = default;
+            double close = default;
+            double closeRange1 = default;
+            double closeRange2 = default;
+            string daysToExpiration = default;
+            string decimalPrecision = default;
+            int delay = default;
+            string exchangeID = default;
+            double extendedTrade = default;
+            DateTime extendedTradeDate = default;
+            int extendedTradeMarketCenter = default;
+            int extendedTradeSize = default;
+            TimeSpan extendedTradeTime = default;
+            double extendedTradingChange = default;
+            double extendedTradingDifference = default;
+            char financialStatusIndicator = default;
+            string fractionDisplayCode = default;
+            double high = default;
+            double last = default;
+            DateTime lastDate = default;
+            int lastMarketCenter = default;
+            int lastSize = default;
+            TimeSpan lastTime = default;
+            double low = default;
+            double marketCapitalization = default;
+            int marketOpen = default;
+            string messageContents = default;
+            double mostRecentTrade = default;
+            string mostRecentTradeConditions = default;
+            DateTime mostRecentTradeDate = default;
+            int mostRecentTradeMarketCenter = default;
+            int mostRecentTradeSize = default;
+            TimeSpan mostRecentTradeTime = default;
+            double netAssetValue = default;
+            int numberOfTradesToday = default;
+            double open = default;
+            int openInterest = default;
+            double openRange1 = default;
+            double openRange2 = default;
+            double percentChange = default;
+            double percentOffAverageVolume = default;
+            int previousDayVolume = default;
+            double priceEarningsRatio = default;
+            double range = default;
+            string restrictedCode = default;
+            double settle = default;
+            DateTime settlementDate = default;
+            double spread = default;
+            string symbol = default;
+            int tick = default;
+            int tickID = default;
+            int totalVolume = default;
+            string type = default;
+            double volatility = default;
+            double vwap = default;
+
+            #endregion
+
             for (var i = 0; i < fields.Length; i++)
             {
                 var field = fields[i];
@@ -94,8 +307,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                 switch (field)
                 {
                     case DynamicFieldset.SevenDayYield:
-                        if (double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var sevenDayYield))
-                            SevenDayYield = sevenDayYield;
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out sevenDayYield);
                         break;
                     case DynamicFieldset.Ask:
                         // TODO
@@ -284,7 +496,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                         // TODO
                         break;
                     case DynamicFieldset.Symbol:
-                        Symbol = value;
+                        symbol = value;
                         break;
                     case DynamicFieldset.Tick:
                         // TODO
@@ -306,6 +518,77 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                         break;
                 }
             }
+
+            return new Level1DynamicFields(
+                sevenDayYield,
+                ask,
+                askChange,
+                askMarketCenter,
+                askSize,
+                askTime,
+                availableRegions,
+                averageMaturity,
+                bid,
+                bidChange,
+                bidMarketCenter,
+                bidSize,
+                bidTime,
+                change,
+                changeFromOpen,
+                close,
+                closeRange1,
+                closeRange2,
+                daysToExpiration,
+                decimalPrecision,
+                delay,
+                exchangeID,
+                extendedTrade,
+                extendedTradeDate,
+                extendedTradeMarketCenter,
+                extendedTradeSize,
+                extendedTradeTime,
+                extendedTradingChange,
+                extendedTradingDifference,
+                financialStatusIndicator,
+                fractionDisplayCode,
+                high,
+                last,
+                lastDate,
+                lastMarketCenter,
+                lastSize,
+                lastTime,
+                low,
+                marketCapitalization,
+                marketOpen,
+                messageContents,
+                mostRecentTrade,
+                mostRecentTradeConditions,
+                mostRecentTradeDate,
+                mostRecentTradeMarketCenter,
+                mostRecentTradeSize,
+                mostRecentTradeTime,
+                netAssetValue,
+                numberOfTradesToday,
+                open,
+                openInterest,
+                openRange1,
+                openRange2,
+                percentChange,
+                percentOffAverageVolume,
+                previousDayVolume,
+                priceEarningsRatio,
+                range,
+                restrictedCode,
+                settle,
+                settlementDate,
+                spread,
+                symbol,
+                tick,
+                tickID,
+                totalVolume,
+                type,
+                volatility,
+                vwap);
         }
     }
 }

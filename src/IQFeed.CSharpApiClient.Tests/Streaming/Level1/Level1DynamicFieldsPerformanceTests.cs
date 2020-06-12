@@ -13,8 +13,8 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
         public void Should_Convert_SevenDayYield()
         {
             // Arrange
+            var message = "AAPL,";
             var fields = new[] { DynamicFieldset.Symbol };
-            var values = new[] { "AAPL" };
 
             // Act
             for (int i = 0; i < 5; i++)
@@ -23,7 +23,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
 
                 for (int j = 0; j < 1000000; j++)
                 {
-                    var dynamicFields = new Level1DynamicFields(values, fields);
+                    var dynamicFields = Level1DynamicFields.Parse(message, fields);
                 }
 
                 sw.Stop();

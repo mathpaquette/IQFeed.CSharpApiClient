@@ -8,7 +8,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
         public event Action<IUpdateSummaryMessage> Summary;
         public event Action<IUpdateSummaryMessage> Update;
 
-        private DynamicFieldset[] _dynamicFieldsets;
+        private DynamicFieldset[] _dynamicFieldsets; // not thread-safe
 
         public void SetDynamicFields(params DynamicFieldset[] fieldNames)
         {
