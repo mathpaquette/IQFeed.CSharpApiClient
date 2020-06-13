@@ -13,7 +13,6 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public TickMessage(DateTime timestamp, double last, int lastSize, int totalVolume, double bid, double ask,
             long tickId, char basisForLast, int tradeMarketCenter, string tradeConditions, string requestId = null)
         {
-            RequestId = requestId;
             Timestamp = timestamp;
             Last = last;
             LastSize = lastSize;
@@ -24,9 +23,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             BasisForLast = basisForLast;
             TradeMarketCenter = tradeMarketCenter;
             TradeConditions = tradeConditions;
+            RequestId = requestId;
         }
 
-        public string RequestId { get; private set; }
         public DateTime Timestamp { get; private set; }
         public double Last { get; private set; }
         public int LastSize { get; private set; }
@@ -37,7 +36,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public char BasisForLast { get; private set; }
         public int TradeMarketCenter { get; private set; }
         public string TradeConditions { get; private set; }
-
+        public string RequestId { get; private set; }
 
         public static TickMessage Parse(string message)
         {
@@ -127,7 +126,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 
         public override string ToString()
         {
-            return $"{nameof(RequestId)}: {RequestId}, {nameof(Timestamp)}: {Timestamp}, {nameof(Last)}: {Last}, {nameof(LastSize)}: {LastSize}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(Bid)}: {Bid}, {nameof(Ask)}: {Ask}, {nameof(TickId)}: {TickId}, {nameof(BasisForLast)}: {BasisForLast}, {nameof(TradeMarketCenter)}: {TradeMarketCenter}, {nameof(TradeConditions)}: {TradeConditions}";
+            return $"{nameof(Timestamp)}: {Timestamp}, {nameof(Last)}: {Last}, {nameof(LastSize)}: {LastSize}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(Bid)}: {Bid}, {nameof(Ask)}: {Ask}, {nameof(TickId)}: {TickId}, {nameof(BasisForLast)}: {BasisForLast}, {nameof(TradeMarketCenter)}: {TradeMarketCenter}, {nameof(TradeConditions)}: {TradeConditions}, {nameof(RequestId)}: {RequestId}";
         }
     }
 }

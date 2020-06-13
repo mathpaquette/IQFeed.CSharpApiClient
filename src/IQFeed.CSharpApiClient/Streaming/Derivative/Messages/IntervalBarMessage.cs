@@ -41,7 +41,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
             RequestId = requestId;
         }
 
-        public string RequestId { get; private set; }
         public IntervalBarType Type { get; private set; }
         public string Symbol { get; private set; }
         public DateTime Timestamp { get; private set; }
@@ -64,6 +63,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
         /// Number of trades in the interval (only valid for tick interval)
         /// </summary>
         public int NumberOfTrades { get; private set; }
+
+        public string RequestId { get; private set; }
 
         public static IntervalBarMessage Parse(string message)
         {
@@ -153,7 +154,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
 
         public override string ToString()
         {
-            return $"{nameof(RequestId)}: {RequestId}, {nameof(Type)}: {Type}, {nameof(Symbol)}: {Symbol}, {nameof(Timestamp)}: {Timestamp}, {nameof(Open)}: {Open}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Last)}: {Last}, {nameof(CummulativeVolume)}: {CummulativeVolume}, {nameof(IntervalVolume)}: {IntervalVolume}, {nameof(NumberOfTrades)}: {NumberOfTrades}";
+            return $"{nameof(Type)}: {Type}, {nameof(Symbol)}: {Symbol}, {nameof(Timestamp)}: {Timestamp}, {nameof(Open)}: {Open}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Last)}: {Last}, {nameof(CummulativeVolume)}: {CummulativeVolume}, {nameof(IntervalVolume)}: {IntervalVolume}, {nameof(NumberOfTrades)}: {NumberOfTrades}, {nameof(RequestId)}: {RequestId}";
         }
     }
 }

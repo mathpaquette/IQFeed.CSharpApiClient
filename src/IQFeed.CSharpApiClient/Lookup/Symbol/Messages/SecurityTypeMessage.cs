@@ -7,24 +7,24 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
     {
         public SecurityTypeMessage(int securityTypeId, string shortName, string longName, string requestId = null)
         {
-            RequestId = requestId;
             SecurityTypeId = securityTypeId;
             ShortName = shortName;
             LongName = longName;
+            RequestId = requestId;
         }
 
-        public string RequestId { get; private set; }
         public int SecurityTypeId { get; private set; }
         public string ShortName { get; private set; }
         public string LongName { get; private set; }
+        public string RequestId { get; private set; }
 
         public static SecurityTypeMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
 
             return new SecurityTypeMessage(
-                int.Parse(values[0], CultureInfo.InvariantCulture), 
-                values[1], 
+                int.Parse(values[0], CultureInfo.InvariantCulture),
+                values[1],
                 values[2]);
         }
 
@@ -64,7 +64,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 
         public override string ToString()
         {
-            return $"{nameof(SecurityTypeId)}: {SecurityTypeId}, {nameof(ShortName)}: {ShortName}, {nameof(LongName)}: {LongName}";
+            return $"{nameof(SecurityTypeId)}: {SecurityTypeId}, {nameof(ShortName)}: {ShortName}, {nameof(LongName)}: {LongName}, {nameof(RequestId)}: {RequestId}";
         }
     }
 }

@@ -9,21 +9,21 @@ namespace IQFeed.CSharpApiClient.Lookup.News.Messages
         // 20200611133103
         public const string NewsHeadlinesTimestampFormat = "yyyyMMddHHmmss";
 
-        public string RequestId { get; private set; }
         public string Source { get; private set; }
         public string HeadlineId { get; private set; }
         public string[] Symbols { get; private set; }
         public DateTime Timestamp { get; private set; }
         public string HeadlineText { get; private set; }
+        public string RequestId { get; private set; }
 
         public NewsHeadlinesMessage(string source, string headlineId, string[] symbols, DateTime timestamp, string headlineText, string requestId = null)
         {
-            RequestId = requestId;
             Source = source;
             HeadlineId = headlineId;
             Symbols = symbols;
             Timestamp = timestamp;
             HeadlineText = headlineText;
+            RequestId = requestId;
         }
 
         public static NewsHeadlinesMessage Parse(string message)
@@ -83,7 +83,7 @@ namespace IQFeed.CSharpApiClient.Lookup.News.Messages
 
         public override string ToString()
         {
-            return $"{nameof(RequestId)}: {RequestId}, {nameof(Source)}: {Source}, {nameof(HeadlineId)}: {HeadlineId}, {nameof(Symbols)}: {Symbols}, {nameof(Timestamp)}: {Timestamp}, {nameof(HeadlineText)}: {HeadlineText}";
+            return $"{nameof(Source)}: {Source}, {nameof(HeadlineId)}: {HeadlineId}, {nameof(Symbols)}: {Symbols}, {nameof(Timestamp)}: {Timestamp}, {nameof(HeadlineText)}: {HeadlineText}, {nameof(RequestId)}: {RequestId}";
         }
     }
 }
