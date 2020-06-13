@@ -40,11 +40,11 @@ deploy:
   # Deploying to NuGet feed (MyGet.org)
   - provider: NuGet
     name: MyGet
-    server: https://www.myget.org/F/mathpaquette/api/v2/package
+    server: https://www.myget.org/F/iqfeedcsharpapiclient/api/v2/package
     api_key:
       secure: UBKXVuF4UwMea9mcl8hGLaHxOTBu3GNgzPvuEUWIzU+Nf6a8eTtBRyKITBepZl6i
     skip_symbols: false
-    symbol_server: https://www.myget.org/F/mathpaquette/symbols/api/v2/package
+    symbol_server: https://www.myget.org/F/iqfeedcsharpapiclient/symbols/api/v2/package
     artifact: /.*\.nupkg/
 
   # Deploying to NuGet feed (NuGet.org)
