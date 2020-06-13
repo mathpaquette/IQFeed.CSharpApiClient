@@ -2,9 +2,6 @@
 
 [![Gitter](https://badges.gitter.im/IQFeed-CSharpApiClient/public.svg)](https://gitter.im/IQFeed-CSharpApiClient/public)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/6u1f245xxvkri7s2/branch/master?svg=true)](https://ci.appveyor.com/project/mathpaquette/iqfeed-csharpapiclient/branch/master)
-[![NuGet Version and Downloads count](https://buildstats.info/nuget/IQFeed.CSharpApiClient)](https://www.nuget.org/packages/IQFeed.CSharpApiClient)
-
 IQFeed.CSharpApiClient is fastest and the most well designed C# DTN IQFeed socket API connector available to the open source community! Currently supporting the latest stable IQFeed protocol version 6.0.
 
 IQFeed is an affordable and reputable Internet market data provider. For more [info](http://www.iqfeed.net/index.cfm?displayaction=developer&section=main).<br>
@@ -34,6 +31,14 @@ If you appreciate this project, please star :star: it now!
 - [Python support](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/docs/USING-WITH-PYTHON.md) :new:
 
 ## Usage
+
+### Packages
+MyGet Pre-release feed: https://www.myget.org/gallery/iqfeedcsharpapiclient
+
+| Package | NuGet Stable | MyGet Pre-release | Downloads |
+| ------- | ------------ | ----------------- | --------- |
+| [IQFeed.CSharpApiClient](https://www.nuget.org/packages/IQFeed.CSharpApiClient/) | [![IQFeed.CSharpApiClient](https://img.shields.io/nuget/v/IQFeed.CSharpApiClient.svg)](https://www.nuget.org/packages/IQFeed.CSharpApiClient/) | [![IQFeed.CSharpApiClient](https://img.shields.io/myget/iqfeedcsharpapiclient/vpre/IQFeed.CSharpApiClient.svg)](https://www.myget.org/feed/iqfeedcsharpapiclient/package/nuget/IQFeed.CSharpApiClient) | [![IQFeed.CSharpApiClient](https://img.shields.io/nuget/dt/IQFeed.CSharpApiClient.svg)](https://www.nuget.org/packages/IQFeed.CSharpApiClient/) |
+| [IQFeed.CSharpApiClient.Extensions](https://www.nuget.org/packages/IQFeed.CSharpApiClient.Extensions/) | [![IQFeed.CSharpApiClient.Extensions](https://img.shields.io/nuget/v/IQFeed.CSharpApiClient.Extensions.svg)](https://www.nuget.org/packages/IQFeed.CSharpApiClient.Extensions/) | [![IQFeed.CSharpApiClient.Extensions](https://img.shields.io/myget/iqfeedcsharpapiclient/vpre/IQFeed.CSharpApiClient.Extensions.svg)](https://www.myget.org/feed/iqfeedcsharpapiclient/package/nuget/IQFeed.CSharpApiClient.Extensions) | [![IQFeed.CSharpApiClient.Extensions](https://img.shields.io/nuget/dt/IQFeed.CSharpApiClient.Extensions.svg)](https://www.nuget.org/packages/IQFeed.CSharpApiClient.Extensions/) |
 
 ### Installation
 
