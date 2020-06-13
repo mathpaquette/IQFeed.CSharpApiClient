@@ -1,5 +1,6 @@
 # IQFeed.CSharpApiClient with Python
-The purpose of the document is to show How-To use IQFeed.CSharpApiClient with python. Feel free to improve this doc by creating a PR.
+The purpose of the document is to show How-To use IQFeed.CSharpApiClient with Python. Feel free to improve this doc by creating a PR.  
+You'll find more [examples](#additional-examples) down below.
 
 ## How-To
 This is pretty straightforward to use a compiled DLL through Python code with certain conditions. For more [info](https://github.com/pythonnet/pythonnet/wiki).
@@ -10,7 +11,7 @@ This is pretty straightforward to use a compiled DLL through Python code with ce
 ##### Step 2 - Download and extract the DLL
 - Go to [Nuget.org](https://www.nuget.org/packages/IQFeed.CSharpApiClient/) and click 'Download package' to fetch the latest .nupkg file.  
 - Then use your favorite zip utility, i.e. 7-Zip, WinRAR, etc. to extract files.  
-- Copy DLL file from `lib\net45\IQFeed.CSharpApiClient.dll` to one folder.
+- Copy DLL file from `lib\net461\IQFeed.CSharpApiClient.dll` to one folder.
 
 ##### Step 3 - Execute the python code 
 - Set `<folder>` where you extracted the DLL file
@@ -18,33 +19,108 @@ This is pretty straightforward to use a compiled DLL through Python code with ce
 - Run the code below
 
 ```python
-## Dynamically add IQFeed.CSharpApiClient DLL
+# Dynamically add IQFeed.CSharpApiClient DLL
 assembly_path = r"C:\<folder>"
 
 import sys
 sys.path.append(assembly_path)
 
-## Reference IQFeed.CSharpApiClient DLL
+# Reference IQFeed.CSharpApiClient DLL
 import clr
 clr.AddReference("IQFeed.CSharpApiClient")
 
 from IQFeed.CSharpApiClient import IQFeedLauncher
-from IQFeed.CSharpApiClient.Lookup import LookupClientFactory
 
-## Step 1 - Run IQConnect launcher
+# Step 1 - Run IQConnect launcher
 IQFeedLauncher.Start("<login>", "<password>", "<product_id>")
 
-## Step 2 - Use the appropriate factory to create the client
+# Step 2 - Use the appropriate factory to create the client
+from IQFeed.CSharpApiClient.Lookup import LookupClientFactory
 lookupClient = LookupClientFactory.CreateNew()
 
-## Step 3 - Connect it
+# Step 3 - Connect it
 lookupClient.Connect()
 
 # Step 4 - Make any requests you need or want! 
-tickMessages = lookupClient.Historical.GetHistoryTickDatapoints("AAPL", 100)
+ticks = lookupClient.Historical.GetHistoryTickDatapoints("AAPL", 100)
 
-for tick in tickMessages:
+for tick in ticks:
     print(tick)
 
 print('Completed!')
+```
+
+
+## Additional examples
+
+#### Historical (for large request)
+```python
+assembly_path = r"C:\<folder>"
+import sys
+sys.path.append(assembly_path)
+import clr
+clr.AddReference("IQFeed.CSharpApiClient")
+from IQFeed.CSharpApiClient import IQFeedLauncher
+IQFeedLauncher.Start("<login>", "<password>", "<product_id>")
+
+from IQFeed.CSharpApiClient.Lookup import LookupClientFactory
+from IQFeed.CSharpApiClient.Lookup.Historical.Messages import TickMessage
+import os
+
+# Create Lookup client
+lookupClient = LookupClientFactory.CreateNew()
+
+# Connect
+lookupClient.Connect()
+
+# Save ticks to disk
+ticksFilename = lookupClient.Historical.File.GetHistoryTickDatapoints("AAPL", 100)
+
+# Move tmp filename
+dstTicksFilename = "ticks.csv"
+os.replace(ticksFilename, dstTicksFilename)
+
+# Read ticks from disk
+ticksFromFile = TickMessage.ParseFromFile(dstTicksFilename)
+for tick in ticksFromFile:
+    print(tick)
+```
+
+
+#### Streaming Level 1
+```python
+assembly_path = r"C:\<folder>"
+import sys
+sys.path.append(assembly_path)
+import clr
+clr.AddReference("IQFeed.CSharpApiClient")
+from IQFeed.CSharpApiClient import IQFeedLauncher
+IQFeedLauncher.Start("<login>", "<password>", "<product_id>")
+
+from IQFeed.CSharpApiClient.Lookup import LookupClientFactory
+from IQFeed.CSharpApiClient.Lookup.Historical.Messages import TickMessage
+import os
+
+from IQFeed.CSharpApiClient.Streaming.Level1 import Level1ClientFactory
+import time
+
+# Create Level1 client
+level1Client = Level1ClientFactory.CreateNew()
+
+# Connect
+level1Client.Connect()
+
+# Level 1 handler function
+def level1UpdateSummaryHandler(msg):
+    print(msg)
+
+# Subscribe to Summary/Update events
+level1Client.Summary += level1UpdateSummaryHandler
+level1Client.Update += level1UpdateSummaryHandler
+
+# Request streaming
+level1Client.ReqWatch("AAPL")
+
+# Wait 30 seconds
+time.sleep(30)
 ```
