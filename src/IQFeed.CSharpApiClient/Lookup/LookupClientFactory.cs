@@ -40,7 +40,12 @@ namespace IQFeed.CSharpApiClient.Lookup
             );
 
             // News
-            var newsFacade = new NewsFacade();
+            var newsFacade = new NewsFacade(
+                new NewsRequestFormatter(),
+                lookupDispatcher,
+                exceptionFactory, 
+                new NewsMessageHandler(), 
+                timeout);
 
             // Symbol
             var symbolFacade = new SymbolFacade(

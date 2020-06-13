@@ -29,7 +29,7 @@ If you appreciate this project, please star :star: it now!
 - Streaming events are distributed in a consistent way using Action delegates
 - Handle multiple socket connections for at least 50% performance increase when requesting lookup data
 - Sockets are using [SocketAsyncEventArgs](<https://msdn.microsoft.com/en-us/library/system.net.sockets.socketasynceventargs(v=vs.110).aspx>) for maximum performance and trying to reduce pressure on GC
-- Support for .NET Core 2.0
+- Support for .NET Core
 - No 3rd party dependency
 - [Python support](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/docs/USING-WITH-PYTHON.md) :new:
 
@@ -88,7 +88,7 @@ var tickMessages = await lookupClient.Historical.GetHistoryTickDatapointsAsync("
 #### Lookup data
 
 - [x] Historical data
-- [ ] News data
+- [x] News data :new:
 - [x] Symbol Lookup data
 - [x] Chains Lookup data
 
