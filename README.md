@@ -10,15 +10,20 @@ IQFeed is an affordable and reputable Internet market data provider. For more [i
 If you appreciate this project, please star :star: it now!
 
 ## Table of Contents
-
-- [Features](#features)
-- [Usage](#usage)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
-  - [Examples](#examples)
-- [IQFeed API support status](#iqfeed-api-support-status)
-- [Support](#support)
-- [Contributing](#contributing)
+  - [Features](#features)
+  - [Usage](#usage)
+    - [Packages](#packages)
+    - [Installation](#installation)
+    - [Configuration](#configuration)
+      - [User environment variables](#user-environment-variables)
+      - [app.config](#appconfig)
+    - [Examples](#examples)
+    - [IQFeed API support status](#iqfeed-api-support-status)
+      - [Streaming data](#streaming-data)
+      - [Lookup data](#lookup-data)
+  - [Support](#support)
+  - [Sponsors](#sponsors)
+  - [Contributing](#contributing)
 
 ## Features
 
@@ -35,9 +40,9 @@ If you appreciate this project, please star :star: it now!
 ### Packages
 MyGet Pre-release feed: https://www.myget.org/gallery/iqfeedcsharpapiclient
 
-| Package | NuGet Stable | MyGet Pre-release | Downloads |
-| ------- | ------------ | ----------------- | --------- |
-| [IQFeed.CSharpApiClient](https://www.nuget.org/packages/IQFeed.CSharpApiClient/) | [![IQFeed.CSharpApiClient](https://img.shields.io/nuget/v/IQFeed.CSharpApiClient.svg)](https://www.nuget.org/packages/IQFeed.CSharpApiClient/) | [![IQFeed.CSharpApiClient](https://img.shields.io/myget/iqfeedcsharpapiclient/vpre/IQFeed.CSharpApiClient.svg)](https://www.myget.org/feed/iqfeedcsharpapiclient/package/nuget/IQFeed.CSharpApiClient) | [![IQFeed.CSharpApiClient](https://img.shields.io/nuget/dt/IQFeed.CSharpApiClient.svg)](https://www.nuget.org/packages/IQFeed.CSharpApiClient/) |
+| Package                                                                                                | NuGet Stable                                                                                                                                                                    | MyGet Pre-release                                                                                                                                                                                                                       | Downloads                                                                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [IQFeed.CSharpApiClient](https://www.nuget.org/packages/IQFeed.CSharpApiClient/)                       | [![IQFeed.CSharpApiClient](https://img.shields.io/nuget/v/IQFeed.CSharpApiClient.svg)](https://www.nuget.org/packages/IQFeed.CSharpApiClient/)                                  | [![IQFeed.CSharpApiClient](https://img.shields.io/myget/iqfeedcsharpapiclient/vpre/IQFeed.CSharpApiClient.svg)](https://www.myget.org/feed/iqfeedcsharpapiclient/package/nuget/IQFeed.CSharpApiClient)                                  | [![IQFeed.CSharpApiClient](https://img.shields.io/nuget/dt/IQFeed.CSharpApiClient.svg)](https://www.nuget.org/packages/IQFeed.CSharpApiClient/)                                  |
 | [IQFeed.CSharpApiClient.Extensions](https://www.nuget.org/packages/IQFeed.CSharpApiClient.Extensions/) | [![IQFeed.CSharpApiClient.Extensions](https://img.shields.io/nuget/v/IQFeed.CSharpApiClient.Extensions.svg)](https://www.nuget.org/packages/IQFeed.CSharpApiClient.Extensions/) | [![IQFeed.CSharpApiClient.Extensions](https://img.shields.io/myget/iqfeedcsharpapiclient/vpre/IQFeed.CSharpApiClient.Extensions.svg)](https://www.myget.org/feed/iqfeedcsharpapiclient/package/nuget/IQFeed.CSharpApiClient.Extensions) | [![IQFeed.CSharpApiClient.Extensions](https://img.shields.io/nuget/dt/IQFeed.CSharpApiClient.Extensions.svg)](https://www.nuget.org/packages/IQFeed.CSharpApiClient.Extensions/) |
 
 ### Installation
