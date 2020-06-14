@@ -12,7 +12,6 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 
         public IntervalMessage(DateTime timestamp, double high, double low, double open, double close, long totalVolume, int periodVolume, int numberOfTrades, string requestId = null)
         {
-            RequestId = requestId;
             Timestamp = timestamp;
             High = high;
             Low = low;
@@ -21,9 +20,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             TotalVolume = totalVolume;
             PeriodVolume = periodVolume;
             NumberOfTrades = numberOfTrades;
+            RequestId = requestId;
         }
 
-        public string RequestId { get; private set; }
         public DateTime Timestamp { get; private set; }
         public double High { get; private set; }
         public double Low { get; private set; }
@@ -32,6 +31,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public long TotalVolume { get; private set; }
         public int PeriodVolume { get; private set; }
         public int NumberOfTrades { get; private set; }
+        public string RequestId { get; private set; }
 
         public static IntervalMessage Parse(string message)
         {
@@ -106,7 +106,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 
         public override string ToString()
         {
-            return $"{nameof(RequestId)}: {RequestId}, {nameof(Timestamp)}: {Timestamp}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Open)}: {Open}, {nameof(Close)}: {Close}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(PeriodVolume)}: {PeriodVolume}, {nameof(NumberOfTrades)}: {NumberOfTrades}";
+            return $"{nameof(Timestamp)}: {Timestamp}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Open)}: {Open}, {nameof(Close)}: {Close}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(PeriodVolume)}: {PeriodVolume}, {nameof(NumberOfTrades)}: {NumberOfTrades}, {nameof(RequestId)}: {RequestId}";
         }
     }
 }

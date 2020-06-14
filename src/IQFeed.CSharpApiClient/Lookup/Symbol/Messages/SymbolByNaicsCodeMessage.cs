@@ -7,20 +7,20 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
     {
         public SymbolByNaicsCodeMessage(int naicsCode, string symbol, int listedMarketId, int securityTypeId, string description, string requestId = null)
         {
-            RequestId = requestId;
             NaicsCode = naicsCode;
             Symbol = symbol;
             ListedMarketId = listedMarketId;
             SecurityTypeId = securityTypeId;
             Description = description;
+            RequestId = requestId;
         }
 
-        public string RequestId { get; private set; }
         public int NaicsCode { get; private set; }
         public string Symbol { get; private set; }
         public int ListedMarketId { get; private set; }
         public int SecurityTypeId { get; private set; }
         public string Description { get; private set; }
+        public string RequestId { get; private set; }
 
         public static SymbolByNaicsCodeMessage Parse(string message)
         {
@@ -68,7 +68,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
                 hash = hash * 29 + NaicsCode.GetHashCode();
                 hash = hash * 29 + Symbol.GetHashCode();
                 hash = hash * 29 + ListedMarketId.GetHashCode();
-                hash = hash * 29 + SecurityTypeId.GetHashCode();                
+                hash = hash * 29 + SecurityTypeId.GetHashCode();
                 hash = hash * 29 + Description.GetHashCode();
                 return hash;
             }
@@ -76,7 +76,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 
         public override string ToString()
         {
-            return $"{nameof(NaicsCode)}: {NaicsCode}, {nameof(Symbol)}: {Symbol}, {nameof(ListedMarketId)}: {ListedMarketId}, {nameof(SecurityTypeId)}: {SecurityTypeId}, {nameof(Description)}: {Description}";
+            return $"{nameof(NaicsCode)}: {NaicsCode}, {nameof(Symbol)}: {Symbol}, {nameof(ListedMarketId)}: {ListedMarketId}, {nameof(SecurityTypeId)}: {SecurityTypeId}, {nameof(Description)}: {Description}, {nameof(RequestId)}: {RequestId}";
         }
     }
 }

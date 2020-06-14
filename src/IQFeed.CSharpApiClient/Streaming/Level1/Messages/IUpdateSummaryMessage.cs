@@ -20,5 +20,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         double Close { get; }
         string MessageContents { get; }
         string MostRecentTradeConditions { get; }
+        Level1DynamicFields DynamicFields { get; }
     }
 }

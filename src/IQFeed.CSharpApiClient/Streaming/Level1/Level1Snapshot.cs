@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Socket;
+using IQFeed.CSharpApiClient.Streaming.Level1.Handlers;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
@@ -14,7 +15,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         private readonly ILevel1MessageHandler _level1MessageHandler;
         private readonly TimeSpan _timeout;
 
-        public Level1Snapshot(SocketClient socketClient, Level1RequestFormatter level1RequestFormatter, ILevel1MessageHandler level1MessageHandler, TimeSpan timeout)
+        public Level1Snapshot(
+            SocketClient socketClient, 
+            Level1RequestFormatter level1RequestFormatter, 
+            ILevel1MessageHandler level1MessageHandler,
+            TimeSpan timeout)
         {
             _timeout = timeout;
             _socketClient = socketClient;
@@ -27,7 +32,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return GetFundamentalMessageAsync(symbol);
         }
 
-        public Task<UpdateSummaryMessage> GetUpdateSummarySnapshotAsync(string symbol)
+        public Task<IUpdateSummaryMessage> GetUpdateSummarySnapshotAsync(string symbol)
         {
             return GetUpdateSummaryMessageAsync(symbol);
         }
@@ -37,7 +42,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return GetFundamentalSnapshotAsync(symbol).SynchronouslyAwaitTaskResult();
         }
 
-        public UpdateSummaryMessage GetUpdateSummarySnapshot(string symbol)
+        public IUpdateSummaryMessage GetUpdateSummarySnapshot(string symbol)
         {
             return GetUpdateSummarySnapshotAsync(symbol).SynchronouslyAwaitTaskResult();
         }
@@ -67,13 +72,13 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return await res.Task.ConfigureAwait(false);
         }
 
-        private async Task<UpdateSummaryMessage> GetUpdateSummaryMessageAsync(string symbol)
+        private async Task<IUpdateSummaryMessage> GetUpdateSummaryMessageAsync(string symbol)
         {
             var ct = new CancellationTokenSource(_timeout);
-            var res = new TaskCompletionSource<UpdateSummaryMessage>();
+            var res = new TaskCompletionSource<IUpdateSummaryMessage>();
             ct.Token.Register(() => res.TrySetCanceled(), false);
 
-            void Level1ClientOnUpdate(UpdateSummaryMessage updateSummaryMessage)
+            void Level1ClientOnUpdate(IUpdateSummaryMessage updateSummaryMessage)
             {
                 if (updateSummaryMessage.Symbol == symbol)
                     res.TrySetResult(updateSummaryMessage);

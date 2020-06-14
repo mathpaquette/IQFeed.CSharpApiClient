@@ -4,7 +4,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
 {
     public interface IIntervalBarMessage
     {
-        string RequestId { get; }
         IntervalBarType Type { get; }
         string Symbol { get; }
         DateTime Timestamp { get; }
@@ -27,5 +26,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
         /// Number of trades in the interval (only valid for tick interval)
         /// </summary>
         int NumberOfTrades { get; }
+     
+        string RequestId { get; }
     }
 }

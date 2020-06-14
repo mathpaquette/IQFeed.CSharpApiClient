@@ -12,7 +12,6 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 
         public DailyWeeklyMonthlyMessage(DateTime timestamp, double high, double low, double open, double close, long periodVolume, int openInterest, string requestId = null)
         {
-            RequestId = requestId;
             Timestamp = timestamp;
             High = high;
             Low = low;
@@ -20,9 +19,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             Close = close;
             PeriodVolume = periodVolume;
             OpenInterest = openInterest;
+            RequestId = requestId;
         }
 
-        public string RequestId { get; private set; }
         public DateTime Timestamp { get; private set; }
         public double High { get; private set; }
         public double Low { get; private set; }
@@ -30,6 +29,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public double Close { get; private set; }
         public long PeriodVolume { get; private set; }
         public int OpenInterest { get; private set; }
+        public string RequestId { get; private set; }
 
         public static DailyWeeklyMonthlyMessage Parse(string message)
         {
@@ -100,7 +100,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 
         public override string ToString()
         {
-            return $"{nameof(RequestId)}: {RequestId}, {nameof(Timestamp)}: {Timestamp}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Open)}: {Open}, {nameof(Close)}: {Close}, {nameof(PeriodVolume)}: {PeriodVolume}, {nameof(OpenInterest)}: {OpenInterest}";
+            return $"{nameof(Timestamp)}: {Timestamp}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Open)}: {Open}, {nameof(Close)}: {Close}, {nameof(PeriodVolume)}: {PeriodVolume}, {nameof(OpenInterest)}: {OpenInterest}, {nameof(RequestId)}: {RequestId}";
         }
     }
 }

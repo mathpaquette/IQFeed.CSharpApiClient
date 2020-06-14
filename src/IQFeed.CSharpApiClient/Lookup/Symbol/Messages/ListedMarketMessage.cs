@@ -7,20 +7,20 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
     {
         public ListedMarketMessage(int listedMarketId, string shortName, string longName, int groupID, string shortGroupName, string requestId = null)
         {
-            RequestId = requestId;
             ListedMarketId = listedMarketId;
             ShortName = shortName;
             LongName = longName;
             GroupId = groupID;
             ShortGroupName = shortGroupName;
+            RequestId = requestId;
         }
 
-        public string RequestId { get; private set; }
         public int ListedMarketId { get; private set; }
         public string ShortName { get; private set; }
         public string LongName { get; private set; }
         public int GroupId { get; private set; }
         public string ShortGroupName { get; private set; }
+        public string RequestId { get; private set; }
 
         public static ListedMarketMessage Parse(string message)
         {
@@ -76,7 +76,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 
         public override string ToString()
         {
-            return $"{nameof(ListedMarketId)}: {ListedMarketId}, {nameof(ShortName)}: {ShortName}, {nameof(LongName)}: {LongName}, {nameof(GroupId)}: {GroupId}, {nameof(ShortGroupName)}: {ShortGroupName}";
+            return $"{nameof(ListedMarketId)}: {ListedMarketId}, {nameof(ShortName)}: {ShortName}, {nameof(LongName)}: {LongName}, {nameof(GroupId)}: {GroupId}, {nameof(ShortGroupName)}: {ShortGroupName}, {nameof(RequestId)}: {RequestId}";
         }
     }
 }

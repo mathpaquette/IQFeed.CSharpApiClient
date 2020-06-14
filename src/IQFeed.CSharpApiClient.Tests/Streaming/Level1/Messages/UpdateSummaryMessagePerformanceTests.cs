@@ -19,7 +19,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
 
             var sw = Stopwatch.StartNew();
 
-            for (int i = 0; i < 1000000; i++)
+            for (var i = 0; i < 1000000; i++)
             {
                 var parsed = UpdateSummaryMessage.Parse(Message);
                 messages.Add(parsed);

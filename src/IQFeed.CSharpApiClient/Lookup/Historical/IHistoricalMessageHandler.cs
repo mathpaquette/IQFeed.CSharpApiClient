@@ -1,7 +1,7 @@
 ﻿using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Lookup.Historical.Messages;
 
-namespace IQFeed.CSharpApiClient.Lookup.Historical.Handlers
+namespace IQFeed.CSharpApiClient.Lookup.Historical
 {
     public interface IHistoricalMessageHandler
     {

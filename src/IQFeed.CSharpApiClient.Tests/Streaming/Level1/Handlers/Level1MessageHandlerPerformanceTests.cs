@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using IQFeed.CSharpApiClient.Streaming.Level1;
+using IQFeed.CSharpApiClient.Streaming.Level1.Handlers;
 using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Handlers
 {
     [Category("Performance")]
+    [Explicit]
     public class Level1MessageHandlerPerformanceTests
     {
         [Test]
@@ -21,14 +22,17 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Handlers
 
             level1MessageHandler.Update += message => { };
 
-            var sw = Stopwatch.StartNew();
-            for (int i = 0; i < 1000000; i++)
+            for (int i = 0; i < 5; i++)
             {
-                level1MessageHandler.ProcessMessages(msgBytes, count);
-            }
-            sw.Stop();
+                var sw = Stopwatch.StartNew();
+                for (var j = 0; j < 1000000; j++)
+                {
+                    level1MessageHandler.ProcessMessages(msgBytes, count);
+                }
+                sw.Stop();
 
-            Console.WriteLine(sw.Elapsed.TotalMilliseconds);
+                Console.WriteLine(sw.Elapsed.TotalMilliseconds);
+            }
         }
     }
 }

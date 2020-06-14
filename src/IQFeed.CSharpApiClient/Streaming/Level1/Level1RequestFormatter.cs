@@ -78,8 +78,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             var sb = new StringBuilder("S,SELECT UPDATE FIELDS");
             foreach (var fieldName in fieldNames)
             {
-                var fieldsetDescriptionAttribute = fieldName.GetAttribute<FieldsetDescriptionAttribute>();
-                sb.Append($"{IQFeedDefault.ProtocolDelimiterCharacter}{fieldsetDescriptionAttribute.Name}");
+                var attribute = fieldName.GetAttribute<FieldsetDescriptionAttribute>();
+                sb.Append($"{IQFeedDefault.ProtocolDelimiterCharacter}{attribute.Name}");
             }
             sb.Append(IQFeedDefault.ProtocolTerminatingCharacters);
             return sb.ToString();
