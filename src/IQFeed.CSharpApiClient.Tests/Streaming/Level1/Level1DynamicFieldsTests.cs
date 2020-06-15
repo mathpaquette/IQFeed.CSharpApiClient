@@ -1,5 +1,7 @@
 ﻿using IQFeed.CSharpApiClient.Streaming.Level1;
 using NUnit.Framework;
+using System;
+using System.Globalization;
 
 namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
 {
@@ -7,6 +9,11 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
     {
         private const double DoubleValue = 1234.5678;
         private const int IntegerValue = 12345678;
+        private const string TimeSpanStringValue = "09:30:00.123456";
+        private TimeSpan TimeSpanValue = DateTime.ParseExact(TimeSpanStringValue, "HH:mm:ss.ffffff", CultureInfo.InvariantCulture, DateTimeStyles.None).TimeOfDay;
+        private const string StringValue = "STRINGVALUE";
+        private const string DateTimeStringValue = "06/15/2020";
+        private DateTime DateTimeValue = DateTime.ParseExact(DateTimeStringValue, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
         [Test]
         public void Should_Convert_SevenDayYield()
@@ -25,373 +32,855 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
         [Test]
         public void Should_Convert_Ask()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Ask };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Ask, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_AskChange()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.AskChange };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.AskChange, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_AskMarketCenter()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.AskMarketCenter };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.AskMarketCenter, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_AskSize()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.AskSize };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.AskSize, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_AskTime()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{TimeSpanStringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.AskTime };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.AskTime, TimeSpanValue);
         }
 
         [Test]
         public void Should_Convert_AvailableRegions()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{StringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.AvailableRegions };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.AvailableRegions, StringValue);
         }
 
         [Test]
         public void Should_Convert_AverageMaturity()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.AverageMaturity };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.AverageMaturity, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_Bid()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Bid };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Bid, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_BidChange()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.BidChange };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.BidChange, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_BidMarketCenter()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.BidMarketCenter };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.BidMarketCenter, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_BidSize()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.BidSize };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.BidSize, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_BidTime()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{TimeSpanStringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.BidTime };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.BidTime, TimeSpanValue);
         }
 
         [Test]
         public void Should_Convert_Change()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Change };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Change, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_ChangeFromOpen()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.ChangeFromOpen };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.ChangeFromOpen, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_Close()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Close };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Close, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_CloseRange1()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.CloseRange1 };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.CloseRange1, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_CloseRange2()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.CloseRange2 };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.CloseRange2, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_DaysToExpiration()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{StringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.DaysToExpiration };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.DaysToExpiration, StringValue);
         }
 
         [Test]
         public void Should_Convert_DecimalPrecision()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{StringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.DecimalPrecision };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.DecimalPrecision, StringValue);
         }
 
         [Test]
         public void Should_Convert_Delay()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Delay };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Delay, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_ExchangeID()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{StringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.ExchangeID };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.ExchangeID, StringValue);
         }
 
         [Test]
         public void Should_Convert_ExtendedTrade()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.ExtendedTrade };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.ExtendedTrade, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_ExtendedTradeDate()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DateTimeStringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.ExtendedTradeDate };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.ExtendedTradeDate, DateTimeValue);
         }
 
         [Test]
         public void Should_Convert_ExtendedTradeMarketCenter()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.ExtendedTradeMarketCenter };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.ExtendedTradeMarketCenter, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_ExtendedTradeSize()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.ExtendedTradeSize };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.ExtendedTradeSize, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_ExtendedTradeTime()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{TimeSpanStringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.ExtendedTradeTime };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.ExtendedTradeTime, TimeSpanValue);
         }
 
         [Test]
         public void Should_Convert_ExtendedTradingChange()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.ExtendedTradingChange };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.ExtendedTradingChange, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_ExtendedTradingDifference()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.ExtendedTradingDifference };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.ExtendedTradingDifference, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_FinancialStatusIndicator()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{StringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.FinancialStatusIndicator };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.FinancialStatusIndicator, StringValue);
         }
 
         [Test]
         public void Should_Convert_FractionDisplayCode()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{StringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.FractionDisplayCode };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.FractionDisplayCode, StringValue);
         }
 
         [Test]
         public void Should_Convert_High()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.High };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.High, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_Last()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Last };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Last, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_LastDate()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DateTimeStringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.LastDate };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.LastDate, DateTimeValue);
         }
 
         [Test]
         public void Should_Convert_LastMarketCenter()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.LastMarketCenter };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.LastMarketCenter, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_LastSize()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.LastSize };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.LastSize, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_LastTime()
         {
-            // TODO
-        }
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{TimeSpanStringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.LastTime };
 
-        [Test]
-        public void Should_Convert_LastTradeDate()
-        {
-            // TODO
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.LastTime, TimeSpanValue);
         }
 
         [Test]
         public void Should_Convert_Low()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Low };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Low, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_MarketCapitalization()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.MarketCapitalization };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.MarketCapitalization, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_MarketOpen()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.MarketOpen };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.MarketOpen, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_MessageContents()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{StringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.MessageContents };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.MessageContents, StringValue);
         }
 
         [Test]
         public void Should_Convert_MostRecentTrade()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.MostRecentTrade };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.MostRecentTrade, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_MostRecentTradeConditions()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{StringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.MostRecentTradeConditions };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.MostRecentTradeConditions, StringValue);
         }
 
         [Test]
         public void Should_Convert_MostRecentTradeDate()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DateTimeStringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.MostRecentTradeDate };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.MostRecentTradeDate, DateTimeValue);
         }
 
         [Test]
         public void Should_Convert_MostRecentTradeMarketCenter()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.MostRecentTradeMarketCenter };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.MostRecentTradeMarketCenter, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_MostRecentTradeSize()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.MostRecentTradeSize };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.MostRecentTradeSize, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_MostRecentTradeTime()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{TimeSpanStringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.MostRecentTradeTime };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.MostRecentTradeTime, TimeSpanValue);
         }
 
         [Test]
         public void Should_Convert_NetAssetValue()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.NetAssetValue };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.NetAssetValue, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_NumberOfTradesToday()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.NumberOfTradesToday };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.NumberOfTradesToday, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_Open()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Open };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Open, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_OpenInterest()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.OpenInterest };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.OpenInterest, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_OpenRange1()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.OpenRange1 };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.OpenRange1, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_OpenRange2()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.OpenRange2 };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.OpenRange2, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_PercentChange()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.PercentChange };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.PercentChange, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_PercentOffAverageVolume()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.PercentOffAverageVolume };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.PercentOffAverageVolume, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_PreviousDayVolume()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.PreviousDayVolume };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.PreviousDayVolume, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_PriceEarningsRatio()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.PriceEarningsRatio };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.PriceEarningsRatio, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_Range()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Range };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Range, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_RestrictedCode()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{StringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.RestrictedCode };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.RestrictedCode, StringValue);
         }
 
         [Test]
         public void Should_Convert_Settle()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Settle };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Settle, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_SettlementDate()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DateTimeStringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.SettlementDate };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.SettlementDate, DateTimeValue);
         }
 
         [Test]
         public void Should_Convert_Spread()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Spread };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Spread, DoubleValue);
         }
 
         [Test]
@@ -411,37 +900,85 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
         [Test]
         public void Should_Convert_Tick()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Tick };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Tick, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_TickID()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.TickID };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.TickID, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_TotalVolume()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.TotalVolume };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.TotalVolume, IntegerValue);
         }
 
         [Test]
         public void Should_Convert_Type()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{StringValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Type };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Type, StringValue);
         }
 
         [Test]
         public void Should_Convert_Volatility()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Volatility };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Volatility, DoubleValue);
         }
 
         [Test]
         public void Should_Convert_VWAP()
         {
-            // TODO
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.VWAP };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.VWAP, DoubleValue);
         }
     }
 }

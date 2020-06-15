@@ -10,6 +10,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
     public class Level1DynamicFields
     {
         public const string UpdateMessageTimeFormat = UpdateSummaryMessage.UpdateMessageTimeFormat;
+        public const string UpdateMessageDateFormat = FundamentalMessage.FundamentalDateTimeFormat;
 
         public double SevenDayYield { get; private set; }
         public double Ask { get; private set; }
@@ -380,7 +381,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                         double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out extendedTrade);
                         break;
                     case DynamicFieldset.ExtendedTradeDate:
-                        DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out extendedTradeDate);
+                        DateTime.TryParseExact(value, UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out extendedTradeDate);
                         break;
                     case DynamicFieldset.ExtendedTradeMarketCenter:
                         int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out extendedTradeMarketCenter);
@@ -411,7 +412,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                         double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out last);
                         break;
                     case DynamicFieldset.LastDate:
-                        DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out lastDate);
+                        DateTime.TryParseExact(value, UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out lastDate);
                         break;
                     case DynamicFieldset.LastMarketCenter:
                         int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out lastMarketCenter);
@@ -442,7 +443,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                         mostRecentTradeConditions = value;
                         break;
                     case DynamicFieldset.MostRecentTradeDate:
-                        DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out mostRecentTradeDate);
+                        DateTime.TryParseExact(value, UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out mostRecentTradeDate);
                         break;
                     case DynamicFieldset.MostRecentTradeMarketCenter:
                         int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out mostRecentTradeMarketCenter);
@@ -494,7 +495,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                         double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out settle);
                         break;
                     case DynamicFieldset.SettlementDate:
-                        DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out settlementDate);
+                        DateTime.TryParseExact(value, UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out settlementDate);
                         break;
                     case DynamicFieldset.Spread:
                         double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out spread);

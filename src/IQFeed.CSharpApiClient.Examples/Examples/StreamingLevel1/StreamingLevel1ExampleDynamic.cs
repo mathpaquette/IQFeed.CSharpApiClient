@@ -120,8 +120,8 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel1
             var _watchSymbol = "AAPL";
             level1Client.ReqWatch(_watchSymbol);
 
-            Console.WriteLine("Watching APPL for the next 10 seconds... Please be patient ;-)\n");
-            await Task.Delay(TimeSpan.FromSeconds(10));
+            Console.WriteLine("Watching APPL for the next 5 seconds... Please be patient ;-)\n");
+            await Task.Delay(TimeSpan.FromSeconds(5));
 
             // Step 9 - Unwatch and unregister events
             level1Client.ReqUnwatch(_watchSymbol);
