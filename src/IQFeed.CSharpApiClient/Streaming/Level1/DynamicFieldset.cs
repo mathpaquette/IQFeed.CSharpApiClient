@@ -115,9 +115,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         [FieldsetDescription("Last Time", typeof(TimeSpan))]
         LastTime,
 
-        [FieldsetDescription("Last Trade Date", typeof(DateTime))]
-        LastTradeDate,
-
         [FieldsetDescription("Low", typeof(double))]
         Low,
 

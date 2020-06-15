@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
+using System.Text;
 using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
@@ -38,7 +40,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         public TimeSpan ExtendedTradeTime { get; private set; }
         public double ExtendedTradingChange { get; private set; }
         public double ExtendedTradingDifference { get; private set; }
-        public char FinancialStatusIndicator { get; private set; }
+        public string FinancialStatusIndicator { get; private set; }
         public string FractionDisplayCode { get; private set; }
         public double High { get; private set; }
         public double Last { get; private set; }
@@ -109,7 +111,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             TimeSpan extendedTradeTime,
             double extendedTradingChange,
             double extendedTradingDifference,
-            char financialStatusIndicator,
+            string financialStatusIndicator,
             string fractionDisplayCode,
             double high,
             double last,
@@ -223,7 +225,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
 
         public static Level1DynamicFields Parse(string message, DynamicFieldset[] fields)
         {
-            var values = message.SplitFeedMessage();
+            var values = message.SplitFeedMessage().Skip(1).ToArray();
 
             #region Variables
 
@@ -256,7 +258,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             TimeSpan extendedTradeTime = default;
             double extendedTradingChange = default;
             double extendedTradingDifference = default;
-            char financialStatusIndicator = default;
+            string financialStatusIndicator = default;
             string fractionDisplayCode = default;
             double high = default;
             double last = default;
@@ -310,211 +312,213 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                         double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out sevenDayYield);
                         break;
                     case DynamicFieldset.Ask:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out ask);
                         break;
                     case DynamicFieldset.AskChange:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out askChange);
                         break;
                     case DynamicFieldset.AskMarketCenter:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out askMarketCenter);
                         break;
                     case DynamicFieldset.AskSize:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out askSize);
                         break;
                     case DynamicFieldset.AskTime:
-                        // TODO
+                        DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var askTimeValue);
+                        askTime = askTimeValue.TimeOfDay;
                         break;
                     case DynamicFieldset.AvailableRegions:
-                        // TODO
+                        availableRegions = value;
                         break;
                     case DynamicFieldset.AverageMaturity:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out averageMaturity);
                         break;
                     case DynamicFieldset.Bid:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out bid);
                         break;
                     case DynamicFieldset.BidChange:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out bidChange);
                         break;
                     case DynamicFieldset.BidMarketCenter:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out bidMarketCenter);
                         break;
                     case DynamicFieldset.BidSize:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out bidSize);
                         break;
                     case DynamicFieldset.BidTime:
-                        // TODO
+                        DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var bidTimeValue);
+                        bidTime = bidTimeValue.TimeOfDay;
                         break;
                     case DynamicFieldset.Change:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out change);
                         break;
                     case DynamicFieldset.ChangeFromOpen:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out changeFromOpen);
                         break;
                     case DynamicFieldset.Close:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out close);
                         break;
                     case DynamicFieldset.CloseRange1:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out closeRange1);
                         break;
                     case DynamicFieldset.CloseRange2:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out closeRange2);
                         break;
                     case DynamicFieldset.DaysToExpiration:
-                        // TODO
+                        daysToExpiration = value;
                         break;
                     case DynamicFieldset.DecimalPrecision:
-                        // TODO
+                        decimalPrecision = value;
                         break;
                     case DynamicFieldset.Delay:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out delay);
                         break;
                     case DynamicFieldset.ExchangeID:
-                        // TODO
+                        exchangeID = value;
                         break;
                     case DynamicFieldset.ExtendedTrade:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out extendedTrade);
                         break;
                     case DynamicFieldset.ExtendedTradeDate:
-                        // TODO
+                        DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out extendedTradeDate);
                         break;
                     case DynamicFieldset.ExtendedTradeMarketCenter:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out extendedTradeMarketCenter);
                         break;
                     case DynamicFieldset.ExtendedTradeSize:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out extendedTradeSize);
                         break;
                     case DynamicFieldset.ExtendedTradeTime:
-                        // TODO
+                        DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var extendedTradeTimeValue);
+                        extendedTradeTime = extendedTradeTimeValue.TimeOfDay;
                         break;
                     case DynamicFieldset.ExtendedTradingChange:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out extendedTradingChange);
                         break;
                     case DynamicFieldset.ExtendedTradingDifference:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out extendedTradingDifference);
                         break;
                     case DynamicFieldset.FinancialStatusIndicator:
-                        // TODO
+                        financialStatusIndicator = value;
                         break;
                     case DynamicFieldset.FractionDisplayCode:
-                        // TODO
+                        fractionDisplayCode = value;
                         break;
                     case DynamicFieldset.High:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out high);
                         break;
                     case DynamicFieldset.Last:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out last);
                         break;
                     case DynamicFieldset.LastDate:
-                        // TODO
+                        DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out lastDate);
                         break;
                     case DynamicFieldset.LastMarketCenter:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out lastMarketCenter);
                         break;
                     case DynamicFieldset.LastSize:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out lastSize);
                         break;
                     case DynamicFieldset.LastTime:
-                        // TODO
-                        break;
-                    case DynamicFieldset.LastTradeDate:
-                        // TODO
+                        DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var lastTimeValue);
+                        lastTime = lastTimeValue.TimeOfDay;
                         break;
                     case DynamicFieldset.Low:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out low);
                         break;
                     case DynamicFieldset.MarketCapitalization:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out marketCapitalization);
                         break;
                     case DynamicFieldset.MarketOpen:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out marketOpen);
                         break;
                     case DynamicFieldset.MessageContents:
-                        // TODO
+                        messageContents = value;
                         break;
                     case DynamicFieldset.MostRecentTrade:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out mostRecentTrade);
                         break;
                     case DynamicFieldset.MostRecentTradeConditions:
-                        // TODO
+                        mostRecentTradeConditions = value;
                         break;
                     case DynamicFieldset.MostRecentTradeDate:
-                        // TODO
+                        DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out mostRecentTradeDate);
                         break;
                     case DynamicFieldset.MostRecentTradeMarketCenter:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out mostRecentTradeMarketCenter);
                         break;
                     case DynamicFieldset.MostRecentTradeSize:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out mostRecentTradeSize);
                         break;
                     case DynamicFieldset.MostRecentTradeTime:
-                        // TODO
+                        DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var mostRecentTradeTimeValue);
+                        mostRecentTradeTime = mostRecentTradeTimeValue.TimeOfDay;
                         break;
                     case DynamicFieldset.NetAssetValue:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out netAssetValue);
                         break;
                     case DynamicFieldset.NumberOfTradesToday:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out numberOfTradesToday);
                         break;
                     case DynamicFieldset.Open:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out open);
                         break;
                     case DynamicFieldset.OpenInterest:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out openInterest);
                         break;
                     case DynamicFieldset.OpenRange1:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out openRange1);
                         break;
                     case DynamicFieldset.OpenRange2:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out openRange2);
                         break;
                     case DynamicFieldset.PercentChange:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out percentChange);
                         break;
                     case DynamicFieldset.PercentOffAverageVolume:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out percentOffAverageVolume);
                         break;
                     case DynamicFieldset.PreviousDayVolume:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out previousDayVolume);
                         break;
                     case DynamicFieldset.PriceEarningsRatio:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out priceEarningsRatio);
                         break;
                     case DynamicFieldset.Range:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out range);
                         break;
                     case DynamicFieldset.RestrictedCode:
-                        // TODO
+                        restrictedCode = value;
                         break;
                     case DynamicFieldset.Settle:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out settle);
                         break;
                     case DynamicFieldset.SettlementDate:
-                        // TODO
+                        DateTime.TryParseExact(value, UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out settlementDate);
                         break;
                     case DynamicFieldset.Spread:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out spread);
                         break;
                     case DynamicFieldset.Symbol:
                         symbol = value;
                         break;
                     case DynamicFieldset.Tick:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out tick);
                         break;
                     case DynamicFieldset.TickID:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out tickID);
                         break;
                     case DynamicFieldset.TotalVolume:
-                        // TODO
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out totalVolume);
                         break;
                     case DynamicFieldset.Type:
-                        // TODO
+                        type = value;
                         break;
                     case DynamicFieldset.Volatility:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out volatility);
                         break;
                     case DynamicFieldset.VWAP:
-                        // TODO
+                        double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out vwap);
                         break;
                 }
             }
@@ -589,6 +593,80 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                 type,
                 volatility,
                 vwap);
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder($"Symbol: {Symbol}");
+            sb.Append(SevenDayYield == default ? "" : $", {nameof(SevenDayYield)}: {SevenDayYield}");
+            sb.Append(Ask == default ? "" : $", {nameof(Ask)}: {Ask}");
+            sb.Append(AskChange == default ? "" : $", {nameof(AskChange)}: {AskChange}");
+            sb.Append(AskMarketCenter == default ? "" : $", {nameof(AskMarketCenter)}: {AskMarketCenter}");
+            sb.Append(AskSize == default ? "" : $", {nameof(AskSize)}: {AskSize}");
+            sb.Append(AskTime == default ? "" : $", {nameof(AskTime)}: {AskTime}");
+            sb.Append(AvailableRegions == default ? "" : $", {nameof(AvailableRegions)}: {AvailableRegions}");
+            sb.Append(AverageMaturity == default ? "" : $", {nameof(AverageMaturity)}: {AverageMaturity}");
+            sb.Append(Bid == default ? "" : $", {nameof(Bid)}: {Bid}");
+            sb.Append(BidChange == default ? "" : $", {nameof(BidChange)}: {BidChange}");
+            sb.Append(BidMarketCenter == default ? "" : $", {nameof(BidMarketCenter)}: {BidMarketCenter}");
+            sb.Append(BidSize == default ? "" : $", {nameof(BidSize)}: {BidSize}");
+            sb.Append(BidTime == default ? "" : $", {nameof(BidTime)}: {BidTime}");
+            sb.Append(Change == default ? "" : $", {nameof(Change)}: {Change}");
+            sb.Append(ChangeFromOpen == default ? "" : $", {nameof(ChangeFromOpen)}: {ChangeFromOpen}");
+            sb.Append(Close == default ? "" : $", {nameof(Close)}: {Close}");
+            sb.Append(CloseRange1 == default ? "" : $", {nameof(CloseRange1)}: {CloseRange1}");
+            sb.Append(CloseRange2 == default ? "" : $", {nameof(CloseRange2)}: {CloseRange2}");
+            sb.Append(DaysToExpiration == default ? "" : $", {nameof(DaysToExpiration)}: {DaysToExpiration}");
+            sb.Append(DecimalPrecision == default ? "" : $", {nameof(DecimalPrecision)}: {DecimalPrecision}");
+            sb.Append(Delay == default ? "" : $", {nameof(Delay)}: {Delay}");
+            sb.Append(ExchangeID == default ? "" : $", {nameof(ExchangeID)}: {ExchangeID}");
+            sb.Append(ExtendedTrade == default ? "" : $", {nameof(ExtendedTrade)}: {ExtendedTrade}");
+            sb.Append(ExtendedTradeDate == default ? "" : $", {nameof(ExtendedTradeDate)}: {ExtendedTradeDate}");
+            sb.Append(ExtendedTradeMarketCenter == default ? "" : $", {nameof(ExtendedTradeMarketCenter)}: {ExtendedTradeMarketCenter}");
+            sb.Append(ExtendedTradeSize == default ? "" : $", {nameof(ExtendedTradeSize)}: {ExtendedTradeSize}");
+            sb.Append(ExtendedTradeTime == default ? "" : $", {nameof(ExtendedTradeTime)}: {ExtendedTradeTime}");
+            sb.Append(ExtendedTradingChange == default ? "" : $", {nameof(ExtendedTradingChange)}: {ExtendedTradingChange}");
+            sb.Append(ExtendedTradingDifference == default ? "" : $", {nameof(ExtendedTradingDifference)}: {ExtendedTradingDifference}");
+            sb.Append(FinancialStatusIndicator == default ? "" : $", {nameof(FinancialStatusIndicator)}: {FinancialStatusIndicator}");
+            sb.Append(FractionDisplayCode == default ? "" : $", {nameof(FractionDisplayCode)}: {FractionDisplayCode}");
+            sb.Append(High == default ? "" : $", {nameof(High)}: {High}");
+            sb.Append(Last == default ? "" : $", {nameof(Last)}: {Last}");
+            sb.Append(LastDate == default ? "" : $", {nameof(LastDate)}: {LastDate}");
+            sb.Append(LastMarketCenter == default ? "" : $", {nameof(LastMarketCenter)}: {LastMarketCenter}");
+            sb.Append(LastSize == default ? "" : $", {nameof(LastSize)}: {LastSize}");
+            sb.Append(LastTime == default ? "" : $", {nameof(LastTime)}: {LastTime}");
+            sb.Append(Low == default ? "" : $", {nameof(Low)}: {Low}");
+            sb.Append(MarketCapitalization == default ? "" : $", {nameof(MarketCapitalization)}: {MarketCapitalization}");
+            sb.Append(MarketOpen == default ? "" : $", {nameof(MarketOpen)}: {MarketOpen}");
+            sb.Append(MessageContents == default ? "" : $", {nameof(MessageContents)}: {MessageContents}");
+            sb.Append(MostRecentTrade == default ? "" : $", {nameof(MostRecentTrade)}: {MostRecentTrade}");
+            sb.Append(MostRecentTradeConditions == default ? "" : $", {nameof(MostRecentTradeConditions)}: {MostRecentTradeConditions}");
+            sb.Append(MostRecentTradeDate == default ? "" : $", {nameof(MostRecentTradeDate)}: {MostRecentTradeDate}");
+            sb.Append(MostRecentTradeMarketCenter == default ? "" : $", {nameof(MostRecentTradeMarketCenter)}: {MostRecentTradeMarketCenter}");
+            sb.Append(MostRecentTradeSize == default ? "" : $", {nameof(MostRecentTradeSize)}: {MostRecentTradeSize}");
+            sb.Append(MostRecentTradeTime == default ? "" : $", {nameof(MostRecentTradeTime)}: {MostRecentTradeTime}");
+            sb.Append(NetAssetValue == default ? "" : $", {nameof(NetAssetValue)}: {NetAssetValue}");
+            sb.Append(NumberOfTradesToday == default ? "" : $", {nameof(NumberOfTradesToday)}: {NumberOfTradesToday}");
+            sb.Append(Open == default ? "" : $", {nameof(Open)}: {Open}");
+            sb.Append(OpenInterest == default ? "" : $", {nameof(OpenInterest)}: {OpenInterest}");
+            sb.Append(OpenRange1 == default ? "" : $", {nameof(OpenRange1)}: {OpenRange1}");
+            sb.Append(OpenRange2 == default ? "" : $", {nameof(OpenRange2)}: {OpenRange2}");
+            sb.Append(PercentChange == default ? "" : $", {nameof(PercentChange)}: {PercentChange}");
+            sb.Append(PercentOffAverageVolume == default ? "" : $", {nameof(PercentOffAverageVolume)}: {PercentOffAverageVolume}");
+            sb.Append(PreviousDayVolume == default ? "" : $", {nameof(PreviousDayVolume)}: {PreviousDayVolume}");
+            sb.Append(PriceEarningsRatio == default ? "" : $", {nameof(PriceEarningsRatio)}: {PriceEarningsRatio}");
+            sb.Append(Range == default ? "" : $", {nameof(Range)}: {Range}");
+            sb.Append(RestrictedCode == default ? "" : $", {nameof(RestrictedCode)}: {RestrictedCode}");
+            sb.Append(Settle == default ? "" : $", {nameof(Settle)}: {Settle}");
+            sb.Append(SettlementDate == default ? "" : $", {nameof(SettlementDate)}: {SettlementDate}");
+            sb.Append(Spread == default ? "" : $", {nameof(Spread)}: {Spread}");
+            sb.Append(Tick == default ? "" : $", {nameof(Tick)}: {Tick}");
+            sb.Append(TickID == default ? "" : $", {nameof(TickID)}: {TickID}");
+            sb.Append(TotalVolume == default ? "" : $", {nameof(TotalVolume)}: {TotalVolume}");
+            sb.Append(Type == default ? "" : $", {nameof(Type)}: {Type}");
+            sb.Append(Volatility == default ? "" : $", {nameof(Volatility)}: {Volatility}");
+            sb.Append(VWAP == default ? "" : $", {nameof(VWAP)}: {VWAP}");
+            return sb.ToString();
         }
     }
 }
