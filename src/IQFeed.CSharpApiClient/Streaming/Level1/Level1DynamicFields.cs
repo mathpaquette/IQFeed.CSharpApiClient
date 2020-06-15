@@ -225,7 +225,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
 
         public static Level1DynamicFields Parse(string message, DynamicFieldset[] fields)
         {
-            var values = message.SplitFeedMessage().Skip(1).ToArray();
+            var values = message.SplitFeedMessage();
 
             #region Variables
 
@@ -304,7 +304,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             for (var i = 0; i < fields.Length; i++)
             {
                 var field = fields[i];
-                var value = values[i];
+                var value = values[i+1];
 
                 switch (field)
                 {

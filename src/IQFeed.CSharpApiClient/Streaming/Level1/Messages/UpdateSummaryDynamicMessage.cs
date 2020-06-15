@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 {
@@ -42,6 +41,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 hash = hash * 29 + DynamicFields.GetHashCode();
                 return hash;
             }
+        }
+
+        public override string ToString()
+        {
+            return DynamicFields.ToString();
         }
 
         private static string GetErrorMessage(string propertyName) => $"Use {propertyName} from DynamicFields with Level1MessageDynamicHandler.";

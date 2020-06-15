@@ -12,8 +12,8 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
         public void Should_Convert_SevenDayYield()
         {
             // Arrange
-            var message = DoubleValue.ToString();
-            var fields = new[] { DynamicFieldset.SevenDayYield };
+            var message = $"Q,DONT_CARE_SYMBOL,{DoubleValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.SevenDayYield };
 
             // Act
             var dynamicFields = Level1DynamicFields.Parse(message, fields);
@@ -398,14 +398,14 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
         public void Should_Convert_Symbol()
         {
             // Arrange
-            var message = "AAPL";
+            var message = "Q,AAPL";
             var fields = new[] { DynamicFieldset.Symbol };
 
             // Act
             var dynamicFields = Level1DynamicFields.Parse(message, fields);
 
             // Assert
-            Assert.AreEqual(dynamicFields.Symbol, message);
+            Assert.AreEqual(dynamicFields.Symbol, "AAPL");
         }
 
         [Test]
