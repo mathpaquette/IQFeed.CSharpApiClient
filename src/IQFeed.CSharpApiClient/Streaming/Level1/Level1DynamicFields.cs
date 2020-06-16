@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
@@ -305,7 +304,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             for (var i = 0; i < fields.Length; i++)
             {
                 var field = fields[i];
-                var value = values[i+1];
+                var value = values[i + 1];
 
                 switch (field)
                 {

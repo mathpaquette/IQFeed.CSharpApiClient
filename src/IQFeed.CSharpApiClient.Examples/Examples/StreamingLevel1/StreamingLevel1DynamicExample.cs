@@ -8,10 +8,10 @@ using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel1
 {
-    public class StreamingLevel1ExampleDynamic : IExampleAsync
+    public class StreamingLevel1DynamicExample : IExampleAsync
     {
-        public bool Enable => false; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
-        public string Name => typeof(StreamingLevel1ExampleDynamic).Name;
+        public bool Enable => true; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
+        public string Name => typeof(StreamingLevel1DynamicExample).Name;
 
         public async Task RunAsync()
         {
@@ -26,8 +26,9 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel1
             // Step 3 - Create an array that includes the fields desired for Update and Summary messages
             var fields = new[]
             {
-                //The IQFeed servers *ALWAYS* include Symbol as first message data field, regardless of fields requested via SelectUpdateFieldName/SELECT UPDATE FIELDS
-                //DynamicFieldset.Symbol *MUST* be the first dynamic field in the array at this time.  Parsing errors will result otherwise.
+                // The IQFeed servers *ALWAYS* include Symbol as first message data field, regardless of fields requested via SelectUpdateFieldName/SELECT UPDATE FIELDS
+                // DynamicFieldset.Symbol *MUST* be the first dynamic field in the array at this time.  Parsing errors will result otherwise.
+                
                 DynamicFieldset.Symbol,
                 DynamicFieldset.SevenDayYield,
                 DynamicFieldset.Ask,
@@ -104,65 +105,43 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel1
             // Step 5 - Connect it
             level1Client.Connect();
 
-
             // Step 6 - Request the feed to begin returning selected fields in Summary and Update messages
             level1Client.SelectUpdateFieldName(fields);
-
 
             // Step 7 - Register to appropriate events
             level1Client.Fundamental += Level1ClientOnFundamental;
             level1Client.Summary += Level1ClientOnSummary;
-            level1Client.Update += Level1ClientOnUpdate;
+            level1Client.Update += Level1ClientOnSummary;
             level1Client.Timestamp += Level1ClientOnTimestamp;
-            level1Client.Error += Level1ClientOnError;
 
             // Step 8 - Make your streaming Level 1 requests
-            var _watchSymbol = "AAPL";
-            level1Client.ReqWatch(_watchSymbol);
+            level1Client.ReqWatch("AAPL");
 
-            Console.WriteLine("Watching APPL for the next 5 seconds... Please be patient ;-)\n");
-            await Task.Delay(TimeSpan.FromSeconds(5));
+            Console.WriteLine("Watching APPL for the next 10 seconds... Please be patient ;-)\n");
+            await Task.Delay(TimeSpan.FromSeconds(10));
 
             // Step 9 - Unwatch and unregister events
-            level1Client.ReqUnwatch(_watchSymbol);
+            level1Client.ReqUnwatch("AAPL");
 
             level1Client.Fundamental -= Level1ClientOnFundamental;
             level1Client.Summary -= Level1ClientOnSummary;
-            level1Client.Update -= Level1ClientOnUpdate;
+            level1Client.Update -= Level1ClientOnSummary;
             level1Client.Timestamp -= Level1ClientOnTimestamp;
         }
 
         private void Level1ClientOnTimestamp(TimestampMessage msg)
         {
-            Console.WriteLine($"TimestampMessage:Level1ClientOnTimestamp: [{msg}]");
+            Console.WriteLine(msg);
         }
 
         private void Level1ClientOnSummary(IUpdateSummaryMessage msg)
         {
-            // When using dynamic fields, use the DynamicFields property of the UpdateSummaryMessage
-            var dynamicFields = msg.DynamicFields;
-            // Only non-default fields are displayed
-            Console.WriteLine($"UpdateSummaryMessage:Level1ClientOnSummary: [{dynamicFields}");
-            Console.WriteLine($"]");
+            Console.WriteLine(msg); // dynamic message here
         }
 
-        private void Level1ClientOnUpdate(IUpdateSummaryMessage msg)
-        {
-            // When using dynamic fields, use the DynamicFields property of the UpdateSummaryMessage
-            var dynamicFields = msg.DynamicFields;
-            // Only non-default fields are displayed
-            Console.WriteLine($"UpdateSummaryMessageDynamic:Level1ClientOnUpdate: [{dynamicFields}");
-            Console.WriteLine($"]");
-        }
         private void Level1ClientOnFundamental(FundamentalMessage msg)
         {
-            Console.WriteLine($"FundamentalMessage:Level1ClientOnFundamental: [{msg}");
-            Console.WriteLine($"]");
-        }
-
-        private void Level1ClientOnError(ErrorMessage msg)
-        {
-            Console.WriteLine($"ErrorMessage:Level1ClientOnError: [{msg}]");
+            Console.WriteLine(msg);
         }
 
         public void Run()

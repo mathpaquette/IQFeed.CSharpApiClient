@@ -14,6 +14,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
         {
             if (fieldNames[0] != DynamicFieldset.Symbol)
                 throw new Exception("Symbol must be the first dynamic field specified.");
+            
             _dynamicFieldsets = fieldNames;
         }
 

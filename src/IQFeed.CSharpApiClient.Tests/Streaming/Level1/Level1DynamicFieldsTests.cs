@@ -10,10 +10,10 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
         private const double DoubleValue = 1234.5678;
         private const int IntegerValue = 12345678;
         private const string TimeSpanStringValue = "09:30:00.123456";
-        private TimeSpan TimeSpanValue = DateTime.ParseExact(TimeSpanStringValue, "HH:mm:ss.ffffff", CultureInfo.InvariantCulture, DateTimeStyles.None).TimeOfDay;
         private const string StringValue = "STRINGVALUE";
         private const string DateTimeStringValue = "06/15/2020";
-        private DateTime DateTimeValue = DateTime.ParseExact(DateTimeStringValue, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+        private readonly TimeSpan _timeSpanValue = DateTime.ParseExact(TimeSpanStringValue, "HH:mm:ss.ffffff", CultureInfo.InvariantCulture, DateTimeStyles.None).TimeOfDay;
+        private readonly DateTime _dateTimeValue = DateTime.ParseExact(DateTimeStringValue, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
         [Test]
         public void Should_Convert_SevenDayYield()
@@ -96,7 +96,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
             var dynamicFields = Level1DynamicFields.Parse(message, fields);
 
             // Assert
-            Assert.AreEqual(dynamicFields.AskTime, TimeSpanValue);
+            Assert.AreEqual(dynamicFields.AskTime, _timeSpanValue);
         }
 
         [Test]
@@ -194,7 +194,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
             var dynamicFields = Level1DynamicFields.Parse(message, fields);
 
             // Assert
-            Assert.AreEqual(dynamicFields.BidTime, TimeSpanValue);
+            Assert.AreEqual(dynamicFields.BidTime, _timeSpanValue);
         }
 
         [Test]
@@ -348,7 +348,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
             var dynamicFields = Level1DynamicFields.Parse(message, fields);
 
             // Assert
-            Assert.AreEqual(dynamicFields.ExtendedTradeDate, DateTimeValue);
+            Assert.AreEqual(dynamicFields.ExtendedTradeDate, _dateTimeValue);
         }
 
         [Test]
@@ -390,7 +390,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
             var dynamicFields = Level1DynamicFields.Parse(message, fields);
 
             // Assert
-            Assert.AreEqual(dynamicFields.ExtendedTradeTime, TimeSpanValue);
+            Assert.AreEqual(dynamicFields.ExtendedTradeTime, _timeSpanValue);
         }
 
         [Test]
@@ -488,7 +488,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
             var dynamicFields = Level1DynamicFields.Parse(message, fields);
 
             // Assert
-            Assert.AreEqual(dynamicFields.LastDate, DateTimeValue);
+            Assert.AreEqual(dynamicFields.LastDate, _dateTimeValue);
         }
 
         [Test]
@@ -530,7 +530,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
             var dynamicFields = Level1DynamicFields.Parse(message, fields);
 
             // Assert
-            Assert.AreEqual(dynamicFields.LastTime, TimeSpanValue);
+            Assert.AreEqual(dynamicFields.LastTime, _timeSpanValue);
         }
 
         [Test]
@@ -628,7 +628,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
             var dynamicFields = Level1DynamicFields.Parse(message, fields);
 
             // Assert
-            Assert.AreEqual(dynamicFields.MostRecentTradeDate, DateTimeValue);
+            Assert.AreEqual(dynamicFields.MostRecentTradeDate, _dateTimeValue);
         }
 
         [Test]
@@ -670,7 +670,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
             var dynamicFields = Level1DynamicFields.Parse(message, fields);
 
             // Assert
-            Assert.AreEqual(dynamicFields.MostRecentTradeTime, TimeSpanValue);
+            Assert.AreEqual(dynamicFields.MostRecentTradeTime, _timeSpanValue);
         }
 
         [Test]
@@ -866,7 +866,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
             var dynamicFields = Level1DynamicFields.Parse(message, fields);
 
             // Assert
-            Assert.AreEqual(dynamicFields.SettlementDate, DateTimeValue);
+            Assert.AreEqual(dynamicFields.SettlementDate, _dateTimeValue);
         }
 
         [Test]
