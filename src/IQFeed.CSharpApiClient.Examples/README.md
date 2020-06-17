@@ -18,5 +18,6 @@ Example showing How-To retrieve Expired Options and applying filtering criteria 
 ### [OptionableStocksExample](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/OptionableStocks/OptionableStocksExample.cs)
 Example showing How-To retrieve all US stocks with having options.
 
-### [StreamingLevel1Example](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/StreamingLevel1/StreamingLevel1Example.cs)
-Example showing How-To subscribe to live Level 1 data and register to specific events.
+### [StreamingLevel1Example](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/StreamingLevel1/)
+[Example showing How-To subscribe to live Level 1 data and register to specific events.](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/StreamingLevel1/StreamingLevel1Example.cs)  
+[Example showing How-To subscribe to live Level 1 data using dynamic fields.](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/StreamingLevel1/StreamingLevel1DynamicExample.cs)  
