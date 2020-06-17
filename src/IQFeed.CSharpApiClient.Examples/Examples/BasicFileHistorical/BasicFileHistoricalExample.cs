@@ -11,7 +11,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.BasicFileHistorical
     public class BasicFileHistoricalExample : IExampleAsync
     {
         public bool Enable => false; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
-        public string Name => typeof(BasicFileHistoricalExample).Name;
+        public string Name => nameof(BasicFileHistoricalExample);
 
         private const string DownloadBasePath = "downloads";
         private const string Symbol = "AAPL";

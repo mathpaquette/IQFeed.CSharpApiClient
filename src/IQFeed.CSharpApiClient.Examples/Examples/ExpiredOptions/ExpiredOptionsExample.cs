@@ -8,7 +8,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ExpiredOptions
     public class ExpiredOptionsExample : IExample
     {
         public bool Enable => false; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
-        public string Name => typeof(ExpiredOptionsExample).Name;
+        public string Name => nameof(ExpiredOptionsExample);
 
         /// <summary>
         /// Please note that Expired Options file is huge.
