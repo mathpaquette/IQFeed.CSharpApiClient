@@ -136,7 +136,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel1
 
         private void Level1ClientOnSummary(IUpdateSummaryMessage msg)
         {
-            Console.WriteLine(msg); // dynamic message here
+            Console.WriteLine(msg.DynamicFields); // dynamic message here
         }
 
         private void Level1ClientOnFundamental(FundamentalMessage msg)
