@@ -3,9 +3,9 @@ using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
-    public interface ILevel1SnapshotSync<T>
+    public interface ILevel1SnapshotSync
     {
         FundamentalMessage GetFundamentalSnapshot(string symbol);
-        UpdateSummaryMessage<T> GetUpdateSummarySnapshot(string symbol);
+        IUpdateSummaryMessage GetUpdateSummarySnapshot(string symbol);
     }
 }

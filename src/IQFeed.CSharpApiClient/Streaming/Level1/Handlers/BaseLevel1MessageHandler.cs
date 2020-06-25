@@ -13,6 +13,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
         public event Action<ErrorMessage> Error;
         public event Action<TimestampMessage> Timestamp;
         public event Action<NewsMessage> News;
+        public event Action<RegionalUpdateMessage> Regional;
 
         public void ProcessMessages(byte[] messageBytes, int count)
         {
@@ -60,12 +61,16 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
 
         protected abstract void ProcessUpdateMessage(string msg);
 
-        protected abstract void ProcessRegionalUpdateMessage(string msg);
-
         private void ProcessFundamentalMessage(string msg)
         {
             var fundamentalMessage = FundamentalMessage.Parse(msg);
             Fundamental?.Invoke(fundamentalMessage);
+        }
+
+        private void ProcessRegionalUpdateMessage(string msg)
+        {
+            var regionUpdateMessage = RegionalUpdateMessage.Parse(msg);
+            Regional?.Invoke(regionUpdateMessage);
         }
 
         private void ProcessNewsMessage(string msg)

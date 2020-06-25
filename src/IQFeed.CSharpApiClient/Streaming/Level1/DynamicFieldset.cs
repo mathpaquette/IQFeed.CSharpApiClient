@@ -19,7 +19,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         [FieldsetDescription("Ask Size", typeof(int))]
         AskSize,
 
-        [FieldsetDescription("Ask Time", typeof(DateTime))]
+        [FieldsetDescription("Ask Time", typeof(TimeSpan))]
         AskTime,
 
         [FieldsetDescription("Available Regions", typeof(string))]
@@ -40,7 +40,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         [FieldsetDescription("Bid Size", typeof(int))]
         BidSize,
 
-        [FieldsetDescription("Bid Time", typeof(DateTime))]
+        [FieldsetDescription("Bid Time", typeof(TimeSpan))]
         BidTime,
 
         [FieldsetDescription("Change", typeof(double))]
@@ -82,7 +82,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         [FieldsetDescription("Extended Trade Size", typeof(int))]
         ExtendedTradeSize,
 
-        [FieldsetDescription("Extended Trade Time", typeof(DateTime))]
+        [FieldsetDescription("Extended Trade Time", typeof(TimeSpan))]
         ExtendedTradeTime,
 
         [FieldsetDescription("Extended Trading Change", typeof(double))]
@@ -112,11 +112,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         [FieldsetDescription("Last Size", typeof(int))]
         LastSize,
 
-        [FieldsetDescription("Last Time", typeof(DateTime))]
+        [FieldsetDescription("Last Time", typeof(TimeSpan))]
         LastTime,
-
-        [FieldsetDescription("Last Trade Date", typeof(DateTime))]
-        LastTradeDate,
 
         [FieldsetDescription("Low", typeof(double))]
         Low,
@@ -145,7 +142,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         [FieldsetDescription("Most Recent Trade Size", typeof(int))]
         MostRecentTradeSize,
 
-        [FieldsetDescription("Most Recent Trade Time", typeof(DateTime))]
+        [FieldsetDescription("Most Recent Trade Time", typeof(TimeSpan))]
         MostRecentTradeTime,
 
         [FieldsetDescription("Net Asset Value", typeof(double))]

@@ -2,19 +2,18 @@
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Socket;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
-using IQFeed.CSharpApiClient.Streaming.Derivative.Handlers;
 using IQFeed.CSharpApiClient.Streaming.Derivative.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Derivative
 {
-    public class DerivativeClient<T> : IDerivativeClient<T>
+    public class DerivativeClient : IDerivativeClient
     {
         public event Action<ErrorMessage> Error
         {
             add => _derivativeMessageHandler.Error += value;
             remove => _derivativeMessageHandler.Error -= value;
         }
-        public event Action<IntervalBarMessage<T>> IntervalBar
+        public event Action<IntervalBarMessage> IntervalBar
         {
             add => _derivativeMessageHandler.IntervalBar += value;
             remove => _derivativeMessageHandler.IntervalBar -= value;
@@ -32,12 +31,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative
 
         private readonly SocketClient _socketClient;
         private readonly DerivativeRequestFormatter _derivativeRequestFormatter;
-        private readonly IDerivativeMessageHandler<T> _derivativeMessageHandler;
+        private readonly IDerivativeMessageHandler _derivativeMessageHandler;
 
         public DerivativeClient(
             SocketClient socketClient,
             DerivativeRequestFormatter derivativeRequestFormatter,
-            IDerivativeMessageHandler<T> derivativeMessageHandler)
+            IDerivativeMessageHandler derivativeMessageHandler)
         {
             _socketClient = socketClient;
             _derivativeRequestFormatter = derivativeRequestFormatter;

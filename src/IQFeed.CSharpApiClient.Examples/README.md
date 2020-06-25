@@ -12,15 +12,12 @@ Advanced example showing How-To concurrently fetch and save to disk in a CSV for
 ### [ConcurrentHistoricalExample](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/ConcurrentHistorical/ConcurrentHistoricalExample.cs)
 Advanced example showing How-To concurrently fetch in memory daily messages. 
 
-### [HistoricalMessageHandlerExample](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/MessageHandlers/HistoricalMessageHandlerExample.cs)
-### [Level1MessageHandlerExample](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/MessageHandlers/Level1MessageHandlerExample.cs)
-Examples showing How-To use different message handlers based on your type requirement. Supporting <float>, <double> and <decimal> for most clients.
-
 ### [ExpiredOptionsExample](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/ExpiredOptions/ExpiredOptionsExample.cs)
 Example showing How-To retrieve Expired Options and applying filtering criteria on them.
 
 ### [OptionableStocksExample](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/OptionableStocks/OptionableStocksExample.cs)
 Example showing How-To retrieve all US stocks with having options.
 
-### [StreamingLevel1Example](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/StreamingLevel1/StreamingLevel1Example.cs)
-Example showing How-To subscribe to live Level 1 data and register to specific events.
+### [StreamingLevel1Example](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/StreamingLevel1/)
+[Example showing How-To subscribe to live Level 1 data and register to specific events.](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/StreamingLevel1/StreamingLevel1Example.cs)  
+[Example showing How-To subscribe to live Level 1 data using dynamic fields.](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/src/IQFeed.CSharpApiClient.Examples/Examples/StreamingLevel1/StreamingLevel1DynamicExample.cs)  

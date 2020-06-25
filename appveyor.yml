@@ -1,4 +1,4 @@
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 version: '{build}'
 
@@ -40,11 +40,11 @@ deploy:
   # Deploying to NuGet feed (MyGet.org)
   - provider: NuGet
     name: MyGet
-    server: https://www.myget.org/F/inovitex/api/v2/package
+    server: https://www.myget.org/F/iqfeedcsharpapiclient/api/v2/package
     api_key:
       secure: UBKXVuF4UwMea9mcl8hGLaHxOTBu3GNgzPvuEUWIzU+Nf6a8eTtBRyKITBepZl6i
     skip_symbols: false
-    symbol_server: https://www.myget.org/F/inovitex/symbols/api/v2/package
+    symbol_server: https://www.myget.org/F/iqfeedcsharpapiclient/symbols/api/v2/package
     artifact: /.*\.nupkg/
 
   # Deploying to NuGet feed (NuGet.org)
@@ -54,7 +54,7 @@ deploy:
       branch: release
     server: https://www.nuget.org/api/v2/package
     api_key:
-      secure: TC0O2n6JgnbHGo9yB7aRNAILarC5nRKH5f1BMjF5t+WUge429Pp5RmZxJCTZRP8+
-    skip_symbols: false
+      secure: zWdGIvNfTP1AU9/i1RnRIT3/Zi6pll/9MTWmr9Ur1iZWzzalEQ5RgyIfwammhm02
+    skip_symbols: true
     symbol_server: https://nuget.smbsrc.net/
     artifact: /.*\.nupkg/

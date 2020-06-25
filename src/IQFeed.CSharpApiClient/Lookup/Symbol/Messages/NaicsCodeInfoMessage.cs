@@ -7,21 +7,21 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
     {
         public NaicsCodeInfoMessage(int naicsCode, string description, string requestId = null)
         {
-            RequestId = requestId;
             NaicsCode = naicsCode;
             Description = description;
+            RequestId = requestId;
         }
 
-        public string RequestId { get; private set; }
         public int NaicsCode { get; private set; }
-        public string Description { get; private set; }        
+        public string Description { get; private set; }
+        public string RequestId { get; private set; }
 
         public static NaicsCodeInfoMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
 
             return new NaicsCodeInfoMessage(
-                int.Parse(values[0], CultureInfo.InvariantCulture), 
+                int.Parse(values[0], CultureInfo.InvariantCulture),
                 values[1]);
         }
 
@@ -32,7 +32,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 
             return new NaicsCodeInfoMessage(
                 int.Parse(values[1], CultureInfo.InvariantCulture),
-                values[2],                
+                values[2],
                 requestId);
         }
 
@@ -55,10 +55,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
                 return hash;
             }
         }
-        
+
         public override string ToString()
         {
-            return $"{nameof(NaicsCode)}: {NaicsCode}, {nameof(Description)}: {Description}";
+            return $"{nameof(NaicsCode)}: {NaicsCode}, {nameof(Description)}: {Description}, {nameof(RequestId)}: {RequestId}";
         }
     }
 }

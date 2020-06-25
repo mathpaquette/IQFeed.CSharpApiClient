@@ -6,45 +6,36 @@ using IQFeed.CSharpApiClient.Lookup.Common;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
-    public abstract class DailyWeeklyMonthlyMessage
+    public class DailyWeeklyMonthlyMessage : IDailyWeeklyMonthlyMessage
     {
         public const string DailyWeeklyMonthlyDateTimeFormat = "yyyy-MM-dd";
 
-        public static DailyWeeklyMonthlyMessage<decimal> ParseDecimal(string message)
+        public DailyWeeklyMonthlyMessage(DateTime timestamp, double high, double low, double open, double close, long periodVolume, int openInterest, string requestId = null)
         {
-            var values = message.SplitFeedMessage();
-
-            return new DailyWeeklyMonthlyMessage<decimal>(
-                DateTime.ParseExact(values[0], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture),
-                decimal.Parse(values[1], CultureInfo.InvariantCulture),
-                decimal.Parse(values[2], CultureInfo.InvariantCulture),
-                decimal.Parse(values[3], CultureInfo.InvariantCulture),
-                decimal.Parse(values[4], CultureInfo.InvariantCulture),
-                long.Parse(values[5], CultureInfo.InvariantCulture),
-                int.Parse(values[6], CultureInfo.InvariantCulture));
+            Timestamp = timestamp;
+            High = high;
+            Low = low;
+            Open = open;
+            Close = close;
+            PeriodVolume = periodVolume;
+            OpenInterest = openInterest;
+            RequestId = requestId;
         }
 
-        public static DailyWeeklyMonthlyMessage<decimal> ParseDecimalWithRequestId(string message)
-        {
-            var values = message.SplitFeedMessage();
-            var requestId = values[0];
+        public DateTime Timestamp { get; private set; }
+        public double High { get; private set; }
+        public double Low { get; private set; }
+        public double Open { get; private set; }
+        public double Close { get; private set; }
+        public long PeriodVolume { get; private set; }
+        public int OpenInterest { get; private set; }
+        public string RequestId { get; private set; }
 
-            return new DailyWeeklyMonthlyMessage<decimal>(
-                DateTime.ParseExact(values[1], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture),
-                decimal.Parse(values[2], CultureInfo.InvariantCulture),
-                decimal.Parse(values[3], CultureInfo.InvariantCulture),
-                decimal.Parse(values[4], CultureInfo.InvariantCulture),
-                decimal.Parse(values[5], CultureInfo.InvariantCulture),
-                long.Parse(values[6], CultureInfo.InvariantCulture),
-                int.Parse(values[7], CultureInfo.InvariantCulture),
-                requestId);
-        }
-
-        public static DailyWeeklyMonthlyMessage<double> Parse(string message)
+        public static DailyWeeklyMonthlyMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
 
-            return new DailyWeeklyMonthlyMessage<double>(
+            return new DailyWeeklyMonthlyMessage(
                 DateTime.ParseExact(values[0], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture),
                 double.Parse(values[1], CultureInfo.InvariantCulture),
                 double.Parse(values[2], CultureInfo.InvariantCulture),
@@ -54,12 +45,12 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 int.Parse(values[6], CultureInfo.InvariantCulture));
         }
 
-        public static DailyWeeklyMonthlyMessage<double> ParseWithRequestId(string message)
+        public static DailyWeeklyMonthlyMessage ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
             var requestId = values[0];
 
-            return new DailyWeeklyMonthlyMessage<double>(
+            return new DailyWeeklyMonthlyMessage(
                 DateTime.ParseExact(values[1], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture),
                 double.Parse(values[2], CultureInfo.InvariantCulture),
                 double.Parse(values[3], CultureInfo.InvariantCulture),
@@ -70,84 +61,16 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 requestId);
         }
 
-        public static DailyWeeklyMonthlyMessage<float> ParseFloat(string message)
-        {
-            var values = message.SplitFeedMessage();
-
-            return new DailyWeeklyMonthlyMessage<float>(
-                DateTime.ParseExact(values[0], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture),
-                float.Parse(values[1], CultureInfo.InvariantCulture),
-                float.Parse(values[2], CultureInfo.InvariantCulture),
-                float.Parse(values[3], CultureInfo.InvariantCulture),
-                float.Parse(values[4], CultureInfo.InvariantCulture),
-                long.Parse(values[5], CultureInfo.InvariantCulture),
-                int.Parse(values[6], CultureInfo.InvariantCulture));
-        }
-
-        public static DailyWeeklyMonthlyMessage<float> ParseFloatWithRequestId(string message)
-        {
-            var values = message.SplitFeedMessage();
-            var requestId = values[0];
-
-            return new DailyWeeklyMonthlyMessage<float>(
-                DateTime.ParseExact(values[1], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture),
-                float.Parse(values[2], CultureInfo.InvariantCulture),
-                float.Parse(values[3], CultureInfo.InvariantCulture),
-                float.Parse(values[4], CultureInfo.InvariantCulture),
-                float.Parse(values[5], CultureInfo.InvariantCulture),
-                long.Parse(values[6], CultureInfo.InvariantCulture),
-                int.Parse(values[7], CultureInfo.InvariantCulture),
-                requestId);
-        }
-
-        public static IEnumerable<DailyWeeklyMonthlyMessage<decimal>> ParseDecimalFromFile(string path, bool hasRequestId = false)
-        {
-            return hasRequestId == false
-                ? LookupMessageFileParser.ParseFromFile(ParseDecimal, path)
-                : LookupMessageFileParser.ParseFromFile(ParseDecimalWithRequestId, path);
-        }
-
-        public static IEnumerable<DailyWeeklyMonthlyMessage<double>> ParseFromFile(string path, bool hasRequestId = false)
+        public static IEnumerable<DailyWeeklyMonthlyMessage> ParseFromFile(string path, bool hasRequestId = false)
         {
             return hasRequestId == false
                 ? LookupMessageFileParser.ParseFromFile(Parse, path)
                 : LookupMessageFileParser.ParseFromFile(ParseWithRequestId, path);
         }
 
-        public static IEnumerable<DailyWeeklyMonthlyMessage<float>> ParseFloatFromFile(string path, bool hasRequestId = false)
-        {
-            return hasRequestId == false
-                ? LookupMessageFileParser.ParseFromFile(ParseFloat, path)
-                : LookupMessageFileParser.ParseFromFile(ParseFloatWithRequestId, path);
-        }
-    }
-
-    public class DailyWeeklyMonthlyMessage<T> : IDailyWeeklyMonthlyMessage<T>
-    {
-        public DailyWeeklyMonthlyMessage(DateTime timestamp, T high, T low, T open, T close, long periodVolume, int openInterest, string requestId = null)
-        {
-            RequestId = requestId;
-            Timestamp = timestamp;
-            High = high;
-            Low = low;
-            Open = open;
-            Close = close;
-            PeriodVolume = periodVolume;
-            OpenInterest = openInterest;
-        }
-
-        public string RequestId { get; private set; }
-        public DateTime Timestamp { get; private set; }
-        public T High { get; private set; }
-        public T Low { get; private set; }
-        public T Open { get; private set; }
-        public T Close { get; private set; }
-        public long PeriodVolume { get; private set; }
-        public int OpenInterest { get; private set; }
-
         public override bool Equals(object obj)
         {
-            return obj is DailyWeeklyMonthlyMessage<T> message &&
+            return obj is DailyWeeklyMonthlyMessage message &&
                    RequestId == message.RequestId &&
                    Timestamp == message.Timestamp &&
                    Equals(High, message.High) &&
@@ -177,7 +100,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 
         public override string ToString()
         {
-            return $"{nameof(RequestId)}: {RequestId}, {nameof(Timestamp)}: {Timestamp}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Open)}: {Open}, {nameof(Close)}: {Close}, {nameof(PeriodVolume)}: {PeriodVolume}, {nameof(OpenInterest)}: {OpenInterest}";
+            return $"{nameof(Timestamp)}: {Timestamp}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Open)}: {Open}, {nameof(Close)}: {Close}, {nameof(PeriodVolume)}: {PeriodVolume}, {nameof(OpenInterest)}: {OpenInterest}, {nameof(RequestId)}: {RequestId}";
         }
     }
 }

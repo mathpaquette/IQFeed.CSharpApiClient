@@ -1,3 +1,16 @@
+### IQFeed.CSharpApiClient 2.5.0 - June 17, 2020
+* Added DynamicFields support for Level1
+* Added News support for Historical
+* Added ToCsv on FundamentalMessage
+
+##### Issues Resolved
+* Adjusted RegEx for parsing IntervalBarMessage
+
+##### Breaking Changes
+ * Removed support for generic Messages
+ * Added IUpdateSummaryMessage for exposing Summary and Update events from Level1
+ * Dropped support for NET45
+
 ### IQFeed.CSharpApiClient 2.1.0 - April 18, 2020
 * Added synchronized methods to support Python .NET
 

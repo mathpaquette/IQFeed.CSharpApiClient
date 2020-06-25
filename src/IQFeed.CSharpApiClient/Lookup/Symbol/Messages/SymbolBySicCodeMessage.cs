@@ -7,20 +7,20 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
     {
         public SymbolBySicCodeMessage(int sicCode, string symbol, int listedMarketId, int securityTypeId, string description, string requestId = null)
         {
-            RequestId = requestId;
             SicCode = sicCode;
             Symbol = symbol;
             ListedMarketId = listedMarketId;
             SecurityTypeId = securityTypeId;
             Description = description;
+            RequestId = requestId;
         }
 
-        public string RequestId { get; private set; }
         public int SicCode { get; private set; }
         public string Symbol { get; private set; }
         public int ListedMarketId { get; private set; }
         public int SecurityTypeId { get; private set; }
         public string Description { get; private set; }
+        public string RequestId { get; private set; }
 
         public static SymbolBySicCodeMessage Parse(string message)
         {
@@ -68,14 +68,14 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
                 hash = hash * 29 + SicCode.GetHashCode();
                 hash = hash * 29 + Symbol.GetHashCode();
                 hash = hash * 29 + ListedMarketId.GetHashCode();
-                hash = hash * 29 + SecurityTypeId.GetHashCode();                
+                hash = hash * 29 + SecurityTypeId.GetHashCode();
                 hash = hash * 29 + Description.GetHashCode();
                 return hash;
             }
         }
         public override string ToString()
         {
-            return $"{nameof(SicCode)}: {SicCode}, {nameof(Symbol)}: {Symbol}, {nameof(ListedMarketId)}: {ListedMarketId}, {nameof(SecurityTypeId)}: {SecurityTypeId}, {nameof(Description)}: {Description}";
+            return $"{nameof(SicCode)}: {SicCode}, {nameof(Symbol)}: {Symbol}, {nameof(ListedMarketId)}: {ListedMarketId}, {nameof(SecurityTypeId)}: {SecurityTypeId}, {nameof(Description)}: {Description}, {nameof(RequestId)}: {RequestId}";
         }
     }
 }

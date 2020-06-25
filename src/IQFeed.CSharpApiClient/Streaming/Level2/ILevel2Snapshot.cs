@@ -4,8 +4,8 @@ using IQFeed.CSharpApiClient.Streaming.Level2.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level2
 {
-    public interface ILevel2Snapshot<T>
+    public interface ILevel2Snapshot
     {
-        Task<IEnumerable<UpdateSummaryMessage<T>>> GetSummarySnapshotAsync(string symbol);
+        Task<IEnumerable<UpdateSummaryMessage>> GetSummarySnapshotAsync(string symbol);
     }
 }

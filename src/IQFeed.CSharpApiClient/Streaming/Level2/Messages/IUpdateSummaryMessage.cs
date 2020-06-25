@@ -2,12 +2,12 @@
 
 namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
 {
-    public interface IUpdateSummaryMessage<T>
+    public interface IUpdateSummaryMessage
     {
         string Symbol { get; }
         string MMID { get; }
-        T Bid { get; }
-        T Ask { get; }
+        double Bid { get; }
+        double Ask { get; }
         int BidSize { get; }
         int AskSize { get; }
         TimeSpan BidTime { get; }

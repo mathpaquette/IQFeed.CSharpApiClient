@@ -7,13 +7,13 @@ namespace IQFeed.CSharpApiClient.Examples.Common
 {
     public abstract class ConcurrentHistoricalBase
     {
-        protected readonly LookupClient<double> LookupClient;
+        protected readonly LookupClient LookupClient;
         protected readonly ConcurrentQueue<string> Symbols;
         protected int InitialCount = 0;
 
         private readonly Task[] _concurrentTasks;
 
-        protected ConcurrentHistoricalBase(LookupClient<double> lookupClient, int numberOfClients)
+        protected ConcurrentHistoricalBase(LookupClient lookupClient, int numberOfClients)
         {
             LookupClient = lookupClient;
             Symbols = new ConcurrentQueue<string>();
@@ -41,7 +41,7 @@ namespace IQFeed.CSharpApiClient.Examples.Common
             var count = Symbols.Count;
             if (count % 10 != 0) return;
 
-            var progress = (InitialCount - count) / (decimal)InitialCount * 100;
+            var progress = (InitialCount - count) / (double)InitialCount * 100;
             Console.Write($"{progress}%...");
         }
 
