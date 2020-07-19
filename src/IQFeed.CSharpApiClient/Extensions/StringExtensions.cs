@@ -56,8 +56,11 @@ namespace IQFeed.CSharpApiClient.Extensions
                 partStartIndex = nextDelimiterIndex + 1;
             }
 
-            // take the last part entirely (except for the last delimiter value)
-            parts[expectedParts - 1] = s.Substring(partStartIndex, s.Length - partStartIndex - 1);
+
+            //get length of last part: take entire string if no delimiter at end of part
+            int lastPartLength = s[s.Length - 1] == IQFeedDefault.ProtocolDelimiterCharacter ? s.Length - partStartIndex - 1 : s.Length - partStartIndex;
+
+            parts[expectedParts - 1] = s.Substring(partStartIndex, lastPartLength);
 
             return parts;
         }
