@@ -43,12 +43,12 @@ namespace IQFeed.CSharpApiClient.Extensions
 
         public static string[] SplitFeedMessage(this string s, int expectedParts)
         {
-            string[] parts = new string[expectedParts];
-            int partStartIndex = 0;
-            for(int partIndex = 0; partIndex < expectedParts - 1; ++partIndex)
+            var parts = new string[expectedParts];
+            var partStartIndex = 0;
+            for (var partIndex = 0; partIndex < expectedParts - 1; ++partIndex)
             {
-                int nextDelimiterIndex = s.IndexOf(IQFeedDefault.ProtocolDelimiterCharacter, partStartIndex);
-                if(nextDelimiterIndex == -1)
+                var nextDelimiterIndex = s.IndexOf(IQFeedDefault.ProtocolDelimiterCharacter, partStartIndex);
+                if (nextDelimiterIndex == -1)
                 {
                     throw new ArgumentException($"The specified string '{s}' doesn't contain expected number of parts - {expectedParts}");
                 }
@@ -56,12 +56,8 @@ namespace IQFeed.CSharpApiClient.Extensions
                 partStartIndex = nextDelimiterIndex + 1;
             }
 
-
-            //get length of last part: take entire string if no delimiter at end of part
-            int lastPartLength = s[s.Length - 1] == IQFeedDefault.ProtocolDelimiterCharacter ? s.Length - partStartIndex - 1 : s.Length - partStartIndex;
-
-            parts[expectedParts - 1] = s.Substring(partStartIndex, lastPartLength);
-
+            // take the last part entirely (except for the last delimiter value)	
+            parts[expectedParts - 1] = s.Substring(partStartIndex, s.Length - partStartIndex - 1);
             return parts;
         }
 
