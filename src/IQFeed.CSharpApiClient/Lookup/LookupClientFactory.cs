@@ -6,6 +6,7 @@ using IQFeed.CSharpApiClient.Lookup.Historical;
 using IQFeed.CSharpApiClient.Lookup.Historical.Facades;
 using IQFeed.CSharpApiClient.Lookup.News;
 using IQFeed.CSharpApiClient.Lookup.Symbol;
+using IQFeed.CSharpApiClient.Lookup.Symbol.Downloader;
 using IQFeed.CSharpApiClient.Lookup.Symbol.ExpiredOptions;
 using IQFeed.CSharpApiClient.Lookup.Symbol.MarketSymbols;
 
@@ -53,10 +54,9 @@ namespace IQFeed.CSharpApiClient.Lookup
                 lookupDispatcher,
                 exceptionFactory,
                 new SymbolMessageHandler(),
-                new MarketSymbolDownloader(),
                 new MarketSymbolReader(),
-                new ExpiredOptionDownloader(),
                 new ExpiredOptionReader(),
+                new FileDownloader(new LocalCacheStrategy()), 
                 timeout);
 
             // Chains
