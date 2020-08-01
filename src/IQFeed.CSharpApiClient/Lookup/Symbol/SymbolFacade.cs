@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Lookup.Common;
+using IQFeed.CSharpApiClient.Lookup.Symbol.Downloader;
 using IQFeed.CSharpApiClient.Lookup.Symbol.Enums;
 using IQFeed.CSharpApiClient.Lookup.Symbol.ExpiredOptions;
 using IQFeed.CSharpApiClient.Lookup.Symbol.MarketSymbols;
@@ -16,40 +17,52 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
         private readonly SymbolRequestFormatter _symbolRequestFormatter;
         private readonly SymbolMessageHandler _symbolMessageHandler;
 
-        private readonly MarketSymbolDownloader _marketSymbolDownloader;
         private readonly MarketSymbolReader _marketSymbolReader;
-        private readonly ExpiredOptionDownloader _expiredOptionDownloader;
         private readonly ExpiredOptionReader _expiredOptionReader;
+        private readonly FileDownloader _fileDownloader;
+
+        private readonly TimeSpan _marketSymbolsCacheExpiration = TimeSpan.FromDays(1);
+        private readonly TimeSpan _expiredOptionsCacheExpiration = TimeSpan.FromDays(7);
 
         public SymbolFacade(
             SymbolRequestFormatter symbolRequestFormatter,
             LookupDispatcher lookupDispatcher,
             ExceptionFactory exceptionFactory,
             SymbolMessageHandler symbolMessageHandler,
-            MarketSymbolDownloader marketSymbolDownloader, 
             MarketSymbolReader marketSymbolReader,
-            ExpiredOptionDownloader expiredOptionDownloader,
             ExpiredOptionReader expiredOptionReader,
+            FileDownloader fileDownloader,
             TimeSpan timeout) : base(lookupDispatcher, exceptionFactory, timeout)
         {
             _symbolRequestFormatter = symbolRequestFormatter;
             _symbolMessageHandler = symbolMessageHandler;
             _expiredOptionReader = expiredOptionReader;
-            _expiredOptionDownloader = expiredOptionDownloader;
             _marketSymbolReader = marketSymbolReader;
-            _marketSymbolDownloader = marketSymbolDownloader;
+            _fileDownloader = fileDownloader;
         }
 
-        public IEnumerable<MarketSymbol> GetAllMarketSymbols(string url = SymbolDefault.MarketSymbolsArchiveUrl, string downloadPath = null, bool useCache = true)
+        public IEnumerable<MarketSymbol> GetAllMarketSymbols(string url = SymbolDefault.MarketSymbolsArchiveUrl, bool useCache = true, TimeSpan? expiration = null)
         {
-            var filename = _marketSymbolDownloader.GetFile(url, downloadPath, useCache);
+            var filename = _fileDownloader.GetFile(url, useCache, expiration ?? _marketSymbolsCacheExpiration);
             return _marketSymbolReader.GetMarketSymbols(filename);
         }
 
-        public IEnumerable<ExpiredOption> GetAllExpiredOptions(string url = SymbolDefault.ExpiredOptionsArchiveUrl, string downloadPath = null, bool useCache = true, bool header = false)
+        public IEnumerable<MarketSymbol> GetAllMarketSymbols(string downloadFolder, string url = SymbolDefault.MarketSymbolsArchiveUrl, bool useCache = true, TimeSpan? expiration = null)
         {
-            var filename = _expiredOptionDownloader.GetFile(url, downloadPath, useCache);
-            return _expiredOptionReader.GetExpiredOptions(filename, header);
+            var filename = _fileDownloader.GetFile(downloadFolder, url, useCache, expiration ?? _marketSymbolsCacheExpiration);
+            return _marketSymbolReader.GetMarketSymbols(filename);
+        }
+
+        public IEnumerable<ExpiredOption> GetAllExpiredOptions(string url = SymbolDefault.ExpiredOptionsArchiveUrl, bool useCache = true, TimeSpan? expiration = null)
+        {
+            var filename = _fileDownloader.GetFile(url, useCache, expiration ?? _expiredOptionsCacheExpiration);
+            return _expiredOptionReader.GetExpiredOptions(filename);
+        }
+
+        public IEnumerable<ExpiredOption> GetAllExpiredOptions(string downloadFolder, string url = SymbolDefault.ExpiredOptionsArchiveUrl, bool useCache = true, TimeSpan? expiration = null)
+        {
+            var filename = _fileDownloader.GetFile(downloadFolder, url, useCache, expiration ?? _expiredOptionsCacheExpiration);
+            return _expiredOptionReader.GetExpiredOptions(filename);
         }
 
         public Task<IEnumerable<SymbolByFilterMessage>> GetSymbolsByFilterAsync(FieldToSearch fieldToSearch, string searchString, FilterType? filterType, IEnumerable<int> filterValues, string requestId = null)
@@ -62,8 +75,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
 
         public Task<IEnumerable<SymbolBySicCodeMessage>> GetSymbolsBySicCodeAsync(string sicCodePrefix, string requestId = null)
         {
-            if(sicCodePrefix == null) throw new ArgumentNullException(nameof(sicCodePrefix));
-            if(sicCodePrefix.Length < 2) throw new ArgumentException("Value should have at least 2 characters!", nameof(sicCodePrefix));
+            if (sicCodePrefix == null) throw new ArgumentNullException(nameof(sicCodePrefix));
+            if (sicCodePrefix.Length < 2) throw new ArgumentException("Value should have at least 2 characters!", nameof(sicCodePrefix));
             var request = _symbolRequestFormatter.ReqSymbolsBySicCode(sicCodePrefix, requestId);
             return string.IsNullOrEmpty(requestId)
                 ? GetMessagesAsync(request, _symbolMessageHandler.GetSymbolBySicCodeMessages)
@@ -72,8 +85,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
 
         public Task<IEnumerable<SymbolByNaicsCodeMessage>> GetSymbolsByNaicsCodeAsync(string naicsCodePrefix, string requestId = null)
         {
-            if(naicsCodePrefix == null) throw new ArgumentNullException(nameof(naicsCodePrefix));
-            if(naicsCodePrefix.Length < 2) throw new ArgumentException("Value should have at least 2 characters!", nameof(naicsCodePrefix));
+            if (naicsCodePrefix == null) throw new ArgumentNullException(nameof(naicsCodePrefix));
+            if (naicsCodePrefix.Length < 2) throw new ArgumentException("Value should have at least 2 characters!", nameof(naicsCodePrefix));
             var request = _symbolRequestFormatter.ReqSymbolsByNaicsCode(naicsCodePrefix, requestId);
             return string.IsNullOrEmpty(requestId)
                 ? GetMessagesAsync(request, _symbolMessageHandler.GetSymbolByNaicsCodeMessages)
@@ -83,8 +96,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
         public Task<IEnumerable<ListedMarketMessage>> GetListedMarketsAsync(string requestId = null)
         {
             var request = _symbolRequestFormatter.ReqListedMarkets(requestId);
-            return string.IsNullOrEmpty(requestId) 
-                ? GetMessagesAsync(request, _symbolMessageHandler.GetListedMarketMessages) 
+            return string.IsNullOrEmpty(requestId)
+                ? GetMessagesAsync(request, _symbolMessageHandler.GetListedMarketMessages)
                 : GetMessagesAsync(request, _symbolMessageHandler.GetListedMarketMessagesWithRequestId);
         }
 
@@ -99,8 +112,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol
         public Task<IEnumerable<TradeConditionMessage>> GetTradeConditionsAsync(string requestId = null)
         {
             var request = _symbolRequestFormatter.ReqTradeConditions(requestId);
-            return string.IsNullOrEmpty(requestId) 
-                ? GetMessagesAsync(request, _symbolMessageHandler.GetTradeConditionMessages) 
+            return string.IsNullOrEmpty(requestId)
+                ? GetMessagesAsync(request, _symbolMessageHandler.GetTradeConditionMessages)
                 : GetMessagesAsync(request, _symbolMessageHandler.GetTradeConditionMessagesWithRequestId);
         }
 
