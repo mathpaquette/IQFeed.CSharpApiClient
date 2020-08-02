@@ -1,3 +1,7 @@
+### IQFeed.CSharpApiClient 2.5.1 - August 1, 2020
+* Replaced Market Symbols and Expired Options cache strategies
+
+
 ### IQFeed.CSharpApiClient 2.5.0 - June 17, 2020
 * Added DynamicFields support for Level1
 * Added News support for Historical
