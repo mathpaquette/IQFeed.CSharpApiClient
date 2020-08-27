@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using NUnit.Framework;
 
-namespace IQFeed.CSharpApiClient.Tests.Common.TestCases
+namespace IQFeed.CSharpApiClient.Tests.Common
 {
     public class CultureNameTestCase
     {

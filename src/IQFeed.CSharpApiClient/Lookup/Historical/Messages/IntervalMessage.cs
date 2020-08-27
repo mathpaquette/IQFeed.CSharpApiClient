@@ -72,6 +72,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 : LookupMessageFileParser.ParseFromFile(ParseWithRequestId, path);
         }
 
+        public string ToCsv()
+        {
+            return RequestId == null
+                ? FormattableString.Invariant($"{Timestamp.ToString(IntervalDateTimeFormat, CultureInfo.InvariantCulture)},{High},{Low},{Open},{Close},{TotalVolume},{PeriodVolume},{NumberOfTrades}")
+                : FormattableString.Invariant($"{RequestId},{Timestamp.ToString(IntervalDateTimeFormat, CultureInfo.InvariantCulture)},{High},{Low},{Open},{Close},{TotalVolume},{PeriodVolume},{NumberOfTrades}");
+        }
+
         public override bool Equals(object obj)
         {
             return obj is IntervalMessage message &&
