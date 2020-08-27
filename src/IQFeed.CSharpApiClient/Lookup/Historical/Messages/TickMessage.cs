@@ -84,8 +84,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public string ToCsv()
         {
             return RequestId == null
-                ? $"{Timestamp.ToString(TickDateTimeFormat, CultureInfo.InvariantCulture)},{Convert.ToString(Last, CultureInfo.InvariantCulture)},{LastSize},{TotalVolume},{Convert.ToString(Bid, CultureInfo.InvariantCulture)},{Convert.ToString(Ask, CultureInfo.InvariantCulture)},{TickId},{BasisForLast},{TradeMarketCenter},{TradeConditions}"
-                : $"{RequestId},{Timestamp.ToString(TickDateTimeFormat, CultureInfo.InvariantCulture)},{Convert.ToString(Last, CultureInfo.InvariantCulture)},{LastSize},{TotalVolume},{Convert.ToString(Bid, CultureInfo.InvariantCulture)},{Convert.ToString(Ask, CultureInfo.InvariantCulture)},{TickId},{BasisForLast},{TradeMarketCenter},{TradeConditions}";
+                ? FormattableString.Invariant($"{Timestamp.ToString(TickDateTimeFormat, CultureInfo.InvariantCulture)},{Last},{LastSize},{TotalVolume},{Bid},{Ask},{TickId},{BasisForLast},{TradeMarketCenter},{TradeConditions}")
+                : FormattableString.Invariant($"{RequestId},{Timestamp.ToString(TickDateTimeFormat, CultureInfo.InvariantCulture)},{Last},{LastSize},{TotalVolume},{Bid},{Ask},{TickId},{BasisForLast},{TradeMarketCenter},{TradeConditions}");
         }
 
         public override bool Equals(object obj)

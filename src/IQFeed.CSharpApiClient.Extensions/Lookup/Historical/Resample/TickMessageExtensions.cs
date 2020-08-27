@@ -103,10 +103,10 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                     tick.Last,
                     tick.Last,
                     tick.Last,
-                    tick.LastSize,
-                    1,
                     totalVolume,
+                    tick.LastSize,
                     totalTrade,
+                    1,
                     tick.Last * tick.LastSize);
             }
 
@@ -181,10 +181,10 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                     tick.Last,
                     tick.Last,
                     tick.Last,
-                    tick.LastSize,
-                    1,
                     totalVolume,
+                    tick.LastSize,
                     totalTrade,
+                    1,
                     tick.Last * tick.LastSize);
             }
 

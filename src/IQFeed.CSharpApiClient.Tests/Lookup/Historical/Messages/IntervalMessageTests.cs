@@ -1,7 +1,6 @@
 ﻿using System;
 using IQFeed.CSharpApiClient.Lookup.Historical.Messages;
 using IQFeed.CSharpApiClient.Tests.Common;
-using IQFeed.CSharpApiClient.Tests.Common.TestCases;
 using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
@@ -9,7 +8,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
     public class IntervalMessageTests
     {
         [Test, TestCaseSource(typeof(CultureNameTestCase), nameof(CultureNameTestCase.CultureNames))]
-        public void Should_Parse_IntervalMessage_Culture_Independent(string cultureName)
+        public void Should_Parse_IntervalMessage_Invariant(string cultureName)
         {
             // Arrange
             TestHelper.SetThreadCulture(cultureName);
@@ -21,6 +20,36 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
 
             // Assert
             Assert.AreEqual(intervalMessage, intervalMessageFromValues);
+        }
+
+        [Test, TestCaseSource(typeof(CultureNameTestCase), nameof(CultureNameTestCase.CultureNames))]
+        public void Should_Csv_IntervalMessage_Invariant(string cultureName)
+        {
+            // Arrange
+            TestHelper.SetThreadCulture(cultureName);
+            var intervalMessage = new IntervalMessage(new DateTime(2020, 01, 01, 9, 30, 00), 1.01, 1.02, 1.03, 1.04, 1000, 1, 10);
+
+            // Act
+            var csv = intervalMessage.ToCsv();
+
+            // Arrange
+            var expectedCsv = "2020-01-01 09:30:00,1.01,1.02,1.03,1.04,1000,1,10";
+            Assert.AreEqual(csv, expectedCsv);
+        }
+
+        [Test, TestCaseSource(typeof(CultureNameTestCase), nameof(CultureNameTestCase.CultureNames))]
+        public void Should_Csv_IntervalMessage_With_RequestId_Invariant(string cultureName)
+        {
+            // Arrange
+            TestHelper.SetThreadCulture(cultureName);
+            var intervalMessage = new IntervalMessage(new DateTime(2020, 01, 01, 9, 30, 00), 1.01, 1.02, 1.03, 1.04, 1000, 1, 10, "TEST123");
+
+            // Act
+            var csv = intervalMessage.ToCsv();
+
+            // Arrange
+            var expectedCsv = "TEST123,2020-01-01 09:30:00,1.01,1.02,1.03,1.04,1000,1,10";
+            Assert.AreEqual(csv, expectedCsv);
         }
     }
 }
