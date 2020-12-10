@@ -97,18 +97,11 @@ clr.AddReference("IQFeed.CSharpApiClient")
 from IQFeed.CSharpApiClient import IQFeedLauncher
 IQFeedLauncher.Start("<login>", "<password>", "<product_id>")
 
-from IQFeed.CSharpApiClient.Lookup import LookupClientFactory
-from IQFeed.CSharpApiClient.Lookup.Historical.Messages import TickMessage
-import os
-
 from IQFeed.CSharpApiClient.Streaming.Level1 import Level1ClientFactory
 import time
 
 # Create Level1 client
 level1Client = Level1ClientFactory.CreateNew()
-
-# Connect
-level1Client.Connect()
 
 # Level 1 handler function
 def level1UpdateSummaryHandler(msg):
@@ -118,8 +111,48 @@ def level1UpdateSummaryHandler(msg):
 level1Client.Summary += level1UpdateSummaryHandler
 level1Client.Update += level1UpdateSummaryHandler
 
+# Connect
+level1Client.Connect()
+
 # Request streaming
 level1Client.ReqWatch("AAPL")
+
+# Wait 30 seconds
+time.sleep(30)
+```
+
+#### Streaming Level 2
+```python
+assembly_path = r"C:\<folder>"
+import sys
+sys.path.append(assembly_path)
+import clr
+clr.AddReference("IQFeed.CSharpApiClient")
+
+from IQFeed.CSharpApiClient import IQFeedLauncher
+IQFeedLauncher.Start()
+
+from IQFeed.CSharpApiClient.Streaming.Level2 import Level2ClientFactory
+import time
+
+# Create Level2 client
+level2Client = Level2ClientFactory.CreateNew()
+
+# Level 2 handler function
+def level2UpdateSummaryHandler(msg):
+    print(msg)
+
+# Subscribe to Summary/Update events
+level2Client.System += level2UpdateSummaryHandler
+level2Client.Error += level2UpdateSummaryHandler
+level2Client.Summary += level2UpdateSummaryHandler
+level2Client.Update += level2UpdateSummaryHandler
+
+# Connect
+level2Client.Connect()
+
+# Request streaming
+level2Client.ReqWatch("AAPL")
 
 # Wait 30 seconds
 time.sleep(30)
