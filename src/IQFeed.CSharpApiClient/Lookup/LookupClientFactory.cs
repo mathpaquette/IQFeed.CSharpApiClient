@@ -19,11 +19,13 @@ namespace IQFeed.CSharpApiClient.Lookup
             int port,
             int numberOfClients,
             TimeSpan timeout,
-            int bufferSize)
+            int bufferSize,
+            int requestsPerSecond)
         {
             // Common
             var requestFormatter = new RequestFormatter();
             var lookupDispatcher = new LookupDispatcher(host, port, bufferSize, IQFeedDefault.ProtocolVersion, numberOfClients, requestFormatter);
+            var lookupRateLimiter = new LookupRateLimiter(requestsPerSecond);
             var exceptionFactory = new ExceptionFactory();
             var lookupMessageFileHandler = new LookupMessageFileHandler(lookupDispatcher, exceptionFactory, timeout);
             var historicalMessageHandler = new HistoricalMessageHandler();
@@ -34,6 +36,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             var historicalFacade = new HistoricalFacade(
                 historicalDataRequestFormatter,
                 lookupDispatcher,
+                lookupRateLimiter,
                 exceptionFactory,
                 historicalMessageHandler,
                 historicalFileFacade,
@@ -44,6 +47,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             var newsFacade = new NewsFacade(
                 new NewsRequestFormatter(),
                 lookupDispatcher,
+                lookupRateLimiter,
                 exceptionFactory, 
                 new NewsMessageHandler(), 
                 timeout);
@@ -52,6 +56,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             var symbolFacade = new SymbolFacade(
                 new SymbolRequestFormatter(),
                 lookupDispatcher,
+                lookupRateLimiter,
                 exceptionFactory,
                 new SymbolMessageHandler(),
                 new MarketSymbolReader(),
@@ -60,7 +65,13 @@ namespace IQFeed.CSharpApiClient.Lookup
                 timeout);
 
             // Chains
-            var chainsFacade = new ChainsFacade(new ChainsRequestFormatter(), new ChainsMessageHandler(), lookupDispatcher, exceptionFactory, timeout);
+            var chainsFacade = new ChainsFacade(
+                new ChainsRequestFormatter(),
+                new ChainsMessageHandler(),
+                lookupDispatcher, 
+                lookupRateLimiter,
+                exceptionFactory, 
+                timeout);
 
             return new LookupClient(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade);
         }
@@ -72,27 +83,8 @@ namespace IQFeed.CSharpApiClient.Lookup
                 IQFeedDefault.LookupPort,
                 1,
                 LookupDefault.Timeout,
-                LookupDefault.BufferSize);
-        }
-
-        public static LookupClient CreateNew(string host, int port)
-        {
-            return CreateNew(
-                host,
-                port,
-                1,
-                LookupDefault.Timeout,
-                LookupDefault.BufferSize);
-        }
-
-        public static LookupClient CreateNew(string host, int port, int numberOfClients, TimeSpan timeout)
-        {
-            return CreateNew(
-                host,
-                port,
-                numberOfClients,
-                timeout,
-                LookupDefault.BufferSize);
+                LookupDefault.BufferSize,
+                LookupDefault.RequestsPerSecond);
         }
 
         public static LookupClient CreateNew(int numberOfClients)
@@ -102,7 +94,41 @@ namespace IQFeed.CSharpApiClient.Lookup
                 IQFeedDefault.LookupPort,
                 numberOfClients,
                 LookupDefault.Timeout,
-                LookupDefault.BufferSize);
+                LookupDefault.BufferSize,
+                LookupDefault.RequestsPerSecond);
+        }
+
+        public static LookupClient CreateNew(string host, int port)
+        {
+            return CreateNew(
+                host,
+                port,
+                1,
+                LookupDefault.Timeout,
+                LookupDefault.BufferSize,
+                LookupDefault.RequestsPerSecond);
+        }
+
+        public static LookupClient CreateNew(string host, int port, int numberOfClients)
+        {
+            return CreateNew(
+                host,
+                port,
+                numberOfClients,
+                LookupDefault.Timeout,
+                LookupDefault.BufferSize,
+                LookupDefault.RequestsPerSecond);
+        }
+
+        public static LookupClient CreateNew(string host, int port, int numberOfClients, TimeSpan timeout)
+        {
+            return CreateNew(
+                host,
+                port,
+                numberOfClients,
+                timeout,
+                LookupDefault.BufferSize,
+                LookupDefault.RequestsPerSecond);
         }
     }
 }

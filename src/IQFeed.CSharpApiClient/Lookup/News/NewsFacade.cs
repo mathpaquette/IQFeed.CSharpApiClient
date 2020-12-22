@@ -17,9 +17,10 @@ namespace IQFeed.CSharpApiClient.Lookup.News
         public NewsFacade(
             NewsRequestFormatter newsRequestFormatter,
             LookupDispatcher lookupDispatcher,
+            LookupRateLimiter lookupRateLimiter,
             ExceptionFactory exceptionFactory,
             NewsMessageHandler newsMessageHandler,
-            TimeSpan timeout) : base(lookupDispatcher, exceptionFactory, timeout)
+            TimeSpan timeout) : base(lookupDispatcher, lookupRateLimiter, exceptionFactory, timeout)
         {
             _newsMessageHandler = newsMessageHandler;
             _newsRequestFormatter = newsRequestFormatter;
