@@ -15,7 +15,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
         private readonly ChainsRequestFormatter _chainsRequestFormatter;
         private readonly ChainsMessageHandler _chainsMessageHandler;
 
-        public ChainsFacade(ChainsRequestFormatter chainsRequestFormatter, ChainsMessageHandler chainsMessageHandler, LookupDispatcher lookupDispatcher, ExceptionFactory exceptionFactory, TimeSpan timeout) : base(lookupDispatcher, exceptionFactory, timeout)
+        public ChainsFacade(
+            ChainsRequestFormatter chainsRequestFormatter,
+            ChainsMessageHandler chainsMessageHandler,
+            LookupDispatcher lookupDispatcher,
+            LookupRateLimiter lookupRateLimiter,
+            ExceptionFactory exceptionFactory,
+            TimeSpan timeout) : base(lookupDispatcher, lookupRateLimiter, exceptionFactory, timeout)
         {
             _chainsMessageHandler = chainsMessageHandler;
             _chainsRequestFormatter = chainsRequestFormatter;
