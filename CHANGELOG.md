@@ -1,3 +1,7 @@
+### IQFeed.CSharpApiClient 2.6.0 - December 17, 2020
+* Added Lookup requests rate limiter required by [IQFeed](http://forums.iqfeed.net/index.cfm?page=topic&topicID=5832)
+
+
 ### IQFeed.CSharpApiClient 2.5.1 - August 1, 2020
 * Replaced Market Symbols and Expired Options cache strategies
 
