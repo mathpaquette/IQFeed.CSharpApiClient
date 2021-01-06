@@ -61,17 +61,17 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             var requestId = values[0];
 
             return new TickMessage(
-                DateTime.ParseExact(values[1], TickDateTimeFormat, CultureInfo.InvariantCulture),
-                double.Parse(values[2], CultureInfo.InvariantCulture),
-                long.Parse(values[3], CultureInfo.InvariantCulture),
-                long.Parse(values[4], CultureInfo.InvariantCulture),
-                double.Parse(values[5], CultureInfo.InvariantCulture),
-                double.Parse(values[6], CultureInfo.InvariantCulture),
-                long.Parse(values[7], CultureInfo.InvariantCulture),
-                char.Parse(values[8]),
-                int.Parse(values[9], CultureInfo.InvariantCulture),
-                values[10],
-                requestId);
+                timestamp: DateTime.ParseExact(values[1], TickDateTimeFormat, CultureInfo.InvariantCulture),
+                last: double.Parse(values[2], CultureInfo.InvariantCulture),
+                lastSize: long.Parse(values[3], CultureInfo.InvariantCulture),
+                totalVolume: long.Parse(values[4], CultureInfo.InvariantCulture),
+                bid: double.Parse(values[5], CultureInfo.InvariantCulture),
+                ask: double.Parse(values[6], CultureInfo.InvariantCulture),
+                tickId: long.Parse(values[7], CultureInfo.InvariantCulture),
+                basisForLast: char.Parse(values[8]),
+                tradeMarketCenter: int.Parse(values[9], CultureInfo.InvariantCulture),
+                tradeConditions: values[10],
+                requestId: requestId);
         }
 
         public static IEnumerable<TickMessage> ParseFromFile(string path, bool hasRequestId = false)

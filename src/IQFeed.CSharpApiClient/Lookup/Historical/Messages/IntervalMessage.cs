@@ -10,7 +10,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
     {
         public const string IntervalDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
-        public IntervalMessage(DateTime timestamp, double high, double low, double open, double close, long totalVolume, int periodVolume, int numberOfTrades, string requestId = null)
+        public IntervalMessage(DateTime timestamp, double high, double low, double open, double close, long totalVolume, long periodVolume, int numberOfTrades, string requestId = null)
         {
             Timestamp = timestamp;
             High = high;
@@ -29,7 +29,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public double Open { get; private set; }
         public double Close { get; private set; }
         public long TotalVolume { get; private set; }
-        public int PeriodVolume { get; private set; }
+        public long PeriodVolume { get; private set; }
         public int NumberOfTrades { get; private set; }
         public string RequestId { get; private set; }
 
@@ -38,31 +38,30 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             var values = message.SplitFeedMessage();
 
             return new IntervalMessage(
-                DateTime.ParseExact(values[0], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
-                double.Parse(values[1], CultureInfo.InvariantCulture),
-                double.Parse(values[2], CultureInfo.InvariantCulture),
-                double.Parse(values[3], CultureInfo.InvariantCulture),
-                double.Parse(values[4], CultureInfo.InvariantCulture),
-                long.Parse(values[5], CultureInfo.InvariantCulture),
-                int.Parse(values[6], CultureInfo.InvariantCulture),
-                int.Parse(values[7], CultureInfo.InvariantCulture));
+                timestamp: DateTime.ParseExact(values[0], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
+                high: double.Parse(values[1], CultureInfo.InvariantCulture),
+                low: double.Parse(values[2], CultureInfo.InvariantCulture),
+                open: double.Parse(values[3], CultureInfo.InvariantCulture),
+                close: double.Parse(values[4], CultureInfo.InvariantCulture),
+                totalVolume: long.Parse(values[5], CultureInfo.InvariantCulture),
+                periodVolume: long.Parse(values[6], CultureInfo.InvariantCulture),
+                numberOfTrades: int.Parse(values[7], CultureInfo.InvariantCulture));
         }
 
         public static IntervalMessage ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
-            var requestId = values[0];
 
             return new IntervalMessage(
-                DateTime.ParseExact(values[1], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
-                double.Parse(values[2], CultureInfo.InvariantCulture),
-                double.Parse(values[3], CultureInfo.InvariantCulture),
-                double.Parse(values[4], CultureInfo.InvariantCulture),
-                double.Parse(values[5], CultureInfo.InvariantCulture),
-                long.Parse(values[6], CultureInfo.InvariantCulture),
-                int.Parse(values[7], CultureInfo.InvariantCulture),
-                int.Parse(values[8], CultureInfo.InvariantCulture),
-                requestId);
+                timestamp: DateTime.ParseExact(values[1], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
+                high: double.Parse(values[2], CultureInfo.InvariantCulture),
+                low: double.Parse(values[3], CultureInfo.InvariantCulture),
+                open: double.Parse(values[4], CultureInfo.InvariantCulture),
+                close: double.Parse(values[5], CultureInfo.InvariantCulture),
+                totalVolume: long.Parse(values[6], CultureInfo.InvariantCulture),
+                periodVolume: long.Parse(values[7], CultureInfo.InvariantCulture),
+                numberOfTrades: int.Parse(values[8], CultureInfo.InvariantCulture),
+                requestId: values[0]);
         }
 
         public static IEnumerable<IntervalMessage> ParseFromFile(string path, bool hasRequestId = false)
