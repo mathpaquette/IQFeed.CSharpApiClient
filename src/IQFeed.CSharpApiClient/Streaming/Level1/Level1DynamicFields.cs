@@ -76,7 +76,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         public string Symbol { get; private set; }
         public int Tick { get; private set; }
         public int TickID { get; private set; }
-        public int TotalVolume { get; private set; }
+        public long TotalVolume { get; private set; }
         public string Type { get; private set; }
         public double Volatility { get; private set; }
         public double VWAP { get; private set; }
@@ -147,7 +147,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             string symbol,
             int tick,
             int tickID,
-            int totalVolume,
+            long totalVolume,
             string type,
             double volatility,
             double vwap)
@@ -294,7 +294,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             string symbol = default;
             int tick = default;
             int tickID = default;
-            int totalVolume = default;
+            long totalVolume = default;
             string type = default;
             double volatility = default;
             double vwap = default;
@@ -509,7 +509,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                         int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out tickID);
                         break;
                     case DynamicFieldset.TotalVolume:
-                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out totalVolume);
+                        long.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out totalVolume);
                         break;
                     case DynamicFieldset.Type:
                         type = value;
