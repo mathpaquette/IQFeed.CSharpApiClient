@@ -6,9 +6,9 @@
         char BasisForLast { get; }
         double Bid { get; }
         double Last { get; }
-        int LastSize { get; }
+        long LastSize { get; }
+        long TotalVolume { get; }
         long TickId { get; }
-        int TotalVolume { get; }
         string TradeConditions { get; }
         int TradeMarketCenter { get; }
     }

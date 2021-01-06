@@ -18,7 +18,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical
             double open,
             double close,
             long totalVolume,
-            int periodVolume,
+            long periodVolume,
             int totalTrade,
             int periodTrade,
             double vwap)
@@ -41,7 +41,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical
         public double Open { get; set; }
         public double Close { get; set; }
         public long TotalVolume { get; set; }
-        public int PeriodVolume { get; set; }
+        public long PeriodVolume { get; set; }
         public int TotalTrade { get; set; }
         public int PeriodTrade { get; set; }
         public double VWAP { get; set; }
@@ -51,16 +51,16 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical
             var values = csv.SplitFeedMessage();
 
             return new HistoricalBar(
-                DateTime.ParseExact(values[0], HistoricalBarDateTimeFormat, CultureInfo.InvariantCulture),
-                double.Parse(values[1], CultureInfo.InvariantCulture),
-                double.Parse(values[2], CultureInfo.InvariantCulture),
-                double.Parse(values[3], CultureInfo.InvariantCulture),
-                double.Parse(values[4], CultureInfo.InvariantCulture),
-                long.Parse(values[5], CultureInfo.InvariantCulture),
-                int.Parse(values[6], CultureInfo.InvariantCulture),
-                int.Parse(values[7], CultureInfo.InvariantCulture),
-                int.Parse(values[8], CultureInfo.InvariantCulture),
-            double.Parse(values[9], CultureInfo.InvariantCulture));
+                timestamp: DateTime.ParseExact(values[0], HistoricalBarDateTimeFormat, CultureInfo.InvariantCulture),
+                high: double.Parse(values[1], CultureInfo.InvariantCulture),
+                low: double.Parse(values[2], CultureInfo.InvariantCulture),
+                open: double.Parse(values[3], CultureInfo.InvariantCulture),
+                close: double.Parse(values[4], CultureInfo.InvariantCulture),
+                totalVolume: long.Parse(values[5], CultureInfo.InvariantCulture),
+                periodVolume: long.Parse(values[6], CultureInfo.InvariantCulture),
+                totalTrade: int.Parse(values[7], CultureInfo.InvariantCulture),
+                periodTrade: int.Parse(values[8], CultureInfo.InvariantCulture),
+                vwap: double.Parse(values[9], CultureInfo.InvariantCulture));
         }
 
         public static IEnumerable<HistoricalBar> ParseFromFile(string path)
@@ -110,7 +110,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical
                 hashCode = (hashCode * 397) ^ Open.GetHashCode();
                 hashCode = (hashCode * 397) ^ Close.GetHashCode();
                 hashCode = (hashCode * 397) ^ TotalVolume.GetHashCode();
-                hashCode = (hashCode * 397) ^ PeriodVolume;
+                hashCode = (hashCode * 397) ^ PeriodVolume.GetHashCode();
                 hashCode = (hashCode * 397) ^ TotalTrade;
                 hashCode = (hashCode * 397) ^ PeriodTrade;
                 hashCode = (hashCode * 397) ^ VWAP.GetHashCode();

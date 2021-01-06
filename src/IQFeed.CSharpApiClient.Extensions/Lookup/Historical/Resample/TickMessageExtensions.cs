@@ -45,7 +45,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
             DateTime? nextTimestamp = null;
             HistoricalBar currentBar = null;
 
-            var totalVolume = 0;
+            var totalVolume = 0L;
             var totalTrade = 0;
 
             foreach (var tick in tickMessages)
@@ -127,7 +127,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
         {
             HistoricalBar currentBar = null;
 
-            var totalVolume = 0;
+            var totalVolume = 0L;
             var totalTrade = 0;
 
             foreach (var tick in tickMessages)

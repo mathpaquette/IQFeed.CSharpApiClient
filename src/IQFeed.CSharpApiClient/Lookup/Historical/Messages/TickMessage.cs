@@ -10,7 +10,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
     {
         public const string TickDateTimeFormat = "yyyy-MM-dd HH:mm:ss.ffffff";
 
-        public TickMessage(DateTime timestamp, double last, int lastSize, int totalVolume, double bid, double ask,
+        public TickMessage(DateTime timestamp, double last, long lastSize, long totalVolume, double bid, double ask,
             long tickId, char basisForLast, int tradeMarketCenter, string tradeConditions, string requestId = null)
         {
             Timestamp = timestamp;
@@ -28,8 +28,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 
         public DateTime Timestamp { get; private set; }
         public double Last { get; private set; }
-        public int LastSize { get; private set; }
-        public int TotalVolume { get; private set; }
+        public long LastSize { get; private set; }
+        public long TotalVolume { get; private set; }
         public double Bid { get; private set; }
         public double Ask { get; private set; }
         public long TickId { get; private set; }
@@ -43,16 +43,16 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             var values = message.SplitFeedMessage();
 
             return new TickMessage(
-                DateTime.ParseExact(values[0], TickDateTimeFormat, CultureInfo.InvariantCulture),
-                double.Parse(values[1], CultureInfo.InvariantCulture),
-                int.Parse(values[2], CultureInfo.InvariantCulture),
-                int.Parse(values[3], CultureInfo.InvariantCulture),
-                double.Parse(values[4], CultureInfo.InvariantCulture),
-                double.Parse(values[5], CultureInfo.InvariantCulture),
-                long.Parse(values[6], CultureInfo.InvariantCulture),
-                char.Parse(values[7]),
-                int.Parse(values[8], CultureInfo.InvariantCulture),
-                values[9]);
+                timestamp: DateTime.ParseExact(s: values[index0: 0], format: TickDateTimeFormat, CultureInfo.InvariantCulture),
+                last: double.Parse(values[index0: 1], CultureInfo.InvariantCulture),
+                lastSize: long.Parse(values[index0: 2], CultureInfo.InvariantCulture),
+                totalVolume: long.Parse(values[index0: 3], CultureInfo.InvariantCulture),
+                bid: double.Parse(values[index0: 4], CultureInfo.InvariantCulture),
+                ask: double.Parse(values[index0: 5], CultureInfo.InvariantCulture),
+                tickId: long.Parse(values[index0: 6], CultureInfo.InvariantCulture),
+                basisForLast: char.Parse(values[index0: 7]),
+                tradeMarketCenter: int.Parse(s: values[index0: 8], CultureInfo.InvariantCulture),
+                tradeConditions: values[index0: 9]);
         }
 
         public static TickMessage ParseWithRequestId(string message)
@@ -63,8 +63,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             return new TickMessage(
                 DateTime.ParseExact(values[1], TickDateTimeFormat, CultureInfo.InvariantCulture),
                 double.Parse(values[2], CultureInfo.InvariantCulture),
-                int.Parse(values[3], CultureInfo.InvariantCulture),
-                int.Parse(values[4], CultureInfo.InvariantCulture),
+                long.Parse(values[3], CultureInfo.InvariantCulture),
+                long.Parse(values[4], CultureInfo.InvariantCulture),
                 double.Parse(values[5], CultureInfo.InvariantCulture),
                 double.Parse(values[6], CultureInfo.InvariantCulture),
                 long.Parse(values[7], CultureInfo.InvariantCulture),
