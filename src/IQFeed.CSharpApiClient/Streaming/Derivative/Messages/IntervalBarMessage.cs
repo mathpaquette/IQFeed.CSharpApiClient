@@ -23,8 +23,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
             double high,
             double low,
             double last,
-            int cummulativeVolume,
-            int intervalVolume,
+            long cummulativeVolume,
+            long intervalVolume,
             int numberOfTrades,
             string requestId = null)
         {
@@ -52,12 +52,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
         /// <summary>
         /// Last cummulative volume in the interval
         /// </summary>
-        public int CummulativeVolume { get; private set; }
+        public long CummulativeVolume { get; private set; }
 
         /// <summary>
         /// Interval volume for the interval
         /// </summary>
-        public int IntervalVolume { get; private set; }
+        public long IntervalVolume { get; private set; }
 
         /// <summary>
         /// Number of trades in the interval (only valid for tick interval)
@@ -77,8 +77,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
             double.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out var high);
             double.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var low);
             double.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var last);
-            int.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var cummulativeVolume);
-            int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out var intervalVolume);
+            long.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var cummulativeVolume);
+            long.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out var intervalVolume);
             int.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var numberOfTrades);
 
             return new IntervalBarMessage(type, symbol, timestamp, open, high, low, last, cummulativeVolume, intervalVolume, numberOfTrades);
@@ -96,8 +96,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
             double.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var high);
             double.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var low);
             double.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var last);
-            int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out var cummulativeVolume);
-            int.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var intervalVolume);
+            long.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out var cummulativeVolume);
+            long.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var intervalVolume);
             int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out var numberOfTrades);
 
             return new IntervalBarMessage(type, symbol, timestamp, open, high, low, last, cummulativeVolume, intervalVolume, numberOfTrades, requestId);

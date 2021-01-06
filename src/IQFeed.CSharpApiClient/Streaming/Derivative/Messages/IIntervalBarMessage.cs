@@ -15,12 +15,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Derivative.Messages
         /// <summary>
         /// Last cummulative volume in the interval
         /// </summary>
-        int CummulativeVolume { get; }
+        long CummulativeVolume { get; }
 
         /// <summary>
         /// Interval volume for the interval
         /// </summary>
-        int IntervalVolume { get; }
+        long IntervalVolume { get; }
 
         /// <summary>
         /// Number of trades in the interval (only valid for tick interval)

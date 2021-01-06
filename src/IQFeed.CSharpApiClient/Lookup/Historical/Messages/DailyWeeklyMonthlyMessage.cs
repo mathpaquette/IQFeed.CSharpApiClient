@@ -36,13 +36,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             var values = message.SplitFeedMessage();
 
             return new DailyWeeklyMonthlyMessage(
-                DateTime.ParseExact(values[0], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture),
-                double.Parse(values[1], CultureInfo.InvariantCulture),
-                double.Parse(values[2], CultureInfo.InvariantCulture),
-                double.Parse(values[3], CultureInfo.InvariantCulture),
-                double.Parse(values[4], CultureInfo.InvariantCulture),
-                long.Parse(values[5], CultureInfo.InvariantCulture),
-                int.Parse(values[6], CultureInfo.InvariantCulture));
+                timestamp: DateTime.ParseExact(values[0], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture),
+                high: double.Parse(values[1], CultureInfo.InvariantCulture),
+                low: double.Parse(values[2], CultureInfo.InvariantCulture),
+                open: double.Parse(values[3], CultureInfo.InvariantCulture),
+                close: double.Parse(values[4], CultureInfo.InvariantCulture),
+                periodVolume: long.Parse(values[5], CultureInfo.InvariantCulture),
+                openInterest: int.Parse(values[6], CultureInfo.InvariantCulture));
         }
 
         public static DailyWeeklyMonthlyMessage ParseWithRequestId(string message)
@@ -51,14 +51,14 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             var requestId = values[0];
 
             return new DailyWeeklyMonthlyMessage(
-                DateTime.ParseExact(values[1], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture),
-                double.Parse(values[2], CultureInfo.InvariantCulture),
-                double.Parse(values[3], CultureInfo.InvariantCulture),
-                double.Parse(values[4], CultureInfo.InvariantCulture),
-                double.Parse(values[5], CultureInfo.InvariantCulture),
-                long.Parse(values[6], CultureInfo.InvariantCulture),
-                int.Parse(values[7], CultureInfo.InvariantCulture),
-                requestId);
+                timestamp: DateTime.ParseExact(values[1], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture),
+                high: double.Parse(values[2], CultureInfo.InvariantCulture),
+                low: double.Parse(values[3], CultureInfo.InvariantCulture),
+                open: double.Parse(values[4], CultureInfo.InvariantCulture),
+                close: double.Parse(values[5], CultureInfo.InvariantCulture),
+                periodVolume: long.Parse(values[6], CultureInfo.InvariantCulture),
+                openInterest: int.Parse(values[7], CultureInfo.InvariantCulture),
+                requestId: requestId);
         }
 
         public static IEnumerable<DailyWeeklyMonthlyMessage> ParseFromFile(string path, bool hasRequestId = false)
