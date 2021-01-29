@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
+using IQFeed.CSharpApiClient.Common.Exceptions;
 using IQFeed.CSharpApiClient.Socket;
 
 namespace IQFeed.CSharpApiClient.Lookup.Common
@@ -47,7 +48,24 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
                     res.TrySetResult(messages);
             }
 
+            void SocketClientOnExceptionRaised(object sender, Exception ex)
+            {
+                IQFeedException iqFeedException;
+                if (ex is BadDataIQFeedException)
+                {
+                    var thrownException = ex as BadDataIQFeedException;
+                    iqFeedException = new BadDataIQFeedException(request, thrownException.Message, thrownException.BadFieldName);
+                }
+                else
+                {
+                    iqFeedException = _exceptionFactory.CreateNew(request, "Unknown error while reading data from IQFeed", "");
+                }
+
+                res.TrySetException(iqFeedException);
+            }
+
             client.MessageReceived += SocketClientOnMessageReceived;
+            client.ExceptionRaised += SocketClientOnExceptionRaised;
             await _lookupRateLimiter.WaitAsync();
             client.Send(request);
 

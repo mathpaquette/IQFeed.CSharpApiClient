@@ -11,6 +11,7 @@ namespace IQFeed.CSharpApiClient.Socket
     {
         public event EventHandler<SocketMessageEventArgs> MessageReceived;
         public event EventHandler Connected;
+        public event EventHandler<Exception> ExceptionRaised;
 
         public static bool ForceIPv4 { get; set; } = true;
 
@@ -113,7 +114,14 @@ namespace IQFeed.CSharpApiClient.Socket
                     _socketMessageEventArgs.Count = count;
 
                     // inform that the socket just received complete message
-                    MessageReceived.RaiseEvent(this, _socketMessageEventArgs);
+                    try
+                    {
+                        MessageReceived.RaiseEvent(this, _socketMessageEventArgs);
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionRaised?.Invoke(this, ex);
+                    }
                 }
 
                 // don't attempt another receive if socket is already disposed

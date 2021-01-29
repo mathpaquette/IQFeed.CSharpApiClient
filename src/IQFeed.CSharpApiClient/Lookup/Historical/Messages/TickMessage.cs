@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using IQFeed.CSharpApiClient.Common.Exceptions;
 using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Lookup.Common;
 
@@ -42,16 +43,61 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         {
             var values = message.SplitFeedMessage();
 
+            if (!DateTime.TryParseExact(values[0], TickDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime timestamp))
+            {
+                throw new BadDataIQFeedException(message, nameof(timestamp));
+            }
+
+            if (!double.TryParse(values[1], NumberStyles.Any, CultureInfo.InvariantCulture, out double last))
+            {
+                throw new BadDataIQFeedException(message, nameof(last));
+            }
+
+            if (!int.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out int lastSize))
+            {
+                throw new BadDataIQFeedException(message, nameof(lastSize));
+            }
+
+            if (!int.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out int totalVolume))
+            {
+                throw new BadDataIQFeedException(message, nameof(totalVolume));
+            }
+
+            if (!double.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out double bid))
+            {
+                throw new BadDataIQFeedException(message, nameof(bid));
+            }
+
+            if (!double.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out double ask))
+            {
+                throw new BadDataIQFeedException(message, nameof(ask));
+            }
+
+            if (!long.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out long tickId))
+            {
+                throw new BadDataIQFeedException(message, nameof(tickId));
+            }
+
+            if (!char.TryParse(values[7], out char basisForLast))
+            {
+                throw new BadDataIQFeedException(message, nameof(basisForLast));
+            }
+
+            if (!int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out int tradeMarketCenter))
+            {
+                throw new BadDataIQFeedException(message, nameof(tradeMarketCenter));
+            }
+
             return new TickMessage(
-                DateTime.ParseExact(values[0], TickDateTimeFormat, CultureInfo.InvariantCulture),
-                double.Parse(values[1], CultureInfo.InvariantCulture),
-                int.Parse(values[2], CultureInfo.InvariantCulture),
-                int.Parse(values[3], CultureInfo.InvariantCulture),
-                double.Parse(values[4], CultureInfo.InvariantCulture),
-                double.Parse(values[5], CultureInfo.InvariantCulture),
-                long.Parse(values[6], CultureInfo.InvariantCulture),
-                char.Parse(values[7]),
-                int.Parse(values[8], CultureInfo.InvariantCulture),
+                timestamp,
+                last,
+                lastSize,
+                totalVolume,
+                bid,
+                ask,
+                tickId,
+                basisForLast,
+                tradeMarketCenter,
                 values[9]);
         }
 
