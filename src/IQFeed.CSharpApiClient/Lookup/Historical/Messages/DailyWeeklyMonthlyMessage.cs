@@ -45,6 +45,34 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 int.Parse(values[6], CultureInfo.InvariantCulture));
         }
 
+        public static bool TryParse(string message, out DailyWeeklyMonthlyMessage dailyWeeklyMonthlyMessage)
+        {
+            dailyWeeklyMonthlyMessage = default;
+            DateTime timestamp = default;
+            double high = default;
+            double low = default;
+            double open = default;
+            double close = default;
+            long periodVolume = default;
+            int openInterest = default;
+
+            var values = message.SplitFeedMessage();
+            var parsed = values.Length >= 7 &&
+                         DateTime.TryParseExact(values[0], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out timestamp) &&
+                         double.TryParse(values[1], NumberStyles.Any, CultureInfo.InvariantCulture, out high) &&
+                         double.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out low) &&
+                         double.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out open) &&
+                         double.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out close) &&
+                         long.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out periodVolume) &&
+                         int.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out openInterest);
+
+            if (!parsed)
+                return false;
+
+            dailyWeeklyMonthlyMessage = new DailyWeeklyMonthlyMessage(timestamp, high, low, open, close, periodVolume, openInterest);
+            return true;
+        }
+
         public static DailyWeeklyMonthlyMessage ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();

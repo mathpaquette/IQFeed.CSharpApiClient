@@ -10,11 +10,15 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
     {
         private readonly string _message;
         private readonly string _messageWithRequestId;
+        private readonly TickMessage _expectedMessage;
 
         public TickMessageTests()
         {
             _message = "2018-04-17 17:51:22.123456,96.0700,1061909,0,0.0000,0.0000,4145784264,O,19,143A";
             _messageWithRequestId = "XYZ,2018-04-17 17:51:22.123456,96.0700,1061909,0,0.0000,0.0000,4145784264,O,19,143A";
+
+            var timestamp = DateTime.ParseExact("2018-04-17 17:51:22.123456", TickMessage.TickDateTimeFormat, CultureInfo.InvariantCulture);
+            _expectedMessage = new TickMessage(timestamp, 96.07, 1061909, 0, 0.0, 0.0, 4145784264, 'O', 19, "143A");
         }
 
         [Test, TestCaseSource(typeof(CultureNameTestCase), nameof(CultureNameTestCase.CultureNames))]
@@ -23,15 +27,11 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
             // Arrange
             TestHelper.SetThreadCulture(cultureName);
 
-
             // Act
             var tickMessageParsed = TickMessage.Parse(_message);
 
-            var timestamp = DateTime.ParseExact("2018-04-17 17:51:22.123456", TickMessage.TickDateTimeFormat, CultureInfo.InvariantCulture);
-            var tickMessage = new TickMessage(timestamp, 96.07, 1061909, 0, 0.0, 0.0, 4145784264, 'O', 19, "143A");
-
             // Assert
-            Assert.AreEqual(tickMessageParsed, tickMessage);
+            Assert.AreEqual(tickMessageParsed, _expectedMessage);
         }
 
         [Test, TestCaseSource(typeof(CultureNameTestCase), nameof(CultureNameTestCase.CultureNames))]
@@ -62,6 +62,30 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
 
             // Assert
             Assert.AreEqual(tickMessage2, tickMessage1);
+        }
+
+        [Test]
+        public void Should_TryParse_Return_False_When_Invalid_Data_Overflow()
+        {
+            // Act
+            var parsed = TickMessage.TryParse($"2018-04-17 17:51:22.123456,96.0700,{long.MaxValue},0,0.0000,0.0000,4145784264,O,19,143A", out _);
+
+            // Assert
+            Assert.IsFalse(parsed);
+        }
+
+        [Test, TestCaseSource(typeof(CultureNameTestCase), nameof(CultureNameTestCase.CultureNames))]
+        public void Should_TryParse_Return_True(string cultureName)
+        {
+            // Arrange
+            TestHelper.SetThreadCulture(cultureName);
+
+            // Act
+            var parsed = TickMessage.TryParse(_message, out var tickMessage);
+
+            // Assert
+            Assert.IsTrue(parsed);
+            Assert.AreEqual(tickMessage, _expectedMessage);
         }
     }
 }
