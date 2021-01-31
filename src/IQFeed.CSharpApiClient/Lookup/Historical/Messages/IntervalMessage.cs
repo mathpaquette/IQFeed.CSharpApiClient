@@ -48,6 +48,36 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 int.Parse(values[7], CultureInfo.InvariantCulture));
         }
 
+        public static bool TryParse(string message, out IntervalMessage intervalMessage)
+        {
+            intervalMessage = default;
+            DateTime timestamp = default;
+            double high = default;
+            double low = default;
+            double open = default;
+            double close = default;
+            long totalVolume = default;
+            int periodVolume = default;
+            int numberOfTrades = default;
+
+            var values = message.SplitFeedMessage();
+            var parsed = values.Length >= 8 &&
+                         DateTime.TryParseExact(values[0], IntervalDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out timestamp) &&
+                         double.TryParse(values[1], NumberStyles.Any, CultureInfo.InvariantCulture, out high) &&
+                         double.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out low) &&
+                         double.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out open) &&
+                         double.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out close) &&
+                         long.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out totalVolume) &&
+                         int.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out periodVolume) &&
+                         int.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out numberOfTrades);
+
+            if (!parsed)
+                return false;
+
+            intervalMessage = new IntervalMessage(timestamp, high, low, open, close, totalVolume, periodVolume, numberOfTrades);
+            return true;
+        }
+
         public static IntervalMessage ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();

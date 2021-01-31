@@ -55,11 +55,41 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 values[9]);
         }
 
+        public static bool TryParse(string message, out TickMessage tickMessage)
+        {
+            tickMessage = default;
+            DateTime timestamp = default;
+            double last = default;
+            int lastSize = default;
+            int totalVolume = default;
+            double bid = default;
+            double ask = default;
+            long tickId = default;
+            char basisForLast = default;
+            int tradeMarketCenter = default;
+
+            var values = message.SplitFeedMessage();
+            var parsed = values.Length >= 10 &&
+                         DateTime.TryParseExact(values[0], TickDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out timestamp) &&
+                         double.TryParse(values[1], NumberStyles.Any, CultureInfo.InvariantCulture, out last) &&
+                         int.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out lastSize) &&
+                         int.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out totalVolume) &&
+                         double.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out bid) &&
+                         double.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out ask) &&
+                         long.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out tickId) &&
+                         char.TryParse(values[7], out basisForLast) &&
+                         int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out tradeMarketCenter);
+
+            if (!parsed)
+                return false;
+
+            tickMessage = new TickMessage(timestamp, last, lastSize, totalVolume, bid, ask, tickId, basisForLast, tradeMarketCenter, values[9]);
+            return true;
+        }
+
         public static TickMessage ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
-            var requestId = values[0];
-
             return new TickMessage(
                 DateTime.ParseExact(values[1], TickDateTimeFormat, CultureInfo.InvariantCulture),
                 double.Parse(values[2], CultureInfo.InvariantCulture),
@@ -71,7 +101,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 char.Parse(values[8]),
                 int.Parse(values[9], CultureInfo.InvariantCulture),
                 values[10],
-                requestId);
+                values[0]);
         }
 
         public static IEnumerable<TickMessage> ParseFromFile(string path, bool hasRequestId = false)
