@@ -604,6 +604,20 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
         }
 
         [Test]
+        public void Should_Convert_MostRecentTradeAggressor()
+        {
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.MostRecentTradeAggressor };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.MostRecentTrade, IntegerValue);
+        }
+
+        [Test]
         public void Should_Convert_MostRecentTradeConditions()
         {
             // Arrange
@@ -629,6 +643,20 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
 
             // Assert
             Assert.AreEqual(dynamicFields.MostRecentTradeDate, _dateTimeValue);
+        }
+
+        [Test]
+        public void Should_Convert_MostRecentTradeDayCode()
+        {
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL,{IntegerValue}";
+            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.MostRecentTradeDayCode };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.MostRecentTradeDate, IntegerValue);
         }
 
         [Test]
