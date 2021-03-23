@@ -22,23 +22,9 @@ namespace IQFeed.CSharpApiClient.Extensions
             return null;
         }
 
-        public static float? ToNullableFloat(this string s)
-        {
-            if (float.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var f))
-                return f;
-            return null;
-        }
-
         public static double? ToNullableDouble(this string s)
         {
             if (double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var d))
-                return d;
-            return null;
-        }
-
-        public static decimal? ToNullableDecimal(this string s)
-        {
-            if (decimal.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var d))
                 return d;
             return null;
         }
@@ -57,12 +43,12 @@ namespace IQFeed.CSharpApiClient.Extensions
 
         public static string[] SplitFeedMessage(this string s, int expectedParts)
         {
-            string[] parts = new string[expectedParts];
-            int partStartIndex = 0;
-            for(int partIndex = 0; partIndex < expectedParts - 1; ++partIndex)
+            var parts = new string[expectedParts];
+            var partStartIndex = 0;
+            for (var partIndex = 0; partIndex < expectedParts - 1; ++partIndex)
             {
-                int nextDelimiterIndex = s.IndexOf(IQFeedDefault.ProtocolDelimiterCharacter, partStartIndex);
-                if(nextDelimiterIndex == -1)
+                var nextDelimiterIndex = s.IndexOf(IQFeedDefault.ProtocolDelimiterCharacter, partStartIndex);
+                if (nextDelimiterIndex == -1)
                 {
                     throw new ArgumentException($"The specified string '{s}' doesn't contain expected number of parts - {expectedParts}");
                 }
@@ -70,9 +56,8 @@ namespace IQFeed.CSharpApiClient.Extensions
                 partStartIndex = nextDelimiterIndex + 1;
             }
 
-            // take the last part entirely (except for the last delimiter value)
+            // take the last part entirely (except for the last delimiter value)	
             parts[expectedParts - 1] = s.Substring(partStartIndex, s.Length - partStartIndex - 1);
-
             return parts;
         }
 

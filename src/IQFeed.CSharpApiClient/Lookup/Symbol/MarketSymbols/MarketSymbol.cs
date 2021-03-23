@@ -22,5 +22,10 @@
             Frontmonth = frontmonth;
             Naics = naics;
         }
+
+        public override string ToString()
+        {
+            return $"{nameof(Symbol)}: {Symbol}, {nameof(Description)}: {Description}, {nameof(Exchange)}: {Exchange}, {nameof(ListedMarket)}: {ListedMarket}, {nameof(SecurityType)}: {SecurityType}, {nameof(Sic)}: {Sic}, {nameof(Frontmonth)}: {Frontmonth}, {nameof(Naics)}: {Naics}";
+        }
     }
 }

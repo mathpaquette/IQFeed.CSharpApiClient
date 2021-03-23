@@ -1,18 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Lookup.Symbol.Enums;
-using IQFeed.CSharpApiClient.Lookup.Symbol.ExpiredOptions;
-using IQFeed.CSharpApiClient.Lookup.Symbol.MarketSymbols;
 using IQFeed.CSharpApiClient.Lookup.Symbol.Messages;
 
 namespace IQFeed.CSharpApiClient.Lookup.Symbol
 {
-    public interface ISymbolFacade
+    public interface ISymbolFacade : ISymbolFacadeDownload, ISymbolFacadeSync
     {
-        IEnumerable<MarketSymbol> GetAllMarketSymbols(string url = SymbolDefault.MarketSymbolsArchiveUrl, string downloadPath = null, bool useCache = true);
-
-        IEnumerable<ExpiredOption> GetAllExpiredOptions(string url = SymbolDefault.ExpiredOptionsArchiveUrl, string downloadPath = null, bool useCache = true, bool header = false);
-
         /// <summary>
         /// SBF - Request the Symbols By Filter
         /// </summary>

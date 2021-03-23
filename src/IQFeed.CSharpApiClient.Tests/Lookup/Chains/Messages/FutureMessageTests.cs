@@ -3,7 +3,6 @@ using System.Linq;
 using IQFeed.CSharpApiClient.Lookup.Chains.Futures;
 using IQFeed.CSharpApiClient.Lookup.Chains.Messages;
 using IQFeed.CSharpApiClient.Tests.Common;
-using IQFeed.CSharpApiClient.Tests.Common.TestCases;
 using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Lookup.Chains.Messages

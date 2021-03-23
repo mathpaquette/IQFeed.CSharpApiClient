@@ -4,7 +4,7 @@ using IQFeed.CSharpApiClient.Lookup.Historical.Enums;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical.Facades
 {
-    public interface IHistoricalFacade<TTickMessages, TIntervalMessages, TDailyWeeklyMonthlyMessages>
+    public interface IHistoricalFacade<TTickMessages, TIntervalMessages, TDailyWeeklyMonthlyMessages> : IHistoricalFacadeSync<TTickMessages, TIntervalMessages, TDailyWeeklyMonthlyMessages>
     {
         /// <summary>
         /// HTX - Retrieves up to [MaxDatapoints] number of ticks for the specified [Symbol].

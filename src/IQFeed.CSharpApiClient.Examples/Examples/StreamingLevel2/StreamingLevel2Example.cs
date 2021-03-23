@@ -10,7 +10,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel2
     public class StreamingLevel2Example : IExampleAsync
     {
         public bool Enable => false; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
-        public string Name => typeof(StreamingLevel2Example).Name;
+        public string Name => nameof(StreamingLevel2Example);
 
         public async Task RunAsync()
         {
@@ -55,7 +55,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel2
             Console.WriteLine(msg);
         }
 
-        private void Level2ClientOnSummary(UpdateSummaryMessage<double> msg)
+        private void Level2ClientOnSummary(UpdateSummaryMessage msg)
         {
             Console.WriteLine(msg);
         }

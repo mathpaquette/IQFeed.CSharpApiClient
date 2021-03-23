@@ -8,7 +8,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.OptionableStocks
     public class OptionableStocksExample : IExample
     {
         public bool Enable => false; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
-        public string Name => typeof(OptionableStocksExample).Name;
+        public string Name => nameof(OptionableStocksExample);
 
         public void Run()
         {

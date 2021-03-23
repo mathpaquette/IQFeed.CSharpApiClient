@@ -2,7 +2,6 @@
 using System.Globalization;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 using IQFeed.CSharpApiClient.Tests.Common;
-using IQFeed.CSharpApiClient.Tests.Common.TestCases;
 using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
@@ -19,7 +18,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
             // Act
             var updateSummaryMessageParsed = UpdateSummaryMessage.Parse(message);
             DateTime.TryParseExact("19:59:14.503633", UpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var timestamp);
-            var updateSummaryMessage = new UpdateSummaryMessage<double>("AAPL", 188.35d, 52500, timestamp, 19, 0, 188.25d, 100, 188.36d, 100, 0, 0, 0, 187.97d, "Cbacv", "8801");
+            var updateSummaryMessage = new UpdateSummaryMessage("AAPL", 188.35, 52500, timestamp, 19, 0, 188.25, 100, 188.36, 100, 0, 0, 0, 187.97, "Cbacv", "8801");
 
             // Assert
             Assert.AreEqual(updateSummaryMessageParsed, updateSummaryMessage);

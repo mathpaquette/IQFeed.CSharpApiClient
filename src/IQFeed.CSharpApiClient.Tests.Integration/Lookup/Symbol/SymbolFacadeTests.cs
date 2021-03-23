@@ -10,7 +10,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
 {
     public class SymbolFacadeTests
     {
-        private LookupClient<double> _lookupClient;
+        private LookupClient _lookupClient;
 
         public SymbolFacadeTests()
         {
@@ -41,10 +41,30 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
         }
 
         [Test]
+        public void Should_Return_MarketSymbols_From_Sample_Archive_File_NoCache()
+        {
+            // Act
+            var marketSymbols = _lookupClient.Symbol.GetAllMarketSymbols(url: Settings.MarketSymbolsSampleUrl, false);
+
+            // Assert
+            Assert.True(marketSymbols.Count() == Settings.MarketSymbolsSampleCount);
+        }
+
+        [Test]
         public void Should_Return_ExpiredOptions_From_Sample_Archive_File()
         {
             // Act
             var expiredOptions = _lookupClient.Symbol.GetAllExpiredOptions(url: Settings.ExpiredOptionsSampleUrl);
+
+            // Assert
+            Assert.True(expiredOptions.Count() == Settings.ExpiredOptionsSampleCount);
+        }
+
+        [Test]
+        public void Should_Return_ExpiredOptions_From_Sample_Archive_File_NoCache()
+        {
+            // Act
+            var expiredOptions = _lookupClient.Symbol.GetAllExpiredOptions(url: Settings.ExpiredOptionsSampleUrl, false);
 
             // Assert
             Assert.True(expiredOptions.Count() == Settings.ExpiredOptionsSampleCount);
@@ -97,8 +117,8 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
             var naicsCodes = await _lookupClient.Symbol.GetNaicsCodesAsync();
 
             // Assert
-            Assert.AreEqual("Radio and Television Broadcasting and Wireless Communications Equipment Manufacturing", 
-                naicsCodes.Where(c => c.NaicsCode == 334220).Single().Description);            
+            Assert.AreEqual("Radio and Television Broadcasting and Wireless Communications Equipment Manufacturing",
+                naicsCodes.Where(c => c.NaicsCode == 334220).Single().Description);
         }
 
         [Test]
@@ -137,7 +157,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
         public void Should_Throw_Exceptions_When_Null_SicCodePrefix()
         {
             // Assert
-            Assert.ThrowsAsync<ArgumentNullException>(async () => await _lookupClient.Symbol.GetSymbolsBySicCodeAsync(null));            
+            Assert.ThrowsAsync<ArgumentNullException>(async () => await _lookupClient.Symbol.GetSymbolsBySicCodeAsync(null));
         }
 
         [Test]
@@ -154,7 +174,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
             var symbolsByNaicsCode = await _lookupClient.Symbol.GetSymbolsByNaicsCodeAsync("33", "reqId2");
 
             // Assert
-            Assert.AreEqual(symbolsByNaicsCode.Count(), 
+            Assert.AreEqual(symbolsByNaicsCode.Count(),
                 symbolsByNaicsCode.Where(st => st.RequestId == "reqId2" && st.NaicsCode.ToString().StartsWith("33")).Count());
         }
 

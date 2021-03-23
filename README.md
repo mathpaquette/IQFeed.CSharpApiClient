@@ -2,26 +2,28 @@
 
 [![Gitter](https://badges.gitter.im/IQFeed-CSharpApiClient/public.svg)](https://gitter.im/IQFeed-CSharpApiClient/public)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/6u1f245xxvkri7s2/branch/master?svg=true)](https://ci.appveyor.com/project/mathpaquette/iqfeed-csharpapiclient/branch/master)
-[![NuGet Version and Downloads count](https://buildstats.info/nuget/IQFeed.CSharpApiClient)](https://www.nuget.org/packages/IQFeed.CSharpApiClient)
-
 IQFeed.CSharpApiClient is fastest and the most well designed C# DTN IQFeed socket API connector available to the open source community! Currently supporting the latest stable IQFeed protocol version 6.0.
 
 IQFeed is an affordable and reputable Internet market data provider. For more [info](http://www.iqfeed.net/index.cfm?displayaction=developer&section=main).<br>
-**SPECIAL OFFER (Save \$50 - No Startup Fee)** [Get Free Trial Now](https://www.iqfeed.net/trent/index.cfm?displayaction=start&promo=1996499)
+**SPECIAL OFFER (Save \$50 - No Startup Fee)** [Get Free Trial Now](https://bit.ly/349vUCT)
 
 If you appreciate this project, please star :star: it now!
 
 ## Table of Contents
-
-- [Features](#features)
-- [Usage](#usage)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
-  - [Examples](#examples)
-- [IQFeed API support status](#iqfeed-api-support-status)
-- [Support](#support)
-- [Contributing](#contributing)
+  - [Features](#features)
+  - [Usage](#usage)
+    - [Packages](#packages)
+    - [Installation](#installation)
+    - [Configuration](#configuration)
+      - [User environment variables](#user-environment-variables)
+      - [app.config](#appconfig)
+    - [Examples](#examples)
+    - [IQFeed API support status](#iqfeed-api-support-status)
+      - [Streaming data](#streaming-data)
+      - [Lookup data](#lookup-data)
+  - [Support](#support)
+  - [Sponsors](#sponsors)
+  - [Contributing](#contributing)
 
 ## Features
 
@@ -29,10 +31,19 @@ If you appreciate this project, please star :star: it now!
 - Streaming events are distributed in a consistent way using Action delegates
 - Handle multiple socket connections for at least 50% performance increase when requesting lookup data
 - Sockets are using [SocketAsyncEventArgs](<https://msdn.microsoft.com/en-us/library/system.net.sockets.socketasynceventargs(v=vs.110).aspx>) for maximum performance and trying to reduce pressure on GC
-- Support for .NET Core 2.0
+- Support for .NET Core
 - No 3rd party dependency
+- [Python support](https://github.com/mathpaquette/IQFeed.CSharpApiClient/blob/master/docs/USING-WITH-PYTHON.md) :new:
 
 ## Usage
+
+### Packages
+MyGet Pre-release feed: https://www.myget.org/gallery/iqfeedcsharpapiclient
+
+| Package                                                                                                | NuGet Stable                                                                                                                                                                    | MyGet Pre-release                                                                                                                                                                                                                       | Downloads                                                                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [IQFeed.CSharpApiClient](https://www.nuget.org/packages/IQFeed.CSharpApiClient/)                       | [![IQFeed.CSharpApiClient](https://img.shields.io/nuget/v/IQFeed.CSharpApiClient.svg)](https://www.nuget.org/packages/IQFeed.CSharpApiClient/)                                  | [![IQFeed.CSharpApiClient](https://img.shields.io/myget/iqfeedcsharpapiclient/vpre/IQFeed.CSharpApiClient.svg)](https://www.myget.org/feed/iqfeedcsharpapiclient/package/nuget/IQFeed.CSharpApiClient)                                  | [![IQFeed.CSharpApiClient](https://img.shields.io/nuget/dt/IQFeed.CSharpApiClient.svg)](https://www.nuget.org/packages/IQFeed.CSharpApiClient/)                                  |
+| [IQFeed.CSharpApiClient.Extensions](https://www.nuget.org/packages/IQFeed.CSharpApiClient.Extensions/) | [![IQFeed.CSharpApiClient.Extensions](https://img.shields.io/nuget/v/IQFeed.CSharpApiClient.Extensions.svg)](https://www.nuget.org/packages/IQFeed.CSharpApiClient.Extensions/) | [![IQFeed.CSharpApiClient.Extensions](https://img.shields.io/myget/iqfeedcsharpapiclient/vpre/IQFeed.CSharpApiClient.Extensions.svg)](https://www.myget.org/feed/iqfeedcsharpapiclient/package/nuget/IQFeed.CSharpApiClient.Extensions) | [![IQFeed.CSharpApiClient.Extensions](https://img.shields.io/nuget/dt/IQFeed.CSharpApiClient.Extensions.svg)](https://www.nuget.org/packages/IQFeed.CSharpApiClient.Extensions/) |
 
 ### Installation
 
@@ -72,7 +83,7 @@ Check [IQFeed.CSharpApiClient.Examples](https://github.com/mathpaquette/IQFeed.C
 IQFeedLauncher.Start();
 var lookupClient = LookupClientFactory.CreateNew();
 lookupClient.Connect();
-var ticksMessages = await lookupClient.Historical.ReqHistoryTickDatapointsAsync("AAPL", 100);
+var tickMessages = await lookupClient.Historical.GetHistoryTickDatapointsAsync("AAPL", 100);
 ```
 
 ### IQFeed API support status
@@ -80,14 +91,14 @@ var ticksMessages = await lookupClient.Historical.ReqHistoryTickDatapointsAsync(
 #### Streaming data
 
 - [x] Level 1 data
-- [x] Level 2 data :new:
+- [x] Level 2 data
 - [x] Derivative data
 - [x] Admin data
 
 #### Lookup data
 
 - [x] Historical data
-- [ ] News data
+- [x] News data :new:
 - [x] Symbol Lookup data
 - [x] Chains Lookup data
 

@@ -6,47 +6,38 @@ using IQFeed.CSharpApiClient.Lookup.Common;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 {
-    public abstract class IntervalMessage
+    public class IntervalMessage : IIntervalMessage
     {
         public const string IntervalDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
-        public static IntervalMessage<decimal> ParseDecimal(string message)
+        public IntervalMessage(DateTime timestamp, double high, double low, double open, double close, long totalVolume, int periodVolume, int numberOfTrades, string requestId = null)
         {
-            var values = message.SplitFeedMessage();
-
-            return new IntervalMessage<decimal>(
-                DateTime.ParseExact(values[0], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
-                decimal.Parse(values[1], CultureInfo.InvariantCulture),
-                decimal.Parse(values[2], CultureInfo.InvariantCulture),
-                decimal.Parse(values[3], CultureInfo.InvariantCulture),
-                decimal.Parse(values[4], CultureInfo.InvariantCulture),
-                long.Parse(values[5], CultureInfo.InvariantCulture),
-                int.Parse(values[6], CultureInfo.InvariantCulture),
-                int.Parse(values[7], CultureInfo.InvariantCulture));
+            Timestamp = timestamp;
+            High = high;
+            Low = low;
+            Open = open;
+            Close = close;
+            TotalVolume = totalVolume;
+            PeriodVolume = periodVolume;
+            NumberOfTrades = numberOfTrades;
+            RequestId = requestId;
         }
 
-        public static IntervalMessage<decimal> ParseDecimalWithRequestId(string message)
-        {
-            var values = message.SplitFeedMessage();
-            var requestId = values[0];
+        public DateTime Timestamp { get; private set; }
+        public double High { get; private set; }
+        public double Low { get; private set; }
+        public double Open { get; private set; }
+        public double Close { get; private set; }
+        public long TotalVolume { get; private set; }
+        public int PeriodVolume { get; private set; }
+        public int NumberOfTrades { get; private set; }
+        public string RequestId { get; private set; }
 
-            return new IntervalMessage<decimal>(
-                DateTime.ParseExact(values[1], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
-                decimal.Parse(values[2], CultureInfo.InvariantCulture),
-                decimal.Parse(values[3], CultureInfo.InvariantCulture),
-                decimal.Parse(values[4], CultureInfo.InvariantCulture),
-                decimal.Parse(values[5], CultureInfo.InvariantCulture),
-                long.Parse(values[6], CultureInfo.InvariantCulture),
-                int.Parse(values[7], CultureInfo.InvariantCulture),
-                int.Parse(values[8], CultureInfo.InvariantCulture),
-                requestId);
-        }
-
-        public static IntervalMessage<double> Parse(string message)
+        public static IntervalMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
 
-            return new IntervalMessage<double>(
+            return new IntervalMessage(
                 DateTime.ParseExact(values[0], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
                 double.Parse(values[1], CultureInfo.InvariantCulture),
                 double.Parse(values[2], CultureInfo.InvariantCulture),
@@ -57,12 +48,42 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 int.Parse(values[7], CultureInfo.InvariantCulture));
         }
 
-        public static IntervalMessage<double> ParseWithRequestId(string message)
+        public static bool TryParse(string message, out IntervalMessage intervalMessage)
+        {
+            intervalMessage = default;
+            DateTime timestamp = default;
+            double high = default;
+            double low = default;
+            double open = default;
+            double close = default;
+            long totalVolume = default;
+            int periodVolume = default;
+            int numberOfTrades = default;
+
+            var values = message.SplitFeedMessage();
+            var parsed = values.Length >= 8 &&
+                         DateTime.TryParseExact(values[0], IntervalDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out timestamp) &&
+                         double.TryParse(values[1], NumberStyles.Any, CultureInfo.InvariantCulture, out high) &&
+                         double.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out low) &&
+                         double.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out open) &&
+                         double.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out close) &&
+                         long.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out totalVolume) &&
+                         int.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out periodVolume) &&
+                         int.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out numberOfTrades);
+
+            if (!parsed)
+                return false;
+
+            intervalMessage = new IntervalMessage(timestamp, high, low, open, close, totalVolume, periodVolume, numberOfTrades);
+            return true;
+        }
+
+        public static IntervalMessage ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
             var requestId = values[0];
 
-            return new IntervalMessage<double>(
+            return new IntervalMessage(
                 DateTime.ParseExact(values[1], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
                 double.Parse(values[2], CultureInfo.InvariantCulture),
                 double.Parse(values[3], CultureInfo.InvariantCulture),
@@ -74,88 +95,23 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 requestId);
         }
 
-        public static IntervalMessage<float> ParseFloat(string message)
-        {
-            var values = message.SplitFeedMessage();
-
-            return new IntervalMessage<float>(
-                DateTime.ParseExact(values[0], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
-                float.Parse(values[1], CultureInfo.InvariantCulture),
-                float.Parse(values[2], CultureInfo.InvariantCulture),
-                float.Parse(values[3], CultureInfo.InvariantCulture),
-                float.Parse(values[4], CultureInfo.InvariantCulture),
-                long.Parse(values[5], CultureInfo.InvariantCulture),
-                int.Parse(values[6], CultureInfo.InvariantCulture),
-                int.Parse(values[7], CultureInfo.InvariantCulture));
-        }
-
-        public static IntervalMessage<float> ParseFloatWithRequestId(string message)
-        {
-            var values = message.SplitFeedMessage();
-            var requestId = values[0];
-
-            return new IntervalMessage<float>(
-                DateTime.ParseExact(values[1], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
-                float.Parse(values[2], CultureInfo.InvariantCulture),
-                float.Parse(values[3], CultureInfo.InvariantCulture),
-                float.Parse(values[4], CultureInfo.InvariantCulture),
-                float.Parse(values[5], CultureInfo.InvariantCulture),
-                long.Parse(values[6], CultureInfo.InvariantCulture),
-                int.Parse(values[7], CultureInfo.InvariantCulture),
-                int.Parse(values[8], CultureInfo.InvariantCulture),
-                requestId);
-        }
-
-        public static IEnumerable<IntervalMessage<decimal>> ParseDecimalFromFile(string path, bool hasRequestId = false)
-        {
-            return hasRequestId == false
-                ? LookupMessageFileParser.ParseFromFile(ParseDecimal, path)
-                : LookupMessageFileParser.ParseFromFile(ParseDecimalWithRequestId, path);
-        }
-
-        public static IEnumerable<IntervalMessage<double>> ParseFromFile(string path, bool hasRequestId = false)
+        public static IEnumerable<IntervalMessage> ParseFromFile(string path, bool hasRequestId = false)
         {
             return hasRequestId == false
                 ? LookupMessageFileParser.ParseFromFile(Parse, path)
                 : LookupMessageFileParser.ParseFromFile(ParseWithRequestId, path);
         }
 
-        public static IEnumerable<IntervalMessage<float>> ParseFloatFromFile(string path, bool hasRequestId = false)
+        public string ToCsv()
         {
-            return hasRequestId == false
-                ? LookupMessageFileParser.ParseFromFile(ParseFloat, path)
-                : LookupMessageFileParser.ParseFromFile(ParseFloatWithRequestId, path);
+            return RequestId == null
+                ? FormattableString.Invariant($"{Timestamp.ToString(IntervalDateTimeFormat, CultureInfo.InvariantCulture)},{High},{Low},{Open},{Close},{TotalVolume},{PeriodVolume},{NumberOfTrades}")
+                : FormattableString.Invariant($"{RequestId},{Timestamp.ToString(IntervalDateTimeFormat, CultureInfo.InvariantCulture)},{High},{Low},{Open},{Close},{TotalVolume},{PeriodVolume},{NumberOfTrades}");
         }
-    }
-
-    public class IntervalMessage<T> : IntervalMessage, IIntervalMessage<T>
-    {
-        public IntervalMessage(DateTime timestamp, T high, T low, T open, T close, long totalVolume, int periodVolume, int numberOfTrades, string requestId = null)
-        {
-            RequestId = requestId;
-            Timestamp = timestamp;
-            High = high;
-            Low = low;
-            Open = open;
-            Close = close;
-            TotalVolume = totalVolume;
-            PeriodVolume = periodVolume;
-            NumberOfTrades = numberOfTrades;
-        }
-
-        public string RequestId { get; private set; }
-        public DateTime Timestamp { get; private set; }
-        public T High { get; private set; }
-        public T Low { get; private set; }
-        public T Open { get; private set; }
-        public T Close { get; private set; }
-        public long TotalVolume { get; private set; }
-        public int PeriodVolume { get; private set; }
-        public int NumberOfTrades { get; private set; }
 
         public override bool Equals(object obj)
         {
-            return obj is IntervalMessage<T> message &&
+            return obj is IntervalMessage message &&
                    RequestId == message.RequestId &&
                    Timestamp == message.Timestamp &&
                    Equals(High, message.High) &&
@@ -187,7 +143,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 
         public override string ToString()
         {
-            return $"{nameof(RequestId)}: {RequestId}, {nameof(Timestamp)}: {Timestamp}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Open)}: {Open}, {nameof(Close)}: {Close}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(PeriodVolume)}: {PeriodVolume}, {nameof(NumberOfTrades)}: {NumberOfTrades}";
+            return $"{nameof(Timestamp)}: {Timestamp}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Open)}: {Open}, {nameof(Close)}: {Close}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(PeriodVolume)}: {PeriodVolume}, {nameof(NumberOfTrades)}: {NumberOfTrades}, {nameof(RequestId)}: {RequestId}";
         }
     }
 }

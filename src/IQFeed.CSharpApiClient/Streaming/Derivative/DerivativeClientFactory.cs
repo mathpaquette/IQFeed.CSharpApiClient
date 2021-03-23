@@ -1,39 +1,22 @@
 ﻿using IQFeed.CSharpApiClient.Socket;
-using IQFeed.CSharpApiClient.Streaming.Derivative.Handlers;
 
 namespace IQFeed.CSharpApiClient.Streaming.Derivative
 {
     public class DerivativeClientFactory
     {
-        public static DerivativeClient<T> CreateNew<T>(
-            string host,
-            int port,
-            int bufferSize,
-            IDerivativeMessageHandler<T> derivativeMessageHandler)
+        public static DerivativeClient CreateNew(string host, int port, int bufferSize)
         {
-            return new DerivativeClient<T>(
-                new SocketClient(host, port, bufferSize),
-                new DerivativeRequestFormatter(),
-                derivativeMessageHandler);
+            return new DerivativeClient(new SocketClient(host, port, bufferSize), new DerivativeRequestFormatter(), new DerivativeMessageHandler());
         }
 
-        public static DerivativeClient<double> CreateNew()
+        public static DerivativeClient CreateNew()
         {
-            return CreateNew(
-                IQFeedDefault.Hostname,
-                IQFeedDefault.DerivativePort,
-                DerivativeDefault.BufferSize,
-                new DerivativeMessageDoubleHandler());
+            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.DerivativePort, DerivativeDefault.BufferSize);
         }
 
-        public static DerivativeClient<double> CreateNew(string host, int port)
+        public static DerivativeClient CreateNew(string host, int port)
         {
-            return CreateNew(host, port, DerivativeDefault.BufferSize, new DerivativeMessageDoubleHandler());
-        }
-
-        public static DerivativeClient<double> CreateNew(string host, int port, int bufferSize)
-        {
-            return CreateNew(host, port, bufferSize, new DerivativeMessageDoubleHandler());
+            return CreateNew(host, port, DerivativeDefault.BufferSize);
         }
     }
 }

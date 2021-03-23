@@ -12,7 +12,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentFileHistorical
     public class ConcurrentFileHistoricalExample : ConcurrentHistoricalBase, IExample
     {
         public bool Enable => false; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
-        public string Name => typeof(ConcurrentFileHistoricalExample).Name;
+        public string Name => nameof(ConcurrentFileHistoricalExample);
 
         private const int NumberOfConcurrentClients = 10;
         private const string DownloadBasePath = "downloads";

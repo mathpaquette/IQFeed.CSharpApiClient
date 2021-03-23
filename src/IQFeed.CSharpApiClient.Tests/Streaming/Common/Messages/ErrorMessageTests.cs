@@ -1,6 +1,5 @@
 ﻿using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Tests.Common;
-using IQFeed.CSharpApiClient.Tests.Common.TestCases;
 using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Streaming.Common.Messages

@@ -1,7 +1,6 @@
 ﻿using System;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 using IQFeed.CSharpApiClient.Tests.Common;
-using IQFeed.CSharpApiClient.Tests.Common.TestCases;
 using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
@@ -17,7 +16,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
 
             // Act
             var regionalUpdateMessageParsed = RegionalUpdateMessage.Parse(message);
-            var regionalUpdateMessage = new RegionalUpdateMessage<double>("AAPL", "X", 1.23d, 100, new DateTime(2000, 1, 2, 13, 00, 00), 1.24d, 200, new DateTime(2000, 1, 2, 13, 00, 01), 0, 1, 2);
+            var regionalUpdateMessage = new RegionalUpdateMessage("AAPL", "X", 1.23, 100, new DateTime(2000, 1, 2, 13, 00, 00), 1.24, 200, new DateTime(2000, 1, 2, 13, 00, 01), 0, 1, 2);
 
             // Arrange
             Assert.AreEqual(regionalUpdateMessageParsed, regionalUpdateMessage);

@@ -5,6 +5,6 @@
     {
         private const string NoDataMessage = "IQFeed doesn't have any data for the request sent.";
 
-        public NoDataIQFeedException(string errorMessage, string messageTrace) : base(NoDataMessage, errorMessage, messageTrace) { }
+        public NoDataIQFeedException(string request, string errorMessage, string messageTrace) : base(request, NoDataMessage, errorMessage, messageTrace) { }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
+using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Lookup.Chains.Equities;
 using IQFeed.CSharpApiClient.Lookup.Chains.Futures;
 using IQFeed.CSharpApiClient.Lookup.Common;
@@ -14,7 +15,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
         private readonly ChainsRequestFormatter _chainsRequestFormatter;
         private readonly ChainsMessageHandler _chainsMessageHandler;
 
-        public ChainsFacade(ChainsRequestFormatter chainsRequestFormatter, ChainsMessageHandler chainsMessageHandler, LookupDispatcher lookupDispatcher, ExceptionFactory exceptionFactory, TimeSpan timeout) : base(lookupDispatcher, exceptionFactory, timeout)
+        public ChainsFacade(
+            ChainsRequestFormatter chainsRequestFormatter,
+            ChainsMessageHandler chainsMessageHandler,
+            LookupDispatcher lookupDispatcher,
+            LookupRateLimiter lookupRateLimiter,
+            ExceptionFactory exceptionFactory,
+            TimeSpan timeout) : base(lookupDispatcher, lookupRateLimiter, exceptionFactory, timeout)
         {
             _chainsMessageHandler = chainsMessageHandler;
             _chainsRequestFormatter = chainsRequestFormatter;
@@ -59,6 +66,29 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
             var request = _chainsRequestFormatter.ReqChainIndexEquityOption(symbol, optionSideFilter, monthCodes, nearMonths, binaryOptionFilter, optionFilter, filterValue1, filterValue2, requestId);
             var messages = await GetMessagesAsync(request, _chainsMessageHandler.GetEquityOptionMessages).ConfigureAwait(false);
             return messages.First().Chains;
+        }
+
+        public IEnumerable<Future> GetChainFuture(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null)
+        {
+            return GetChainFutureAsync(symbol, monthCodes, years, nearMonths, requestId).SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<FutureSpread> GetChainFutureSpreads(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null)
+        {
+            return GetChainFutureSpreadsAsync(symbol, monthCodes, years, nearMonths, requestId).SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<FutureOption> GetChainFutureOption(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, string years, int? nearMonths = null, string requestId = null)
+        {
+            return GetChainFutureOptionAsync(symbol, optionSideFilter, monthCodes, years, nearMonths, requestId).SynchronouslyAwaitTaskResult();
+        }
+
+        public IEnumerable<EquityOption> GetChainIndexEquityOption(string symbol, OptionSideFilterType optionSideFilter, string monthCodes,
+            int? nearMonths = null, BinaryOptionFilterType binaryOptionFilter = BinaryOptionFilterType.Include,
+            OptionFilterType optionFilter = OptionFilterType.None, int? filterValue1 = null, int? filterValue2 = null,
+            string requestId = null)
+        {
+            return GetChainIndexEquityOptionAsync(symbol, optionSideFilter, monthCodes, nearMonths, binaryOptionFilter, optionFilter, filterValue1, filterValue2, requestId).SynchronouslyAwaitTaskResult();
         }
     }
 }

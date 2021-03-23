@@ -5,7 +5,7 @@ using IQFeed.CSharpApiClient.Lookup.Chains.Futures;
 
 namespace IQFeed.CSharpApiClient.Lookup.Chains
 {
-    public interface IChainsFacade
+    public interface IChainsFacade : IChainsFacadeSync
     {
         /// <summary>
         /// CFU - Request a Future Chain from IQFeed
@@ -17,7 +17,6 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
         /// <param name="requestId"></param>
         /// <returns></returns>
         Task<IEnumerable<Future>> GetChainFutureAsync(string symbol, string monthCodes, string years, int? nearMonths = null, string requestId = null);
-
 
         /// <summary>
         /// CFS - Request a Future Spread chain from IQFeed

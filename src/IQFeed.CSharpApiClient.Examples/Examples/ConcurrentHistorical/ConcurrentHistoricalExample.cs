@@ -14,14 +14,14 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentHistorical
     public class ConcurrentHistoricalExample : ConcurrentHistoricalBase, IExample
     {
         public bool Enable => false; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
-        public string Name => typeof(ConcurrentHistoricalExample).Name;
+        public string Name => nameof(ConcurrentHistoricalExample);
         private const int NumberOfConcurrentClients = 15;
 
-        private readonly ConcurrentDictionary<string, List<DailyWeeklyMonthlyMessage<double>>> _dailyMessagesBySymbol;
+        private readonly ConcurrentDictionary<string, List<DailyWeeklyMonthlyMessage>> _dailyMessagesBySymbol;
 
         public ConcurrentHistoricalExample() : base(LookupClientFactory.CreateNew(NumberOfConcurrentClients), NumberOfConcurrentClients)
         {
-            _dailyMessagesBySymbol = new ConcurrentDictionary<string, List<DailyWeeklyMonthlyMessage<double>>>();
+            _dailyMessagesBySymbol = new ConcurrentDictionary<string, List<DailyWeeklyMonthlyMessage>>();
         }
 
         public void Run()

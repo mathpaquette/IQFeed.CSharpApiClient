@@ -10,11 +10,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
     public abstract class BaseLookupFacade
     {
         private readonly LookupDispatcher _lookupDispatcher;
+        private readonly LookupRateLimiter _lookupRateLimiter;
         private readonly ExceptionFactory _exceptionFactory;
         private readonly TimeSpan _timeout;
 
-        protected BaseLookupFacade(LookupDispatcher lookupDispatcher, ExceptionFactory exceptionFactory, TimeSpan timeout)
+        protected BaseLookupFacade(LookupDispatcher lookupDispatcher, LookupRateLimiter lookupRateLimiter, ExceptionFactory exceptionFactory, TimeSpan timeout)
         {
+            _lookupRateLimiter = lookupRateLimiter;
             _lookupDispatcher = lookupDispatcher;
             _exceptionFactory = exceptionFactory;
             _timeout = timeout;
@@ -35,7 +37,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
 
                 if (container.ErrorMessage != null)
                 {
-                    res.TrySetException(_exceptionFactory.CreateNew(container.ErrorMessage, container.MessageTrace));
+                    res.TrySetException(_exceptionFactory.CreateNew(request, container.ErrorMessage, container.MessageTrace));
                     return;
                 }
 
@@ -46,6 +48,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
             }
 
             client.MessageReceived += SocketClientOnMessageReceived;
+            await _lookupRateLimiter.WaitAsync();
             client.Send(request);
 
             await res.Task.ContinueWith(x =>
