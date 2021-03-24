@@ -39,7 +39,11 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
                     break;
                 }
 
-                parsedMessages.Add(parserFunc(messages[i]));
+                var parsedMessage = parserFunc(messages[i]);
+                if (parsedMessage != null)
+                {
+                    parsedMessages.Add(parsedMessage);
+                }
             }
 
             return new MessageContainer<T>(parsedMessages, endMsg);
