@@ -614,7 +614,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
             var dynamicFields = Level1DynamicFields.Parse(message, fields);
 
             // Assert
-            Assert.AreEqual(dynamicFields.MostRecentTrade, IntegerValue);
+            Assert.AreEqual(dynamicFields.MostRecentTradeAggressor, IntegerValue);
         }
 
         [Test]
@@ -656,7 +656,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
             var dynamicFields = Level1DynamicFields.Parse(message, fields);
 
             // Assert
-            Assert.AreEqual(dynamicFields.MostRecentTradeDate, IntegerValue);
+            Assert.AreEqual(dynamicFields.MostRecentTradeDayCode, IntegerValue);
         }
 
         [Test]
