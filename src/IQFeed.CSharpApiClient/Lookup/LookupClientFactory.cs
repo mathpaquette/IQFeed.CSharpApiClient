@@ -4,6 +4,8 @@ using IQFeed.CSharpApiClient.Lookup.Chains;
 using IQFeed.CSharpApiClient.Lookup.Common;
 using IQFeed.CSharpApiClient.Lookup.Historical;
 using IQFeed.CSharpApiClient.Lookup.Historical.Facades;
+using IQFeed.CSharpApiClient.Lookup.MarketSummary;
+using IQFeed.CSharpApiClient.Lookup.MarketSummary.Facades;
 using IQFeed.CSharpApiClient.Lookup.News;
 using IQFeed.CSharpApiClient.Lookup.Symbol;
 using IQFeed.CSharpApiClient.Lookup.Symbol.Downloader;
@@ -73,7 +75,10 @@ namespace IQFeed.CSharpApiClient.Lookup
                 exceptionFactory, 
                 timeout);
 
-            return new LookupClient(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade);
+            // MarketSummary
+            var marketSummaryFacade = new MarketSummaryFacade(new MarketSummaryRequestFormatter(), lookupDispatcher, lookupRateLimiter, exceptionFactory, timeout);
+
+            return new LookupClient(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade, marketSummaryFacade);
         }
 
         public static LookupClient CreateNew()

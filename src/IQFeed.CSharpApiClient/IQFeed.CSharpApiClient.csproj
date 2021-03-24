@@ -25,4 +25,8 @@
     <ItemGroup>
       <None Include="../../LICENSE" Pack="true" PackagePath="" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Lookup\MarketSummary\Facades\" />
+      <Folder Include="Lookup\MarketSummary\Messages\" />
+    </ItemGroup>
 </Project>
