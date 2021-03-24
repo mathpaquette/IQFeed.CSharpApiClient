@@ -57,13 +57,15 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
             return messages.First().Chains;
         }
 
+        // Protocol Update to 6.1 - Added "includeNonStandardOptions" - default to true to maintain backwards compatibility - IQ Default is false
         public async Task<IEnumerable<EquityOption>> GetChainIndexEquityOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, int? nearMonths = null, BinaryOptionFilterType binaryOptionFilter = BinaryOptionFilterType.Include,
-            OptionFilterType optionFilter = OptionFilterType.None, int? filterValue1 = null, int? filterValue2 = null, string requestId = null)
+            OptionFilterType optionFilter = OptionFilterType.None, int? filterValue1 = null, int? filterValue2 = null, string requestId = null, bool includeNonStandardOptions = true)
         {
             if (!string.IsNullOrEmpty(requestId))
                 throw new NotSupportedException("RequestId parsing isn't supported for Chains!");
 
-            var request = _chainsRequestFormatter.ReqChainIndexEquityOption(symbol, optionSideFilter, monthCodes, nearMonths, binaryOptionFilter, optionFilter, filterValue1, filterValue2, requestId);
+            var request = _chainsRequestFormatter.ReqChainIndexEquityOption(
+                symbol, optionSideFilter, monthCodes, nearMonths, binaryOptionFilter, optionFilter, filterValue1, filterValue2, requestId, includeNonStandardOptions);
             var messages = await GetMessagesAsync(request, _chainsMessageHandler.GetEquityOptionMessages).ConfigureAwait(false);
             return messages.First().Chains;
         }
