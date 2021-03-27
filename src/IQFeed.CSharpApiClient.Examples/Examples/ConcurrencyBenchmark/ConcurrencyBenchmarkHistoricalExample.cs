@@ -14,9 +14,10 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentHistorical
 {
     public class ConcurrencyBenchmarkHistoricalExample : ConcurrentHistoricalBase, IExample
     {
-        public bool Enable => true; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
+        public bool Enable => false; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
         public string Name => nameof(ConcurrencyBenchmarkHistoricalExample);
-        private const int NumberOfConcurrentClients = 8;
+        private const int NumberOfConcurrentClients = 16;
+        private const int Requests = 500;
 
         public ConcurrencyBenchmarkHistoricalExample() : base(LookupClientFactory.CreateNew(NumberOfConcurrentClients), NumberOfConcurrentClients) { }
 
@@ -37,19 +38,16 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentHistorical
             LookupClient.Connect();
 
 
-            const int numberOfSymbols = 50;
-            const int iterations = NumberOfConcurrentClients * numberOfSymbols; //symbols
             var rand = new Random(1);
-            var symbols = Repeat(MarketData.GetSymbols().OrderBy(_ => rand.Next()).ToArray()).Take(iterations).ToArray();
-            var tasks = new Task[iterations];
+            var symbols = Repeat(MarketData.GetSymbols().OrderBy(_ => rand.Next()).ToArray()).Take(Requests).ToArray();
+            var tasks = new Task[Requests];
 
-            Console.WriteLine($"Number of Concurrent Tasks: {iterations}");
-            Console.WriteLine($"Number of Symbols: {numberOfSymbols}");
+            Console.WriteLine($"Number of Concurrent Tasks: {Requests}");
             Console.WriteLine("Benchmark starting 0ms");
             var sw = Stopwatch.StartNew();
             Ref<int> messagesFetched = new Ref<int>() { Value = 0 };
 
-            for (int i = 0; i < iterations; i++)
+            for (int i = 0; i < Requests; i++)
             {
                 var fetched = messagesFetched;
                 tasks[i] = LookupClient.Historical.GetHistoryDailyDatapointsAsync(symbols[i], 100).ContinueWith(t =>
@@ -78,9 +76,9 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentHistorical
             Task.WaitAll(tasks);
             sw.Stop();
             Console.WriteLine("All tasks completed " + sw.ElapsedMilliseconds);
-            Console.WriteLine("Requests per second :" + (sw.ElapsedMilliseconds) / (double)iterations);
+            Console.WriteLine("Requests per second :" + (sw.ElapsedMilliseconds) / (double)Requests);
 
-            Console.WriteLine($"\nFetched {messagesFetched.Value} Daily messages for {iterations} requests in {sw.Elapsed.TotalMilliseconds} ms.");
+            Console.WriteLine($"\nFetched {messagesFetched.Value} Daily messages for {Requests} requests in {sw.Elapsed.TotalMilliseconds} ms.");
         }
 
         private IEnumerable<T> Repeat<T>(IEnumerable<T> collection)
