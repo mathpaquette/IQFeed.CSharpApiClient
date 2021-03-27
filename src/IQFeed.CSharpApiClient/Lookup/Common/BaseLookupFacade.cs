@@ -37,6 +37,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
 
                 if (container.ErrorMessage != null)
                 {
+                    _lookupRateLimiter.Release(); //start timer for next permission
                     res.TrySetException(_exceptionFactory.CreateNew(request, container.ErrorMessage, container.MessageTrace));
                     return;
                 }
