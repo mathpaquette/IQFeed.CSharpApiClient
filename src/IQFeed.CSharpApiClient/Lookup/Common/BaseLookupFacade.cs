@@ -44,11 +44,14 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
                 messages.AddRange(container.Messages);
 
                 if (container.End)
+                {
+                    _lookupRateLimiter.Release(); //start timer for next permission
                     res.TrySetResult(messages);
+                }
             }
 
             client.MessageReceived += SocketClientOnMessageReceived;
-            await _lookupRateLimiter.WaitAsync();
+            await _lookupRateLimiter.WaitAsync(); //ask permission to send request
             client.Send(request);
 
             await res.Task.ContinueWith(x =>
