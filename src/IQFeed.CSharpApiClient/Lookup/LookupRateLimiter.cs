@@ -42,7 +42,6 @@ namespace IQFeed.CSharpApiClient.Lookup
             
             _intervalFrequency = (int)(TimeSpan.FromSeconds(1).Ticks / requestsPerSecond);
             _intervalMilliseconds = (int)new TimeSpan(_intervalFrequency).TotalMilliseconds;
-            _intervalFrequency = (int)FrequencyStopwatch.ToCurrentFrequency(_intervalFrequency);
             _frequencyStopwatch = new FrequencyStopwatch(_intervalFrequency);
             _requestsPerSecond = requestsPerSecond;
             _running = true;

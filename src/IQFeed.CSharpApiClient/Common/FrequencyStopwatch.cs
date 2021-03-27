@@ -10,12 +10,7 @@ namespace IQFeed.CSharpApiClient.Common {
         private long _startTimeStamp;
         private bool _isRunning;
 
-        public static readonly long Frequency;
-
-        /// <summary>Indicates whether the timer is based on a high-resolution performance counter. This field is read-only.</summary>
-        public static readonly bool IsHighResolution;
-
-        public DateTime StartTime => new DateTime(IsHighResolution ? (long) (_elapsed * TickFrequency) : _elapsed);
+        public DateTime StartTime => new DateTime(_elapsed);
 
         public FrequencyStopwatch(long frequency) {
             _frequency = frequency;
@@ -29,20 +24,6 @@ namespace IQFeed.CSharpApiClient.Common {
             _elapsed = 0;
             _isRunning = true;
             _startTimeStamp = start ? GetTimestamp() : 0;
-        }
-
-        public static readonly double TickFrequency;
-
-        static FrequencyStopwatch() {
-            if (!Native.QueryPerformanceFrequency(out Frequency)) {
-                IsHighResolution = false;
-                Frequency = 10000000L;
-                TickFrequency = 1.0;
-            } else {
-                IsHighResolution = true;
-                TickFrequency = 10000000.0;
-                TickFrequency /= Frequency;
-            }
         }
 
         /// <summary>Starts, or resumes, measuring elapsed time for an interval.</summary>
@@ -92,7 +73,7 @@ namespace IQFeed.CSharpApiClient.Common {
             if (elapsedFreq >= _frequency) {
                 elapsedFreq -= elapsedFreq % _frequency; //trim
                 _startTimeStamp += elapsedFreq;
-                return FromCurrentFrequency(elapsedFreq);
+                return elapsedFreq;
             } else
                 return 0;
         }
@@ -100,23 +81,12 @@ namespace IQFeed.CSharpApiClient.Common {
         /// <summary>If the time elapsed so far surpassed <paramref name="stepFrequency"/> then it'll return ignore any excess time that do not fit into a step that we'll taken into account on next checkpoint.</summary>
         /// <remarks>Has no isRunning check</remarks>
         /// <returns>Ticks</returns>
-        public long Excess => FromCurrentFrequency((GetTimestamp() - _startTimeStamp) % _frequency);
+        public long Excess => (GetTimestamp() - _startTimeStamp) % _frequency;
 
         /// <summary>If the time elapsed so far surpassed <paramref name="stepFrequency"/> then it'll return ignore any excess time that do not fit into a step that we'll taken into account on next checkpoint.</summary>
         /// <remarks>Has no isRunning check</remarks>
         /// <returns>Milliseconds</returns>
-        public int ExcessMilliseconds => (int) new TimeSpan(FromCurrentFrequency((GetTimestamp() - _startTimeStamp) % _frequency)).TotalMilliseconds;
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static long ToCurrentFrequency(long milliseconds) {
-            return IsHighResolution ? (long) (milliseconds * TickFrequency) : milliseconds;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static long FromCurrentFrequency(long performanceTicks) {
-            return IsHighResolution ? (long) (performanceTicks / TickFrequency) : performanceTicks;
-        }
+        public int ExcessMilliseconds => (int) new TimeSpan((GetTimestamp() - _startTimeStamp) % _frequency).TotalMilliseconds;
 
         /// <summary>Gets a value indicating whether the <see cref="T:System.Diagnostics.StopwatchStruct" /> timer is running.</summary>
         /// <returns>
@@ -143,12 +113,8 @@ namespace IQFeed.CSharpApiClient.Common {
         /// <summary>Gets the current number of ticks in the timer mechanism.</summary>
         /// <returns>A long integer representing the tick counter value of the underlying timer mechanism.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static long GetTimestamp() {
-            if (!IsHighResolution)
-                return DateTime.UtcNow.Ticks;
-            Native.QueryPerformanceCounter(out var num);
-            return num;
-        }
+        public static long GetTimestamp() => DateTime.UtcNow.Ticks;
+
 
         private long GetRawElapsedTicks() {
             long elapsed = this._elapsed;
@@ -161,22 +127,12 @@ namespace IQFeed.CSharpApiClient.Common {
         }
 
         private long GetElapsedDateTimeTicks() {
-            long rawElapsedTicks = GetRawElapsedTicks();
-            return IsHighResolution ? (long) (rawElapsedTicks * TickFrequency) : rawElapsedTicks;
+            return GetRawElapsedTicks();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static long FromRaw(long rawCounter) {
-            return IsHighResolution ? (long) (rawCounter * TickFrequency) : rawCounter;
-        }
-
-        private static class Native {
-            [DllImport("kernel32.dll")]
-            public static extern bool QueryPerformanceCounter(out long value);
-
-
-            [DllImport("kernel32.dll")]
-            public static extern bool QueryPerformanceFrequency(out long value);
+            return rawCounter;
         }
     }
 }
