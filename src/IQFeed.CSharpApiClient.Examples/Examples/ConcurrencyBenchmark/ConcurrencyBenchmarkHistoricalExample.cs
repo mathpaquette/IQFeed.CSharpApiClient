@@ -16,8 +16,8 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentHistorical
     {
         public bool Enable => true; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
         public string Name => nameof(ConcurrencyBenchmarkHistoricalExample);
-        private const int NumberOfConcurrentClients = 16; //best use Environment.ProcessorCount
-        private const int Requests = 100;
+        private const int NumberOfConcurrentClients = 50; //best use Environment.ProcessorCount
+        private const int Requests = 500;
 
         public ConcurrencyBenchmarkHistoricalExample() : base(LookupClientFactory.CreateNew(NumberOfConcurrentClients), NumberOfConcurrentClients) { }
 
@@ -62,11 +62,11 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentHistorical
                     {
                         //handle aggregated exception due to unwrapped exceptions from Task<T>
                         AggregateException agg = e;
-                        while (e.InnerExceptions.Count == 1 && e.InnerExceptions[0] is AggregateException)
+                        while (agg.InnerExceptions.Count == 1 && agg.InnerExceptions[0] is AggregateException)
                             agg = (AggregateException)e.InnerExceptions[0];
 
-                        if (!(e.InnerExceptions[0] is NoDataIQFeedException))
-                            throw;
+                        if (!(agg.InnerExceptions[0] is NoDataIQFeedException))
+                            Console.WriteLine(agg.InnerExceptions[0]);
                     }
                 });
             }
