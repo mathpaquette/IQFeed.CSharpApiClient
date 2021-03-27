@@ -14,10 +14,10 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentHistorical
 {
     public class ConcurrencyBenchmarkHistoricalExample : ConcurrentHistoricalBase, IExample
     {
-        public bool Enable => false; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
+        public bool Enable => true; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
         public string Name => nameof(ConcurrencyBenchmarkHistoricalExample);
-        private const int NumberOfConcurrentClients = 16;
-        private const int Requests = 500;
+        private const int NumberOfConcurrentClients = 16; //best use Environment.ProcessorCount
+        private const int Requests = 100;
 
         public ConcurrencyBenchmarkHistoricalExample() : base(LookupClientFactory.CreateNew(NumberOfConcurrentClients), NumberOfConcurrentClients) { }
 
@@ -26,14 +26,14 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentHistorical
             public T Value;
         }
 
-        public void Run()
-        {
+        public void Run() {
+            
             // Configure your credentials for IQConnect in user environment variable or app.config !!!
             // Check the documentation for more information.               
 
             // Run IQConnect launcher
             IQFeedLauncher.Start();
-
+            
             // Connect the LookupClient created from the constructor
             LookupClient.Connect();
 
@@ -70,13 +70,14 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentHistorical
                     }
                 });
             }
-
+            
+            Console.WriteLine("Number of Clients: " + NumberOfConcurrentClients);
             Console.WriteLine("All tasks allocated " + sw.ElapsedMilliseconds + "ms");
             sw.Restart();
             Task.WaitAll(tasks);
             sw.Stop();
             Console.WriteLine("All tasks completed " + sw.ElapsedMilliseconds);
-            Console.WriteLine("Requests per second :" + (sw.ElapsedMilliseconds) / (double)Requests);
+            Console.WriteLine($"average call request time: {sw.Elapsed.TotalMilliseconds / (double)Requests}ms");
 
             Console.WriteLine($"\nFetched {messagesFetched.Value} Daily messages for {Requests} requests in {sw.Elapsed.TotalMilliseconds} ms.");
         }
