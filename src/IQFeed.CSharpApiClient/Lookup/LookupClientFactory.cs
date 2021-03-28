@@ -25,7 +25,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             // Common
             var requestFormatter = new RequestFormatter();
             var lookupDispatcher = new LookupDispatcher(host, port, bufferSize, IQFeedDefault.ProtocolVersion, numberOfClients, requestFormatter);
-            var lookupRateLimiter = new LookupRateLimiter(requestsPerSecond, requestsPerSecond, higherPrecision: false);
+            var lookupRateLimiter = new LookupRateLimiter(requestsPerSecond - 1, requestsPerSecond - 1, higherPrecision: false);
             var exceptionFactory = new ExceptionFactory();
             var lookupMessageFileHandler = new LookupMessageFileHandler(lookupDispatcher, exceptionFactory, timeout);
             var historicalMessageHandler = new HistoricalMessageHandler();
