@@ -15,7 +15,7 @@ namespace IQFeed.CSharpApiClient.Lookup
         private bool _disposed;
         private volatile bool _running;
 
-        private readonly int _intervalFrequency;
+        private readonly int _intervalTicks;
         private readonly int _intervalMilliseconds;
         private readonly int _requestsPerSecond;
         private readonly SemaphoreSlim _sendPermission;
@@ -23,7 +23,7 @@ namespace IQFeed.CSharpApiClient.Lookup
         private FrequencyStopwatch _frequencyStopwatch;
         private int _returnable;
 
-        public TimeSpan Interval => new TimeSpan(_intervalFrequency);
+        public TimeSpan Interval => new TimeSpan(_intervalTicks);
 
         public int RequestsPerSecond => _requestsPerSecond;
 
@@ -40,9 +40,9 @@ namespace IQFeed.CSharpApiClient.Lookup
             if (intialPermissions > requestsPerSecond)
                 throw new ArgumentOutOfRangeException(nameof(intialPermissions));
             
-            _intervalFrequency = (int)(TimeSpan.FromSeconds(1).Ticks / requestsPerSecond);
-            _intervalMilliseconds = (int)new TimeSpan(_intervalFrequency).TotalMilliseconds;
-            _frequencyStopwatch = new FrequencyStopwatch(_intervalFrequency);
+            _intervalTicks = (int)(TimeSpan.FromSeconds(1).Ticks / requestsPerSecond);
+            _intervalMilliseconds = (int)new TimeSpan(_intervalTicks).TotalMilliseconds;
+            _frequencyStopwatch = new FrequencyStopwatch(_intervalTicks);
             _requestsPerSecond = requestsPerSecond;
             _running = true;
 
@@ -81,18 +81,19 @@ namespace IQFeed.CSharpApiClient.Lookup
             int returnableNow;
             lock (_sendPermission)
             {
-                if (_returnable == 0)
+                returnableNow = _returnable;
+                if (returnableNow == 0)
                     return;
-
-                returnableNow = Math.Min(_returnable, (int)(_frequencyStopwatch.Checkpoint() / _intervalFrequency));
+                
+                returnableNow = Math.Min(returnableNow, (int)(_frequencyStopwatch.Checkpoint() / _intervalTicks));
                 if (returnableNow == 0)
                     return;
 
                 _returnable -= returnableNow;
             }
-
-            var result = _sendPermission.Release(returnableNow);
-            if (returnableNow + result == _requestsPerSecond)
+            
+            var previousCount = _sendPermission.Release(returnableNow);
+            if (returnableNow + previousCount == _requestsPerSecond)
                 _frequencyStopwatch.Reset();
         }
 
@@ -107,7 +108,7 @@ namespace IQFeed.CSharpApiClient.Lookup
                 if (_returnable == 0)
                     goto _waitNextData;
 
-                returnableNow = (int)(_frequencyStopwatch.Checkpoint() / _intervalFrequency);
+                returnableNow = (int)(_frequencyStopwatch.Checkpoint() / _intervalTicks);
                 if (returnableNow == 0)
                     goto _waitNextData;
 
