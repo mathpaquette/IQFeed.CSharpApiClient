@@ -24,7 +24,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
 
         protected async Task<IEnumerable<T>> GetMessagesAsync<T>(string request, Func<byte[], int, MessageContainer<T>> messageHandler)
         {
-            var client = await _lookupDispatcher.TakeAsync();
+            var client = await _lookupDispatcher.TakeAsync().ConfigureAwait(false);
 
             var messages = new List<T>();
             var ct = new CancellationTokenSource(_timeout);
@@ -37,7 +37,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
 
                 if (container.ErrorMessage != null)
                 {
+                    client.MessageReceived -= SocketClientOnMessageReceived;
                     _lookupRateLimiter.Release(); //start timer for next permission
+                    _lookupDispatcher.Add(client);
+                    ct.Dispose();
                     res.TrySetException(_exceptionFactory.CreateNew(request, container.ErrorMessage, container.MessageTrace));
                     return;
                 }
@@ -46,7 +49,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
 
                 if (container.End)
                 {
+                    client.MessageReceived -= SocketClientOnMessageReceived;
                     _lookupRateLimiter.Release(); //start timer for next permission
+                    _lookupDispatcher.Add(client);
+                    ct.Dispose();
                     res.TrySetResult(messages);
                 }
             }
@@ -54,14 +60,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
             client.MessageReceived += SocketClientOnMessageReceived;
             await _lookupRateLimiter.WaitAsync(); //ask permission to send request
             client.Send(request);
-
-            await res.Task.ContinueWith(x =>
-            {
-                client.MessageReceived -= SocketClientOnMessageReceived;
-                _lookupDispatcher.Add(client);
-                ct.Dispose();
-            }, TaskContinuationOptions.None).ConfigureAwait(false);
-
+            
             return await res.Task.ConfigureAwait(false);
         }
     }
