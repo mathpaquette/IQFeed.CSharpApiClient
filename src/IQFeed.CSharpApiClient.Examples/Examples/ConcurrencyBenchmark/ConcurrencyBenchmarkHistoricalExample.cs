@@ -16,8 +16,8 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.ConcurrentHistorical
     {
         public bool Enable => true; // *** SET TO TRUE TO RUN THIS EXAMPLE ***
         public string Name => nameof(ConcurrencyBenchmarkHistoricalExample);
-        private const int NumberOfConcurrentClients = 50; //best use Environment.ProcessorCount
-        private const int Requests = 500;
+        private const int NumberOfConcurrentClients = 200; //best use Environment.ProcessorCount
+        private const int Requests = 1000;
 
         public ConcurrencyBenchmarkHistoricalExample() : base(LookupClientFactory.CreateNew(NumberOfConcurrentClients), NumberOfConcurrentClients) { }
 
