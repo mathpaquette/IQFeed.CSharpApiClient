@@ -55,6 +55,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             var res = new TaskCompletionSource<FundamentalMessage>();
             ct.Token.Register(() => res.TrySetCanceled(), false);
 
+            var reqWatchRequest = CreateReqWatchRequest(symbol);
+
             void Level1ClientOnFundamental(FundamentalMessage fundamentalMessage)
             {
                 if (fundamentalMessage.Symbol == symbol)
@@ -64,12 +66,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             void Level1ClientOnSymbolNotFound(SymbolNotFoundMessage symbolNotFoundMessage)
             {
                 if (symbolNotFoundMessage.Symbol == symbol)
-                    res.TrySetException(new SymbolNotFoundIQFeedException(symbol));
+                    res.TrySetException(new SymbolNotFoundIQFeedException(reqWatchRequest, symbol));
             }
 
             _level1MessageHandler.Fundamental += Level1ClientOnFundamental;
             _level1MessageHandler.SymbolNotFound += Level1ClientOnSymbolNotFound;
-            ReqWatch(symbol);
+            SendReqWatchRequest(reqWatchRequest);
 
             await res.Task.ContinueWith(x =>
             {
@@ -88,6 +90,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             var res = new TaskCompletionSource<IUpdateSummaryMessage>();
             ct.Token.Register(() => res.TrySetCanceled(), false);
 
+            var reqWatchRequest = CreateReqWatchRequest(symbol);
+
             void Level1ClientOnUpdate(IUpdateSummaryMessage updateSummaryMessage)
             {
                 if (updateSummaryMessage.Symbol == symbol)
@@ -97,13 +101,13 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             void Level1ClientOnSymbolNotFound(SymbolNotFoundMessage symbolNotFoundMessage)
             {
                 if (symbolNotFoundMessage.Symbol == symbol)
-                    res.TrySetException(new SymbolNotFoundIQFeedException(symbol));
+                    res.TrySetException(new SymbolNotFoundIQFeedException(reqWatchRequest, symbol));
             }
 
             _level1MessageHandler.Summary += Level1ClientOnUpdate;
             _level1MessageHandler.Update += Level1ClientOnUpdate;
             _level1MessageHandler.SymbolNotFound += Level1ClientOnSymbolNotFound;
-            ReqWatch(symbol);
+            SendReqWatchRequest(reqWatchRequest);
 
             await res.Task.ContinueWith(x =>
             {
@@ -117,9 +121,13 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             return await res.Task.ConfigureAwait(false);
         }
 
-        private void ReqWatch(string symbol)
+        private string CreateReqWatchRequest(string symbol)
         {
-            var request = _level1RequestFormatter.ReqWatch(symbol);
+            return _level1RequestFormatter.ReqWatch(symbol);            
+        }
+
+        private void SendReqWatchRequest(string request)
+        {
             _socketClient.Send(request);
         }
 
