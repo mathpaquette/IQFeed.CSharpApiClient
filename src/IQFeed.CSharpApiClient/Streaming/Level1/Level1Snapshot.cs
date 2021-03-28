@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using IQFeed.CSharpApiClient.Common.Exceptions;
 using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Socket;
+using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level1.Handlers;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
@@ -59,12 +61,20 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                     res.TrySetResult(fundamentalMessage);
             }
 
+            void Level1ClientOnSymbolNotFound(SymbolNotFoundMessage symbolNotFoundMessage)
+            {
+                if (symbolNotFoundMessage.Symbol == symbol)
+                    res.TrySetException(new SymbolNotFoundIQFeedException(symbol));
+            }
+
             _level1MessageHandler.Fundamental += Level1ClientOnFundamental;
+            _level1MessageHandler.SymbolNotFound += Level1ClientOnSymbolNotFound;
             ReqWatch(symbol);
 
             await res.Task.ContinueWith(x =>
             {
                 _level1MessageHandler.Fundamental -= Level1ClientOnFundamental;
+                _level1MessageHandler.SymbolNotFound -= Level1ClientOnSymbolNotFound;
                 ReqUnwatch(symbol);
                 ct.Dispose();
             }, TaskContinuationOptions.None).ConfigureAwait(false);
@@ -84,14 +94,22 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                     res.TrySetResult(updateSummaryMessage);
             }
 
+            void Level1ClientOnSymbolNotFound(SymbolNotFoundMessage symbolNotFoundMessage)
+            {
+                if (symbolNotFoundMessage.Symbol == symbol)
+                    res.TrySetException(new SymbolNotFoundIQFeedException(symbol));
+            }
+
             _level1MessageHandler.Summary += Level1ClientOnUpdate;
             _level1MessageHandler.Update += Level1ClientOnUpdate;
+            _level1MessageHandler.SymbolNotFound += Level1ClientOnSymbolNotFound;
             ReqWatch(symbol);
 
             await res.Task.ContinueWith(x =>
             {
                 _level1MessageHandler.Summary -= Level1ClientOnUpdate;
                 _level1MessageHandler.Update -= Level1ClientOnUpdate;
+                _level1MessageHandler.SymbolNotFound -= Level1ClientOnSymbolNotFound;
                 ReqUnwatch(symbol);
                 ct.Dispose();
             }, TaskContinuationOptions.None).ConfigureAwait(false);
