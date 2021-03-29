@@ -9,34 +9,40 @@ using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Lookup
 {
-    /// <summary>
-    /// Some tests have a tendency to be flaky under CI heavy load.
-    /// </summary>
     public class LookupRateLimiterTests
     {
         [Test]
         public async Task Should_Rate_Limit_By_Throughput()
         {
             // Arrange
-            var totalSeconds = TimeSpan.FromSeconds(15).TotalSeconds;
-            var seconds = 0;
-
+            var totalSeconds = TimeSpan.FromSeconds(10).TotalSeconds;
             var requestsPerSecond = 50;
-            var requestsCount = 0;
-            var requests = new List<int>();
+            var testResults = new List<TestResult>();
 
             var lookupRateLimiter = new LookupRateLimiter(requestsPerSecond);
             var cts = new CancellationTokenSource();
 
-            // Act
-            _ = Task.Run(async () =>
+            var numberOfClients = 15;
+            var tasks = new Task[numberOfClients];
+            
+            var requestsCount = 0;
+            var seconds = 0;
+
+            for (var i = 0; i < numberOfClients; i++)
             {
-                while (true)
+                tasks[i] = new Task(async () =>
                 {
-                    await lookupRateLimiter.WaitAsync();
-                    Interlocked.Increment(ref requestsCount);
-                }
-            }, cts.Token);
+                    while (true)
+                    {
+                        await lookupRateLimiter.WaitAsync();
+                        Interlocked.Increment(ref requestsCount);
+                    }
+                }, cts.Token);
+            }
+
+            // Act
+            for (var i = 0; i < numberOfClients; i++)
+                tasks[i].Start();
 
             while (seconds < totalSeconds)
             {
@@ -45,7 +51,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup
                 sw.Stop();
 
                 Console.WriteLine($"requests: {requestsCount}/{sw.Elapsed.TotalMilliseconds}ms");
-                requests.Add(requestsCount);
+                testResults.Add(new TestResult(requestsCount, sw.Elapsed.TotalMilliseconds));
                 Interlocked.Exchange(ref requestsCount, 0);
                 seconds++;
             }
@@ -54,7 +60,15 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup
             cts.Dispose();
 
             // Assert
-            Assert.That(requests.Average(), Is.EqualTo(requestsPerSecond).Within(2).Percent);
+            var totalMs = testResults.Sum(x => x.TotalMilliseconds);
+            var totalRequests = testResults.Sum(x => x.NumberOfRequest);
+            var calcRequestsPerSecond = totalRequests * 1000 / totalMs;
+            var variationPercentage = Math.Abs(calcRequestsPerSecond - requestsPerSecond) / requestsPerSecond * 100;
+
+            Console.WriteLine($"Average {calcRequestsPerSecond} requests/second");
+            Console.WriteLine($"Variation {variationPercentage} %");
+
+            Assert.That(calcRequestsPerSecond, Is.EqualTo(requestsPerSecond).Within(1).Percent);
         }
 
         [Test]
@@ -96,6 +110,18 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup
 
             // Assert
             Assert.False(lookupRateLimiter.IsRunning);
+        }
+
+        class TestResult
+        {
+            public TestResult(int numberOfRequest, double totalMilliseconds)
+            {
+                NumberOfRequest = numberOfRequest;
+                TotalMilliseconds = totalMilliseconds;
+            }
+
+            public int NumberOfRequest { get; }
+            public double TotalMilliseconds { get; }
         }
     }
 }

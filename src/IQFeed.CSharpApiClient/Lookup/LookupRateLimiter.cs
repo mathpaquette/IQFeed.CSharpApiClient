@@ -13,21 +13,24 @@ namespace IQFeed.CSharpApiClient.Lookup
     {
         public TimeSpan Interval { get; }
         public int RequestsPerSecond { get; }
-        public bool IsRunning => !_releaseTask.IsCompleted;
+        public bool IsRunning { get; private set; }
 
         private readonly SemaphoreSlim _semaphoreSlim;
-        private readonly Task _releaseTask;
+        private readonly Stopwatch _stopwatch = new Stopwatch();
+        private readonly Timer _releaseTimer;
         
+        private int _remainderTicks;
         private bool _disposed;
-        private volatile bool _running = true;
 
         public LookupRateLimiter(int requestsPerSecond)
         {
             Interval = TimeSpan.FromTicks(TimeSpan.FromSeconds(1).Ticks / requestsPerSecond);
             RequestsPerSecond = requestsPerSecond;
 
+            _stopwatch.Start();
             _semaphoreSlim = new SemaphoreSlim(0, requestsPerSecond);
-            _releaseTask = ReleaseSemaphoreAsync(Interval, RequestsPerSecond);
+            _releaseTimer = new Timer(ReleaseTimerCallback, null, TimeSpan.Zero, Interval);
+            IsRunning = true;
         }
 
         public async Task WaitAsync()
@@ -35,29 +38,23 @@ namespace IQFeed.CSharpApiClient.Lookup
             await _semaphoreSlim.WaitAsync().ConfigureAwait(false);
         }
 
-        private async Task ReleaseSemaphoreAsync(TimeSpan interval, int maxCount)
+        private void ReleaseTimerCallback(object state)
         {
-            var intervalTicks = (int)interval.Ticks;
-            var remainderTicks = 0;
-            var sw = new Stopwatch();
+            var intervalTicks = (int)Interval.Ticks;
+            _stopwatch.Stop();
+            
+            var totalTicks = _remainderTicks + (int)_stopwatch.ElapsedTicks;
+            _remainderTicks = totalTicks % intervalTicks;
+            var releaseCount = totalTicks / intervalTicks;
+            var releaseCapacity = RequestsPerSecond - _semaphoreSlim.CurrentCount;
+            
+            _stopwatch.Restart();
 
-            while (_running)
-            {
-                sw.Restart();
-                await Task.Delay(interval).ConfigureAwait(false);
-                sw.Stop();
+            if (releaseCapacity == 0 || releaseCount == 0)
+                return;
 
-                var totalTicks = remainderTicks + (int)sw.ElapsedTicks;
-                remainderTicks = totalTicks % intervalTicks;
-                var releaseCount = totalTicks / intervalTicks;
-                var releaseCapacity = maxCount - _semaphoreSlim.CurrentCount;
-
-                if (releaseCapacity == 0 || releaseCount == 0)
-                    continue;
-
-                releaseCount = releaseCount > releaseCapacity ? releaseCapacity : releaseCount;
-                _semaphoreSlim.Release(releaseCount);
-            }
+            releaseCount = releaseCount > releaseCapacity ? releaseCapacity : releaseCount;
+            _semaphoreSlim.Release(releaseCount);
         }
 
         public void Dispose()
@@ -75,10 +72,9 @@ namespace IQFeed.CSharpApiClient.Lookup
 
             if (disposing)
             {
-                _running = false;
-                _releaseTask.Wait();
-
+                _releaseTimer?.Dispose();
                 _semaphoreSlim?.Dispose();
+                IsRunning = false;
             }
 
             _disposed = true;
