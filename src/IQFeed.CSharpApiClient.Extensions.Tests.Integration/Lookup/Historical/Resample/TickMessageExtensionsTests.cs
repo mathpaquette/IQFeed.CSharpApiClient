@@ -44,5 +44,15 @@ namespace IQFeed.CSharpApiClient.Extensions.Tests.Integration.Lookup.Historical.
                 throw new Exception();
             }
         }
+
+        [Test]
+        public void Should_Load_And_Parse_Protocol60_Data_From_File()
+        {
+            // Arrange
+            var ticks = TickMessage.ParseFromFile(TestData.TestData.GetFileName(TestDataType.Ticks, DataDirection.Oldest, true)).ToList();
+
+            // Assert
+            Assert.IsNotEmpty(ticks);
+        }
     }
 }

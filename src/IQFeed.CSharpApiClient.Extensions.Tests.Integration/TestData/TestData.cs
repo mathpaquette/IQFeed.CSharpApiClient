@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Compression;
 using IQFeed.CSharpApiClient.Lookup.Historical.Enums;
 using NUnit.Framework;
@@ -7,9 +8,10 @@ namespace IQFeed.CSharpApiClient.Extensions.Tests.Integration.TestData
 {
     public class TestData
     {
-        public static string GetFileName(TestDataType type, DataDirection direction)
+        public static string GetFileName(TestDataType type, DataDirection direction, bool protocol60 = false)
         {
-            var filename = $@"{type.ToString().ToLower()}_{direction.ToString().ToLower()}";
+            var protocol60String = protocol60 ? "60" : String.Empty;
+            var filename = $@"{type.ToString().ToLower()}_{direction.ToString().ToLower()}{protocol60String}";
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", $@"{filename}.zip");
             var tmpDir = GetTemporaryDirectory();
             ZipFile.ExtractToDirectory(path, tmpDir);
