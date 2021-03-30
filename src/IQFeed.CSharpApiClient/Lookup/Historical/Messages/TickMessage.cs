@@ -46,7 +46,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public static TickMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
-            if (values.Length == 11)
+            if (values.Length <= 11)
             {
                 // old protocol < 6.1 data
                 return new TickMessage(
@@ -97,7 +97,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             int dayCode = default;
 
             var values = message.SplitFeedMessage();
-            if (values.Length == 11)
+            if (values.Length <= 11)
             {
                 // old protocol < 6.1 data
                 var parsed = values.Length >= 10 &&
@@ -142,7 +142,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public static TickMessage ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
-            if (values.Length == 11)
+            if (values.Length <= 11)
             {
                 // old protocol < 6.1 data
                 return new TickMessage(
