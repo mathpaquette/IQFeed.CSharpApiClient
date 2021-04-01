@@ -65,7 +65,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 
         #region Dynamic Fields
 
-        private readonly string DynamicFieldNotAvailableErrorMessage = $"Dynamic Field is not available. Please use {nameof(ILevel1Client)}.{nameof(ILevel1Client.SelectUpdateFieldNamesV2)} to enable!";
+        private readonly string DynamicFieldNotAvailableErrorMessage = $"Dynamic Field is not available. Please use {nameof(ILevel1Client)}.{nameof(ILevel1Client.SelectUpdateFieldName)} to enable!";
 
         public double SevenDayYield => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
         public double AskChange => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
