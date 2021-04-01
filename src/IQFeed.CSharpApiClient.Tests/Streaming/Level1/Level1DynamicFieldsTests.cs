@@ -940,20 +940,6 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
         }
 
         [Test]
-        public void Should_Convert_Type()
-        {
-            // Arrange
-            var message = $"Q,DONT_CARE_SYMBOL,{StringValue}";
-            var fields = new[] { DynamicFieldset.Symbol, DynamicFieldset.Type };
-
-            // Act
-            var dynamicFields = Level1DynamicFields.Parse(message, fields);
-
-            // Assert
-            Assert.AreEqual(dynamicFields.Type, StringValue);
-        }
-
-        [Test]
         public void Should_Convert_Volatility()
         {
             // Arrange
