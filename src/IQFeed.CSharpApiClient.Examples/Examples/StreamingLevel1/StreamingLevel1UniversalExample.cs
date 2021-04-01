@@ -102,7 +102,7 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel1
             // Step 4 - Use the appropriate factory to create the client.
             // Pass a new Level1MessageUnversalHandler to indicate dynamic fields COULD BE used
             // This solution allows creating the dynamic Level1 Message types on the fly and both the memory and CPU usage will be the most efficient
-            var level1Client = Level1ClientFactory.CreateNew(new Level1MessageUnversalHandler());
+            var level1Client = Level1ClientFactory.CreateNew(new Level1MessageUniversalHandler());
 
             // Step 5 - Connect it
             level1Client.Connect();
@@ -116,18 +116,30 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel1
             // Step 7 - Make your streaming Level 1 requests
             level1Client.ReqWatch("AAPL");
 
-            Console.WriteLine("Watching APPL for the next 10 seconds... Please be patient ;-)\n");
-            await Task.Delay(TimeSpan.FromSeconds(10));
+            Console.WriteLine("Watching APPL for the next 5 seconds... Please be patient ;-)\n");
+            await Task.Delay(TimeSpan.FromSeconds(5));
 
-            // Step 8 - Request the feed to begin returning only the selected fields in Summary and Update messages
-            // yes we can do it HOT, without stopping the watch!!!
+            // Step 8 - Unwatch and wait to drain the existing messages
+            level1Client.ReqUnwatch("AAPL");
+            Console.WriteLine("\nStopping APPL watch and waining to drain the existing messages for the next 5 seconds...\n");
+            await Task.Delay(TimeSpan.FromSeconds(5));
+
+            // Step 9 - Request the feed to begin returning only the selected fields in Summary and Update messages            
             Console.WriteLine("Selecting ALL Update columns ...\n");
             level1Client.SelectUpdateFieldName(fields);
-            
-            Console.WriteLine("Watching APPL for another 10 seconds... Please be patient ;-)\n");
-            await Task.Delay(TimeSpan.FromSeconds(10));
 
-            // Step 9 - trim down to very few columns
+            // Step 10 - Make your streaming Level 1 requests again
+            level1Client.ReqWatch("AAPL");
+
+            Console.WriteLine("Watching APPL for another 5 seconds... Please be patient ;-)\n");
+            await Task.Delay(TimeSpan.FromSeconds(5));
+
+            // Step 11 - Unwatch and wait to drain the existing messages
+            level1Client.ReqUnwatch("AAPL");
+            Console.WriteLine("\nStopping APPL watch and waining to drain the existing messages for the next 5 seconds...\n");
+            await Task.Delay(TimeSpan.FromSeconds(5));
+
+            // Step 12 - trim down to very few columns
             Console.WriteLine("Selecting just FEW Update columns ...\n");
             level1Client.SelectUpdateFieldName(new[]
             {
@@ -139,13 +151,17 @@ namespace IQFeed.CSharpApiClient.Examples.Examples.StreamingLevel1
                 DynamicFieldset.LastMarketCenter,
                 DynamicFieldset.TotalVolume
             });
-            
-            Console.WriteLine("Watching APPL for yet another 10 seconds... Please be patient ;-)\n");
-            await Task.Delay(TimeSpan.FromSeconds(10));
 
-            // Step 10 - Unwatch and unregister events
+            // Step 13 - Make your streaming Level 1 requests one last time
+            level1Client.ReqWatch("AAPL");
+
+            Console.WriteLine("Watching APPL for yet another 5 seconds... Please be patient ;-)\n");
+            await Task.Delay(TimeSpan.FromSeconds(5));
+
+            // Step 14 - Unwatch and unregister events
             level1Client.ReqUnwatch("AAPL");
-            
+            Console.WriteLine("\nStopping APPL watch ...");
+
             level1Client.Fundamental -= Level1ClientOnFundamental;
             level1Client.Summary -= Level1ClientOnSummary;
             level1Client.Update -= Level1ClientOnSummary;

@@ -3,14 +3,15 @@ using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
 {
-    public class Level1MessageUnversalHandler : BaseLevel1MessageHandler, ILevel1MessageDynamicHandler
+    public class Level1MessageUniversalHandler
+        : BaseLevel1MessageHandler, ILevel1MessageDynamicHandler
     {
         public event Action<IUpdateSummaryMessage> Summary;
         public event Action<IUpdateSummaryMessage> Update;
 
         private Func<string, IUpdateSummaryMessage> _messageParser;
 
-        public Level1MessageUnversalHandler()
+        public Level1MessageUniversalHandler()
         {
             // by default initialize the handler for UpdateSummaryMessage
             CreateMessageParser(typeof(UpdateSummaryMessage));
@@ -19,7 +20,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
         public void SetDynamicFields(params DynamicFieldset[] fieldNames)
         {
             // generate a class definition on the fly that will only have the specified fields and create a parser for it
-            CreateMessageParser(DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(fieldNames));
+            CreateMessageParser(UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(fieldNames));
         }
 
         protected override void ProcessSummaryMessage(string msg)
