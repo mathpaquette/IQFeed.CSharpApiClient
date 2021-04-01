@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Globalization;
+using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
@@ -63,25 +63,85 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         public string MostRecentTradeConditions { get; private set; }
         public Level1DynamicFields DynamicFields => throw new Exception("Level1MessageDynamicHandler is required to use DynamicFields property.");
 
+        #region Dynamic Fields
+
+        private readonly string DynamicFieldNotAvailableErrorMessage = $"Dynamic Field is not available. Please use {nameof(ILevel1Client)}.{nameof(ILevel1Client.SelectUpdateFieldNamesV2)} to enable!";
+
+        public double SevenDayYield => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double AskChange => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public int AskMarketCenter => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public TimeSpan AskTime => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public string AvailableRegions => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double AverageMaturity => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double BidChange => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public int BidMarketCenter => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public TimeSpan BidTime => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double Change => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double ChangeFromOpen => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double CloseRange1 => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double CloseRange2 => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public string DaysToExpiration => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public string DecimalPrecision => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public int Delay => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public string ExchangeID => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double ExtendedTrade => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public DateTime ExtendedTradeDate => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public int ExtendedTradeMarketCenter => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public int ExtendedTradeSize => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public TimeSpan ExtendedTradeTime => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double ExtendedTradingChange => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double ExtendedTradingDifference => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public string FinancialStatusIndicator => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public string FractionDisplayCode => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double Last => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public DateTime LastDate => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public int LastMarketCenter => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public int LastSize => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public TimeSpan LastTime => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double MarketCapitalization => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public int MarketOpen => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public DateTime MostRecentTradeDate => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double NetAssetValue => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public int NumberOfTradesToday => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public int OpenInterest => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double OpenRange1 => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double OpenRange2 => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double PercentChange => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double PercentOffAverageVolume => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public int PreviousDayVolume => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double PriceEarningsRatio => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double Range => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public string RestrictedCode => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double Settle => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public DateTime SettlementDate => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double Spread => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public int Tick => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public int TickID => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public string Type => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double Volatility => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+        public double VWAP => throw new NotImplementedException(DynamicFieldNotAvailableErrorMessage);
+
+        #endregion Dynamic Fields
+
         public static UpdateSummaryMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
-            var symbol = values[1];                                                                                                                            // field 2
-            double.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTrade);                                        // field 71
-            int.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeSize);                                           // field 72
-            DateTime.TryParseExact(values[4], UpdateMessageTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var mostRecentTradeTime);
-            int.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var mostRecentTradeMarketCenter);                                   // field 75
-            int.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var totalVolume);                                                   // field 7
-            double.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var bid);                                                    // field 11
-            int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out var bidSize);                                                       // field 13
-            double.TryParse(values[9], NumberStyles.Any, CultureInfo.InvariantCulture, out var ask);                                                    // field 12
-            int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out var askSize);                                                      // field 14
-            double.TryParse(values[11], NumberStyles.Any, CultureInfo.InvariantCulture, out var open);                                                  // field 20
-            double.TryParse(values[12], NumberStyles.Any, CultureInfo.InvariantCulture, out var high);                                                  // field 9
-            double.TryParse(values[13], NumberStyles.Any, CultureInfo.InvariantCulture, out var low);                                                   // field 10
-            double.TryParse(values[14], NumberStyles.Any, CultureInfo.InvariantCulture, out var close);                                                 // field 21
-            var messageContents = values[15];                                                                                                                  // field 80
-            var mostRecentTradeConditions = values[16];                                                                                                        // field 74
+            var symbol = values[1];                                                                         // field 2
+            var mostRecentTrade = FieldParser.ParseDouble(values[2]);                                       // field 71
+            var mostRecentTradeSize = FieldParser.ParseInt(values[3]);                                      // field 72
+            var mostRecentTradeTime = FieldParser.ParseDate(values[4], UpdateMessageTimeFormat);        
+            var mostRecentTradeMarketCenter = FieldParser.ParseInt(values[5]);                              // field 75
+            var totalVolume = FieldParser.ParseInt(values[6]);                                              // field 7
+            var bid = FieldParser.ParseDouble(values[7]);                                                   // field 11
+            var bidSize = FieldParser.ParseInt(values[8]);                                                  // field 13
+            var ask = FieldParser.ParseDouble(values[9]);                                                   // field 12
+            var askSize = FieldParser.ParseInt(values[10]);                                                 // field 14
+            var open = FieldParser.ParseDouble(values[11]);                                                 // field 20
+            var high = FieldParser.ParseDouble(values[12]);                                                 // field 9
+            var low = FieldParser.ParseDouble(values[13]);                                                  // field 10
+            var close = FieldParser.ParseDouble(values[14]);                                                // field 21
+            var messageContents = values[15];                                                               // field 80
+            var mostRecentTradeConditions = values[16];                                                     // field 74
 
             return new UpdateSummaryMessage(
                 symbol,
