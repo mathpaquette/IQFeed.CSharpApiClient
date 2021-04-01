@@ -158,7 +158,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         {
             var dynamicFieldHandler = _level1MessageHandler as ILevel1MessageDynamicHandler;
             if (dynamicFieldHandler == null)
-                throw new Exception($"{nameof(Level1MessageDynamicHandler)} or {nameof(Level1MessageUnversalHandler)} are required to enable Dynamic Fields!");
+                throw new Exception($"{nameof(Level1MessageDynamicHandler)} or {nameof(Level1MessageUniversalHandler)} are required to enable Dynamic Fields!");
             
             dynamicFieldHandler.SetDynamicFields(fieldNames);
 

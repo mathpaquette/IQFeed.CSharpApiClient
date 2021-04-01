@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
 {
-    public class DynamicUpdateSummaryMessageTypesFactoryTests
+    public class UpdateSummaryDynamicMessageTypesFactoryTests
     {
         #region Constants
 
@@ -102,7 +102,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
         public void Should_Generate_IUpdateSummaryMessage_Implementiation_For_Partial_Fields()
         {
             // Arrange
-            var updateSummaryMessageType = DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
+            var updateSummaryMessageType = UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
 
             // Act
             var emptyInstance = Activator.CreateInstance(updateSummaryMessageType);
@@ -116,11 +116,11 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
         public void Should_Generate_Only_Specified_Properties_For_Partial_Fields()
         {
             // Arrange
-            var updateSummaryMessageType = DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
+            var updateSummaryMessageType = UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
 
             // Act
             var emptyInstance = Activator.CreateInstance(updateSummaryMessageType);
-            var typedEmptyInstance = emptyInstance as IUpdateSummaryMessage;
+            var typedEmptyInstance = emptyInstance as IUpdateSummaryDynamicMessage;
 
             // Assert
             Assert.IsNotNull(emptyInstance);
@@ -137,11 +137,11 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
         public void Should_Generate_Default_Constructor_For_Partial_Fields()
         {   
             // Arrange
-            var updateSummaryMessageType = DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
+            var updateSummaryMessageType = UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
 
             // Act
             var emptyInstance = Activator.CreateInstance(updateSummaryMessageType);
-            var typedEmptyInstance = emptyInstance as IUpdateSummaryMessage;
+            var typedEmptyInstance = emptyInstance as IUpdateSummaryDynamicMessage;
 
             // Assert
             Assert.IsNotNull(emptyInstance);
@@ -157,12 +157,12 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
         public void Should_Generate_Parse_Method_For_Partial_Fields()
         {
             // Arrange
-            var updateSummaryMessageType = DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
+            var updateSummaryMessageType = UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
 
             // Act
             var parseMethod = updateSummaryMessageType.GetMethod("Parse", BindingFlags.Public | BindingFlags.Static);
             var parsedInstance = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633" });
-            var typedParsedInstance = parsedInstance as IUpdateSummaryMessage;
+            var typedParsedInstance = parsedInstance as IUpdateSummaryDynamicMessage;
 
             // Assert
             Assert.IsNotNull(parsedInstance);
@@ -178,7 +178,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
         public void Should_Generate_Equals_Method_For_Partial_Fields()
         {
             // Arrange
-            var updateSummaryMessageType = DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
+            var updateSummaryMessageType = UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
 
             // Act
             var emptyInstance1 = Activator.CreateInstance(updateSummaryMessageType) as IUpdateSummaryMessage;
@@ -199,7 +199,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
         public void Should_Generate_GetHashCode_Method_For_Partial_Fields()
         {
             // Arrange
-            var updateSummaryMessageType = DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
+            var updateSummaryMessageType = UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
 
             // Act
             var emptyInstance = Activator.CreateInstance(updateSummaryMessageType);
@@ -232,7 +232,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
         public void Should_Generate_ToString_Method_For_Partial_Fields()
         {
             // Arrange
-            var updateSummaryMessageType = DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
+            var updateSummaryMessageType = UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
 
             // Act
             var emptyInstance = Activator.CreateInstance(updateSummaryMessageType);
@@ -258,9 +258,9 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
         public void Should_Reuse_Generated_Type_For_Same_Partial_Fields()
         {
             // Arrange
-            var updateSummaryMessageType1 = DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
+            var updateSummaryMessageType1 = UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(PartialFields);
             // same fields, same order
-            var updateSummaryMessageType2 = DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(new DynamicFieldset[]
+            var updateSummaryMessageType2 = UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(new DynamicFieldset[]
             {
                 DynamicFieldset.Symbol,
                 DynamicFieldset.MostRecentTrade,
@@ -269,7 +269,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
                 DynamicFieldset.MostRecentTradeTime,
             });
             // same fields, different order
-            var updateSummaryMessageType3 = DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(new DynamicFieldset[]
+            var updateSummaryMessageType3 = UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(new DynamicFieldset[]
             {
                 DynamicFieldset.Symbol,
                 DynamicFieldset.MostRecentTrade,
@@ -291,7 +291,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
         public void Should_Generate_Valid_Object_For_All_FieldsSet()
         {
             // Arrange
-            var updateSummaryMessageType = DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(AllFields);
+            var updateSummaryMessageType = UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(AllFields);
 
             // Act
             var emptyInstance1 = Activator.CreateInstance(updateSummaryMessageType);
@@ -314,19 +314,19 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
         [Test]
         public void Should_Throw_ArgumentNullException_When_FieldsSet_Is_Null()
         {
-            Assert.Throws(typeof(ArgumentNullException), () => DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(null));
+            Assert.Throws(typeof(ArgumentNullException), () => UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(null));
         }
 
         [Test]
         public void Should_Throw_ArgumentException_For_Empty_Fields()
         {
-            Assert.Throws(typeof(ArgumentException), () => DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(new DynamicFieldset[0]));
+            Assert.Throws(typeof(ArgumentException), () => UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(new DynamicFieldset[0]));
         }
 
         [Test]
         public void Should_Throw_ArgumentException_For_Single_Field()
         {
-            Assert.Throws(typeof(ArgumentException), () => DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(new DynamicFieldset[]
+            Assert.Throws(typeof(ArgumentException), () => UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(new DynamicFieldset[]
             {
                 DynamicFieldset.Symbol
             }));
@@ -335,7 +335,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
         [Test]
         public void Should_Throw_ArgumentException_When_Symbol_Is_Not_First_Field()
         {
-            Assert.Throws(typeof(ArgumentException), () => DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(new DynamicFieldset[]
+            Assert.Throws(typeof(ArgumentException), () => UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(new DynamicFieldset[]
             {
                 DynamicFieldset.MostRecentTrade,
                 DynamicFieldset.Symbol,
@@ -348,7 +348,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
         [Test]
         public void Should_Throw_ArgumentException_When_Duplicate_Fields_Specified()
         {
-            Assert.Throws(typeof(ArgumentException), () => DynamicUpdateSummaryMessageTypesFactory.GenerateDynamicObjectType(new DynamicFieldset[]
+            Assert.Throws(typeof(ArgumentException), () => UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(new DynamicFieldset[]
             {
                 DynamicFieldset.Symbol,
                 DynamicFieldset.MostRecentTrade,
