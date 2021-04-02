@@ -75,6 +75,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                     //  but not the tick, and if it's the only tick in a bar, then there shouldn't be a bar! (Apparently)
                     totalVolume = 0;
                     totalTrade = 0;
+                    currentBarDate = tick.Timestamp.Date;
                 }
 
                 totalVolume += tick.LastSize;
