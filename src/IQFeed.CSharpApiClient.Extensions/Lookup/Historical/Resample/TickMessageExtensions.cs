@@ -43,6 +43,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
         {
             var intervalTicks = interval.Ticks;
             DateTime? nextTimestamp = null;
+            DateTime? currentDate = null;
             HistoricalBar currentBar = null;
 
             var totalVolume = 0;
@@ -54,6 +55,29 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                 if (tick.LastSize == 0)
                     continue;
 
+                // Check if we need to close off the current bar before we do anything else
+                if (currentBar != null && tick.Timestamp >= nextTimestamp)
+                {
+                    // We've reached the end of this bar. Send it out! Setting the currentBar to null
+                    //   will cause a new bar to be generated on the first valid tick, below.
+                    currentBar.VWAP = currentBar.VWAP / currentBar.PeriodVolume;
+                    yield return currentBar;
+
+                    currentBar = null;
+                }
+
+                // Check for date change up here otherwise 'O' ticks will be ignored
+                //   if they are the first ticks of the day, which will make total volume incorrect
+                if (currentDate != null && tick.Timestamp.Date != currentDate)
+                {
+                    // Date has changed. Reset the numbers for the next one
+                    // Don't start a new bar here, because if the next tick is an 'O' we want to count the volume
+                    //  but not the tick, and if it's the only tick in a bar, then there shouldn't be a bar! (Apparently)
+                    totalVolume = 0;
+                    totalTrade = 0;
+                    currentDate = tick.Timestamp.Date;
+                }
+
                 totalVolume += tick.LastSize;
                 totalTrade += 1;
 
@@ -61,53 +85,40 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                 if (tick.BasisForLast == 'O')
                     continue;
 
-                if (tick.Timestamp < nextTimestamp)
+                if (currentBar == null)
                 {
-                    if (tick.Last < currentBar.Low)
-                        currentBar.Low = tick.Last;
-
-                    if (tick.Last > currentBar.High)
-                        currentBar.High = tick.Last;
-
-                    currentBar.Close = tick.Last;
-
-                    currentBar.PeriodVolume += tick.LastSize;
-                    currentBar.PeriodTrade += 1;
-
-                    currentBar.TotalVolume = totalVolume;
-                    currentBar.TotalTrade = totalTrade;
-
-                    currentBar.VWAP += tick.Last * tick.LastSize;
-                    continue;
+                    // if we get here, we have a valid trade tick, and we need a new bar
+                    var currentTimestamp = tick.Timestamp.Trim(intervalTicks);
+                    currentBar = new HistoricalBar(
+                        currentTimestamp,
+                        tick.Last,
+                        tick.Last,
+                        tick.Last,
+                        tick.Last,
+                        0,
+                        0,
+                        0,
+                        0,
+                        tick.Last * tick.LastSize);
+                    nextTimestamp = currentTimestamp.AddTicks(intervalTicks);
+                    currentDate = currentTimestamp.Date;
                 }
 
-                if (currentBar != null)
-                {
-                    // reset the counts if dates differ
-                    if (tick.Timestamp.Date != currentBar.Timestamp.Date)
-                    {
-                        totalVolume = tick.LastSize;
-                        totalTrade = 1;
-                    }
+                if (tick.Last < currentBar.Low)
+                    currentBar.Low = tick.Last;
 
-                    currentBar.VWAP = currentBar.VWAP / currentBar.PeriodVolume;
-                    yield return currentBar;
-                }
+                if (tick.Last > currentBar.High)
+                    currentBar.High = tick.Last;
 
-                var currentTimestamp = tick.Timestamp.Trim(intervalTicks);
-                nextTimestamp = currentTimestamp.AddTicks(intervalTicks);
+                currentBar.Close = tick.Last;
 
-                currentBar = new HistoricalBar(
-                    currentTimestamp,
-                    tick.Last,
-                    tick.Last,
-                    tick.Last,
-                    tick.Last,
-                    totalVolume,
-                    tick.LastSize,
-                    totalTrade,
-                    1,
-                    tick.Last * tick.LastSize);
+                currentBar.PeriodVolume += tick.LastSize;
+                currentBar.PeriodTrade += 1;
+
+                currentBar.TotalVolume = totalVolume;
+                currentBar.TotalTrade = totalTrade;
+
+                currentBar.VWAP += tick.Last * tick.LastSize;
             }
 
             // return the last created bar when last tick reached
