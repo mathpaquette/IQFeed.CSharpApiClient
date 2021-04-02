@@ -43,6 +43,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
         {
             var intervalTicks = interval.Ticks;
             DateTime? nextTimestamp = null;
+            DateTime? currentBarDate = null;
             HistoricalBar currentBar = null;
 
             var totalVolume = 0;
@@ -54,22 +55,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                 if (tick.LastSize == 0)
                     continue;
 
-                // Nich - check for date change up here otherwise 'O' ticks will be ignored
-                //   if they are the first ticks of the day, which will make total volume incorrect
-                if (currentBar != null && tick.Timestamp.Date != currentBar.Timestamp.Date)
-                {
-                    // Date has changed. Send out the current bar, and then reset the numbers for the next one
-                    currentBar.VWAP = currentBar.VWAP / currentBar.PeriodVolume;
-                    yield return currentBar;
-
-                    // Don't start a new bar here, because if the next tick is an 'O' we want to count the volume
-                    //  but not the tick, and if it's the only tick in a bar, then there shouldn't be a bar! (Apparently)
-                    totalVolume = 0;
-                    totalTrade = 0;
-
-                    currentBar = null;
-                }
-
+                // Check if we need to close off the current bar before we do anything else
                 if (currentBar != null && tick.Timestamp >= nextTimestamp)
                 {
                     // We've reached the end of this bar. Send it out! Setting the currentBar to null
@@ -78,6 +64,17 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                     yield return currentBar;
 
                     currentBar = null;
+                }
+
+                // Check for date change up here otherwise 'O' ticks will be ignored
+                //   if they are the first ticks of the day, which will make total volume incorrect
+                if (currentBarDate != null && tick.Timestamp.Date != currentBarDate)
+                {
+                    // Date has changed. Reset the numbers for the next one
+                    // Don't start a new bar here, because if the next tick is an 'O' we want to count the volume
+                    //  but not the tick, and if it's the only tick in a bar, then there shouldn't be a bar! (Apparently)
+                    totalVolume = 0;
+                    totalTrade = 0;
                 }
 
                 totalVolume += tick.LastSize;
@@ -103,6 +100,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical.Resample
                         0,
                         tick.Last * tick.LastSize);
                     nextTimestamp = currentTimestamp.AddTicks(intervalTicks);
+                    currentBarDate = currentTimestamp.Date;
                 }
 
                 if (tick.Last < currentBar.Low)
