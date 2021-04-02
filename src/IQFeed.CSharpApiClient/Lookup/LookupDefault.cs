@@ -21,6 +21,8 @@ namespace IQFeed.CSharpApiClient.Lookup
 
         /// <summary>
         /// Default requests per second allowed by IQFeed
+        /// IQFeed can tolerate very short burst around 75 requests/second.
+        /// <see cref="LookupRateLimiter"/> and corresponding tests for more info.
         /// </summary>
         public const int RequestsPerSecond = 50;
     }

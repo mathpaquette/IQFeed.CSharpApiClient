@@ -48,7 +48,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
             }
 
             client.MessageReceived += SocketClientOnMessageReceived;
-            await _lookupRateLimiter.WaitAsync();
+            await _lookupRateLimiter.WaitAsync().ConfigureAwait(false);
             client.Send(request);
 
             await res.Task.ContinueWith(x =>
