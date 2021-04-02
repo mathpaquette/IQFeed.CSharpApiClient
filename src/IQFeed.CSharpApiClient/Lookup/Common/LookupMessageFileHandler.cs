@@ -12,16 +12,22 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
     public class LookupMessageFileHandler : BaseLookupMessageHandler
     {
         private readonly LookupDispatcher _lookupDispatcher;
+        private readonly LookupRateLimiter _lookupRateLimiter;
         private readonly ExceptionFactory _exceptionFactory;
 
         private readonly TimeSpan _timeout;
         private readonly byte[] _endOfMsgBytes;
 
-        public LookupMessageFileHandler(LookupDispatcher lookupDispatcher, ExceptionFactory exceptionFactory, TimeSpan timeout)
+        public LookupMessageFileHandler(
+            LookupDispatcher lookupDispatcher, 
+            LookupRateLimiter lookupRateLimiter, 
+            ExceptionFactory exceptionFactory, 
+            TimeSpan timeout)
         {
             _endOfMsgBytes = Encoding.ASCII.GetBytes(IQFeedDefault.ProtocolEndOfMessageCharacters + IQFeedDefault.ProtocolDelimiterCharacter + IQFeedDefault.ProtocolTerminatingCharacters);
 
             _lookupDispatcher = lookupDispatcher;
+            _lookupRateLimiter = lookupRateLimiter;
             _exceptionFactory = exceptionFactory;
             _timeout = timeout;
         }
@@ -63,6 +69,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
             }
 
             client.MessageReceived += SocketClientOnMessageReceived;
+            await _lookupRateLimiter.WaitAsync().ConfigureAwait(false);
             client.Send(request);
 
             await res.Task.ContinueWith(x =>

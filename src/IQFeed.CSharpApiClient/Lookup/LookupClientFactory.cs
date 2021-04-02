@@ -27,7 +27,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             var lookupDispatcher = new LookupDispatcher(host, port, bufferSize, IQFeedDefault.ProtocolVersion, numberOfClients, requestFormatter);
             var lookupRateLimiter = new LookupRateLimiter(requestsPerSecond);
             var exceptionFactory = new ExceptionFactory();
-            var lookupMessageFileHandler = new LookupMessageFileHandler(lookupDispatcher, exceptionFactory, timeout);
+            var lookupMessageFileHandler = new LookupMessageFileHandler(lookupDispatcher, lookupRateLimiter, exceptionFactory, timeout);
             var historicalMessageHandler = new HistoricalMessageHandler();
 
             // Historical
@@ -48,8 +48,8 @@ namespace IQFeed.CSharpApiClient.Lookup
                 new NewsRequestFormatter(),
                 lookupDispatcher,
                 lookupRateLimiter,
-                exceptionFactory, 
-                new NewsMessageHandler(), 
+                exceptionFactory,
+                new NewsMessageHandler(),
                 timeout);
 
             // Symbol
@@ -61,16 +61,16 @@ namespace IQFeed.CSharpApiClient.Lookup
                 new SymbolMessageHandler(),
                 new MarketSymbolReader(),
                 new ExpiredOptionReader(),
-                new FileDownloader(new LocalCacheStrategy()), 
+                new FileDownloader(new LocalCacheStrategy()),
                 timeout);
 
             // Chains
             var chainsFacade = new ChainsFacade(
                 new ChainsRequestFormatter(),
                 new ChainsMessageHandler(),
-                lookupDispatcher, 
+                lookupDispatcher,
                 lookupRateLimiter,
-                exceptionFactory, 
+                exceptionFactory,
                 timeout);
 
             return new LookupClient(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade);
