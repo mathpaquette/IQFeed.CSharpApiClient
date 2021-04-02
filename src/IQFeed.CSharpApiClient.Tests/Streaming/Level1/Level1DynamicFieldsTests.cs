@@ -47,6 +47,34 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
         }
 
         [Test]
+        public void Should_Convert_Type_Summary()
+        {
+            // Arrange
+            var message = $"P,DONT_CARE_SYMBOL";
+            var fields = new[] { DynamicFieldset.Symbol };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Type, "P");
+        }
+
+        [Test]
+        public void Should_Convert_Type_Update()
+        {
+            // Arrange
+            var message = $"Q,DONT_CARE_SYMBOL";
+            var fields = new[] { DynamicFieldset.Symbol };
+
+            // Act
+            var dynamicFields = Level1DynamicFields.Parse(message, fields);
+
+            // Assert
+            Assert.AreEqual(dynamicFields.Type, "Q");
+        }
+
+        [Test]
         public void Should_Convert_SevenDayYield()
         {
             // Arrange
