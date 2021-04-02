@@ -1,4 +1,5 @@
 ﻿using IQFeed.CSharpApiClient.Streaming.Level1;
+using IQFeed.CSharpApiClient.Streaming.Level1.Handlers;
 using NUnit.Framework;
 using System;
 using System.Globalization;
@@ -14,6 +15,36 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1
         private const string DateTimeStringValue = "06/15/2020";
         private readonly TimeSpan _timeSpanValue = DateTime.ParseExact(TimeSpanStringValue, "HH:mm:ss.ffffff", CultureInfo.InvariantCulture, DateTimeStyles.None).TimeOfDay;
         private readonly DateTime _dateTimeValue = DateTime.ParseExact(DateTimeStringValue, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+        [Test]
+        public void Should_Throw_Exception_When_Symbol_Is_Not_First_Field_Requested()
+        {
+            // Arrange
+            var level1DynamicHandler = new Level1MessageDynamicHandler();
+            var fields = new[]
+            {
+                DynamicFieldset.TotalVolume,
+                DynamicFieldset.Symbol
+            };
+
+            // Assert
+            Assert.Throws<ArgumentException>(() => level1DynamicHandler.SetDynamicFields(fields));
+        }
+
+        [Test]
+        public void Should_Throw_Exception_When_Dynamic_Field_Type_Requested()
+        {
+            // Arrange
+            var level1DynamicHandler = new Level1MessageDynamicHandler();
+            var fields = new[]
+            {
+                DynamicFieldset.Symbol,
+                DynamicFieldset.Type
+            };
+
+            // Assert
+            Assert.Throws<ArgumentException>( () => level1DynamicHandler.SetDynamicFields(fields));
+        }
 
         [Test]
         public void Should_Convert_SevenDayYield()
