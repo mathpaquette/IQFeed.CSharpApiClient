@@ -21,6 +21,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         public string MessageContents => throw new Exception(GetErrorMessage(nameof(MessageContents)));
         public string MostRecentTradeConditions => throw new Exception(GetErrorMessage(nameof(MostRecentTradeConditions)));
         public Level1DynamicFields DynamicFields { get; private set; }
+
         public UpdateSummaryDynamicMessage(Level1DynamicFields dynamicFields)
         {
             DynamicFields = dynamicFields;
