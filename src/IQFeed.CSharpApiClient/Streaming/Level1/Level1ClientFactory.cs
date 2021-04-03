@@ -1,7 +1,5 @@
 ﻿using System;
 using IQFeed.CSharpApiClient.Socket;
-using IQFeed.CSharpApiClient.Streaming.Level1.Dynamic;
-using IQFeed.CSharpApiClient.Streaming.Level1.Dynamic.Handlers;
 using IQFeed.CSharpApiClient.Streaming.Level1.Handlers;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
@@ -34,20 +32,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         public static Level1Client CreateNew(string host, int port)
         {
             return CreateNew(host, port, Level1Default.SnapshotTimeout, new Level1MessageHandler());
-        }
-
-        public static ILevel1DynamicClient CreateNewDynamic(string host, int port, TimeSpan snapshotTimeout, ILevel1DynamicMessageHandler level1DynamicMessageHandler, params DynamicFieldset[] fieldNames)
-        {
-            var socketClient = new SocketClient(host, port);
-            var level1RequestFormatter = new Level1RequestFormatter();
-
-            return new Level1DynamicClient(
-                socketClient,
-                level1RequestFormatter,
-                level1DynamicMessageHandler,
-                new Level1DynamicSnapshot(socketClient, level1RequestFormatter, level1DynamicMessageHandler, snapshotTimeout),
-                fieldNames
-            );
         }
     }
 }
