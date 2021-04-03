@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using IQFeed.CSharpApiClient.Streaming.Level1.Handlers;
 using NUnit.Framework;
@@ -22,7 +23,10 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Handlers
 
             level1MessageHandler.Update += message => { };
 
-            for (int i = 0; i < 5; i++)
+            const int ExecutionsCount = 5;
+            var results = new double[ExecutionsCount];
+
+            for (int i = 0; i < ExecutionsCount; i++)
             {
                 var sw = Stopwatch.StartNew();
                 for (var j = 0; j < 1000000; j++)
@@ -31,8 +35,13 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Handlers
                 }
                 sw.Stop();
 
+                results[i] = sw.Elapsed.TotalMilliseconds;
                 Console.WriteLine(sw.Elapsed.TotalMilliseconds);
             }
+
+            Console.WriteLine($"Min: {results.Min()}");
+            Console.WriteLine($"Avg: {results.Average()}");
+            Console.WriteLine($"Max: {results.Max()}");
         }
     }
 }

@@ -6,8 +6,9 @@ using System.Reflection.Emit;
 using System.Text;
 using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Extensions;
+using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
-namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
+namespace IQFeed.CSharpApiClient.Streaming.Level1.Dynamic.Messages
 {
     public static class UpdateSummaryDynamicMessageTypesFactory
     {
@@ -188,9 +189,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             var fields = new Dictionary<string, FieldBuilder>();
 
             // iterate over all of the get all the public instance properties find out which of the fields need an implementation
-            var properties = typeof(IUpdateSummaryMessage).GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Concat(typeof(IUpdateSummaryDynamicMessage).GetProperties(BindingFlags.Public | BindingFlags.Instance))
-                .ToArray();
+            var properties = typeof(IUpdateSummaryDynamicMessage).GetProperties(BindingFlags.Public | BindingFlags.Instance).ToArray();
             foreach (var property in properties)
             {
                 bool isFieldEnabled = enabledFields.Contains(property.Name);

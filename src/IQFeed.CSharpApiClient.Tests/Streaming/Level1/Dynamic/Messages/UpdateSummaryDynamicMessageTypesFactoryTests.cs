@@ -3,11 +3,11 @@ using System.Reflection;
 using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Streaming.Level1;
+using IQFeed.CSharpApiClient.Streaming.Level1.Dynamic.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
-
 using NUnit.Framework;
 
-namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
+namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
 {
     public class UpdateSummaryDynamicMessageTypesFactoryTests
     {
@@ -109,7 +109,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Messages
 
             // Assert
             Assert.IsNotNull(emptyInstance);
-            Assert.IsTrue(emptyInstance is IUpdateSummaryMessage);
+            Assert.IsTrue(emptyInstance is IUpdateSummaryDynamicMessage);
         }
 
         [Test]

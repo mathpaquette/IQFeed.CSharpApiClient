@@ -21,7 +21,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         string MessageContents { get; }
         string MostRecentTradeConditions { get; }
 
-        // TODO: drop this for the next MAJOR version, once we migrate to the new solution
+        [Obsolete("Please use ILevel1DynamicClient instead. This field will be removed soon!")]
         Level1DynamicFields DynamicFields { get; }
     }
 }
