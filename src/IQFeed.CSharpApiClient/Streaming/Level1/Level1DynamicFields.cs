@@ -295,11 +295,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             int tick = default;
             int tickID = default;
             int totalVolume = default;
-            string type = default;
             double volatility = default;
             double vwap = default;
 
             #endregion
+
+            string type = values[0];
 
             for (var i = 0; i < fields.Length; i++)
             {
@@ -510,9 +511,6 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                         break;
                     case DynamicFieldset.TotalVolume:
                         int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out totalVolume);
-                        break;
-                    case DynamicFieldset.Type:
-                        type = value;
                         break;
                     case DynamicFieldset.Volatility:
                         double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out volatility);
