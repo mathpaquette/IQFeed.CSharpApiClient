@@ -13,6 +13,11 @@ namespace IQFeed.CSharpApiClient.Lookup
     {
         public TimeSpan Interval { get; }
         public int RequestsPerSecond { get; }
+        /**
+         * By setting MaxCount half of RequestsPerSecond,
+         * this will reduce of the initial burst of requests
+         */
+        public int MaxCount { get; }
         public bool IsRunning => !_releaseTask.IsCompleted;
 
         private readonly SemaphoreSlim _semaphoreSlim;
@@ -25,14 +30,15 @@ namespace IQFeed.CSharpApiClient.Lookup
         {
             Interval = TimeSpan.FromTicks(TimeSpan.FromSeconds(1).Ticks / requestsPerSecond);
             RequestsPerSecond = requestsPerSecond;
+            MaxCount = requestsPerSecond / 2;
 
-            _semaphoreSlim = new SemaphoreSlim(0, requestsPerSecond);
-            _releaseTask = ReleaseSemaphoreAsync(Interval, RequestsPerSecond);
+            _semaphoreSlim = new SemaphoreSlim(0, MaxCount);
+            _releaseTask = ReleaseSemaphoreAsync(Interval, MaxCount);
         }
 
-        public async Task WaitAsync()
+        public Task WaitAsync()
         {
-            await _semaphoreSlim.WaitAsync().ConfigureAwait(false);
+            return _semaphoreSlim.WaitAsync();
         }
 
         private async Task ReleaseSemaphoreAsync(TimeSpan interval, int maxCount)

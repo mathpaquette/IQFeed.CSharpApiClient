@@ -295,11 +295,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             int tick = default;
             int tickID = default;
             int totalVolume = default;
-            string type = default;
             double volatility = default;
             double vwap = default;
 
             #endregion
+
+            string type = values[0];
 
             for (var i = 0; i < fields.Length; i++)
             {
