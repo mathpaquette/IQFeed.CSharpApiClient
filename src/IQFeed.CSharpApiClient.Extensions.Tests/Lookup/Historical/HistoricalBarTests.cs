@@ -23,8 +23,8 @@ namespace IQFeed.CSharpApiClient.Extensions.Tests.Lookup.Historical
             var csv = _historicalBar.ToCsv();
 
             // Assert
-            var expectedCsv = "2020-01-01 09:30:00,1.21,1.22,1.23,1.24,1000,1,100,1,12345.1235";
-            Assert.AreEqual(csv, expectedCsv);
+            var expectedCsv = "2020-01-01 09:30:00,1.21,1.22,1.23,1.24,1000,1,100,1,12345.1234";
+            Assert.AreEqual(expectedCsv, csv);
         }
 
         [Test, TestCaseSource(typeof(CultureNameTestCase), nameof(CultureNameTestCase.CultureNames))]
