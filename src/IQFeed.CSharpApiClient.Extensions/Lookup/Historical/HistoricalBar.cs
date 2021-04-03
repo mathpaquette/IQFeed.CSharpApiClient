@@ -70,7 +70,7 @@ namespace IQFeed.CSharpApiClient.Extensions.Lookup.Historical
 
         public string ToCsv()
         {
-            return FormattableString.Invariant($"{Timestamp.ToString(HistoricalBarDateTimeFormat, CultureInfo.InvariantCulture)},{High},{Low},{Open},{Close},{TotalVolume},{PeriodVolume},{TotalTrade},{PeriodTrade},{VWAP:F4}");
+            return FormattableString.Invariant($"{Timestamp.ToString(HistoricalBarDateTimeFormat, CultureInfo.InvariantCulture)},{High},{Low},{Open},{Close},{TotalVolume},{PeriodVolume},{TotalTrade},{PeriodTrade},{Math.Round(VWAP, 4)}");
         }
 
         public override string ToString()
