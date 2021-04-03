@@ -35,11 +35,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Dynamic.Handlers
             }
 
             // create the parser function
-            _messageParser = (string message) =>
-            {
-                // execute the static Parse method with the received message
-                return parseMethod.Invoke(null, new object[] { message }) as IUpdateSummaryDynamicMessage;
-            };
+            // Note: this is much faster than calling MethodInfo.Invoke!
+            // For more info see: https://blogs.msmvps.com/jonskeet/2008/08/09/making-reflection-fly-and-exploring-delegates/
+            _messageParser = (Func<string, IUpdateSummaryDynamicMessage>)Delegate.CreateDelegate(typeof(Func<string, IUpdateSummaryDynamicMessage>), null, parseMethod);
         }
 
         protected override void ProcessSummaryMessage(string msg)

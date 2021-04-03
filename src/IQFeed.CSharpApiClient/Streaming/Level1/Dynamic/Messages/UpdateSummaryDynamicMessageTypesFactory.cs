@@ -272,10 +272,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Dynamic.Messages
             var parseMethodILGenerator = parseMethodBuilder.GetILGenerator();
 
             // create a local variable for the split values - index 0
-            parseMethodILGenerator.DeclareLocal(typeof(string[])); 
+            parseMethodILGenerator.DeclareLocal(typeof(string[]));
             // create a new local variable to store the created instance - index 1
             parseMethodILGenerator.DeclareLocal(typeBuilder);
-            
+
             // split the string argument into parts
 
             // load the first argument of the Parse method to the execution stack
@@ -289,7 +289,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Dynamic.Messages
             parseMethodILGenerator.Emit(OpCodes.Newobj, defaultConstructorBuilder);
             // store the created object reference in 'instance' local variable (index 1)
             parseMethodILGenerator.Emit(OpCodes.Stloc_1);
-            
+
             // add code to parse the split values and set them to the corresponding fields based on their types
             // NOTE: at this point we will assume all field types are supported
             for (int fieldIndex = 0; fieldIndex < fieldNames.Length; ++fieldIndex)
@@ -301,8 +301,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Dynamic.Messages
 
                 // load the 'values' to the execution stack (index 0)
                 parseMethodILGenerator.Emit(OpCodes.Ldloc_0);
-                // load the field index to the execution stack
-                parseMethodILGenerator.Emit(OpCodes.Ldc_I4_S, fieldIndex + 1);
+                // load the field index to the execution stack (+1 to ignore the message type)
+                EmitLdcI4(parseMethodILGenerator, fieldIndex + 1);
                 // get and load the values[fieldIndex] to the execution stack
                 parseMethodILGenerator.Emit(OpCodes.Ldelem_Ref);
 
@@ -469,7 +469,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Dynamic.Messages
             getHashCodeMethodILGenerator.DeclareLocal(typeof(int));  // index 0
             
             // write 17 to 'hash'
-            getHashCodeMethodILGenerator.Emit(OpCodes.Ldc_I4_S, 17);
+            EmitLdcI4(getHashCodeMethodILGenerator, 17);
             getHashCodeMethodILGenerator.Emit(OpCodes.Stloc_0);
             
             // get the hash codes from the fields and 
@@ -480,7 +480,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Dynamic.Messages
                 // load 'hash' to the execution stack
                 getHashCodeMethodILGenerator.Emit(OpCodes.Ldloc_0);
                 // load to the execution stack
-                getHashCodeMethodILGenerator.Emit(OpCodes.Ldc_I4_S, 29);
+                EmitLdcI4(getHashCodeMethodILGenerator, 29);
                 // multiply 'hash' by 29
                 getHashCodeMethodILGenerator.Emit(OpCodes.Mul);
 
@@ -656,6 +656,53 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Dynamic.Messages
 
             if (GetHashCodeOrDefaultMethod == null) throw new NotSupportedException(nameof(GetHashCodeOrDefaultMethod) + MethodNotFoundErrorMessage);
             if (OrNullStringMethod == null) throw new NotSupportedException(nameof(OrNullStringMethod) + MethodNotFoundErrorMessage);
+        }
+
+        private static void EmitLdcI4(ILGenerator parseMethodILGenerator, int val)
+        {   
+            switch(val)
+            {
+                case -1:
+                    parseMethodILGenerator.Emit(OpCodes.Ldc_I4_M1);
+                    break;
+                case 0:
+                    parseMethodILGenerator.Emit(OpCodes.Ldc_I4_0);
+                    break;
+                case 1:
+                    parseMethodILGenerator.Emit(OpCodes.Ldc_I4_1);
+                    break;
+                case 2:
+                    parseMethodILGenerator.Emit(OpCodes.Ldc_I4_2);
+                    break;
+                case 3:
+                    parseMethodILGenerator.Emit(OpCodes.Ldc_I4_3);
+                    break;
+                case 4:
+                    parseMethodILGenerator.Emit(OpCodes.Ldc_I4_4);
+                    break;
+                case 5:
+                    parseMethodILGenerator.Emit(OpCodes.Ldc_I4_5);
+                    break;
+                case 6:
+                    parseMethodILGenerator.Emit(OpCodes.Ldc_I4_6);
+                    break;
+                case 7:
+                    parseMethodILGenerator.Emit(OpCodes.Ldc_I4_7);
+                    break;
+                case 8:
+                    parseMethodILGenerator.Emit(OpCodes.Ldc_I4_8);
+                    break;
+                default:
+                    if (sbyte.MinValue <= val && val <= sbyte.MaxValue)
+                    {
+                        parseMethodILGenerator.Emit(OpCodes.Ldc_I4_S, (sbyte)val);
+                    }
+                    else
+                    {
+                        parseMethodILGenerator.Emit(OpCodes.Ldc_I4, val);
+                    }
+                    break;
+            }
         }
 
         #endregion Private Helper Methods
