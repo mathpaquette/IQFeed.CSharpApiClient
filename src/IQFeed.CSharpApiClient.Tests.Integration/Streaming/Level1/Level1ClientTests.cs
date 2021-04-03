@@ -49,18 +49,18 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level1
             // Assert
             Assert.AreEqual(updateSummaryMessage.Symbol, Symbol);
         }
-
+        
         [Test]
         public async Task Should_Return_UpdateSummaryMessageWithDynamicFields()
         {
             // Arrange
             var fieldNames = new DynamicFieldset[]
             {
-                DynamicFieldset.Symbol, DynamicFieldset.MostRecentTrade, DynamicFieldset.MostRecentTradeSize,
+                DynamicFieldset.Symbol, DynamicFieldset.MostRecentTrade, DynamicFieldset.MostRecentTradeSize, 
                 DynamicFieldset.MostRecentTradeTime, DynamicFieldset.MostRecentTradeMarketCenter,
-                DynamicFieldset.TotalVolume, DynamicFieldset.Bid, DynamicFieldset.BidSize,
-                DynamicFieldset.Ask, DynamicFieldset.AskSize, DynamicFieldset.Open, DynamicFieldset.High,
-                DynamicFieldset.Low, DynamicFieldset.Close, DynamicFieldset.MessageContents,
+                DynamicFieldset.TotalVolume, DynamicFieldset.Bid, DynamicFieldset.BidSize, 
+                DynamicFieldset.Ask, DynamicFieldset.AskSize, DynamicFieldset.Open, DynamicFieldset.High, 
+                DynamicFieldset.Low, DynamicFieldset.Close, DynamicFieldset.MessageContents, 
                 DynamicFieldset.MostRecentTradeConditions, DynamicFieldset.MostRecentTradeAggressor,
                 DynamicFieldset.MostRecentTradeDayCode
             };
