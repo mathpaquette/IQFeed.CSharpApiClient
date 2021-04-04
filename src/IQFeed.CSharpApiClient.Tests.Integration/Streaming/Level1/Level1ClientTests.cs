@@ -51,42 +51,6 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level1
         }
         
         [Test]
-        public async Task Should_Return_UpdateSummaryMessageWithDynamicFields()
-        {
-            // Arrange
-            var fieldNames = new DynamicFieldset[]
-            {
-                DynamicFieldset.Symbol, DynamicFieldset.MostRecentTrade, DynamicFieldset.MostRecentTradeSize, 
-                DynamicFieldset.MostRecentTradeTime, DynamicFieldset.MostRecentTradeMarketCenter,
-                DynamicFieldset.TotalVolume, DynamicFieldset.Bid, DynamicFieldset.BidSize, 
-                DynamicFieldset.Ask, DynamicFieldset.AskSize, DynamicFieldset.Open, DynamicFieldset.High, 
-                DynamicFieldset.Low, DynamicFieldset.Close, DynamicFieldset.MessageContents, 
-                DynamicFieldset.MostRecentTradeConditions, DynamicFieldset.MostRecentTradeAggressor,
-                DynamicFieldset.MostRecentTradeDayCode
-            };
-
-            var level1MessageHandler = new Level1MessageDynamicHandler();
-            var level1Client = Level1ClientFactory.CreateNew(level1MessageHandler);
-
-            try
-            {
-                // Act
-                level1Client.Connect();
-
-                level1Client.SelectUpdateFieldName(fieldNames);
-                var updateSummaryMessage = await level1Client.GetUpdateSummarySnapshotAsync(Symbol);
-
-                // Assert
-                Assert.AreEqual(updateSummaryMessage.DynamicFields.Symbol, Symbol);
-
-            }
-            finally
-            {
-                level1Client.Disconnect();
-            }
-        }
-
-        [Test]
         public void Should_Throw_Exceptions_When_SymbolNotFound_FundamentalSnapshot()
         {
             // Assert
