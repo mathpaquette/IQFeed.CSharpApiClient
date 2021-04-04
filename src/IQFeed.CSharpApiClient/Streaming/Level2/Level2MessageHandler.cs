@@ -15,7 +15,17 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
         public event Action<ErrorMessage> Error;
         public event Action<TimestampMessage> Timestamp;
         public event Action<SystemMessage> System;
-        
+
+        // protocol 6.2 events
+        public event Action<OrderAddUpdateSummaryMessage> OrderAdd;
+        public event Action<OrderAddUpdateSummaryMessage> OrderUpdate;
+        public event Action<OrderAddUpdateSummaryMessage> OrderSummary;
+        public event Action<OrderDeleteMessage> OrderDelete;
+        public event Action<PriceLevelOrderMessage> PriceLevelOrder;
+        public event Action<PriceLevelUpdateSummaryMessage> PriceLevelSummary;
+        public event Action<PriceLevelUpdateSummaryMessage> PriceLevelUpdate;
+        public event Action<PriceLevelDeleteMessage> PriceLevelDelete;
+
         public void ProcessMessages(byte[] messageBytes, int count)
         {
             var messages = Encoding.ASCII.GetString(messageBytes, 0, count).SplitFeedLine();
@@ -23,13 +33,37 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             for (int i = 0; i < messages.Length; i++)
             {
                 var message = messages[i];
-                switch (messages[i][0])
+                switch (message[0])
                 {
                     case 'Z': // A summary message
                         ProcessSummaryMessage(message);
                         break;
-                    case '2': // An update message
+                    case '2': // An update message (protocol 6.1 and below)
                         ProcessUpdateMessage(message);
+                        break;
+                    case '0': // A Price Level Order message (protocol 6.2 and above)
+                        ProcessPriceLevelOrderMessage(message);
+                        break;
+                    case '3': // An Order/Level Add message (protocol 6.2 and above)
+                        ProcessOrderAddMessage(message);
+                        break;
+                    case '4': // An Order/Level Update message (protocol 6.2 and above)
+                        ProcessOrderUpdateMessage(message);
+                        break;
+                    case '5': // An Order/Level Delete message (protocol 6.2 and above)
+                        ProcessOrderDeleteMessage(message);
+                        break;
+                    case '6': // An Order/Level Summary message (protocol 6.2 and above)
+                        ProcessOrderSummaryMessage(message);
+                        break;
+                    case '7': // A Price Level Summary message (protocol 6.2 and above)
+                        ProcessPriceLevelSummaryMessage(message);
+                        break;
+                    case '8': // A Price Level Update message (protocol 6.2 and above)
+                        ProcessPriceLevelUpdateMessage(message);
+                        break;
+                    case '9': // A Price Level Delete message (protocol 6.2 and above)
+                        ProcessPriceLevelDeleteMessage(message);
                         break;
                     case 'T': // A timestamp message
                         ProcessTimestampMessage(message);
@@ -64,6 +98,54 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
         {
             var updateSummaryMessage = UpdateSummaryMessage.Parse(msg);
             Update?.Invoke(updateSummaryMessage);
+        }
+
+        private void ProcessPriceLevelOrderMessage(string msg)
+        {
+            var priceLevelOrderMessage = PriceLevelOrderMessage.Parse(msg);
+            PriceLevelOrder?.Invoke(priceLevelOrderMessage);
+        }
+
+        private void ProcessOrderAddMessage(string msg)
+        {
+            var orderAddUpdateSummaryMessage = OrderAddUpdateSummaryMessage.Parse(msg);
+            OrderAdd?.Invoke(orderAddUpdateSummaryMessage);
+        }
+
+        private void ProcessOrderUpdateMessage(string msg)
+        {
+            var orderAddUpdateSummaryMessage = OrderAddUpdateSummaryMessage.Parse(msg);
+            OrderUpdate?.Invoke(orderAddUpdateSummaryMessage);
+        }
+
+        private void ProcessOrderSummaryMessage(string msg)
+        {
+            var orderAddUpdateSummaryMessage = OrderAddUpdateSummaryMessage.Parse(msg);
+            OrderSummary?.Invoke(orderAddUpdateSummaryMessage);
+        }
+
+        private void ProcessOrderDeleteMessage(string msg)
+        {
+            var orderDeleteMessage = OrderDeleteMessage.Parse(msg);
+            OrderDelete?.Invoke(orderDeleteMessage);
+        }
+
+        private void ProcessPriceLevelSummaryMessage(string msg)
+        {
+            var priceLevelUpdateSummaryMessage = PriceLevelUpdateSummaryMessage.Parse(msg);
+            PriceLevelSummary?.Invoke(priceLevelUpdateSummaryMessage);
+        }
+
+        private void ProcessPriceLevelUpdateMessage(string msg)
+        {
+            var priceLevelUpdateSummaryMessage = PriceLevelUpdateSummaryMessage.Parse(msg);
+            PriceLevelUpdate?.Invoke(priceLevelUpdateSummaryMessage);
+        }
+
+        private void ProcessPriceLevelDeleteMessage(string msg)
+        {
+            var priceLevelDeleteMessage = PriceLevelDeleteMessage.Parse(msg);
+            PriceLevelDelete?.Invoke(priceLevelDeleteMessage);
         }
 
         private void ProcessTimestampMessage(string msg)

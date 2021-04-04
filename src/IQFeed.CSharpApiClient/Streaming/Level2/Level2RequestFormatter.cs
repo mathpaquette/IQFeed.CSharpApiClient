@@ -9,6 +9,16 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             return $"w{symbol.ToUpper()}{IQFeedDefault.ProtocolTerminatingCharacters}";
         }
 
+        public string ReqWatchMarketByPrice(string symbol)
+        {
+            return $"WPL,{symbol.ToUpper()}{IQFeedDefault.ProtocolTerminatingCharacters}";
+        }
+
+        public string ReqWatchMarketByOrder(string symbol)
+        {
+            return $"WOR,{symbol.ToUpper()}{IQFeedDefault.ProtocolTerminatingCharacters}";
+        }
+
         public string ReqMarketMakerNameById(string mmid)
         {
             return $"m{mmid.ToUpper()}{IQFeedDefault.ProtocolTerminatingCharacters}";

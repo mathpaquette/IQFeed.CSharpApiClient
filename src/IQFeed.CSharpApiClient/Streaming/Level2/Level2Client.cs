@@ -50,11 +50,25 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
         private readonly ILevel2MessageHandler _level2MessageHandler;
         private readonly ILevel2Snapshot _level2Snapshot;
 
+        private readonly string _protocolVersion;
+
+        public string ProtocolVersion => _protocolVersion;
+
+        /// <summary>
+        /// Level 2 Client
+        /// </summary>
+        /// <param name="socketClient"></param>
+        /// <param name="level2RequestFormatter"></param>
+        /// <param name="level2MessageHandler"></param>
+        /// <param name="level2Snapshot"></param>
+        /// <param name="protocolVersion">Optional. Will default to current highest protocol available.
+        /// Override ONLY if you need to access older data structures not supported by the current protocol.</param>
         public Level2Client(
             SocketClient socketClient, 
             Level2RequestFormatter level2RequestFormatter, 
             ILevel2MessageHandler level2MessageHandler, 
-            ILevel2Snapshot level2Snapshot)
+            ILevel2Snapshot level2Snapshot,
+            string protocolVersion = IQFeedDefault.ProtocolVersion)
         {
             _level2Snapshot = level2Snapshot;
             _socketClient = socketClient;
@@ -63,11 +77,40 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
 
             _level2RequestFormatter = level2RequestFormatter;
             _level2MessageHandler = level2MessageHandler;
+            _protocolVersion = protocolVersion;
         }
 
+        [Obsolete("ReqWatch is only supported in protocols 6.1 and below. For 6.2 please use ReqWatchMarketByPrice")]
         public void ReqWatch(string symbol)
         {
+            if (GetProtocolVersionAsNumber() > 6.1M)
+            {
+                throw new Exception($"ReqWatch is only supported in protocols 6.1 and below. For 6.2 please use ReqWatchMarketByPrice");
+            }
+            
             var request = _level2RequestFormatter.ReqWatch(symbol);
+            _socketClient.Send(request);
+        }
+
+        public void ReqWatchMarketByPrice(string symbol)
+        {
+            if (GetProtocolVersionAsNumber() <= 6.1M)
+            {
+                throw new Exception($"ReqWatchMarketByPrice is only supported in protocols 6.2 and above.");
+            }
+
+            var request = _level2RequestFormatter.ReqWatchMarketByPrice(symbol);
+            _socketClient.Send(request);
+        }
+
+        public void ReqWatchMarketByOrder(string symbol)
+        {
+            if (GetProtocolVersionAsNumber() <= 6.1M)
+            {
+                throw new Exception($"ReqWatchMarketByOrder is only supported in protocols 6.2 and above.");
+            }
+
+            var request = _level2RequestFormatter.ReqWatchMarketByOrder(symbol);
             _socketClient.Send(request);
         }
 
@@ -110,6 +153,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             _socketClient.Disconnect();
         }
 
+        private decimal GetProtocolVersionAsNumber()
+        {
+            return decimal.Parse(_protocolVersion);
+        }
+
         private void SocketClientOnMessageReceived(object sender, SocketMessageEventArgs e)
         {
             _level2MessageHandler.ProcessMessages(e.Message, e.Count);
@@ -118,7 +166,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
         private void SocketClientOnConnected(object sender, EventArgs eventArgs)
         {
             var socketClient = (SocketClient)sender;
-            socketClient.Send(_level2RequestFormatter.SetProtocol(IQFeedDefault.ProtocolVersion));
+            socketClient.Send(_level2RequestFormatter.SetProtocol(_protocolVersion));
             socketClient.Connected -= SocketClientOnConnected;
         }
     }
