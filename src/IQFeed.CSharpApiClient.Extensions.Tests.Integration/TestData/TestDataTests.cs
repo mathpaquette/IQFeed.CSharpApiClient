@@ -27,8 +27,8 @@ namespace IQFeed.CSharpApiClient.Extensions.Tests.Integration.TestData
         {
             string filename;
             var ticker = "NEPT";
-            var startDate = new DateTime(2020, 04, 01, 4, 0, 0);
-            var endDate = new DateTime(2020, 04, 03, 20, 00, 00);
+            var startDate = new DateTime(2021, 03, 01, 4, 0, 0);
+            var endDate = new DateTime(2021, 03, 03, 20, 00, 00);
 
             var maxDataPoints = 25;
 

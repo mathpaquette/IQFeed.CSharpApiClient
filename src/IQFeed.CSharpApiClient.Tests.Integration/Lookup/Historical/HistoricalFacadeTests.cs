@@ -52,7 +52,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_TickMessages_When_ReqHistoryTickDaysAsync()
         {
-            var tickMessages = await _lookupClient.Historical.GetHistoryTickDaysAsync(Symbol, int.MaxValue, Datapoints);
+            var tickMessages = await _lookupClient.Historical.GetHistoryTickDaysAsync(Symbol, Int16.MaxValue, Datapoints);
             Assert.AreEqual(tickMessages.Count(), Datapoints);
         }
 
@@ -62,7 +62,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
             var tickMessages = await _lookupClient.Historical.GetHistoryTickTimeframeAsync(Symbol, null, DateTime.Now.Date, Datapoints);
             Assert.Greater(tickMessages.Count(), 0);
         }
-        
+
         // Interval
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_IntervalMessages_When_ReqHistoryIntervalDatapointsAsync()
@@ -81,7 +81,8 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_IntervalMessages_When_ReqHistoryIntervalDaysAsync()
         {
-            var intervalMessages = await _lookupClient.Historical.GetHistoryIntervalDaysAsync(Symbol, 5, int.MaxValue, Datapoints);
+            // Days > Int16.MaxValue is illegal in protocol 6.1
+            var intervalMessages = await _lookupClient.Historical.GetHistoryIntervalDaysAsync(Symbol, 5, Int16.MaxValue, Datapoints);
             Assert.AreEqual(intervalMessages.Count(), Datapoints);
         }
 
@@ -135,7 +136,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
                 async () => await _lookupClient.Historical.GetHistoryTickDatapointsAsync("INVALID_SYMBOL_NAME", Datapoints));
         }
 
-       [Test, MaxTime(TimeoutMs)]
+        [Test, MaxTime(TimeoutMs)]
         public void Should_Throw_NoDataIQFeedException_When_Historical_With_RequestId_Getting_Error()
         {
             var ex = Assert.ThrowsAsync<NoDataIQFeedException>(

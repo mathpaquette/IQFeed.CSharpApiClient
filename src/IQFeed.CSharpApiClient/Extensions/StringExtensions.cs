@@ -36,6 +36,13 @@ namespace IQFeed.CSharpApiClient.Extensions
             return null;
         }
 
+        public static TimeSpan? ToNullableTimeSpan(this string s, string format)
+        {
+            if (TimeSpan.TryParseExact(s, format, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var d))
+                return d;
+            return null;
+        }
+
         public static string[] SplitFeedMessage(this string s)
         {
             return s.Split(IQFeedDefault.ProtocolDelimiterCharacter);

@@ -22,6 +22,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null)
         {
             // HTD,[Symbol],[Days],[MaxDatapoints],[BeginFilterTime],[EndFilterTime],[DataDirection],[RequestID],[DatapointsPerSend]<CR><LF>
+            days = days > Int16.MaxValue ? Int16.MaxValue : days;
             var beginFilterTimeFormat = beginFilterTime?.ToString(HistoricalDataTimeFormat) ?? string.Empty;
             var endFilterTimeFormat = endFilterTime?.ToString(HistoricalDataTimeFormat) ?? string.Empty;
             var dataDirectionFormat = dataDirection.HasValue ? ((int)dataDirection).ToString() : null;
@@ -57,6 +58,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
             // HID,[Symbol],[Interval],[Days],[MaxDatapoints],[BeginFilterTime],[EndFilterTime],[DataDirection],[RequestID],[DatapointsPerSend],[IntervalType],[LabelAtBeginning]<CR><LF> 
+            days = days > Int16.MaxValue ? Int16.MaxValue : days;
             var beginFilterTimeFormat = beginFilterTime?.ToString(HistoricalDataTimeFormat) ?? string.Empty;
             var endFilterTimeFormat = endFilterTime?.ToString(HistoricalDataTimeFormat) ?? string.Empty;
             var dataDirectionFormat = dataDirection.HasValue ? ((int)dataDirection).ToString() : null;
