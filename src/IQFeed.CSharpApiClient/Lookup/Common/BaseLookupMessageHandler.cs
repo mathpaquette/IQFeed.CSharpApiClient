@@ -39,6 +39,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
                     break;
                 }
 
+                // Market Summary Messages come with a header line, so returns a null parsed message, to be ignored
                 var parsedMessage = parserFunc(messages[i]);
                 if (parsedMessage != null)
                 {
