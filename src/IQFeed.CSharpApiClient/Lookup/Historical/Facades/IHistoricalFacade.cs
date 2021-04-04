@@ -28,7 +28,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Facades
         /// <param name="requestId"></param>
         /// <param name="datapointsPerSend"></param>
         /// <returns></returns>
-        Task<TTickMessages> GetHistoryTickDaysAsync(string symbol, int days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null, 
+        Task<TTickMessages> GetHistoryTickDaysAsync(string symbol, Int16 days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null, 
             TimeSpan? endFilterTime = null, DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null);
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Facades
         /// <param name="requestId"></param>
         /// <param name="datapointsPerSend"></param>
         /// <param name="intervalType"></param>
-        Task<TIntervalMessages> GetHistoryIntervalDaysAsync(string symbol, int interval, int days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null,
+        Task<TIntervalMessages> GetHistoryIntervalDaysAsync(string symbol, int interval, Int16 days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null,
             DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null);
 
         /// <summary>
