@@ -48,7 +48,6 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
         /// <param name="optionSideFilter"></param>
         /// <param name="monthCodes"></param>
         /// <param name="nearMonths"></param>
-        /// <param name="binaryOptionFilter"></param>
         /// <param name="optionFilter"></param>
         /// <param name="filterValue1"></param>
         /// <param name="filterValue2"></param>
@@ -56,7 +55,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains
         /// <param name="includeNonStandardOptions"></param>
         /// <returns></returns>
         Task<IEnumerable<EquityOption>> GetChainIndexEquityOptionAsync(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, int? nearMonths = null, 
-            BinaryOptionFilterType binaryOptionFilter = BinaryOptionFilterType.Include, OptionFilterType optionFilter = OptionFilterType.None, 
+            OptionFilterType optionFilter = OptionFilterType.None, 
             int? filterValue1 = null, int? filterValue2 = null, string requestId = null, bool includeNonStandardOptions = true);
     }
 }

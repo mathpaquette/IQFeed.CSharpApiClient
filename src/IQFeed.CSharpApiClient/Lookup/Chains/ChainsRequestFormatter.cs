@@ -1,4 +1,6 @@
-﻿namespace IQFeed.CSharpApiClient.Lookup.Chains
+﻿using System.Net.PeerToPeer.Collaboration;
+
+namespace IQFeed.CSharpApiClient.Lookup.Chains
 {
     public class ChainsRequestFormatter
     {
@@ -21,11 +23,11 @@
         }
 
         // Protocol Update to 6.1 - Added "includeNonStandardOptions" - IQ Default is false
-        public string ReqChainIndexEquityOption(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, int? nearMonths = null, BinaryOptionFilterType binaryOptionFilter = BinaryOptionFilterType.Include,
+        public string ReqChainIndexEquityOption(string symbol, OptionSideFilterType optionSideFilter, string monthCodes, int? nearMonths = null, 
         OptionFilterType optionFilter = OptionFilterType.None, int? filterValue1 = null, int? filterValue2 = null, string requestId = null, bool includeNonStandardOptions = false)
         {
             var wireFormatIncludeNonStandardOptions = includeNonStandardOptions ? 1 : 0;
-            var request = $"CEO,{symbol},{optionSideFilter.ToString().ToLower()},{monthCodes},{nearMonths},{(int)binaryOptionFilter},{(int)optionFilter}," +
+            var request = $"CEO,{symbol},{optionSideFilter.ToString().ToLower()},{monthCodes},{nearMonths},{(int)optionFilter}," +
                           $"{filterValue1},{filterValue2},{requestId},{wireFormatIncludeNonStandardOptions}{IQFeedDefault.ProtocolTerminatingCharacters}";
             return request;
         }

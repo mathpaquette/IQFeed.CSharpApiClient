@@ -42,12 +42,9 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Chains
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_Futures_When_ReqChainFutureAsync()
         {
-            Assert.DoesNotThrow(async () =>
-            {
                 var futureMessages =
                         await _lookupClient.Chains.GetChainFutureAsync(FutureSymbol, string.Empty, _years, 4);
                 Assert.IsInstanceOf<Future>(futureMessages.First());
-            });
         }
 
         [Test, MaxTime(TimeoutMs)]
