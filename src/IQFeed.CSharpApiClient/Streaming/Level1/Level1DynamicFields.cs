@@ -444,7 +444,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                         mostRecentTrade = FieldParser.ParseDouble(value);
                         break;
                     case DynamicFieldset.MostRecentTradeAggressor:
-                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out mostRecentTradeAggressor);
+                        mostRecentTradeAggressor = FieldParser.ParseInt(value);
                         break;
                     case DynamicFieldset.MostRecentTradeConditions:
                         mostRecentTradeConditions = value;
@@ -453,7 +453,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                         mostRecentTradeDate = FieldParser.ParseDate(value, UpdateMessageDateFormat);
                         break;
                     case DynamicFieldset.MostRecentTradeDayCode:
-                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out mostRecentTradeDayCode);
+                        mostRecentTradeDayCode = FieldParser.ParseInt(value);
                         break;
                     case DynamicFieldset.MostRecentTradeMarketCenter:
                         mostRecentTradeMarketCenter = FieldParser.ParseInt(value);
