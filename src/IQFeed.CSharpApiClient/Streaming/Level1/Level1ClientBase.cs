@@ -3,8 +3,7 @@ using IQFeed.CSharpApiClient.Socket;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
-    public class BaseLevel1Client
-
+    public abstract class BaseLevel1Client
     {
         protected readonly SocketClient _socketClient;
         protected readonly Level1RequestFormatter _level1RequestFormatter;
