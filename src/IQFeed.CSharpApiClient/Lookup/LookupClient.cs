@@ -1,6 +1,7 @@
 ﻿using IQFeed.CSharpApiClient.Common.Interfaces;
 using IQFeed.CSharpApiClient.Lookup.Chains;
 using IQFeed.CSharpApiClient.Lookup.Historical.Facades;
+using IQFeed.CSharpApiClient.Lookup.MarketSummary.Facades;
 using IQFeed.CSharpApiClient.Lookup.News;
 using IQFeed.CSharpApiClient.Lookup.Symbol;
 
@@ -15,19 +16,22 @@ namespace IQFeed.CSharpApiClient.Lookup
             HistoricalFacade historical, 
             NewsFacade news, 
             SymbolFacade symbol, 
-            ChainsFacade chains)
+            ChainsFacade chains,
+            MarketSummaryFacade marketSummary)
         {
             _lookupDispatcher = lookupDispatcher;
             Historical = historical;
             News = news;
             Symbol = symbol;
             Chains = chains;
+            MarketSummary = marketSummary;
         }
 
         public HistoricalFacade Historical { get; }
         public NewsFacade News { get; }
         public SymbolFacade Symbol { get; }
         public ChainsFacade Chains { get; }
+        public MarketSummaryFacade MarketSummary { get; }
 
         public void Connect()
         {

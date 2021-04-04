@@ -23,7 +23,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Chains
         public ChainsFacadeTests()
         {
             IQFeedLauncher.Start();
-            _years = $"{DateTime.Now.Date:yy}{DateTime.Now.Date.AddYears(1):yy}";
+            _years = "12";
         }
 
         [SetUp]
@@ -42,21 +42,22 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Chains
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_Futures_When_ReqChainFutureAsync()
         {
-            var futureMessages = await _lookupClient.Chains.GetChainFutureAsync(FutureSymbol, string.Empty, _years, 24);
-            Assert.IsInstanceOf<Future>(futureMessages.First());
+                var futureMessages =
+                        await _lookupClient.Chains.GetChainFutureAsync(FutureSymbol, string.Empty, _years, 4);
+                Assert.IsInstanceOf<Future>(futureMessages.First());
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_FutureSpreads_When_ReqChainFutureSpreadsAsync()
         {
-            var futureSpreadMessages = await _lookupClient.Chains.GetChainFutureSpreadsAsync(FutureSymbol, string.Empty, _years, 24);
+            var futureSpreadMessages = await _lookupClient.Chains.GetChainFutureSpreadsAsync(FutureSymbol, string.Empty, _years, 4);
             Assert.IsInstanceOf<FutureSpread>(futureSpreadMessages.First());
         }
 
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_FutureOptions_When_ReqChainFutureOptionAsync()
         {
-            var futureOptionMessages = await _lookupClient.Chains.GetChainFutureOptionAsync(FutureSymbol, OptionSideFilterType.CP, string.Empty, _years, 12);
+            var futureOptionMessages = await _lookupClient.Chains.GetChainFutureOptionAsync(FutureSymbol, OptionSideFilterType.CP, string.Empty, _years, 4);
             Assert.IsInstanceOf<FutureOption>(futureOptionMessages.First());
         }
 

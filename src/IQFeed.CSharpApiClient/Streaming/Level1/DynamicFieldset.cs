@@ -130,11 +130,17 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         [FieldsetDescription("Most Recent Trade", typeof(double))]
         MostRecentTrade,
 
+        [FieldsetDescription("Most Recent Trade Aggressor", typeof(int))]
+        MostRecentTradeAggressor,
+
         [FieldsetDescription("Most Recent Trade Conditions", typeof(string))]
         MostRecentTradeConditions,
 
         [FieldsetDescription("Most Recent Trade Date", typeof(DateTime))]
         MostRecentTradeDate,
+
+        [FieldsetDescription("Most Recent Trade Day Code", typeof(int))]
+        MostRecentTradeDayCode,
 
         [FieldsetDescription("Most Recent Trade Market Center", typeof(int))]
         MostRecentTradeMarketCenter,

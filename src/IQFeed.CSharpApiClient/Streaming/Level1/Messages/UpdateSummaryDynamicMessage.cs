@@ -4,7 +4,8 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
 {
     public class UpdateSummaryDynamicMessage : IUpdateSummaryMessage
     {
-        public string Symbol => throw new Exception(GetErrorMessage(nameof(Symbol)));
+        // There is always a Symbol field, so it's reasonable to hard-wire it so that Snapshot layer can use it
+        public string Symbol => DynamicFields?.Symbol;
         public double MostRecentTrade => throw new Exception(GetErrorMessage(nameof(MostRecentTrade)));
         public int MostRecentTradeSize => throw new Exception(GetErrorMessage(nameof(MostRecentTradeSize)));
         public TimeSpan MostRecentTradeTime => throw new Exception(GetErrorMessage(nameof(MostRecentTradeTime)));

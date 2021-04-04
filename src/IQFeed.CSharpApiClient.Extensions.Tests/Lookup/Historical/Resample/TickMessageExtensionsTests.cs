@@ -18,8 +18,8 @@ namespace IQFeed.CSharpApiClient.Extensions.Tests.Lookup.Historical.Resample
         {
             _ticksAscending = new List<TickMessage>()
             {
-                new TickMessage(new DateTime(2000, 01, 01, 9, 30, 4), 1, 1, 1, 1, 1, 1, 'C', 1, ""),
-                new TickMessage(new DateTime(2000, 01, 01, 9, 34, 1), 1, 1, 1, 1, 1, 1, 'C', 1, ""),
+                new TickMessage(new DateTime(2000, 01, 01, 9, 30, 4), 1, 1, 1, 1, 1, 1, 'C', 1, "", 2, 17),
+                new TickMessage(new DateTime(2000, 01, 01, 9, 34, 1), 1, 1, 1, 1, 1, 1, 'C', 1, "", 2, 17),
             };
 
             _ticksDescending = new List<TickMessage>(_ticksAscending);

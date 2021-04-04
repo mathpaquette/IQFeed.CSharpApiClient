@@ -53,8 +53,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
         public int MarketOpen { get; private set; }
         public string MessageContents { get; private set; }
         public double MostRecentTrade { get; private set; }
+        public int MostRecentTradeAggressor { get; private set; }
         public string MostRecentTradeConditions { get; private set; }
         public DateTime MostRecentTradeDate { get; private set; }
+        public int MostRecentTradeDayCode { get; private set; }
         public int MostRecentTradeMarketCenter { get; private set; }
         public int MostRecentTradeSize { get; private set; }
         public TimeSpan MostRecentTradeTime { get; private set; }
@@ -124,8 +126,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             int marketOpen,
             string messageContents,
             double mostRecentTrade,
+            int mostRecentTradeAggressor,
             string mostRecentTradeConditions,
             DateTime mostRecentTradeDate,
+            int mostRecentTradeDayCode,
             int mostRecentTradeMarketCenter,
             int mostRecentTradeSize,
             TimeSpan mostRecentTradeTime,
@@ -194,8 +198,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             MarketOpen = marketOpen;
             MessageContents = messageContents;
             MostRecentTrade = mostRecentTrade;
+            MostRecentTradeAggressor = mostRecentTradeAggressor;
             MostRecentTradeConditions = mostRecentTradeConditions;
             MostRecentTradeDate = mostRecentTradeDate;
+            MostRecentTradeDayCode = mostRecentTradeDayCode;
             MostRecentTradeMarketCenter = mostRecentTradeMarketCenter;
             MostRecentTradeSize = mostRecentTradeSize;
             MostRecentTradeTime = mostRecentTradeTime;
@@ -271,8 +277,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             int marketOpen = default;
             string messageContents = default;
             double mostRecentTrade = default;
+            int mostRecentTradeAggressor = default;
             string mostRecentTradeConditions = default;
             DateTime mostRecentTradeDate = default;
+            int mostRecentTradeDayCode = default;
             int mostRecentTradeMarketCenter = default;
             int mostRecentTradeSize = default;
             TimeSpan mostRecentTradeTime = default;
@@ -439,11 +447,17 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                     case DynamicFieldset.MostRecentTrade:
                         double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out mostRecentTrade);
                         break;
+                    case DynamicFieldset.MostRecentTradeAggressor:
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out mostRecentTradeAggressor);
+                        break;
                     case DynamicFieldset.MostRecentTradeConditions:
                         mostRecentTradeConditions = value;
                         break;
                     case DynamicFieldset.MostRecentTradeDate:
                         DateTime.TryParseExact(value, UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out mostRecentTradeDate);
+                        break;
+                    case DynamicFieldset.MostRecentTradeDayCode:
+                        int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out mostRecentTradeDayCode);
                         break;
                     case DynamicFieldset.MostRecentTradeMarketCenter:
                         int.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out mostRecentTradeMarketCenter);
@@ -564,8 +578,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
                 marketOpen,
                 messageContents,
                 mostRecentTrade,
+                mostRecentTradeAggressor,
                 mostRecentTradeConditions,
                 mostRecentTradeDate,
+                mostRecentTradeDayCode,
                 mostRecentTradeMarketCenter,
                 mostRecentTradeSize,
                 mostRecentTradeTime,
@@ -638,8 +654,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             sb.Append(MarketOpen == default ? "" : $", {nameof(MarketOpen)}: {MarketOpen}");
             sb.Append(MessageContents == default ? "" : $", {nameof(MessageContents)}: {MessageContents}");
             sb.Append(MostRecentTrade == default ? "" : $", {nameof(MostRecentTrade)}: {MostRecentTrade}");
+            sb.Append(MostRecentTradeAggressor == default ? "" : $", {nameof(MostRecentTradeAggressor)}: {MostRecentTradeAggressor}");
             sb.Append(MostRecentTradeConditions == default ? "" : $", {nameof(MostRecentTradeConditions)}: {MostRecentTradeConditions}");
             sb.Append(MostRecentTradeDate == default ? "" : $", {nameof(MostRecentTradeDate)}: {MostRecentTradeDate}");
+            sb.Append(MostRecentTradeDayCode == default ? "" : $", {nameof(MostRecentTradeDayCode)}: {MostRecentTradeDayCode}");
             sb.Append(MostRecentTradeMarketCenter == default ? "" : $", {nameof(MostRecentTradeMarketCenter)}: {MostRecentTradeMarketCenter}");
             sb.Append(MostRecentTradeSize == default ? "" : $", {nameof(MostRecentTradeSize)}: {MostRecentTradeSize}");
             sb.Append(MostRecentTradeTime == default ? "" : $", {nameof(MostRecentTradeTime)}: {MostRecentTradeTime}");

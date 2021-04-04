@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common.Exceptions;
 using IQFeed.CSharpApiClient.Streaming.Level1;
+using IQFeed.CSharpApiClient.Streaming.Level1.Handlers;
 using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level1
@@ -48,7 +49,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level1
             // Assert
             Assert.AreEqual(updateSummaryMessage.Symbol, Symbol);
         }
-
+        
         [Test]
         public void Should_Throw_Exceptions_When_SymbolNotFound_FundamentalSnapshot()
         {
@@ -61,6 +62,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level1
         {
             // Assert
             Assert.ThrowsAsync<SymbolNotFoundIQFeedException>(async () => await _level1Client.GetUpdateSummarySnapshotAsync(NotFoundSymbol));
+
         }
     }
 }
