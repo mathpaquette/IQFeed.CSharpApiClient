@@ -14,19 +14,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level1
         private const string Symbol = "AAPL";
         private const string NotFoundSymbol = "NotFoundSymbol";
         private ILevel1Client _level1Client;
-        private Level1MessageHandler _level1MessageHandler;
-
-        private DynamicFieldset[] _fieldNames = new DynamicFieldset[]
-        {
-            DynamicFieldset.Symbol, DynamicFieldset.MostRecentTrade, DynamicFieldset.MostRecentTradeSize,
-            DynamicFieldset.MostRecentTradeTime, DynamicFieldset.MostRecentTradeMarketCenter,
-            DynamicFieldset.TotalVolume, DynamicFieldset.Bid, DynamicFieldset.BidSize,
-            DynamicFieldset.Ask, DynamicFieldset.AskSize, DynamicFieldset.Open, DynamicFieldset.High,
-            DynamicFieldset.Low, DynamicFieldset.Close, DynamicFieldset.MessageContents,
-            DynamicFieldset.MostRecentTradeConditions, DynamicFieldset.MostRecentTradeAggressor,
-            DynamicFieldset.MostRecentTradeDayCode
-        };
-
+        private Level1MessageDynamicHandler _level1MessageHandler;
 
         public Level1ClientDynamicFieldsetTests()
         {
@@ -36,7 +24,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level1
         [SetUp]
         public void SetUp()
         {
-            _level1Client = Level1ClientFactory.CreateNew();
+            _level1MessageHandler = new Level1MessageDynamicHandler();
             _level1Client = Level1ClientFactory.CreateNew(_level1MessageHandler);
             _level1Client.Connect();
         }
@@ -51,7 +39,18 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level1
         public async Task Should_Return_UpdateSummaryMessageWithDynamicFields()
         {
             // Arrange
-            //  already done in setup
+            var fieldNames = new DynamicFieldset[]
+            {
+                DynamicFieldset.Symbol, DynamicFieldset.MostRecentTrade, DynamicFieldset.MostRecentTradeSize,
+                DynamicFieldset.MostRecentTradeTime, DynamicFieldset.MostRecentTradeMarketCenter,
+                DynamicFieldset.TotalVolume, DynamicFieldset.Bid, DynamicFieldset.BidSize,
+                DynamicFieldset.Ask, DynamicFieldset.AskSize, DynamicFieldset.Open, DynamicFieldset.High,
+                DynamicFieldset.Low, DynamicFieldset.Close, DynamicFieldset.MessageContents,
+                DynamicFieldset.MostRecentTradeConditions, DynamicFieldset.MostRecentTradeAggressor,
+                DynamicFieldset.MostRecentTradeDayCode
+            };
+
+            _level1Client.SelectUpdateFieldName(fieldNames);
 
             // Act
             var updateSummaryMessage = await _level1Client.GetUpdateSummarySnapshotAsync(Symbol);
