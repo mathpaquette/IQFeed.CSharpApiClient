@@ -7,7 +7,7 @@ using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1
 {
-    public class Level1Client : Level1ClientBase, ILevel1Client
+    public class Level1Client : BaseLevel1Client, ILevel1Client
     {
         public event Action<FundamentalMessage> Fundamental
         {
