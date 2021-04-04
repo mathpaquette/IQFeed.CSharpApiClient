@@ -59,7 +59,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Facades
         /// <param name="requestId"></param>
         /// <param name="datapointsPerSend"></param>
         /// <returns></returns>
-        public Task<IEnumerable<TickMessage>> GetHistoryTickDaysAsync(string symbol, Int16 days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null,
+        public Task<IEnumerable<TickMessage>> GetHistoryTickDaysAsync(string symbol, int days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null,
             TimeSpan? endFilterTime = null, DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryTickDays(symbol, days, maxDatapoints, beginFilterTime, endFilterTime, dataDirection, requestId, datapointsPerSend);
@@ -116,7 +116,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Facades
         /// <param name="requestId"></param>
         /// <param name="datapointsPerSend"></param>
         /// <param name="intervalType"></param>
-        public Task<IEnumerable<IntervalMessage>> GetHistoryIntervalDaysAsync(string symbol, int interval, Int16 days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null,
+        public Task<IEnumerable<IntervalMessage>> GetHistoryIntervalDaysAsync(string symbol, int interval, int days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null,
             DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
             var request = _historicalRequestFormatter.ReqHistoryIntervalDays(symbol, interval, days, maxDatapoints, beginFilterTime, endFilterTime, dataDirection, requestId, datapointsPerSend, intervalType, labelAtBeginning);
@@ -213,7 +213,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Facades
                 .SynchronouslyAwaitTaskResult();
         }
 
-        public IEnumerable<TickMessage> GetHistoryTickDays(string symbol, Int16 days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null,
+        public IEnumerable<TickMessage> GetHistoryTickDays(string symbol, int days, int? maxDatapoints = null, TimeSpan? beginFilterTime = null,
             TimeSpan? endFilterTime = null, DataDirection? dataDirection = null, string requestId = null,
             int? datapointsPerSend = null)
         {
@@ -237,7 +237,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Facades
                 datapointsPerSend, intervalType, labelAtBeginning).SynchronouslyAwaitTaskResult();
         }
 
-        public IEnumerable<IntervalMessage> GetHistoryIntervalDays(string symbol, int interval, Int16 days, int? maxDatapoints = null,
+        public IEnumerable<IntervalMessage> GetHistoryIntervalDays(string symbol, int interval, int days, int? maxDatapoints = null,
             TimeSpan? beginFilterTime = null, TimeSpan? endFilterTime = null, DataDirection? dataDirection = null,
             string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null,
             LabelAtBeginning? labelAtBeginning = null)
