@@ -136,20 +136,5 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
             Assert.IsTrue(parsed);
             Assert.AreEqual(tickMessage, _expectedMessage);
         }
-
-        [Test, TestCaseSource(typeof(CultureNameTestCase), nameof(CultureNameTestCase.CultureNames))]
-        public void Should_TryParse_Protocol60_Return_True(string cultureName)
-        {
-            // Arrange
-            TestHelper.SetThreadCulture(cultureName);
-
-            // Act
-            var parsed = TickMessage.TryParse(_messageProtocol60, out var tickMessage);
-
-            // Assert
-            Assert.IsTrue(parsed);
-            Assert.AreEqual(tickMessage, _expectedMessageProtocol60);
-        }
-
     }
 }

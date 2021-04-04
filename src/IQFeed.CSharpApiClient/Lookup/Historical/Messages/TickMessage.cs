@@ -9,10 +9,14 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
     public class TickMessage : ITickMessage
     {
         public const string TickDateTimeFormat = "yyyy-MM-dd HH:mm:ss.ffffff";
+        private const int TickCsvLengthProtocol60 = 10;
+        private const int TickCsvLengthWithRequestIdProtocol60 = 11;
 
+        /**
+         * Constructor for protocol 6.1+
+         */
         public TickMessage(DateTime timestamp, double last, int lastSize, int totalVolume, double bid, double ask,
-            long tickId, char basisForLast, int tradeMarketCenter, string tradeConditions, int tradeAggressor,
-            int dayCode, string requestId = null)
+            long tickId, char basisForLast, int tradeMarketCenter, string tradeConditions, int tradeAggressor, int dayCode, string requestId = null)
         {
             Timestamp = timestamp;
             Last = last;
@@ -26,6 +30,25 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             TradeConditions = tradeConditions;
             TradeAggressor = tradeAggressor;
             DayCode = dayCode;
+            RequestId = requestId;
+        }
+
+        /**
+         * Constructor for Protocol 6.0
+         */
+        public TickMessage(DateTime timestamp, double last, int lastSize, int totalVolume, double bid, double ask,
+            long tickId, char basisForLast, int tradeMarketCenter, string tradeConditions, string requestId = null)
+        {
+            Timestamp = timestamp;
+            Last = last;
+            LastSize = lastSize;
+            TotalVolume = totalVolume;
+            Bid = bid;
+            Ask = ask;
+            TickId = tickId;
+            BasisForLast = basisForLast;
+            TradeMarketCenter = tradeMarketCenter;
+            TradeConditions = tradeConditions;
             RequestId = requestId;
         }
 
@@ -46,9 +69,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public static TickMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
-            if (values.Length <= 11)
+            if (values.Length > TickCsvLengthProtocol60)
             {
-                // old protocol < 6.1 data
+                // protocol 6.1+
                 return new TickMessage(
                     DateTime.ParseExact(values[0], TickDateTimeFormat, CultureInfo.InvariantCulture),
                     double.Parse(values[1], CultureInfo.InvariantCulture),
@@ -60,11 +83,12 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                     char.Parse(values[7]),
                     int.Parse(values[8], CultureInfo.InvariantCulture),
                     values[9],
-                    0,
-                    0
+                    int.Parse(values[10], CultureInfo.InvariantCulture),
+                    int.Parse(values[11], CultureInfo.InvariantCulture)
                 );
             }
 
+            // protocol 6.0
             return new TickMessage(
                 DateTime.ParseExact(values[0], TickDateTimeFormat, CultureInfo.InvariantCulture),
                 double.Parse(values[1], CultureInfo.InvariantCulture),
@@ -75,9 +99,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 long.Parse(values[6], CultureInfo.InvariantCulture),
                 char.Parse(values[7]),
                 int.Parse(values[8], CultureInfo.InvariantCulture),
-                values[9],
-                int.Parse(values[10], CultureInfo.InvariantCulture),
-                int.Parse(values[11], CultureInfo.InvariantCulture)
+                values[9]
             );
         }
 
@@ -97,43 +119,21 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             int dayCode = default;
 
             var values = message.SplitFeedMessage();
-            if (values.Length <= 11)
-            {
-                // old protocol < 6.1 data
-                var parsed = values.Length >= 10 &&
-                             DateTime.TryParseExact(values[0], TickDateTimeFormat, CultureInfo.InvariantCulture,
-                                 DateTimeStyles.None, out timestamp) &&
-                             double.TryParse(values[1], NumberStyles.Any, CultureInfo.InvariantCulture, out last) &&
-                             int.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out lastSize) &&
-                             int.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out totalVolume) &&
-                             double.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out bid) &&
-                             double.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out ask) &&
-                             long.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out tickId) &&
-                             char.TryParse(values[7], out basisForLast) &&
-                             int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture,
-                                 out tradeMarketCenter);
+            var parsed = values.Length >= 10 &&
+                         DateTime.TryParseExact(values[0], TickDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out timestamp) &&
+                         double.TryParse(values[1], NumberStyles.Any, CultureInfo.InvariantCulture, out last) &&
+                         int.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out lastSize) &&
+                         int.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out totalVolume) &&
+                         double.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out bid) &&
+                         double.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out ask) &&
+                         long.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out tickId) &&
+                         char.TryParse(values[7], out basisForLast) &&
+                         int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out tradeMarketCenter) &&
+                         int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out tradeAggressor) &&
+                         int.TryParse(values[11], NumberStyles.Any, CultureInfo.InvariantCulture, out dayCode);
 
-                if (!parsed)
-                    return false;
-            }
-            else
-            {
-                var parsed = values.Length >= 10 &&
-                             DateTime.TryParseExact(values[0], TickDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out timestamp) &&
-                             double.TryParse(values[1], NumberStyles.Any, CultureInfo.InvariantCulture, out last) &&
-                             int.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out lastSize) &&
-                             int.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out totalVolume) &&
-                             double.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out bid) &&
-                             double.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out ask) &&
-                             long.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out tickId) &&
-                             char.TryParse(values[7], out basisForLast) &&
-                             int.TryParse(values[8], NumberStyles.Any, CultureInfo.InvariantCulture, out tradeMarketCenter) &&
-                             int.TryParse(values[10], NumberStyles.Any, CultureInfo.InvariantCulture, out tradeAggressor) &&
-                             int.TryParse(values[11], NumberStyles.Any, CultureInfo.InvariantCulture, out dayCode);
-
-                if (!parsed)
-                    return false;
-            }
+            if (!parsed)
+                return false;
 
             tickMessage = new TickMessage(timestamp, last, lastSize, totalVolume, bid, ask, tickId, basisForLast, tradeMarketCenter, values[9], tradeAggressor, dayCode);
             return true;
@@ -142,9 +142,9 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public static TickMessage ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
-            if (values.Length <= 11)
+            if (values.Length > TickCsvLengthWithRequestIdProtocol60)
             {
-                // old protocol < 6.1 data
+                // protocol 6.1+
                 return new TickMessage(
                     DateTime.ParseExact(values[1], TickDateTimeFormat, CultureInfo.InvariantCulture),
                     double.Parse(values[2], CultureInfo.InvariantCulture),
@@ -156,11 +156,12 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                     char.Parse(values[8]),
                     int.Parse(values[9], CultureInfo.InvariantCulture),
                     values[10],
-                    0,
-                    0,
+                    int.Parse(values[11], CultureInfo.InvariantCulture),
+                    int.Parse(values[12], CultureInfo.InvariantCulture),
                     values[0]);
             }
 
+            // protocol 6.0
             return new TickMessage(
                 DateTime.ParseExact(values[1], TickDateTimeFormat, CultureInfo.InvariantCulture),
                 double.Parse(values[2], CultureInfo.InvariantCulture),
@@ -172,10 +173,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
                 char.Parse(values[8]),
                 int.Parse(values[9], CultureInfo.InvariantCulture),
                 values[10],
-                int.Parse(values[11], CultureInfo.InvariantCulture),
-                int.Parse(values[12], CultureInfo.InvariantCulture),
                 values[0]);
-
         }
 
         public static IEnumerable<TickMessage> ParseFromFile(string path, bool hasRequestId = false)

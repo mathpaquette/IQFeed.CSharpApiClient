@@ -52,7 +52,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_TickMessages_When_ReqHistoryTickDaysAsync()
         {
-            var tickMessages = await _lookupClient.Historical.GetHistoryTickDaysAsync(Symbol, Int16.MaxValue, Datapoints);
+            var tickMessages = await _lookupClient.Historical.GetHistoryTickDaysAsync(Symbol, int.MaxValue, Datapoints);
             Assert.AreEqual(tickMessages.Count(), Datapoints);
         }
 
@@ -81,8 +81,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Historical
         [Test, MaxTime(TimeoutMs)]
         public async Task Should_Return_IntervalMessages_When_ReqHistoryIntervalDaysAsync()
         {
-            // Days > Int16.MaxValue is illegal in protocol 6.1
-            var intervalMessages = await _lookupClient.Historical.GetHistoryIntervalDaysAsync(Symbol, 5, Int16.MaxValue, Datapoints);
+            var intervalMessages = await _lookupClient.Historical.GetHistoryIntervalDaysAsync(Symbol, 5, int.MaxValue, Datapoints);
             Assert.AreEqual(intervalMessages.Count(), Datapoints);
         }
 

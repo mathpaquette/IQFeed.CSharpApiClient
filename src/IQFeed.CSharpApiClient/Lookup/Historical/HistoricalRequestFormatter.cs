@@ -1,5 +1,6 @@
 ﻿using System;
 using IQFeed.CSharpApiClient.Common;
+using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Lookup.Historical.Enums;
 
 namespace IQFeed.CSharpApiClient.Lookup.Historical
@@ -22,11 +23,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null)
         {
             // HTD,[Symbol],[Days],[MaxDatapoints],[BeginFilterTime],[EndFilterTime],[DataDirection],[RequestID],[DatapointsPerSend]<CR><LF>
-            days = days > Int16.MaxValue ? Int16.MaxValue : days;
             var beginFilterTimeFormat = beginFilterTime?.ToString(HistoricalDataTimeFormat) ?? string.Empty;
             var endFilterTimeFormat = endFilterTime?.ToString(HistoricalDataTimeFormat) ?? string.Empty;
             var dataDirectionFormat = dataDirection.HasValue ? ((int)dataDirection).ToString() : null;
-            var request = $"HTD,{symbol.ToUpper()},{days},{maxDatapoints},{beginFilterTimeFormat},{endFilterTimeFormat},{dataDirectionFormat},{requestId},{datapointsPerSend}{IQFeedDefault.ProtocolTerminatingCharacters}";
+            var request = $"HTD,{symbol.ToUpper()},{days.ToMaximumDaysWeeksMonths()},{maxDatapoints},{beginFilterTimeFormat},{endFilterTimeFormat},{dataDirectionFormat},{requestId},{datapointsPerSend}{IQFeedDefault.ProtocolTerminatingCharacters}";
             return request;
         }
 
@@ -58,13 +58,12 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
             DataDirection? dataDirection = null, string requestId = null, int? datapointsPerSend = null, HistoricalIntervalType? intervalType = null, LabelAtBeginning? labelAtBeginning = null)
         {
             // HID,[Symbol],[Interval],[Days],[MaxDatapoints],[BeginFilterTime],[EndFilterTime],[DataDirection],[RequestID],[DatapointsPerSend],[IntervalType],[LabelAtBeginning]<CR><LF> 
-            days = days > Int16.MaxValue ? Int16.MaxValue : days;
             var beginFilterTimeFormat = beginFilterTime?.ToString(HistoricalDataTimeFormat) ?? string.Empty;
             var endFilterTimeFormat = endFilterTime?.ToString(HistoricalDataTimeFormat) ?? string.Empty;
             var dataDirectionFormat = dataDirection.HasValue ? ((int)dataDirection).ToString() : null;
             var intervalTypeFormat = intervalType?.ToString().ToLower();
             var labelAtBeginningFormat = labelAtBeginning.HasValue ? ((int)labelAtBeginning).ToString() : null;
-            var request = $"HID,{symbol.ToUpper()},{interval},{days},{maxDatapoints},{beginFilterTimeFormat},{endFilterTimeFormat},{dataDirectionFormat},{requestId},{datapointsPerSend},{intervalTypeFormat},{labelAtBeginningFormat}{IQFeedDefault.ProtocolTerminatingCharacters}";
+            var request = $"HID,{symbol.ToUpper()},{interval},{days.ToMaximumDaysWeeksMonths()},{maxDatapoints},{beginFilterTimeFormat},{endFilterTimeFormat},{dataDirectionFormat},{requestId},{datapointsPerSend},{intervalTypeFormat},{labelAtBeginningFormat}{IQFeedDefault.ProtocolTerminatingCharacters}";
             return request;
         }
 
