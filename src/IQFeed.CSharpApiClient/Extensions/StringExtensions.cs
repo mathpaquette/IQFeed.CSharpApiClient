@@ -72,5 +72,15 @@ namespace IQFeed.CSharpApiClient.Extensions
         {
             return s.Split(LineDelimiter, StringSplitOptions.RemoveEmptyEntries);
         }
+
+        public static int GetHashCodeOrDefault(this string s)
+        {
+            return s != null ? s.GetHashCode() : 0;
+        }
+
+        public static string OrNullString(this string s)
+        {
+            return s ?? "<NULL>";
+        }
     }
 }

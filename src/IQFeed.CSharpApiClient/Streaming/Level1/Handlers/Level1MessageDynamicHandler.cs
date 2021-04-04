@@ -3,6 +3,7 @@ using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
 
 namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
 {
+    [Obsolete("Please use ILevel1DynamicClient instead. This handler will be removed soon!")]
     public class Level1MessageDynamicHandler : BaseLevel1MessageHandler, ILevel1MessageDynamicHandler
     {
         public event Action<IUpdateSummaryMessage> Summary;
