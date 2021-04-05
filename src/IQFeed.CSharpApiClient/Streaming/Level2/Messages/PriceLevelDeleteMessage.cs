@@ -67,7 +67,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
             Enum.TryParse<Level2Side>(values[2], out var side);
             double.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var price);
             TimeSpan.TryParseExact(values[4], UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var time);
-            DateTime.TryParseExact(values[6], UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date);
+            DateTime.TryParseExact(values[5], UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date);
 
             return new PriceLevelDeleteMessage
             (
