@@ -81,7 +81,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
             // as this message type can service 4 different domain message types, it's sensible to keep the MessageType as part of the message
             Enum.TryParse<Level2MessageType>(values[0], out var messageType);
             var symbol = values[1];
-            Enum.TryParse<Level2Side>(values[2], out var side);
+            Level2SideParser.TryParse(values[2], out var side);
             double.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var price);
             int.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out var size);
             int.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var orderCount);

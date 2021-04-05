@@ -340,7 +340,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
             var expectedMessage = new PriceLevelUpdateSummaryMessage(Level2MessageType.PriceLevelUpdate, "@ESM19", Level2Side.Buy, 2938.25, 65, 10, 2, time, date);
 
             PriceLevelUpdateSummaryMessage receivedMessage = null;
-            _level2MessageHandler.PriceLevelSummary += msg =>
+            _level2MessageHandler.PriceLevelUpdate += msg =>
             {
                 receivedMessage = msg;
             };
