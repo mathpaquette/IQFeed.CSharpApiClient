@@ -29,7 +29,20 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
 
         public new static PriceLevelOrderMessage Parse(string message)
         {
-            return (PriceLevelOrderMessage) OrderAddUpdateSummaryMessage.Parse(message);
+            var messageParsed = OrderAddUpdateSummaryMessage.Parse(message);
+            return new PriceLevelOrderMessage(
+                messageParsed.MessageType, 
+                messageParsed.Symbol,
+                messageParsed.OrderId,
+                messageParsed.MMID,
+                messageParsed.Side,
+                messageParsed.Price,
+                messageParsed.Size,
+                messageParsed.OrderPriority,
+                messageParsed.Precision,
+                messageParsed.OrderTime,
+                messageParsed.OrderDate
+                );
         }
     }
 }
