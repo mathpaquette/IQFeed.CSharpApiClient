@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Linq.Expressions;
 using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
@@ -22,26 +23,42 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 
         public static SymbolByFilterMessage Parse(string message)
         {
-            var values = message.SplitFeedMessage(4);
+            var values = message.SplitFeedMessage();
+            if (values[0] == SymbolDefault.SymbolsDataId)  //"LS"
+            {
+                return new SymbolByFilterMessage(
+                    values[1],
+                    int.Parse(values[2], CultureInfo.InvariantCulture),
+                    int.Parse(values[3], CultureInfo.InvariantCulture),
+                    values.RemainingValues(4, true));
+            }
 
             return new SymbolByFilterMessage(
                 values[0],
                 int.Parse(values[1], CultureInfo.InvariantCulture),
                 int.Parse(values[2], CultureInfo.InvariantCulture),
-                values[3]);
+                values.RemainingValues (3, true));
         }
 
         public static SymbolByFilterMessage ParseWithRequestId(string message)
         {
-            var values = message.SplitFeedMessage(5);
-            var requestId = values[0];
+            var values = message.SplitFeedMessage();
+            if (values[1] == SymbolDefault.SymbolsDataId)
+            {
+                return new SymbolByFilterMessage(
+                    values[2],
+                    int.Parse(values[3], CultureInfo.InvariantCulture),
+                    int.Parse(values[4], CultureInfo.InvariantCulture),
+                    values.RemainingValues(5, true),
+                    values[0]);
+            }
 
             return new SymbolByFilterMessage(
                 values[1],
                 int.Parse(values[2], CultureInfo.InvariantCulture),
                 int.Parse(values[3], CultureInfo.InvariantCulture),
-                values[4],
-                requestId);
+                values.RemainingValues(4, true),
+                values[0]);
         }
 
         public override bool Equals(object obj)
