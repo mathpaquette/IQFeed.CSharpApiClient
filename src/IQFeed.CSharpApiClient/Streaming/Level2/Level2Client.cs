@@ -45,6 +45,55 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             remove => _level2MessageHandler.System -= value;
         }
 
+        // protocol 6.2 events
+        public event Action<OrderAddUpdateSummaryMessage> OrderAdd
+        {
+            add => _level2MessageHandler.OrderAdd += value;
+            remove => _level2MessageHandler.OrderAdd -= value;
+        }
+
+        public event Action<OrderDeleteMessage> OrderDelete
+        {
+            add => _level2MessageHandler.OrderDelete += value;
+            remove => _level2MessageHandler.OrderDelete -= value;
+        }
+
+        public event Action<OrderAddUpdateSummaryMessage> OrderSummary
+        {
+            add => _level2MessageHandler.OrderSummary += value;
+            remove => _level2MessageHandler.OrderSummary -= value;
+        }
+
+        public event Action<OrderAddUpdateSummaryMessage> OrderUpdate
+        {
+            add => _level2MessageHandler.OrderUpdate += value;
+            remove => _level2MessageHandler.OrderUpdate -= value;
+        }
+
+        public event Action<PriceLevelDeleteMessage> PriceLevelDelete
+        {
+            add => _level2MessageHandler.PriceLevelDelete += value;
+            remove => _level2MessageHandler.PriceLevelDelete -= value;
+        }
+
+        public event Action<PriceLevelOrderMessage> PriceLevelOrder
+        {
+            add => _level2MessageHandler.PriceLevelOrder += value;
+            remove => _level2MessageHandler.PriceLevelOrder -= value;
+        }
+
+        public event Action<PriceLevelUpdateSummaryMessage> PriceLevelSummary
+        {
+            add => _level2MessageHandler.PriceLevelSummary += value;
+            remove => _level2MessageHandler.PriceLevelSummary -= value;
+        }
+
+        public event Action<PriceLevelUpdateSummaryMessage> PriceLevelUpdate
+        {
+            add => _level2MessageHandler.PriceLevelUpdate += value;
+            remove => _level2MessageHandler.PriceLevelUpdate -= value;
+        }
+
         private readonly SocketClient _socketClient;
         private readonly Level2RequestFormatter _level2RequestFormatter;
         private readonly ILevel2MessageHandler _level2MessageHandler;

@@ -10,7 +10,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Enums
     public enum Level2MessageType
     {
         PriceLevelOrder = 0,
-        OrderLevelAdd = 3,
+        OrderAdd = 3,
         OrderLevelUpdate = 4,
         OrderDelete = 5,
         OrderLevelSummary = 6,

@@ -14,14 +14,14 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level2
      */
     [Explicit]
     [TestFixture]
-    public class Level2ClientTests
+    public class Level2ClientOldProtocolTests
     {
         private const int TimeoutMs = 15000;
         private const string Symbol = "AAPL";
         private const string MarketMarkerId = "MD02";
         private ILevel2Client _level2Client;
 
-        public Level2ClientTests()
+        public Level2ClientOldProtocolTests()
         {
             IQFeedLauncher.Start();
         }
@@ -29,7 +29,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level2
         [SetUp]
         public void SetUp()
         {
-            _level2Client = Level2ClientFactory.CreateNew();
+            _level2Client = Level2ClientFactory.CreateNew("6.1");
             // ** IMPORTANT ** you should always subscribe to System event
             _level2Client.System += message => { };
             _level2Client.Connect();
@@ -71,14 +71,34 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level2
         [Test, MaxTime(TimeoutMs)]
         public void Should_Receive_Summary_When_ReqWatch_Symbol()
         {
+            // Arrange
+            var eventRaised = new ManualResetEvent(false);
+            _level2Client.Summary += message =>
+            {
+                eventRaised.Set();
+            };
+
+            // Act
+            _level2Client.ReqWatch(Symbol);
+
+            // Assert
+            Assert.IsTrue(eventRaised.WaitOne());
+        }
+
+        [Test, MaxTime(TimeoutMs)]
+        public void Should_Receive_Summary_When_ReqWatchMarketByOrder()
+        {
             Assert.Throws<Exception>(() =>
             {
                 // Arrange
                 var eventRaised = new ManualResetEvent(false);
-                _level2Client.Summary += message => { eventRaised.Set(); };
+                _level2Client.OrderSummary += message =>
+                {
+                    eventRaised.Set();
+                };
 
                 // Act
-                _level2Client.ReqWatch(Symbol);
+                _level2Client.ReqWatchMarketByOrder(Symbol);
 
                 // Assert
                 Assert.IsTrue(eventRaised.WaitOne());
@@ -86,42 +106,25 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level2
         }
 
         [Test, MaxTime(TimeoutMs)]
-        public void Should_Receive_Summary_When_ReqWatchMarketByOrder()
-        {
-            // Arrange
-            var eventRaised = new ManualResetEvent(false);
-            _level2Client.OrderSummary += message =>
-            {
-                eventRaised.Set();
-            };
-
-            // Act
-            _level2Client.ReqWatchMarketByOrder(Symbol);
-
-            // Assert
-            Assert.IsTrue(eventRaised.WaitOne());
-        }
-
-        [Test, MaxTime(TimeoutMs)]
         public void Should_Receive_Summary_When_ReqWatchMarketByPrice()
         {
-            // Arrange
-            var eventRaised = new ManualResetEvent(false);
-            _level2Client.PriceLevelSummary += message =>
+            Assert.Throws<Exception>(() =>
             {
-                eventRaised.Set();
-            };
+                // Arrange
+                var eventRaised = new ManualResetEvent(false);
+                _level2Client.PriceLevelSummary += message => { eventRaised.Set(); };
 
-            // Act
-            _level2Client.ReqWatchMarketByPrice(Symbol);
+                // Act
+                _level2Client.ReqWatchMarketByPrice(Symbol);
 
-            // Assert
-            Assert.IsTrue(eventRaised.WaitOne());
+                // Assert
+                Assert.IsTrue(eventRaised.WaitOne());
+            });
         }
 
         [Test, MaxTime(TimeoutMs)]
         [Description("Ignore the test if market closed")]
-        public void Should_Receive_Update_When_ReqWatchMarketByPrice()
+        public void Should_Receive_Update_When_ReqWatch_Symbol()
         {
             var now = DateTime.Now;
             var marketOpen = new TimeSpan(9, 30, 00);
@@ -139,33 +142,59 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level2
             };
 
             // Act
-            _level2Client.ReqWatchMarketByPrice(Symbol);
+            _level2Client.ReqWatch(Symbol);
 
             // Assert
             Assert.IsTrue(eventRaised.WaitOne());
         }
 
         [Test, MaxTime(TimeoutMs)]
-        [Description("Ignore the test if market closed")]
-        public void Should_Receive_Update_When_ReqWatchMarketByOrder()
+        public void Should_Receive_Query_When_ReqMarketMakerNameById()
         {
-            var now = DateTime.Now;
-            var marketOpen = new TimeSpan(9, 30, 00);
-            var marketClose = new TimeSpan(16, 00, 00);
-            if (now.DayOfWeek == DayOfWeek.Saturday || now.DayOfWeek == DayOfWeek.Sunday || now.TimeOfDay <= marketOpen || now.TimeOfDay > marketClose)
-            {
-                Assert.Ignore();
-            }
-
             // Arrange
             var eventRaised = new ManualResetEvent(false);
-            _level2Client.Update += message =>
+            _level2Client.Query += message =>
             {
                 eventRaised.Set();
             };
 
             // Act
-            _level2Client.ReqWatchMarketByOrder(Symbol);
+            _level2Client.ReqMarketMakerNameById(MarketMarkerId);
+
+            // Assert
+            Assert.IsTrue(eventRaised.WaitOne());
+        }
+
+        [Test, MaxTime(TimeoutMs)]
+        public void Should_Receive_SymbolNotFound_When_Requesting_Invalid_Symbol()
+        {
+            // Arrange
+            var eventRaised = new ManualResetEvent(false);
+            _level2Client.SymbolNotFound += message =>
+            {
+                eventRaised.Set();
+            };
+
+            // Act
+            _level2Client.ReqWatch("INVALID_SYMBOL_NAME");
+
+            // Assert
+            Assert.IsTrue(eventRaised.WaitOne());
+        }
+
+        [Explicit("Only works if you don't have access to Level2!")]
+        [Test, MaxTime(TimeoutMs)]
+        public void Should_Receive_Error_When_Not_Having_Level2_Permission()
+        {
+            // Arrange
+            var eventRaised = new ManualResetEvent(false);
+            _level2Client.Error += message =>
+            {
+                eventRaised.Set();
+            };
+
+            // Act
+            _level2Client.ReqWatch(Symbol);
 
             // Assert
             Assert.IsTrue(eventRaised.WaitOne());

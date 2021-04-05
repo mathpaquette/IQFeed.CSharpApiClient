@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level2;
+using IQFeed.CSharpApiClient.Streaming.Level2.Enums;
 using IQFeed.CSharpApiClient.Streaming.Level2.Messages;
 using IQFeed.CSharpApiClient.Tests.Common;
 using NUnit.Framework;
@@ -195,6 +196,182 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
 
             // Arrange
             Assert.AreEqual(count, 2);
+        }
+
+        [Test]
+        public void Should_Receive_PriceLevelOrderMessages()
+        {
+            // Arrange
+            var message = TestHelper.GetMessageBytes("0,@ESM19,12345678,MD01,A,2938.25,65,10,2,20:31:04.876740,2019-04-23,\r\n");
+            TimeSpan.TryParseExact("20:31:04.876740", PriceLevelOrderMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var orderTime);
+            DateTime.TryParseExact("2019-04-23", PriceLevelOrderMessage.UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var orderDate);
+            var expectedMessage = new PriceLevelOrderMessage(Level2MessageType.PriceLevelOrder, "@ESM19", 12345678, "MD01", Level2Side.Sell, 2938.25, 65, 10, 2, orderTime, orderDate);
+
+            PriceLevelOrderMessage receivedMessage = null;
+            _level2MessageHandler.PriceLevelOrder += msg =>
+            {
+                receivedMessage = msg;
+            };
+
+            // Act
+            _level2MessageHandler.ProcessMessages(message, message.Length);
+
+            // Assert
+            Assert.AreEqual(receivedMessage, expectedMessage);
+        }
+
+        [Test]
+        public void Should_Receive_OrderAddUpdateSummaryMessages()
+        {
+            // Arrange
+            var message = TestHelper.GetMessageBytes("3,@ESM19,12345678,MD01,A,2938.25,65,10,2,20:31:04.876740,2019-04-23,\r\n");
+            TimeSpan.TryParseExact("20:31:04.876740", OrderAddUpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var orderTime);
+            DateTime.TryParseExact("2019-04-23", OrderAddUpdateSummaryMessage.UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var orderDate);
+            var expectedMessage = new OrderAddUpdateSummaryMessage(Level2MessageType.OrderAdd, "@ESM19", 12345678, "MD01", Level2Side.Sell, 2938.25, 65, 10, 2, orderTime, orderDate);
+
+            OrderAddUpdateSummaryMessage receivedMessage = null;
+            _level2MessageHandler.OrderAdd += msg =>
+            {
+                receivedMessage = msg;
+            };
+
+            // Act
+            _level2MessageHandler.ProcessMessages(message, message.Length);
+
+            // Assert
+            Assert.AreEqual(receivedMessage, expectedMessage);
+        }
+
+        [Test]
+        public void Should_Receive_OrderLevelUpdateMessages()
+        {
+            // Arrange
+            var message = TestHelper.GetMessageBytes("4,@ESM19,12345678,MD01,A,2938.25,65,10,2,20:31:04.876740,2019-04-23,\r\n");
+            TimeSpan.TryParseExact("20:31:04.876740", OrderAddUpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var orderTime);
+            DateTime.TryParseExact("2019-04-23", OrderAddUpdateSummaryMessage.UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var orderDate);
+            var expectedMessage = new OrderAddUpdateSummaryMessage(Level2MessageType.OrderLevelUpdate, "@ESM19", 12345678, "MD01", Level2Side.Sell, 2938.25, 65, 10, 2, orderTime, orderDate);
+
+            OrderAddUpdateSummaryMessage receivedMessage = null;
+            _level2MessageHandler.OrderUpdate += msg =>
+            {
+                receivedMessage = msg;
+            };
+
+            // Act
+            _level2MessageHandler.ProcessMessages(message, message.Length);
+
+            // Assert
+            Assert.AreEqual(receivedMessage, expectedMessage);
+        }
+
+        [Test]
+        public void Should_Receive_OrderAddSummaryMessages()
+        {
+            // Arrange
+            var message = TestHelper.GetMessageBytes("6,@ESM19,12345678,MD01,A,2938.25,65,10,2,20:31:04.876740,2019-04-23,\r\n");
+            TimeSpan.TryParseExact("20:31:04.876740", OrderAddUpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var orderTime);
+            DateTime.TryParseExact("2019-04-23", OrderAddUpdateSummaryMessage.UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var orderDate);
+            var expectedMessage = new OrderAddUpdateSummaryMessage(Level2MessageType.OrderLevelSummary, "@ESM19", 12345678, "MD01", Level2Side.Sell, 2938.25, 65, 10, 2, orderTime, orderDate);
+
+            OrderAddUpdateSummaryMessage receivedMessage = null;
+            _level2MessageHandler.OrderSummary += msg =>
+            {
+                receivedMessage = msg;
+            };
+
+            // Act
+            _level2MessageHandler.ProcessMessages(message, message.Length);
+
+            // Assert
+            Assert.AreEqual(receivedMessage, expectedMessage);
+        }
+
+        [Test]
+        public void Should_Receive_OrderDeleteMessages()
+        {
+            // Arrange
+            var message = TestHelper.GetMessageBytes("5,@ESM19,12345678,,A,20:31:04.876740,2019-04-23,\r\n");
+            TimeSpan.TryParseExact("20:31:04.876740", OrderDeleteMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var orderTime);
+            DateTime.TryParseExact("2019-04-23", OrderDeleteMessage.UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var orderDate);
+            var expectedMessage = new OrderDeleteMessage(Level2MessageType.OrderDelete, "@ESM19", 12345678, Level2Side.Sell, orderTime, orderDate);
+
+            OrderDeleteMessage receivedMessage = null;
+            _level2MessageHandler.OrderDelete += msg =>
+            {
+                receivedMessage = msg;
+            };
+
+            // Act
+            _level2MessageHandler.ProcessMessages(message, message.Length);
+
+            // Assert
+            Assert.AreEqual(receivedMessage, expectedMessage);
+        }
+
+        [Test]
+        public void Should_Receive_PriceLevelSummaryMessages()
+        {
+            // Arrange
+            var message = TestHelper.GetMessageBytes("7,@ESM19,B,2938.25,65,11,2,20:31:04.876740,2019-04-23,\r\n");
+            TimeSpan.TryParseExact("20:31:04.876740", PriceLevelUpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var time);
+            DateTime.TryParseExact("2019-04-23", PriceLevelUpdateSummaryMessage.UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date);
+            var expectedMessage = new PriceLevelUpdateSummaryMessage(Level2MessageType.PriceLevelSummary, "@ESM19", Level2Side.Buy, 2938.25, 65, 10, 2, time, date);
+
+            PriceLevelUpdateSummaryMessage receivedMessage = null;
+            _level2MessageHandler.PriceLevelSummary += msg =>
+            {
+                receivedMessage = msg;
+            };
+
+            // Act
+            _level2MessageHandler.ProcessMessages(message, message.Length);
+
+            // Assert
+            Assert.AreEqual(receivedMessage, expectedMessage);
+        }
+
+        [Test]
+        public void Should_Receive_PriceLevelUpdateMessages()
+        {
+            // Arrange
+            var message = TestHelper.GetMessageBytes("8,@ESM19,B,2938.25,65,11,2,20:31:04.876740,2019-04-23,\r\n");
+            TimeSpan.TryParseExact("20:31:04.876740", PriceLevelUpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var time);
+            DateTime.TryParseExact("2019-04-23", PriceLevelUpdateSummaryMessage.UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date);
+            var expectedMessage = new PriceLevelUpdateSummaryMessage(Level2MessageType.PriceLevelUpdate, "@ESM19", Level2Side.Buy, 2938.25, 65, 10, 2, time, date);
+
+            PriceLevelUpdateSummaryMessage receivedMessage = null;
+            _level2MessageHandler.PriceLevelSummary += msg =>
+            {
+                receivedMessage = msg;
+            };
+
+            // Act
+            _level2MessageHandler.ProcessMessages(message, message.Length);
+
+            // Assert
+            Assert.AreEqual(receivedMessage, expectedMessage);
+        }
+
+        [Test]
+        public void Should_Receive_PriceLevelDeleteMessages()
+        {
+            // Arrange
+            var message = TestHelper.GetMessageBytes("9,@ESM19,A,2938.25,20:31:04.876740,2019-04-23,\r\n");
+            TimeSpan.TryParseExact("20:31:04.876740", PriceLevelDeleteMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var time);
+            DateTime.TryParseExact("2019-04-23", PriceLevelDeleteMessage.UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date);
+            var expectedMessage = new PriceLevelDeleteMessage(Level2MessageType.PriceLevelDelete, "@ESM19", Level2Side.Sell, 2938.25, time, date);
+
+            PriceLevelDeleteMessage receivedMessage = null;
+            _level2MessageHandler.PriceLevelDelete += msg =>
+            {
+                receivedMessage = msg;
+            };
+
+            // Act
+            _level2MessageHandler.ProcessMessages(message, message.Length);
+
+            // Assert
+            Assert.AreEqual(receivedMessage, expectedMessage);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
 {
     public static class Level2ClientFactory
     {
-        public static Level2Client CreateNew(string host, int port, TimeSpan snapshotTimeout)
+        public static Level2Client CreateNew(string host, int port, TimeSpan snapshotTimeout, string protocolVersion = IQFeedDefault.ProtocolVersion)
         {
             var socketClient = new SocketClient(host, port);
             var level2RequestFormatter = new Level2RequestFormatter();
@@ -15,18 +15,19 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
                 socketClient,
                 level2RequestFormatter,
                 level2MessageHandler,
-                new Level2Snapshot(socketClient, level2RequestFormatter, level2MessageHandler, snapshotTimeout)
+                new Level2Snapshot(socketClient, level2RequestFormatter, level2MessageHandler, snapshotTimeout),
+                protocolVersion
             );
         }
 
-        public static Level2Client CreateNew()
+        public static Level2Client CreateNew(string protocolVersion = IQFeedDefault.ProtocolVersion)
         {
-            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.Level2Port, Level2Default.SnapshotTimeout);
+            return CreateNew(IQFeedDefault.Hostname, IQFeedDefault.Level2Port, Level2Default.SnapshotTimeout, protocolVersion);
         }
 
-        public static Level2Client CreateNew(string host, int port)
+        public static Level2Client CreateNew(string host, int port, string protocolVersion = IQFeedDefault.ProtocolVersion)
         {
-            return CreateNew(host, port, Level2Default.SnapshotTimeout);
+            return CreateNew(host, port, Level2Default.SnapshotTimeout, protocolVersion);
         }
     }
 }

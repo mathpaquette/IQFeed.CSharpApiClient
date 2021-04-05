@@ -42,7 +42,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2.Messages
             TimeSpan.TryParseExact("20:31:04.876740", OrderAddUpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var orderTime);
             DateTime.TryParseExact("2019-04-23", OrderAddUpdateSummaryMessage.UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var orderDate);
             var priceLevelOrderMessage = new OrderAddUpdateSummaryMessage(Level2MessageType.PriceLevelOrder, "@ESM19", 12345678, "MD01", Level2Side.Sell, 2938.25, 65, 10, 2, orderTime, orderDate);
-            var orderAddMessage = new OrderAddUpdateSummaryMessage(Level2MessageType.OrderLevelAdd, "@ESM19", 12345678, "MD01", Level2Side.Buy, 2938.25, 65, 10, 2, orderTime, orderDate);
+            var orderAddMessage = new OrderAddUpdateSummaryMessage(Level2MessageType.OrderAdd, "@ESM19", 12345678, "MD01", Level2Side.Buy, 2938.25, 65, 10, 2, orderTime, orderDate);
 
             // Assert
             Assert.AreEqual(priceLevelOrderMessageParsed, priceLevelOrderMessage);
@@ -92,13 +92,13 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2.Messages
         {
             // Arrange
             TestHelper.SetThreadCulture(cultureName);
-            var priceLevelDeleteMessageString = "5,@ESM19,A,2938.25,20:31:04.876740,2019-04-23,";
+            var priceLevelDeleteMessageString = "9,@ESM19,A,2938.25,20:31:04.876740,2019-04-23,";
 
             // Act
             var priceLevelDeleteMessageParsed = PriceLevelDeleteMessage.Parse(priceLevelDeleteMessageString);
             TimeSpan.TryParseExact("20:31:04.876740", PriceLevelDeleteMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var time);
             DateTime.TryParseExact("2019-04-23", PriceLevelDeleteMessage.UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date);
-            var priceLevelDeleteMessage = new PriceLevelDeleteMessage(Level2MessageType.OrderDelete, "@ESM19", Level2Side.Sell, 2938.25, time, date);
+            var priceLevelDeleteMessage = new PriceLevelDeleteMessage(Level2MessageType.PriceLevelDelete, "@ESM19", Level2Side.Sell, 2938.25, time, date);
 
             // Assert
             Assert.AreEqual(priceLevelDeleteMessageParsed, priceLevelDeleteMessage);
