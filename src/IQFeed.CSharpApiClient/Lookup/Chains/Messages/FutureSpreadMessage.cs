@@ -5,16 +5,27 @@ namespace IQFeed.CSharpApiClient.Lookup.Chains.Messages
 {
     public class FutureSpreadMessage : ChainsMessage<FutureSpread>
     {
-        public FutureSpreadMessage(IEnumerable<FutureSpread> chains) : base(chains) { }
+        public FutureSpreadMessage(string message, bool hasRequestId)
+        {
+            ParseInner(message, hasRequestId);
+        }
 
         public static FutureSpreadMessage Parse(string message)
         {
-            var chains = new List<FutureSpread>();
-            foreach (var symbol in GetSymbols(message))
+            return new FutureSpreadMessage(message, false);
+        }
+
+        public static FutureSpreadMessage ParseWithRequestId(string message)
+        {
+            return new FutureSpreadMessage(message, true);
+        }
+
+        public void ParseInner(string message, bool hasRequestId)
+        {
+            foreach (var symbol in GetSymbols(message, hasRequestId))
             {
-                chains.Add(FutureSpread.Parse(symbol));
+                Chains.Add(FutureSpread.Parse(symbol));
             }
-            return new FutureSpreadMessage(chains);
         }
     }
 }
