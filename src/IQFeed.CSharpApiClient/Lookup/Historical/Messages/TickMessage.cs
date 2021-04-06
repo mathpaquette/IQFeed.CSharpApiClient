@@ -18,7 +18,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         // we know whether we're expecting requestId, so we can use the length of the values array to handle appropriately
 
         public const string TickDateTimeFormat = "yyyy-MM-dd HH:mm:ss.ffffff";
-        
+
         // relative field ids
         public const int Field_TimeStamp = 0;
         public const int Field_Last = 1;
@@ -76,47 +76,6 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             throw new Exception($"Unable to parse message into TickMessage\nmessage={message}");
         }
 
-        public static bool TryParse(string message, out TickMessage tickMessage)
-        {
-            bool parsedTradeAggressor = false;
-            bool parsedDayCode = false;
-            int indexBase;
-
-            var values = message.SplitFeedMessage();
-            int tradeAggressor = default;
-            int dayCode = default;
-
-            switch (values.Length)
-            {
-                case 10: // protocol <=6.0
-                    indexBase = 0;
-                    tradeAggressor = 0;
-                    dayCode = 0;
-                    parsedTradeAggressor = true;
-                    parsedDayCode = true;
-                    break;
-
-                case 12: // protocol ==6.1
-                    indexBase = 0;
-                    parsedTradeAggressor = int.TryParse(values[indexBase + Field_TradeAggressor], NumberStyles.Any, CultureInfo.InvariantCulture, out tradeAggressor);
-                    parsedDayCode = int.TryParse(values[indexBase + Field_DayCode], NumberStyles.Any, CultureInfo.InvariantCulture, out dayCode);
-                    break;
-
-                case 13: // protocol ==6.2
-                    indexBase = 1; // skip over the constant 'LH'
-                    parsedTradeAggressor = int.TryParse(values[indexBase + Field_TradeAggressor], NumberStyles.Any, CultureInfo.InvariantCulture, out tradeAggressor);
-                    parsedDayCode = int.TryParse(values[indexBase + Field_DayCode], NumberStyles.Any, CultureInfo.InvariantCulture, out dayCode);
-                    break;
-
-                default: // it's not a value length, so don't even bother
-                    tickMessage = null;
-                    return false;
-                    break;
-            }
-
-            return TryParseInner(values, out tickMessage, indexBase, false, tradeAggressor, dayCode, parsedTradeAggressor, parsedDayCode);
-        }
-
         public static TickMessage ParseWithRequestId(string message)
         {
             if (TickMessage.TryParseWithRequestId(message, out var tickMessage))
@@ -127,45 +86,14 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             throw new Exception($"Unable to parse message into TickMessage with requestId\nmessage={message}");
         }
 
+        public static bool TryParse(string message, out TickMessage tickMessage)
+        {
+            return TryParseInner(message, out tickMessage, false);
+        }
+
         public static bool TryParseWithRequestId(string message, out TickMessage tickMessage)
         {
-            bool parsedTradeAggressor = false;
-            bool parsedDayCode = false;
-            int indexBase;
-
-            var values = message.SplitFeedMessage();
-            int tradeAggressor = default;
-            int dayCode = default;
-
-            switch (values.Length)
-            {
-                case 11: // protocol <=6.0
-                    indexBase = 1;
-                    tradeAggressor = 0;
-                    dayCode = 0;
-                    parsedTradeAggressor = true;
-                    parsedDayCode = true;
-                    break;
-
-                case 13: // protocol ==6.1
-                    indexBase = 1;
-                    parsedTradeAggressor = int.TryParse(values[indexBase + Field_TradeAggressor], NumberStyles.Any, CultureInfo.InvariantCulture, out tradeAggressor);
-                    parsedDayCode = int.TryParse(values[indexBase + Field_DayCode], NumberStyles.Any, CultureInfo.InvariantCulture, out dayCode);
-                    break;
-
-                case 14: // protocol ==6.2
-                    indexBase = 2; // skip over the constant 'LH'
-                    parsedTradeAggressor = int.TryParse(values[indexBase + Field_TradeAggressor], NumberStyles.Any, CultureInfo.InvariantCulture, out tradeAggressor);
-                    parsedDayCode = int.TryParse(values[indexBase + Field_DayCode], NumberStyles.Any, CultureInfo.InvariantCulture, out dayCode);
-                    break;
-
-                default: // it's not a value length, so don't even bother
-                    tickMessage = null;
-                    return false;
-                    break;
-            }
-
-            return TryParseInner(values, out tickMessage, indexBase, true, tradeAggressor, dayCode, parsedTradeAggressor, parsedDayCode);
+            return TryParseInner(message, out tickMessage, true);
         }
 
         public static IEnumerable<TickMessage> ParseFromFile(string path, bool hasRequestId = false)
@@ -227,8 +155,44 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             return $"{nameof(Timestamp)}: {Timestamp}, {nameof(Last)}: {Last}, {nameof(LastSize)}: {LastSize}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(Bid)}: {Bid}, {nameof(Ask)}: {Ask}, {nameof(TickId)}: {TickId}, {nameof(BasisForLast)}: {BasisForLast}, {nameof(TradeMarketCenter)}: {TradeMarketCenter}, {nameof(TradeConditions)}: {TradeConditions}, {nameof(TradeAggressor)}: {TradeAggressor}, {nameof(DayCode)}: {DayCode}, {nameof(RequestId)}: {RequestId}";
         }
 
-        private static bool TryParseInner(string[] values, out TickMessage tickMessage, 
-            int indexBase, bool parseRequestId, int tradeAggressor, 
+        private static bool TryParseInner(string message, out TickMessage tickMessage, bool hasRequestId)
+        {
+            var messageDataIdIndex = hasRequestId ? 1 : 0;
+            var indexBase = messageDataIdIndex;
+            bool parsedTradeAggressor = false;
+            bool parsedDayCode = false;
+            int tradeAggressor = default;
+            int dayCode = default;
+
+            var values = message.SplitFeedMessage();
+            if (values[messageDataIdIndex] == HistoricalMessageHandler.HistoricalDataId)
+            {
+                // protocol ==6.2
+                indexBase++;
+                parsedTradeAggressor = int.TryParse(values[indexBase + Field_TradeAggressor], NumberStyles.Any, CultureInfo.InvariantCulture, out tradeAggressor);
+                parsedDayCode = int.TryParse(values[indexBase + Field_DayCode], NumberStyles.Any, CultureInfo.InvariantCulture, out dayCode);
+            }
+
+            // protocol <6.2
+            if ((!hasRequestId && values.Length == 12) || (hasRequestId && values.Length == 13))
+            {
+                // protocol ==6.1
+                parsedTradeAggressor = int.TryParse(values[indexBase + Field_TradeAggressor], NumberStyles.Any, CultureInfo.InvariantCulture, out tradeAggressor);
+                parsedDayCode = int.TryParse(values[indexBase + Field_DayCode], NumberStyles.Any, CultureInfo.InvariantCulture, out dayCode);
+            }
+            else
+            {
+                // protocol <=6.0
+                //  doesn't have the extra fields
+                parsedTradeAggressor = true;
+                parsedDayCode = true;
+            }
+
+            return TryParseInnerParser(values, out tickMessage, indexBase, hasRequestId, tradeAggressor, dayCode, parsedTradeAggressor, parsedDayCode);
+        }
+
+        private static bool TryParseInnerParser(string[] values, out TickMessage tickMessage,
+            int indexBase, bool hasRequestId, int tradeAggressor,
             int dayCode, bool parsedTradeAggressor, bool parsedDayCode)
         {
             tickMessage = null;
@@ -243,7 +207,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
             char basisForLast = default;
             int tradeMarketCenter = default;
 
-            var parsed = 
+            var parsed =
                 DateTime.TryParseExact(values[indexBase + Field_TimeStamp], TickDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out timestamp) &&
                 double.TryParse(values[indexBase + Field_Last], NumberStyles.Any, CultureInfo.InvariantCulture, out last) &&
                 int.TryParse(values[indexBase + Field_LastSize], NumberStyles.Any, CultureInfo.InvariantCulture, out lastSize) &&
@@ -258,28 +222,25 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 
             var tradeConditions = values[indexBase + Field_TradeConditions];
 
-            if (!parsed)
+            if (parsed)
             {
-                return false;
+                tickMessage = new TickMessage(
+                    timestamp,
+                    last,
+                    lastSize,
+                    totalVolume,
+                    bid,
+                    ask,
+                    tickId,
+                    basisForLast,
+                    tradeMarketCenter,
+                    tradeConditions,
+                    tradeAggressor,
+                    dayCode,
+                    hasRequestId ? values[0] : null);
             }
 
-            tickMessage = new TickMessage(
-                timestamp,
-                last,
-                lastSize,
-                totalVolume,
-                bid,
-                ask,
-                tickId,
-                basisForLast,
-                tradeMarketCenter,
-                tradeConditions,
-                tradeAggressor,
-                dayCode,
-                parseRequestId ? values[0] : null
-            );
-
-            return true;
+            return parsed;
         }
     }
 }
