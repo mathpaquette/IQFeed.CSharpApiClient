@@ -98,7 +98,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
             var symbol = values[1];
             UInt64.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out var orderId);
             var mmid = values[3];
-            Enum.TryParse<Level2Side>(values[4], out var side);
+            Level2SideParser.TryParse(values[4], out var side);
             double.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var price);
             int.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out var size);
             UInt64.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var orderPriority);
