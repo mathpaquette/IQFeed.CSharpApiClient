@@ -63,7 +63,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
             var symbol = values[1];
             UInt64.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out var orderId);
             // values[3] is reserved in protocol 6.2
-            Enum.TryParse<Level2Side>(values[4], out var side);
+            Level2SideParser.TryParse(values[4], out var side);
             TimeSpan.TryParseExact(values[5], UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var orderTime);
             DateTime.TryParseExact(values[6], UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var orderDate);
 
