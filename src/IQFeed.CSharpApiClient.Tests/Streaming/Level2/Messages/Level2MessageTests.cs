@@ -42,7 +42,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2.Messages
             TimeSpan.TryParseExact("20:31:04.876740", OrderAddUpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var orderTime);
             DateTime.TryParseExact("2019-04-23", OrderAddUpdateSummaryMessage.UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var orderDate);
             var priceLevelOrderMessage = new OrderAddUpdateSummaryMessage(Level2MessageType.PriceLevelOrder, "@ESM19", 12345678, "MD01", Level2Side.Sell, 2938.25, 65, 10, 2, orderTime, orderDate);
-            var orderAddMessage = new OrderAddUpdateSummaryMessage(Level2MessageType.OrderAdd, "@ESM19", 12345678, "MD01", Level2Side.Buy, 2938.25, 65, 10, 2, orderTime, orderDate);
+            var orderAddMessage = new OrderAddUpdateSummaryMessage(Level2MessageType.OrderAdd, "@ESM19", 12345678, "MD01", Level2Side.Buy, 2938.25, 65, 11, 2, orderTime, orderDate);
 
             // Assert
             Assert.AreEqual(priceLevelOrderMessageParsed, priceLevelOrderMessage);
