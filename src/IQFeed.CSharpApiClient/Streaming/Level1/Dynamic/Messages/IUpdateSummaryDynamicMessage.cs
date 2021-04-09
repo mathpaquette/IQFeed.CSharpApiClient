@@ -73,5 +73,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Dynamic.Messages
         string Type { get; }
         double Volatility { get; }
         double VWAP { get; }
+        int MostRecentTradeAggressor { get; }
+        int MostRecentTradeDayCode { get; }
     }
 }
