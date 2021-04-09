@@ -2,7 +2,7 @@
 
 [![Gitter](https://badges.gitter.im/IQFeed-CSharpApiClient/public.svg)](https://gitter.im/IQFeed-CSharpApiClient/public)
 
-IQFeed.CSharpApiClient is fastest and the most well designed C# DTN IQFeed socket API connector available to the open source community! Currently supporting the latest stable IQFeed protocol version 6.0.
+IQFeed.CSharpApiClient is fastest and the most well designed C# DTN IQFeed socket API connector available to the open source community! Currently supporting the latest stable IQFeed protocol version 6.1.
 
 IQFeed is an affordable and reputable Internet market data provider. For more [info](http://www.iqfeed.net/index.cfm?displayaction=developer&section=main).<br>
 **SPECIAL OFFER (Save \$50 - No Startup Fee)** [Get Free Trial Now](https://bit.ly/349vUCT)
@@ -101,6 +101,7 @@ var tickMessages = await lookupClient.Historical.GetHistoryTickDatapointsAsync("
 - [x] News data :new:
 - [x] Symbol Lookup data
 - [x] Chains Lookup data
+- [x] Market Summary Data (new in protocol 6.1)
 
 ## Support
 
