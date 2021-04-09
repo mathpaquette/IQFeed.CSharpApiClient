@@ -190,9 +190,9 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
             var emptyInstance1 = Activator.CreateInstance(updateSummaryMessageType) as IUpdateSummaryMessage;
             var emptyInstance2 = Activator.CreateInstance(updateSummaryMessageType) as IUpdateSummaryMessage;
             var parseMethod = updateSummaryMessageType.GetMethod("Parse", BindingFlags.Public | BindingFlags.Static);
-            var parsedInstance1 = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633",1 });
-            var parsedInstance2 = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633",1 });
-            var parsedInstance3 = parseMethod.Invoke(null, new object[] { "P,AAPL,200,52500,03/30/2021,19:59:14.503633",2 });
+            var parsedInstance1 = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633,1" });
+            var parsedInstance2 = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633,1" });
+            var parsedInstance3 = parseMethod.Invoke(null, new object[] { "P,AAPL,200,52500,03/30/2021,19:59:14.503633,1" });
 
             // Assert
             Assert.AreEqual(emptyInstance1, emptyInstance2);
@@ -210,7 +210,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
             // Act
             var emptyInstance = Activator.CreateInstance(updateSummaryMessageType);
             var parseMethod = updateSummaryMessageType.GetMethod("Parse", BindingFlags.Public | BindingFlags.Static);
-            var parsedInstance = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633",2 });
+            var parsedInstance = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633,2" });
 
             // calculate the expected hashes
             var expectedHashCodeEmptyInstance = 17;
