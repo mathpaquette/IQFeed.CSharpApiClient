@@ -135,6 +135,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
             Assert.AreEqual(default(TimeSpan), typedEmptyInstance.MostRecentTradeTime);
             Assert.AreEqual(default(int), typedEmptyInstance.MostRecentTradeAggressor);
             Assert.Throws(typeof(NotImplementedException), () => typedEmptyInstance.Bid.ToString());
+            Assert.Throws(typeof(NotImplementedException), () => typedEmptyInstance.MostRecentTradeDayCode.ToString());
         }
 
         [Test]
