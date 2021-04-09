@@ -20,6 +20,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
             DynamicFieldset.MostRecentTradeSize,
             DynamicFieldset.MostRecentTradeDate,
             DynamicFieldset.MostRecentTradeTime,
+            DynamicFieldset.MostRecentTradeAggressor
         };
 
         private static readonly DynamicFieldset[] AllFields = new DynamicFieldset[]
@@ -67,8 +68,10 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
             DynamicFieldset.MarketOpen,
             DynamicFieldset.MessageContents,
             DynamicFieldset.MostRecentTrade,
+            DynamicFieldset.MostRecentTradeAggressor,
             DynamicFieldset.MostRecentTradeConditions,
             DynamicFieldset.MostRecentTradeDate,
+            DynamicFieldset.MostRecentTradeDayCode,
             DynamicFieldset.MostRecentTradeMarketCenter,
             DynamicFieldset.MostRecentTradeSize,
             DynamicFieldset.MostRecentTradeTime,
@@ -130,7 +133,9 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
             Assert.AreEqual(default(int), typedEmptyInstance.MostRecentTradeSize);
             Assert.AreEqual(default(DateTime), typedEmptyInstance.MostRecentTradeDate);
             Assert.AreEqual(default(TimeSpan), typedEmptyInstance.MostRecentTradeTime);
+            Assert.AreEqual(default(int), typedEmptyInstance.MostRecentTradeAggressor);
             Assert.Throws(typeof(NotImplementedException), () => typedEmptyInstance.Bid.ToString());
+            Assert.Throws(typeof(NotImplementedException), () => typedEmptyInstance.MostRecentTradeDayCode.ToString());
         }
 
         [Test]
@@ -151,6 +156,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
             Assert.AreEqual(default(int), typedEmptyInstance.MostRecentTradeSize);
             Assert.AreEqual(default(DateTime), typedEmptyInstance.MostRecentTradeDate);
             Assert.AreEqual(default(TimeSpan), typedEmptyInstance.MostRecentTradeTime);
+            Assert.AreEqual(default(int), typedEmptyInstance.MostRecentTradeAggressor);
         }
 
         [Test]
@@ -161,7 +167,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
 
             // Act
             var parseMethod = updateSummaryMessageType.GetMethod("Parse", BindingFlags.Public | BindingFlags.Static);
-            var parsedInstance = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633" });
+            var parsedInstance = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633,3" });
             var typedParsedInstance = parsedInstance as IUpdateSummaryDynamicMessage;
 
             // Assert
@@ -172,6 +178,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
             Assert.AreEqual(52500, typedParsedInstance.MostRecentTradeSize);
             Assert.AreEqual(FieldParser.ParseDate("03/30/2021", FundamentalMessage.FundamentalDateTimeFormat), typedParsedInstance.MostRecentTradeDate);
             Assert.AreEqual(FieldParser.ParseTime("19:59:14.503633", UpdateSummaryMessage.UpdateMessageTimeFormat), typedParsedInstance.MostRecentTradeTime);
+            Assert.AreEqual(3, typedParsedInstance.MostRecentTradeAggressor);
         }
 
         [Test]
@@ -184,9 +191,9 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
             var emptyInstance1 = Activator.CreateInstance(updateSummaryMessageType) as IUpdateSummaryMessage;
             var emptyInstance2 = Activator.CreateInstance(updateSummaryMessageType) as IUpdateSummaryMessage;
             var parseMethod = updateSummaryMessageType.GetMethod("Parse", BindingFlags.Public | BindingFlags.Static);
-            var parsedInstance1 = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633" });
-            var parsedInstance2 = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633" });
-            var parsedInstance3 = parseMethod.Invoke(null, new object[] { "P,AAPL,200,52500,03/30/2021,19:59:14.503633" });
+            var parsedInstance1 = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633,1" });
+            var parsedInstance2 = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633,1" });
+            var parsedInstance3 = parseMethod.Invoke(null, new object[] { "P,AAPL,200,52500,03/30/2021,19:59:14.503633,1" });
 
             // Assert
             Assert.AreEqual(emptyInstance1, emptyInstance2);
@@ -204,7 +211,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
             // Act
             var emptyInstance = Activator.CreateInstance(updateSummaryMessageType);
             var parseMethod = updateSummaryMessageType.GetMethod("Parse", BindingFlags.Public | BindingFlags.Static);
-            var parsedInstance = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633" });
+            var parsedInstance = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633,2" });
 
             // calculate the expected hashes
             var expectedHashCodeEmptyInstance = 17;
@@ -213,6 +220,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
             expectedHashCodeEmptyInstance = expectedHashCodeEmptyInstance * 29 + default(int).GetHashCode();
             expectedHashCodeEmptyInstance = expectedHashCodeEmptyInstance * 29 + default(DateTime).GetHashCode();
             expectedHashCodeEmptyInstance = expectedHashCodeEmptyInstance * 29 + default(TimeSpan).GetHashCode();
+            expectedHashCodeEmptyInstance = expectedHashCodeEmptyInstance * 29 + default(int).GetHashCode();
 
             var expectedHashCodeParsedInstance = 17;
             expectedHashCodeParsedInstance = expectedHashCodeParsedInstance * 29 + "AAPL".GetHashCode();
@@ -220,6 +228,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
             expectedHashCodeParsedInstance = expectedHashCodeParsedInstance * 29 + 52500.GetHashCode();
             expectedHashCodeParsedInstance = expectedHashCodeParsedInstance * 29 + FieldParser.ParseDate("03/30/2021", FundamentalMessage.FundamentalDateTimeFormat).GetHashCode();
             expectedHashCodeParsedInstance = expectedHashCodeParsedInstance * 29 + FieldParser.ParseTime("19:59:14.503633", UpdateSummaryMessage.UpdateMessageTimeFormat).GetHashCode();
+            expectedHashCodeParsedInstance = expectedHashCodeParsedInstance * 29 + 2.GetHashCode();
 
             // Assert
             Assert.IsNotNull(emptyInstance);
@@ -237,15 +246,17 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
             // Act
             var emptyInstance = Activator.CreateInstance(updateSummaryMessageType);
             var parseMethod = updateSummaryMessageType.GetMethod("Parse", BindingFlags.Public | BindingFlags.Static);
-            var parsedInstance = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633" });
+            var parsedInstance = parseMethod.Invoke(null, new object[] { "P,AAPL,188.3500,52500,03/30/2021,19:59:14.503633,2" });
 
             // generate the expected string values
             var expectedStringEmptyInstance = $"Symbol: <NULL>, MostRecentTrade: {default(double)}, MostRecentTradeSize: {default(int)}, " +
                 $"MostRecentTradeDate: {default(DateTime)}, " +
-                $"MostRecentTradeTime: {default(TimeSpan)}";
+                $"MostRecentTradeTime: {default(TimeSpan)}, " +
+                $"MostRecentTradeAggressor: {default(int)}";
             var expectedStringParsedInstance = $"Symbol: AAPL, MostRecentTrade: 188.35, MostRecentTradeSize: 52500, " +
                 $"MostRecentTradeDate: {FieldParser.ParseDate("03/30/2021", FundamentalMessage.FundamentalDateTimeFormat)}, " +
-                $"MostRecentTradeTime: {FieldParser.ParseTime("19:59:14.503633", UpdateSummaryMessage.UpdateMessageTimeFormat)}";
+                $"MostRecentTradeTime: {FieldParser.ParseTime("19:59:14.503633", UpdateSummaryMessage.UpdateMessageTimeFormat)}, " +
+                $"MostRecentTradeAggressor: 2";
 
             // Assert
             Assert.IsNotNull(emptyInstance);            
@@ -267,6 +278,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
                 DynamicFieldset.MostRecentTradeSize,
                 DynamicFieldset.MostRecentTradeDate,
                 DynamicFieldset.MostRecentTradeTime,
+                DynamicFieldset.MostRecentTradeAggressor
             });
             // same fields, different order
             var updateSummaryMessageType3 = UpdateSummaryDynamicMessageTypesFactory.GenerateDynamicObjectType(new DynamicFieldset[]
@@ -274,6 +286,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Dynamic.Messages
                 DynamicFieldset.Symbol,
                 DynamicFieldset.MostRecentTrade,
                 DynamicFieldset.MostRecentTradeSize,
+                DynamicFieldset.MostRecentTradeAggressor,
                 DynamicFieldset.MostRecentTradeTime,
                 DynamicFieldset.MostRecentTradeDate,
             });

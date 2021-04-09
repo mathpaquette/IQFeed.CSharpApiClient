@@ -4,33 +4,22 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Dynamic.Messages
 {
     public interface IUpdateSummaryDynamicMessage
     {
-        string Symbol { get; }
-        double MostRecentTrade { get; }
-        int MostRecentTradeSize { get; }
-        TimeSpan MostRecentTradeTime { get; }
-        int MostRecentTradeMarketCenter { get; }
-        int TotalVolume { get; }
-        double Bid { get; }
-        int BidSize { get; }
-        double Ask { get; }
-        int AskSize { get; }
-        double Open { get; }
-        double High { get; }
-        double Low { get; }
-        double Close { get; }
-        string MessageContents { get; }
-        string MostRecentTradeConditions { get; }
         double SevenDayYield { get; }
+        double Ask { get; }
         double AskChange { get; }
         int AskMarketCenter { get; }
+        int AskSize { get; }
         TimeSpan AskTime { get; }
         string AvailableRegions { get; }
         double AverageMaturity { get; }
+        double Bid { get; }
         double BidChange { get; }
         int BidMarketCenter { get; }
+        int BidSize { get; }
         TimeSpan BidTime { get; }
         double Change { get; }
         double ChangeFromOpen { get; }
+        double Close { get; }
         double CloseRange1 { get; }
         double CloseRange2 { get; }
         string DaysToExpiration { get; }
@@ -46,16 +35,27 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Dynamic.Messages
         double ExtendedTradingDifference { get; }
         string FinancialStatusIndicator { get; }
         string FractionDisplayCode { get; }
+        double High { get; }
         double Last { get; }
         DateTime LastDate { get; }
         int LastMarketCenter { get; }
         int LastSize { get; }
         TimeSpan LastTime { get; }
+        double Low { get; }
         double MarketCapitalization { get; }
         int MarketOpen { get; }
+        string MessageContents { get; }
+        double MostRecentTrade { get; }
+        int MostRecentTradeAggressor { get; }
+        string MostRecentTradeConditions { get; }
         DateTime MostRecentTradeDate { get; }
+        int MostRecentTradeDayCode { get; }
+        int MostRecentTradeMarketCenter { get; }
+        int MostRecentTradeSize { get; }
+        TimeSpan MostRecentTradeTime { get; }
         double NetAssetValue { get; }
         int NumberOfTradesToday { get; }
+        double Open { get; }
         int OpenInterest { get; }
         double OpenRange1 { get; }
         double OpenRange2 { get; }
@@ -68,8 +68,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Dynamic.Messages
         double Settle { get; }
         DateTime SettlementDate { get; }
         double Spread { get; }
+        string Symbol { get; }
         int Tick { get; }
         int TickID { get; }
+        int TotalVolume { get; }
         string Type { get; }
         double Volatility { get; }
         double VWAP { get; }
