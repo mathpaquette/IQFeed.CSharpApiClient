@@ -33,56 +33,32 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 
         public static DailyWeeklyMonthlyMessage Parse(string message)
         {
-            var values = message.SplitFeedMessage();
+            if (TryParseInner(message, out var dailyWeeklyMonthlyMessage, false))
+            {
+                return dailyWeeklyMonthlyMessage;
+            }
 
-            return new DailyWeeklyMonthlyMessage(
-                DateTime.ParseExact(values[0], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture),
-                double.Parse(values[1], CultureInfo.InvariantCulture),
-                double.Parse(values[2], CultureInfo.InvariantCulture),
-                double.Parse(values[3], CultureInfo.InvariantCulture),
-                double.Parse(values[4], CultureInfo.InvariantCulture),
-                long.Parse(values[5], CultureInfo.InvariantCulture),
-                int.Parse(values[6], CultureInfo.InvariantCulture));
-        }
-
-        public static bool TryParse(string message, out DailyWeeklyMonthlyMessage dailyWeeklyMonthlyMessage)
-        {
-            DateTime timestamp = default;
-            double high = default;
-            double low = default;
-            double open = default;
-            double close = default;
-            long periodVolume = default;
-            int openInterest = default;
-
-            var values = message.SplitFeedMessage();
-            var parsed = values.Length >= 7 &&
-                         DateTime.TryParseExact(values[0], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out timestamp) &
-                         double.TryParse(values[1], NumberStyles.Any, CultureInfo.InvariantCulture, out high) &
-                         double.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out low) &
-                         double.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out open) &
-                         double.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out close) &
-                         long.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out periodVolume) &
-                         int.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out openInterest);
-
-            dailyWeeklyMonthlyMessage = new DailyWeeklyMonthlyMessage(timestamp, high, low, open, close, periodVolume, openInterest);
-            return parsed;
+            throw new Exception($"Unable to parse message into DailyWeeklyMonthlyMessage\nmessage={message}");
         }
 
         public static DailyWeeklyMonthlyMessage ParseWithRequestId(string message)
         {
-            var values = message.SplitFeedMessage();
-            var requestId = values[0];
+            if (TryParseInner(message, out var dailyWeeklyMonthlyMessage, true))
+            {
+                return dailyWeeklyMonthlyMessage;
+            }
 
-            return new DailyWeeklyMonthlyMessage(
-                DateTime.ParseExact(values[1], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture),
-                double.Parse(values[2], CultureInfo.InvariantCulture),
-                double.Parse(values[3], CultureInfo.InvariantCulture),
-                double.Parse(values[4], CultureInfo.InvariantCulture),
-                double.Parse(values[5], CultureInfo.InvariantCulture),
-                long.Parse(values[6], CultureInfo.InvariantCulture),
-                int.Parse(values[7], CultureInfo.InvariantCulture),
-                requestId);
+            throw new Exception($"Unable to parse message into DailyWeeklyMonthlyMessage\nmessage={message}");
+        }
+
+        public static bool TryParse(string message, out DailyWeeklyMonthlyMessage dailyWeeklyMonthlyMessage)
+        {
+            return TryParseInner(message, out dailyWeeklyMonthlyMessage, false);
+        }
+
+        public static bool TryParseWithRequestId(string message, out DailyWeeklyMonthlyMessage dailyWeeklyMonthlyMessage)
+        {
+            return TryParseInner(message, out dailyWeeklyMonthlyMessage, true);
         }
 
         public static IEnumerable<DailyWeeklyMonthlyMessage> ParseFromFile(string path, bool hasRequestId = false)
@@ -132,6 +108,59 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public override string ToString()
         {
             return $"{nameof(Timestamp)}: {Timestamp}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Open)}: {Open}, {nameof(Close)}: {Close}, {nameof(PeriodVolume)}: {PeriodVolume}, {nameof(OpenInterest)}: {OpenInterest}, {nameof(RequestId)}: {RequestId}";
+        }
+
+        private static bool TryParseInner(string message, out DailyWeeklyMonthlyMessage dailyWeeklyMonthlyMessage, bool hasRequestId)
+        {
+            var messageDataIdIndex = hasRequestId ? 1 : 0;
+            var indexBase = messageDataIdIndex;
+            var values = message.SplitFeedMessage();
+            if (values[messageDataIdIndex] == HistoricalMessageHandler.HistoricalDataId)
+            {
+                // protocol 6.2
+                return TryParseInnerParser(values, hasRequestId, ++indexBase, out dailyWeeklyMonthlyMessage);
+            }
+
+            // protocol <6.2
+            return TryParseInnerParser(values, hasRequestId, indexBase, out dailyWeeklyMonthlyMessage);
+        }
+
+        private static bool TryParseInnerParser(string[] values, bool hasRequestId, int indexBase, out DailyWeeklyMonthlyMessage dailyWeeklyMonthlyMessage)
+        {
+            dailyWeeklyMonthlyMessage = default;
+            DateTime timestamp = default;
+            double high = default;
+            double low = default;
+            double open = default;
+            double close = default;
+            long periodVolume = default;
+            int openInterest = default;
+
+            var parsed =
+                         DateTime.TryParseExact(values[indexBase + 0], DailyWeeklyMonthlyDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out timestamp) &&
+                         double.TryParse(values[indexBase + 1], NumberStyles.Any, CultureInfo.InvariantCulture, out high) &&
+                         double.TryParse(values[indexBase + 2], NumberStyles.Any, CultureInfo.InvariantCulture, out low) &&
+                         double.TryParse(values[indexBase + 3], NumberStyles.Any, CultureInfo.InvariantCulture, out open) &&
+                         double.TryParse(values[indexBase + 4], NumberStyles.Any, CultureInfo.InvariantCulture, out close) &&
+                         long.TryParse(values[indexBase + 5], NumberStyles.Any, CultureInfo.InvariantCulture, out periodVolume) &&
+                         int.TryParse(values[indexBase + 6], NumberStyles.Any, CultureInfo.InvariantCulture, out openInterest);
+
+            if (parsed)
+            {
+                dailyWeeklyMonthlyMessage =
+                    new DailyWeeklyMonthlyMessage(
+                        timestamp, 
+                        high, 
+                        low, 
+                        open, 
+                        close, 
+                        periodVolume, 
+                        openInterest,
+                        hasRequestId ? values[0] : null);
+            }
+
+            return parsed;
+
         }
     }
 }

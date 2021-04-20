@@ -19,6 +19,12 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
         public static SicCodeInfoMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
+            if (values[0] == SymbolDefault.SymbolsDataId)
+            {
+                return new SicCodeInfoMessage(
+                    int.Parse(values[1], CultureInfo.InvariantCulture),
+                    values[2]);
+            }
 
             return new SicCodeInfoMessage(
                 int.Parse(values[0], CultureInfo.InvariantCulture),
@@ -28,12 +34,18 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
         public static SicCodeInfoMessage ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
-            var requestId = values[0];
+            if (values[1] == SymbolDefault.SymbolsDataId)
+            {
+                return new SicCodeInfoMessage(
+                    int.Parse(values[2], CultureInfo.InvariantCulture),
+                    values[3],
+                    values[0]);
+            }
 
             return new SicCodeInfoMessage(
                 int.Parse(values[1], CultureInfo.InvariantCulture),
                 values[2],
-                requestId);
+                values[0]);
         }
 
         public override bool Equals(object obj)
@@ -55,7 +67,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
                 return hash;
             }
         }
-        
+
         public override string ToString()
         {
             return $"{nameof(SicCode)}: {SicCode}, {nameof(Description)}: {Description}, {nameof(RequestId)}: {RequestId}";

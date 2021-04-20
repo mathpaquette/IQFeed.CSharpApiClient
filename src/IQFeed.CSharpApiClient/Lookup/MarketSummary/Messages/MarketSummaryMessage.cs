@@ -10,15 +10,16 @@ using System.Threading.Tasks;
 namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
 {
     /// <summary>
-    /// Until Market Summaries are out of beta and fixed, the field names/orders/count could change, 
-    /// in fact, there is no list of fields published in the docs, so it may never be guarenteed
-    /// so treat as dynamic fields, and parse into what we think we know exists.
-    /// This doesn't currently conform to the way Dynamic Fields are handled elsewhere
+    /// Market Summaries must be treated as dynamic fields, and parsed into what we think we know exists.
+    /// This doesn't currently entirely conform to the way Dynamic Fields are handled elsewhere
     /// but this was written to align with an alternate implementation of DynamicFields
     /// before there was an official version.
+    /// As of now, it is also assumed that the protocol version is 6.2 to handle the addition constant field "LM"
     /// </summary>
     public class MarketSummaryMessage
     {
+        public const string MarketSummaryDataId = "LM";
+
 
         public MarketSummaryMessage(string[] values, MarketSummaryHandler marketSummaryHandler)
         {
@@ -28,6 +29,10 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
                 {
                     case MarketSummaryDynamicFieldset.RequestId:
                         RequestId = (string)marketSummaryHandler.FieldConvertors[(int)MarketSummaryDynamicFieldset.RequestId].Invoke(values[index]);
+                        break;
+
+                    case MarketSummaryDynamicFieldset.LM:
+                        // don't need this. Ignore it!
                         break;
 
                     case MarketSummaryDynamicFieldset.Symbol:

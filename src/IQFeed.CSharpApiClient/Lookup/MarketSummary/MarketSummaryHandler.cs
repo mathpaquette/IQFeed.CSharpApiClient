@@ -38,9 +38,10 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary
         {
             var fieldConvertors = new Func<string, object>[Enum.GetNames(typeof(MarketSummaryDynamicFieldset)).Length];
             fieldConvertors[(int)MarketSummaryDynamicFieldset.RequestId] = (value) => value;
-            fieldConvertors[(int) MarketSummaryDynamicFieldset.Symbol] = (value) => value;
-            fieldConvertors[(int) MarketSummaryDynamicFieldset.Exchange] = (value) => int.Parse(value);
-            fieldConvertors[(int) MarketSummaryDynamicFieldset.Type] = (value) => int.Parse(value);
+            fieldConvertors[(int)MarketSummaryDynamicFieldset.LM] = (value) => value;
+            fieldConvertors[(int)MarketSummaryDynamicFieldset.Symbol] = (value) => value;
+            fieldConvertors[(int)MarketSummaryDynamicFieldset.Exchange] = (value) => int.Parse(value);
+            fieldConvertors[(int)MarketSummaryDynamicFieldset.Type] = (value) => int.Parse(value);
             fieldConvertors[(int)MarketSummaryDynamicFieldset.Last] = (value) => StringExtensions.ToNullableDouble(value);
             fieldConvertors[(int)MarketSummaryDynamicFieldset.TradeSize] = (value) => StringExtensions.ToNullableInt(value);
             fieldConvertors[(int)MarketSummaryDynamicFieldset.TradedMarket] = (value) => StringExtensions.ToNullableInt(value);
@@ -71,7 +72,7 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary
             fieldConvertors[(int)MarketSummaryDynamicFieldset.OpenInterest] = (value) => StringExtensions.ToNullableInt(value);
             fieldConvertors[(int)MarketSummaryDynamicFieldset.Settlement] = (value) => StringExtensions.ToNullableDouble(value);
             fieldConvertors[(int)MarketSummaryDynamicFieldset.SettlementDate] = (value) => StringExtensions.ToNullableDateTime(value, SourceDateFormat);
-            fieldConvertors[(int) MarketSummaryDynamicFieldset.ExpirationDate] = (value) => StringExtensions.ToNullableDateTime(value, SourceDateFormat);
+            fieldConvertors[(int)MarketSummaryDynamicFieldset.ExpirationDate] = (value) => StringExtensions.ToNullableDateTime(value, SourceDateFormat);
             fieldConvertors[(int)MarketSummaryDynamicFieldset.Strike] = (value) => StringExtensions.ToNullableDouble(value);
             return fieldConvertors;
         }

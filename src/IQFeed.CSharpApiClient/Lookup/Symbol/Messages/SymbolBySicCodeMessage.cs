@@ -24,28 +24,46 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 
         public static SymbolBySicCodeMessage Parse(string message)
         {
-            var values = message.SplitFeedMessage(5);
+            var values = message.SplitFeedMessage();
+            if (values[0] == SymbolDefault.SymbolsDataId)
+            {
+                return new SymbolBySicCodeMessage(
+                    int.Parse(values[1], CultureInfo.InvariantCulture),
+                    values[2],
+                    int.Parse(values[3], CultureInfo.InvariantCulture),
+                    int.Parse(values[4], CultureInfo.InvariantCulture),
+                    values.RemainingValues(5, true));
+            }
 
             return new SymbolBySicCodeMessage(
                 int.Parse(values[0], CultureInfo.InvariantCulture),
                 values[1],
                 int.Parse(values[2], CultureInfo.InvariantCulture),
                 int.Parse(values[3], CultureInfo.InvariantCulture),
-                values[4]);
+                values.RemainingValues(4, true));
         }
 
         public static SymbolBySicCodeMessage ParseWithRequestId(string message)
         {
-            var values = message.SplitFeedMessage(6);
-            var requestId = values[0];
+            var values = message.SplitFeedMessage();
+            if (values[1] == SymbolDefault.SymbolsDataId)
+            {
+                return new SymbolBySicCodeMessage(
+                    int.Parse(values[2], CultureInfo.InvariantCulture),
+                    values[3],
+                    int.Parse(values[4], CultureInfo.InvariantCulture),
+                    int.Parse(values[5], CultureInfo.InvariantCulture),
+                    values.RemainingValues(6, true),
+                    values[0]);
+            }
 
             return new SymbolBySicCodeMessage(
                 int.Parse(values[1], CultureInfo.InvariantCulture),
                 values[2],
                 int.Parse(values[3], CultureInfo.InvariantCulture),
                 int.Parse(values[4], CultureInfo.InvariantCulture),
-                values[5],
-                requestId);
+                values.RemainingValues(5, true),
+                values[0]);
         }
 
         public override bool Equals(object obj)

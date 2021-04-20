@@ -4,6 +4,11 @@ using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.News.Messages
 {
+    /// <summary>
+    /// NewsHeadlineMessage object
+    /// As there is no facility to store NewsHeadlines to disk through NewsFacade, we will assume
+    /// that all news headlines are protocol version 6.2
+    /// </summary>
     public class NewsHeadlinesMessage
     {
         // 20200611133103
@@ -28,21 +33,7 @@ namespace IQFeed.CSharpApiClient.Lookup.News.Messages
 
         public static NewsHeadlinesMessage Parse(string message)
         {
-            // N,BEN,22290175664,:BZRatings::AAPL::AMD::AVGO::INTC::MRVL::NVDA::TSLA::XLNX:,20200612131321,Why Key Intel Chip Design Exec's Departure Is Positive For AMD, Nvidia
-            var values = message.SplitFeedMessage();
-            var symbols = values[3].Replace("::", ",").Replace(":", "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            return new NewsHeadlinesMessage(
-                values[1],
-                values[2],
-                symbols,
-                DateTime.ParseExact(values[4], NewsHeadlinesTimestampFormat, CultureInfo.InvariantCulture),
-                values[5]
-            );
-        }
-
-        public static NewsHeadlinesMessage ParseWithRequestId(string message)
-        {
-            // TEST,N,BEN,22290175664,:BZRatings::AAPL::AMD::AVGO::INTC::MRVL::NVDA::TSLA::XLNX:,20200612131321,Why Key Intel Chip Design Exec's Departure Is Positive For AMD, Nvidia
+            // LN,N,BEN,22290175664,:BZRatings::AAPL::AMD::AVGO::INTC::MRVL::NVDA::TSLA::XLNX:,20200612131321,Why Key Intel Chip Design Exec's Departure Is Positive For AMD, Nvidia
             var values = message.SplitFeedMessage();
             var symbols = values[4].Replace("::", ",").Replace(":", "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             return new NewsHeadlinesMessage(
@@ -50,7 +41,21 @@ namespace IQFeed.CSharpApiClient.Lookup.News.Messages
                 values[3],
                 symbols,
                 DateTime.ParseExact(values[5], NewsHeadlinesTimestampFormat, CultureInfo.InvariantCulture),
-                values[6],
+                values[6]
+            );
+        }
+
+        public static NewsHeadlinesMessage ParseWithRequestId(string message)
+        {
+            // TEST,LN,N,BEN,22290175664,:BZRatings::AAPL::AMD::AVGO::INTC::MRVL::NVDA::TSLA::XLNX:,20200612131321,Why Key Intel Chip Design Exec's Departure Is Positive For AMD, Nvidia
+            var values = message.SplitFeedMessage();
+            var symbols = values[5].Replace("::", ",").Replace(":", "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            return new NewsHeadlinesMessage(
+                values[3],
+                values[4],
+                symbols,
+                DateTime.ParseExact(values[6], NewsHeadlinesTimestampFormat, CultureInfo.InvariantCulture),
+                values[7],
                 values[0]
             );
         }
