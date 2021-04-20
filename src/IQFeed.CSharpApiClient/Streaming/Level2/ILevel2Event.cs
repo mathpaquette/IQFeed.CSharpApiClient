@@ -13,5 +13,15 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
         event Action<ErrorMessage> Error;
         event Action<TimestampMessage> Timestamp;
         event Action<SystemMessage> System;
+
+        //protocol 6.2 events
+        event Action<OrderAddUpdateSummaryMessage> OrderAdd;
+        event Action<OrderAddUpdateSummaryMessage> OrderUpdate;
+        event Action<OrderAddUpdateSummaryMessage> OrderSummary;
+        event Action<OrderDeleteMessage> OrderDelete;
+        event Action<PriceLevelOrderMessage> PriceLevelOrder;
+        event Action<PriceLevelUpdateSummaryMessage> PriceLevelSummary;
+        event Action<PriceLevelUpdateSummaryMessage> PriceLevelUpdate;
+        event Action<PriceLevelDeleteMessage> PriceLevelDelete;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration.Internal;
 using System.Globalization;
 using IQFeed.CSharpApiClient.Extensions;
 using IQFeed.CSharpApiClient.Lookup.Common;
@@ -35,64 +36,32 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
 
         public static IntervalMessage Parse(string message)
         {
-            var values = message.SplitFeedMessage();
+            if (TryParseInner(message, out var intervalMessage, false))
+            {
+                return intervalMessage;
+            }
 
-            return new IntervalMessage(
-                DateTime.ParseExact(values[0], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
-                double.Parse(values[1], CultureInfo.InvariantCulture),
-                double.Parse(values[2], CultureInfo.InvariantCulture),
-                double.Parse(values[3], CultureInfo.InvariantCulture),
-                double.Parse(values[4], CultureInfo.InvariantCulture),
-                long.Parse(values[5], CultureInfo.InvariantCulture),
-                int.Parse(values[6], CultureInfo.InvariantCulture),
-                int.Parse(values[7], CultureInfo.InvariantCulture));
-        }
-
-        public static bool TryParse(string message, out IntervalMessage intervalMessage)
-        {
-            intervalMessage = default;
-            DateTime timestamp = default;
-            double high = default;
-            double low = default;
-            double open = default;
-            double close = default;
-            long totalVolume = default;
-            int periodVolume = default;
-            int numberOfTrades = default;
-
-            var values = message.SplitFeedMessage();
-            var parsed = values.Length >= 8 &&
-                         DateTime.TryParseExact(values[0], IntervalDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out timestamp) &&
-                         double.TryParse(values[1], NumberStyles.Any, CultureInfo.InvariantCulture, out high) &&
-                         double.TryParse(values[2], NumberStyles.Any, CultureInfo.InvariantCulture, out low) &&
-                         double.TryParse(values[3], NumberStyles.Any, CultureInfo.InvariantCulture, out open) &&
-                         double.TryParse(values[4], NumberStyles.Any, CultureInfo.InvariantCulture, out close) &&
-                         long.TryParse(values[5], NumberStyles.Any, CultureInfo.InvariantCulture, out totalVolume) &&
-                         int.TryParse(values[6], NumberStyles.Any, CultureInfo.InvariantCulture, out periodVolume) &&
-                         int.TryParse(values[7], NumberStyles.Any, CultureInfo.InvariantCulture, out numberOfTrades);
-
-            if (!parsed)
-                return false;
-
-            intervalMessage = new IntervalMessage(timestamp, high, low, open, close, totalVolume, periodVolume, numberOfTrades);
-            return true;
+            throw new Exception($"Unable to parse message into IntervalMessage\nmessage={message}");
         }
 
         public static IntervalMessage ParseWithRequestId(string message)
         {
-            var values = message.SplitFeedMessage();
-            var requestId = values[0];
+            if (TryParseInner(message, out var intervalMessage, true))
+            {
+                return intervalMessage;
+            }
 
-            return new IntervalMessage(
-                DateTime.ParseExact(values[1], IntervalDateTimeFormat, CultureInfo.InvariantCulture),
-                double.Parse(values[2], CultureInfo.InvariantCulture),
-                double.Parse(values[3], CultureInfo.InvariantCulture),
-                double.Parse(values[4], CultureInfo.InvariantCulture),
-                double.Parse(values[5], CultureInfo.InvariantCulture),
-                long.Parse(values[6], CultureInfo.InvariantCulture),
-                int.Parse(values[7], CultureInfo.InvariantCulture),
-                int.Parse(values[8], CultureInfo.InvariantCulture),
-                requestId);
+            throw new Exception($"Unable to parse message into IntervalMessage\nmessage={message}");
+        }
+
+        public static bool TryParse(string message, out IntervalMessage intervalMessage)
+        {
+            return TryParseInner(message, out intervalMessage, false);
+        }
+
+        public static bool TryParseWithRequestId(string message, out IntervalMessage intervalMessage)
+        {
+            return TryParseInner(message, out intervalMessage, true);
         }
 
         public static IEnumerable<IntervalMessage> ParseFromFile(string path, bool hasRequestId = false)
@@ -144,6 +113,60 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         public override string ToString()
         {
             return $"{nameof(Timestamp)}: {Timestamp}, {nameof(High)}: {High}, {nameof(Low)}: {Low}, {nameof(Open)}: {Open}, {nameof(Close)}: {Close}, {nameof(TotalVolume)}: {TotalVolume}, {nameof(PeriodVolume)}: {PeriodVolume}, {nameof(NumberOfTrades)}: {NumberOfTrades}, {nameof(RequestId)}: {RequestId}";
+        }
+
+        private static bool TryParseInner(string message, out IntervalMessage intervalMessage, bool hasRequestId)
+        {
+            var messageDataIdIndex = hasRequestId ? 1 : 0;
+            var indexBase = messageDataIdIndex;
+            var values = message.SplitFeedMessage();
+            if (values[messageDataIdIndex] == HistoricalMessageHandler.HistoricalDataId)
+            {
+                // protocol 6.2
+                return TryParseInnerParser(values, hasRequestId, ++indexBase, out intervalMessage);
+            }
+
+            // protocol <6.2
+            return TryParseInnerParser(values, hasRequestId, indexBase, out intervalMessage);
+        }
+
+        private static bool TryParseInnerParser(string[] values, bool hasRequestId, int indexBase, out IntervalMessage intervalMessage)
+        {
+            intervalMessage = null;
+            DateTime timestamp = default;
+            double high = default;
+            double low = default;
+            double open = default;
+            double close = default;
+            long totalVolume = default;
+            int periodVolume = default;
+            int numberOfTrades = default;
+
+            var parsed =
+                         DateTime.TryParseExact(values[indexBase + 0], IntervalDateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out timestamp) &&
+                         double.TryParse(values[indexBase + 1], NumberStyles.Any, CultureInfo.InvariantCulture, out high) &&
+                         double.TryParse(values[indexBase + 2], NumberStyles.Any, CultureInfo.InvariantCulture, out low) &&
+                         double.TryParse(values[indexBase + 3], NumberStyles.Any, CultureInfo.InvariantCulture, out open) &&
+                         double.TryParse(values[indexBase + 4], NumberStyles.Any, CultureInfo.InvariantCulture, out close) &&
+                         long.TryParse(values[indexBase + 5], NumberStyles.Any, CultureInfo.InvariantCulture, out totalVolume) &&
+                         int.TryParse(values[indexBase + 6], NumberStyles.Any, CultureInfo.InvariantCulture, out periodVolume) &&
+                         int.TryParse(values[indexBase + 7], NumberStyles.Any, CultureInfo.InvariantCulture, out numberOfTrades);
+
+            if (parsed)
+            {
+                intervalMessage = new IntervalMessage(
+                    timestamp, 
+                    high, 
+                    low, 
+                    open, 
+                    close, 
+                    totalVolume, 
+                    periodVolume, 
+                    numberOfTrades,
+                    hasRequestId ? values[0] : null);
+            }
+
+            return parsed;
         }
     }
 }
