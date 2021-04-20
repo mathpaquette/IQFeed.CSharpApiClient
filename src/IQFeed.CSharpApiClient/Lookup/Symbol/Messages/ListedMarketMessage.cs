@@ -24,7 +24,18 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
 
         public static ListedMarketMessage Parse(string message)
         {
+            // 6 fields for protocol <=6.1, 7 fields protocol==6.2 (without requestId) last field always null
             var values = message.SplitFeedMessage();
+
+            if (values[0] == SymbolDefault.SymbolsDataId)
+            {
+                return new ListedMarketMessage(
+                    int.Parse(values[1], CultureInfo.InvariantCulture),
+                    values[2],
+                    values[3],
+                    int.Parse(values[4], CultureInfo.InvariantCulture),
+                    values[5]);
+            }
 
             return new ListedMarketMessage(                
                 int.Parse(values[0], CultureInfo.InvariantCulture),
@@ -37,7 +48,16 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
         public static ListedMarketMessage ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
-            var requestId = values[0];
+            if (values[1] == SymbolDefault.SymbolsDataId)
+            {
+                return new ListedMarketMessage(
+                    int.Parse(values[2], CultureInfo.InvariantCulture),
+                    values[3],
+                    values[4],
+                    int.Parse(values[5], CultureInfo.InvariantCulture),
+                    values[6],
+                    values[0]);
+            }
 
             return new ListedMarketMessage(
                 int.Parse(values[1], CultureInfo.InvariantCulture),
@@ -45,7 +65,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
                 values[3],
                 int.Parse(values[4], CultureInfo.InvariantCulture),
                 values[5],
-                requestId);
+                values[0]);
         }
 
         public override bool Equals(object obj)

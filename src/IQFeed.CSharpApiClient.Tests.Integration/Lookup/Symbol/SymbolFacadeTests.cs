@@ -74,7 +74,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.Symbol
         public async Task Should_Return_ListedMarkets()
         {
             // Act
-            var markets = await _lookupClient.Symbol.GetListedMarketsAsync();
+            var markets = await _lookupClient.Symbol.GetListedMarketsAsync("TEST"); //using RequestId as workaround for IQFeed 6.2.0.15 bug
 
             // Assert
             Assert.Greater(markets.Count(), 0);

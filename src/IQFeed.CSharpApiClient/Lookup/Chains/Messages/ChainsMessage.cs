@@ -1,20 +1,36 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Chains.Messages
 {
     public class ChainsMessage<T>
     {
-        public ChainsMessage(IEnumerable<T> chains)
+        public const string ChainsDataId = "LC";
+
+        public ChainsMessage()
+        {
+            Chains = new List<T>();
+        }
+
+        public ChainsMessage(IList<T> chains)
         {
             Chains = chains;
         }
 
-        public IEnumerable<T> Chains { get; private set; }
+        public IList<T> Chains { get; private set; }
 
-        protected static IEnumerable<string> GetSymbols(string message)
+        public string RequestId { get; set; }
+
+        protected IEnumerable<string> GetSymbols(string message, bool hasRequestId)
         {
-            var symbols = message.SplitFeedMessage();
+            // we now have either: LC,ListOfSymbols OR requestId,LC,ListOfSymbols
+            var values = message.SplitFeedMessage();
+            RequestId = hasRequestId ? values[0] : null;
+            var symbolBase = hasRequestId ? 2 : 1;
+            var length = values.Length - symbolBase;
+            var symbols = new Memory<string>(values, symbolBase, length).ToArray();
+
             foreach (var symbol in symbols)
             {
                 // skip characters

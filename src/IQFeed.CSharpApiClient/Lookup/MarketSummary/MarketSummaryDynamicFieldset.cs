@@ -9,6 +9,7 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary
     public enum MarketSummaryDynamicFieldset
     {
         RequestId,
+        LM,         // Protocol 6.2 DataId Constant 'LM'
         Symbol,
         Exchange,   // ExchangeId
         Type,       // SecurityType

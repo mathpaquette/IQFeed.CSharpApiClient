@@ -82,5 +82,23 @@ namespace IQFeed.CSharpApiClient.Extensions
         {
             return s ?? "<NULL>";
         }
+        
+        /// <summary>
+        /// This allows us to take the remaining values from an array of strings
+        /// (from a particular start point), and rejoin them back into a single string.
+        /// Since we have the message string, it might be more efficient to work out
+        /// where in the original string the remaining values start, and just slice the string
+        /// But since that will involve scanning the string, I doubt there's a lot in it.
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="startFrom"></param>
+        /// <param name="omitLast"></param>
+        /// <returns></returns>
+        public static string RemainingValues(this string[] values, int startFrom, bool omitLast = false)
+        {
+            var length = omitLast ? values.Length - startFrom - 1 : values.Length - startFrom;
+            var span = new Memory<string>(values, startFrom, length);
+            return string.Join(",", span.ToArray());
+        }
     }
 }

@@ -14,6 +14,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
         public event Action<TimestampMessage> Timestamp;
         public event Action<NewsMessage> News;
         public event Action<RegionalUpdateMessage> Regional;
+        public event Action<TradeCorrectionMessage> TradeCorrection;
 
         public void ProcessMessages(byte[] messageBytes, int count)
         {
@@ -50,6 +51,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
                         break;
                     case 'E': // An error message
                         ProcessErrorMessage(message);
+                        break;
+                    case 'C': // A trade correction message
+                        ProcessTradeCorrectionMessage(message);
                         break;
                     default:
                         throw new Exception("Unknown type of level 1 message received.");
@@ -101,6 +105,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
         {
             var errorMessage = ErrorMessage.Parse(msg);
             Error?.Invoke(errorMessage);
+        }
+
+        private void ProcessTradeCorrectionMessage(string msg)
+        {
+            var tradeCorrectionMessage = TradeCorrectionMessage.Parse(msg);
+            TradeCorrection?.Invoke(tradeCorrectionMessage);
         }
     }
 }

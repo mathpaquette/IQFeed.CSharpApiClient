@@ -6,6 +6,8 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical
 {
     public class HistoricalMessageHandler : BaseLookupMessageHandler, IHistoricalMessageHandler
     {
+        public const string HistoricalDataId = "LH";
+
         public static readonly TryParseDelegate<string, TickMessage, bool> TryParseTick = TickMessage.TryParse;
         public static readonly TryParseDelegate<string, IntervalMessage, bool> TryParseInterval = IntervalMessage.TryParse;
         public static readonly TryParseDelegate<string, DailyWeeklyMonthlyMessage, bool> TryParseDaily = DailyWeeklyMonthlyMessage.TryParse;

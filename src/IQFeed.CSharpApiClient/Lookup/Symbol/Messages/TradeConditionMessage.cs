@@ -21,6 +21,13 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
         public static TradeConditionMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
+            if (values[0] == SymbolDefault.SymbolsDataId)
+            {
+                return new TradeConditionMessage(
+                    int.Parse(values[1], CultureInfo.InvariantCulture),
+                    values[2],
+                    values[3]);
+            }
 
             return new TradeConditionMessage(
                 int.Parse(values[0], CultureInfo.InvariantCulture),
@@ -31,13 +38,20 @@ namespace IQFeed.CSharpApiClient.Lookup.Symbol.Messages
         public static TradeConditionMessage ParseWithRequestId(string message)
         {
             var values = message.SplitFeedMessage();
-            var requestId = values[0];
+            if (values[1] == SymbolDefault.SymbolsDataId)
+            {
+                return new TradeConditionMessage(
+                    int.Parse(values[2], CultureInfo.InvariantCulture),
+                    values[3],
+                    values[4],
+                    values[0]);
+            }
 
             return new TradeConditionMessage(
                 int.Parse(values[1], CultureInfo.InvariantCulture),
                 values[2],
                 values[3],
-                requestId);
+                values[0]);
         }
 
         public override bool Equals(object obj)

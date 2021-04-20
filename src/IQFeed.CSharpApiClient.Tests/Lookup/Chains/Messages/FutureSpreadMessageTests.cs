@@ -15,14 +15,18 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Chains.Messages
         {
             // Arrange
             TestHelper.SetThreadCulture(cultureName);
-            var message = "@ESU18-@ESH19,@ESU18-@ESM19,@ESU18-@ESU19,@ESU18-@ESZ18,@ESZ18-@ESH19,@ESZ18-@ESM19,@ESZ18-@ESU19,@ESH19-@ESM19,@ESH19-@ESU19,@ESM19-@ESU19,";
+            var message = "LC,@ESU18-@ESH19,@ESU18-@ESM19,@ESU18-@ESU19,@ESU18-@ESZ18,@ESZ18-@ESH19,@ESZ18-@ESM19,@ESZ18-@ESU19,@ESH19-@ESM19,@ESH19-@ESU19,@ESM19-@ESU19,";
+            var messageWithRequestId = "TESTREQUEST,LC,@ESU18-@ESH19,@ESU18-@ESM19,@ESU18-@ESU19,@ESU18-@ESZ18,@ESZ18-@ESH19,@ESZ18-@ESM19,@ESZ18-@ESU19,@ESH19-@ESM19,@ESH19-@ESU19,@ESM19-@ESU19,";
 
             // Act
             var futureSpreadMessageParsed = FutureSpreadMessage.Parse(message);
+            var futureSpreadMessageWithRequestIdParsed = FutureSpreadMessage.ParseWithRequestId(messageWithRequestId);
             var futureSpread = new FutureSpread("@ESU18-@ESH19", new Future("@ESU18", "@ES", new DateTime(2018, 09, 01)), new Future("@ESH19", "@ES", new DateTime(2019, 03, 01)));
 
             // Assert
             Assert.AreEqual(futureSpreadMessageParsed.Chains.First(), futureSpread);
+            Assert.AreEqual("TESTREQUEST", futureSpreadMessageWithRequestIdParsed.RequestId);
+            Assert.AreEqual(futureSpreadMessageWithRequestIdParsed.Chains.First(), futureSpread);
         }
     }
 }
