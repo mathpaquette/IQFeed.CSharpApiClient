@@ -9,7 +9,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Historical.Messages
         double Low { get; }
         int NumberOfTrades { get; }
         double Open { get; }
-        int PeriodVolume { get; }
+        long PeriodVolume { get; }
         long TotalVolume { get; }
     }
 }

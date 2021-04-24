@@ -1,4 +1,5 @@
-﻿using IQFeed.CSharpApiClient.Common.Exceptions;
+﻿using System.Collections.Generic;
+using IQFeed.CSharpApiClient.Common.Exceptions;
 
 namespace IQFeed.CSharpApiClient.Common
 {
@@ -12,11 +13,14 @@ namespace IQFeed.CSharpApiClient.Common
             {
                 case IQFeedDefault.ProtocolNoDataCharacters:
                     return new NoDataIQFeedException(request, errorMessage, messageTrace);
-                case InvalidDataIQFeedException.InvalidData:
-                    return new InvalidDataIQFeedException(request, errorMessage, messageTrace);
                 default:
                     return new IQFeedException(request, DefaultMessage, errorMessage, messageTrace);
             }
+        }
+
+        public InvalidDataIQFeedException<T> CreateNew<T>(string request, IEnumerable<InvalidMessage<T>> invalidMessages, IEnumerable<T> messages)
+        {
+            return new InvalidDataIQFeedException<T>(request, invalidMessages, messages);
         }
     }
 }
