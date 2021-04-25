@@ -1,11 +1,18 @@
-﻿namespace IQFeed.CSharpApiClient.Common.Exceptions
+﻿using System.Collections.Generic;
+
+namespace IQFeed.CSharpApiClient.Common.Exceptions
 {
     // ReSharper disable once InconsistentNaming
-    public class InvalidDataIQFeedException : IQFeedException
+    public class InvalidDataIQFeedException<T> : IQFeedException
     {
-        public const string InvalidData = "Invalid data";
-        private const string InvalidDataMessage = "Unable to parse received data.";
+        public IEnumerable<InvalidMessage<T>> InvalidMessages { get; }
+        public IEnumerable<T> Messages { get; }
 
-        public InvalidDataIQFeedException(string request, string errorMessage, string messageTrace) : base(request, InvalidDataMessage, errorMessage, messageTrace) { }
+        public InvalidDataIQFeedException(string request, IEnumerable<InvalidMessage<T>> invalidMessages, IEnumerable<T> messages) : 
+            base(request, "Unable to parse received data.", "Invalid data", $"Please check ${nameof(InvalidMessages)} property.")
+        {
+            InvalidMessages = invalidMessages;
+            Messages = messages;
+        }
     }
 }

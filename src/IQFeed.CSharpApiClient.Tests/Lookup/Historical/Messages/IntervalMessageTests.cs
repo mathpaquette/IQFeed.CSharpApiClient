@@ -63,7 +63,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Historical.Messages
         public void Should_TryParse_Return_False_When_Invalid_Data_Overflow()
         {
             // Act
-            var parsed = IntervalMessage.TryParse($"2018-06-29 16:12:40,185.2500,185.2600,185.2700,185.2800,0,{long.MaxValue},0,", out _);
+            var parsed = IntervalMessage.TryParse($"2018-06-29 16:12:40,185.2500,185.2600,185.2700,185.2800,0,0,{long.MaxValue},", out _);
 
             // Assert
             Assert.IsFalse(parsed);

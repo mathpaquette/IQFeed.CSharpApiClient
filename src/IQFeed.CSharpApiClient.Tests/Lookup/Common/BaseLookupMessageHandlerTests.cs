@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using IQFeed.CSharpApiClient.Common.Exceptions;
+using System.Linq;
 using IQFeed.CSharpApiClient.Lookup.Historical;
 using IQFeed.CSharpApiClient.Tests.Common;
 using NSubstitute;
@@ -107,9 +107,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
             var container = _baseLookupMessageHandlerTestClass.ProcessMessages(HistoricalMessageHandler.TryParseTick, _errorParserFunc, messagesBytes, messagesBytes.Length);
 
             // Assert
-            Assert.AreEqual(container.End, true);
-            Assert.AreEqual(container.ErrorMessage, InvalidDataIQFeedException.InvalidData);
-            Assert.AreEqual(container.MessageTrace, message);
+            Assert.GreaterOrEqual(container.InvalidMessages.Count(), 1);
         }
 
         private class NoErrorMessageTestDataSource : IEnumerable
@@ -124,6 +122,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
                 yield return new[] { "X,,", "!ENDMSG!," };
             }
         }
+
         [TestCaseSource(typeof(NoErrorMessageTestDataSource))]
         public void Should_Return_Empty_Error_Message_When_Parsing_Messages(string[] messages)
         {

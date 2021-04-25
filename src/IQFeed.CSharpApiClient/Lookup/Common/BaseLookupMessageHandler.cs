@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using IQFeed.CSharpApiClient.Common;
-using IQFeed.CSharpApiClient.Common.Exceptions;
 using IQFeed.CSharpApiClient.Extensions;
 
 namespace IQFeed.CSharpApiClient.Lookup.Common
@@ -27,7 +26,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
             if (!string.IsNullOrEmpty(errorMsg))
             {
                 var messageTrace = Encoding.ASCII.GetString(message, 0, count);
-                return new MessageContainer<T>(parsedMessages, true, errorMsg, messageTrace);
+                return new MessageContainer<T>(errorMsg, messageTrace);
             }
 
             for (var i = 0; i < messages.Length; i++)
@@ -55,6 +54,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
             var messages = Encoding.ASCII.GetString(message, 0, count).SplitFeedLine();
 
             var parsedMessages = new List<T>();
+            var invalidMessages = new List<InvalidMessage<T>>();
             var endMsg = false;
             var lastMsgIdx = messages.Length - 1;
             var errorMsg = errorParserFunc(messages);
@@ -62,7 +62,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
             if (!string.IsNullOrEmpty(errorMsg))
             {
                 var messageTrace = Encoding.ASCII.GetString(message, 0, count);
-                return new MessageContainer<T>(parsedMessages, true, errorMsg, messageTrace);
+                return new MessageContainer<T>(errorMsg, messageTrace);
             }
 
             for (var i = 0; i < messages.Length; i++)
@@ -75,12 +75,12 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
                 }
 
                 if (!tryParseDelegate(messages[i], out var item))
-                    return new MessageContainer<T>(parsedMessages, true, InvalidDataIQFeedException.InvalidData, messages[i]);
+                    invalidMessages.Add(new InvalidMessage<T>(item, messages[i]));
 
                 parsedMessages.Add(item);
             }
 
-            return new MessageContainer<T>(parsedMessages, endMsg);
+            return new MessageContainer<T>(parsedMessages, invalidMessages, endMsg);
         }
 
         // TODO(mathip): extract common code
