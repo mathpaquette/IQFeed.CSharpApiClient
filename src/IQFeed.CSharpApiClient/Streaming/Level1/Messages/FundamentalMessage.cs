@@ -129,11 +129,116 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
             SecuritySubType = securitySubType;
         }
 
-        // Properties renumbered to match message field values below
-        public string Symbol { get; private set; }                               // 1  
-        public string ExchangeId { get; private set; }                           // 2
+        /// <summary>
+        /// Backward compatible constructor for Protocol 6.0 and lower
+        /// </summary>
+        public FundamentalMessage(
+            string symbol,
+            string exchangeId,
+            double? pe,
+            int? averageVolume,
+            double? fiftyTwoWeekHigh,
+            double? fiftyTwoWeekLow,
+            double? calendarYearHigh,
+            double? calendarYearLow,
+            double? dividendYield,
+            double? dividendAmount,
+            double? dividendRate,
+            DateTime? payDate,
+            DateTime? exDividendDate,
+            int? shortInterest,
+            double? currentYearEarningsPerShare,
+            double? nextYearEarningsPerShare,
+            double? fiveYearGrowthPercentage,
+            int? fiscalYearEnd,
+            string companyName,
+            string rootOptionSymbol,
+            double? percentHeldByInstitutions,
+            double? beta,
+            string leaps,
+            double? currentAssets,
+            double? currentLiabilities,
+            DateTime? balanceSheetDate,
+            double? longTermDebt,
+            double? commonSharesOutstanding,
+            string splitFactor1,
+            string splitFactor2,
+            string formatCode,
+            int? precision,
+            int? sic,
+            double? historicalVolatility,
+            string securityType,
+            string listedMarket,
+            DateTime? fiftyTwoWeekHighDate,
+            DateTime? fiftyTwoWeekLowDate,
+            DateTime? calendarYearHighDate,
+            DateTime? calendarYearLowDate,
+            double? yearEndClose,
+            DateTime? maturityDate,
+            double? couponRate,
+            DateTime? expirationDate,
+            double? strikePrice,
+            int? naics,
+            string exchangeRoot,
+            double? optionsPremiumMultiplier,
+            int? optionsMultipleDeliverables)
+        {
+            Symbol = symbol;
+            ExchangeId = exchangeId;
+            PE = pe;
+            AverageVolume = averageVolume;
+            FiftyTwoWeekHigh = fiftyTwoWeekHigh;
+            FiftyTwoWeekLow = fiftyTwoWeekLow;
+            CalendarYearHigh = calendarYearHigh;
+            CalendarYearLow = calendarYearLow;
+            DividendYield = dividendYield;
+            DividendAmount = dividendAmount;
+            DividendRate = dividendRate;
+            PayDate = payDate;
+            ExDividendDate = exDividendDate;
+            ShortInterest = shortInterest;
+            CurrentYearEarningsPerShare = currentYearEarningsPerShare;
+            NextYearEarningsPerShare = nextYearEarningsPerShare;
+            FiveYearGrowthPercentage = fiveYearGrowthPercentage;
+            FiscalYearEnd = fiscalYearEnd;
+            CompanyName = companyName;
+            RootOptionSymbol = rootOptionSymbol;
+            PercentHeldByInstitutions = percentHeldByInstitutions;
+            Beta = beta;
+            Leaps = leaps;
+            CurrentAssets = currentAssets;
+            CurrentLiabilities = currentLiabilities;
+            BalanceSheetDate = balanceSheetDate;
+            LongTermDebt = longTermDebt;
+            CommonSharesOutstanding = commonSharesOutstanding;
+            SplitFactor1 = splitFactor1;
+            SplitFactor2 = splitFactor2;
+            FormatCode = formatCode;
+            Precision = precision;
+            SIC = sic;
+            HistoricalVolatility = historicalVolatility;
+            SecurityType = securityType;
+            ListedMarket = listedMarket;
+            FiftyTwoWeekHighDate = fiftyTwoWeekHighDate;
+            FiftyTwoWeekLowDate = fiftyTwoWeekLowDate;
+            CalendarYearHighDate = calendarYearHighDate;
+            CalendarYearLowDate = calendarYearLowDate;
+            YearEndClose = yearEndClose;
+            MaturityDate = maturityDate;
+            CouponRate = couponRate;
+            ExpirationDate = expirationDate;
+            StrikePrice = strikePrice;
+            NAICS = naics;
+            ExchangeRoot = exchangeRoot;
+            OptionsPremiumMultiplier = optionsPremiumMultiplier;
+            OptionsMultipleDeliverables = optionsMultipleDeliverables;
+        }
+
+        #region Protocol 6.1 properties
+        public string Symbol { get; private set; }                              // 1  
+        public string ExchangeId { get; private set; }                          // 2
         public double? PE { get; private set; }                                 // 3
-        public int? AverageVolume { get; private set; }                          // 4
+        public int? AverageVolume { get; private set; }                         // 4
         /// <summary>
         /// 52-week high
         /// </summary>
@@ -147,56 +252,64 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
         public double? DividendYield { get; private set; }                      // 9
         public double? DividendAmount { get; private set; }                     // 10
         public double? DividendRate { get; private set; }                       // 11
-        public DateTime? PayDate { get; private set; }                           // 12
-        public DateTime? ExDividendDate { get; private set; }                    // 13
+        public DateTime? PayDate { get; private set; }                          // 12
+        public DateTime? ExDividendDate { get; private set; }                   // 13
         public double? CurrentYearEarningsPerShare { get; private set; }        // 14
         public double? NextYearEarningsPerShare { get; private set; }           // 15
         public double? FiveYearGrowthPercentage { get; private set; }           // 16
-        public int? FiscalYearEnd { get; private set; }                          // 17
-        public string CompanyName { get; private set; }                          // 18
-        public string RootOptionSymbol { get; private set; }                     // 19
+        public int? FiscalYearEnd { get; private set; }                         // 17
+        public string CompanyName { get; private set; }                         // 18
+        public string RootOptionSymbol { get; private set; }                    // 19
         public double? PercentHeldByInstitutions { get; private set; }          // 20
         public double? Beta { get; private set; }                               // 21
-        public string Leaps { get; private set; }                                // 22
+        public string Leaps { get; private set; }                               // 22
         public double? CurrentAssets { get; private set; }                      // 23
         public double? CurrentLiabilities { get; private set; }                 // 24
-        public DateTime? BalanceSheetDate { get; private set; }                  // 25
+        public DateTime? BalanceSheetDate { get; private set; }                 // 25
         public double? LongTermDebt { get; private set; }                       // 26
         public double? CommonSharesOutstanding { get; private set; }            // 27
-        public string SplitFactor1 { get; private set; }                         // 28
-        public string SplitFactor2 { get; private set; }                         // 29
-        public string FormatCode { get; private set; }                           // 30
-        public int? Precision { get; private set; }                              // 31   
-        public int? SIC { get; private set; }                                    // 32
+        public string SplitFactor1 { get; private set; }                        // 28
+        public string SplitFactor2 { get; private set; }                        // 29
+        public string FormatCode { get; private set; }                          // 30
+        public int? Precision { get; private set; }                             // 31   
+        public int? SIC { get; private set; }                                   // 32
         public double? HistoricalVolatility { get; private set; }               // 33
-        public string SecurityType { get; private set; }                         // 34
-        public string ListedMarket { get; private set; }                         // 35
-        public DateTime? FiftyTwoWeekHighDate { get; private set; }              // 36
-        public DateTime? FiftyTwoWeekLowDate { get; private set; }               // 37
-        public DateTime? CalendarYearHighDate { get; private set; }              // 38
-        public DateTime? CalendarYearLowDate { get; private set; }               // 39
+        public string SecurityType { get; private set; }                        // 34
+        public string ListedMarket { get; private set; }                        // 35
+        public DateTime? FiftyTwoWeekHighDate { get; private set; }             // 36
+        public DateTime? FiftyTwoWeekLowDate { get; private set; }              // 37
+        public DateTime? CalendarYearHighDate { get; private set; }             // 38
+        public DateTime? CalendarYearLowDate { get; private set; }              // 39
         public double? YearEndClose { get; private set; }                       // 40
-        public DateTime? MaturityDate { get; private set; }                      // 41
+        public DateTime? MaturityDate { get; private set; }                     // 41
         public double? CouponRate { get; private set; }                         // 42
-        public DateTime? ExpirationDate { get; private set; }                    // 43
+        public DateTime? ExpirationDate { get; private set; }                   // 43
         public double? StrikePrice { get; private set; }                        // 44
-        public int? NAICS { get; private set; }                                  // 45
-        public string ExchangeRoot { get; private set; }                         // 46
+        public int? NAICS { get; private set; }                                 // 45
+        public string ExchangeRoot { get; private set; }                        // 46
         public double? OptionsPremiumMultiplier { get; private set; }           // 47
-        public int? OptionsMultipleDeliverables { get; private set; }            // 48
+        public int? OptionsMultipleDeliverables { get; private set; }           // 48
         public TimeSpan? SessionOpenTime { get; private set; }                  // 49
         public TimeSpan? SessionCloseTime { get; private set; }                 // 50
         public string BaseCurrency { get; private set; }                        // 51
         public string ContractSize { get; private set; }                        // 52
         public string ContractMonths { get; private set; }                      // 53
-        public double? MinimumTickSize { get; private set; }                      // 54
+        public double? MinimumTickSize { get; private set; }                    // 54
         public DateTime? FirstDeliveryDate { get; private set; }                // 55
         public string FIGI { get; private set; }                                // 56
-        public int? SecuritySubType { get; private set; }                        // 57
+        public int? SecuritySubType { get; private set; }                       // 57 
+        #endregion
+
+        #region Protocol 6.0 properties
+        public int? ShortInterest { get; private set; }
+        #endregion
 
         public static FundamentalMessage Parse(string message)
         {
             var values = message.SplitFeedMessage();
+
+            if (IsProtocol60(values))
+                return ParseProtocol60(values);
 
             return new FundamentalMessage(
                 values[1].NullIfEmpty(),
@@ -258,7 +371,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                 values[57].ToNullableInt()
             );
         }
-        
+
         public string ToCsv()
         {
             return $"F,{Symbol},{ExchangeId},{PE.ToInvariantString()},{AverageVolume.ToInvariantString()},{FiftyTwoWeekHigh.ToInvariantString()}," +
@@ -454,6 +567,87 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Messages
                    $"{nameof(FirstDeliveryDate)}: {FirstDeliveryDate}" +
                    $"{nameof(FIGI)}: {FIGI}" +
                    $"{nameof(SecuritySubType)}: {SecuritySubType}";
+        }
+
+        /// <summary>
+        /// Check for protocol 6.0 reserved fields
+        /// More info: http://www.iqfeed.net/dev/api/docs/docs60/Level1FundamentalMessage.cfm
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        private static bool IsProtocol60(IReadOnlyList<string> values)
+        {
+            return string.IsNullOrEmpty(values[14]) &&  // Reserved 13
+                   string.IsNullOrEmpty(values[15]) &&  // Reserved 14
+                   string.IsNullOrEmpty(values[16]) &&  // Reserved 15
+                   string.IsNullOrEmpty(values[18]) &&  // Reserved 17
+                   string.IsNullOrEmpty(values[23]) &&  // Reserved 22
+                   string.IsNullOrEmpty(values[34]) &&  // Reserved 33
+                   string.IsNullOrEmpty(values[37]) &&  // Reserved 36
+                   string.IsNullOrEmpty(values[38]);    // Reserved 37
+        }
+
+        private static FundamentalMessage ParseProtocol60(IReadOnlyList<string> values)
+        {
+            return new FundamentalMessage(
+               values[1].NullIfEmpty(),
+               values[2].NullIfEmpty(),
+               values[3].ToNullableDouble(),
+               values[4].ToNullableInt(),
+               values[5].ToNullableDouble(),
+               values[6].ToNullableDouble(),
+               values[7].ToNullableDouble(),
+               values[8].ToNullableDouble(),
+               values[9].ToNullableDouble(),
+               values[10].ToNullableDouble(),
+               values[11].ToNullableDouble(),
+               values[12].ToNullableDateTime(FundamentalDateTimeFormat),
+               values[13].ToNullableDateTime(FundamentalDateTimeFormat),
+               //// (Reserved)
+               //// (Reserved)
+               //// (Reserved)
+               values[17].ToNullableInt(),
+               //// (Reserved)
+               values[19].ToNullableDouble(),
+               values[20].ToNullableDouble(),
+               values[21].ToNullableDouble(),
+               values[22].ToNullableInt(),
+               //// (Reserved)    
+               values[24].NullIfEmpty(),
+               values[25].NullIfEmpty(),
+               values[26].ToNullableDouble(),
+               values[27].ToNullableDouble(),
+               values[28].NullIfEmpty(),
+               values[29].ToNullableDouble(),
+               values[30].ToNullableDouble(),
+               values[31].ToNullableDateTime(FundamentalDateTimeFormat),
+               values[32].ToNullableDouble(),
+               values[33].ToNullableDouble(),
+               //// (Reserved)
+               values[35].NullIfEmpty(),
+               values[36].NullIfEmpty(),
+               //// (Reserved)
+               //// (Reserved)
+               values[39].NullIfEmpty(),
+               values[40].ToNullableInt(),
+               values[41].ToNullableInt(),
+               values[42].ToNullableDouble(),
+               values[43].NullIfEmpty(),
+               values[44].NullIfEmpty(),
+               values[45].ToNullableDateTime(FundamentalDateTimeFormat),
+               values[46].ToNullableDateTime(FundamentalDateTimeFormat),
+               values[47].ToNullableDateTime(FundamentalDateTimeFormat),
+               values[48].ToNullableDateTime(FundamentalDateTimeFormat),
+               values[49].ToNullableDouble(),
+               values[50].ToNullableDateTime(FundamentalDateTimeFormat),
+               values[51].ToNullableDouble(),
+               values[52].ToNullableDateTime(FundamentalDateTimeFormat),
+               values[53].ToNullableDouble(),
+               values[54].ToNullableInt(),
+               values[55].NullIfEmpty(),
+               values[56].ToNullableDouble(),
+               values[57].ToNullableInt()
+           );
         }
     }
 }
