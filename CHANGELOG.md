@@ -1,3 +1,11 @@
+### IQFeed.CSharpApiClient 2.7.0 - May 03, 2021
+* Added IQFeed protocol 6.1 support
+* Improved Level1 dynamic client
+
+##### Issues Resolved
+* Fixed Lookup issue with Invalid Data exception handling
+
+
 ### IQFeed.CSharpApiClient 2.6.2 - April 03, 2021
 
 ##### Issues Resolved
