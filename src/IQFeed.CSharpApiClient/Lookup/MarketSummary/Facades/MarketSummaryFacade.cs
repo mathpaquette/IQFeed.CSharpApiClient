@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Facades
 {
-    public class MarketSummaryFacade : BaseLookupFacade, IMarketSummaryFacade
+    public class MarketSummaryFacade : BaseLookupFacade, IMarketSummaryFacade<IEnumerable<MarketSummaryMessage>, IEnumerable<MarketSummaryMessage>, IEnumerable<MarketSummaryMessage>>
     {
         private readonly MarketSummaryRequestFormatter _marketSummaryRequestFormatter;
 
@@ -17,10 +17,14 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Facades
             LookupDispatcher lookupDispatcher,
             LookupRateLimiter lookupRateLimiter,
             ExceptionFactory exceptionFactory,
+            MarketSummaryFileFacade marketSummaryFileFacade,
             TimeSpan timeout) : base(lookupDispatcher, lookupRateLimiter, exceptionFactory, timeout)
         {
             _marketSummaryRequestFormatter = marketSummaryRequestFormatter;
+            File = marketSummaryFileFacade;
         }
+
+        public MarketSummaryFileFacade File { get; }
 
         public Task<IEnumerable<MarketSummaryMessage>> GetEndOfDaySummaryAsync(SecurityType securityType, int listedMarketGroupId, DateTime date, string requestId = null)
         {
