@@ -48,7 +48,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.MarketSummary
         [Test]
         public async Task Should_Return_MarketSummaryMessages_When_GetFundamentalSummaryAsync()
         {
-            var marketSummaryMessages = await _lookupClient.MarketSummary.GetEndOfDaySummaryAsync(Security_Type, GroupId, new DateTime(2020, 04, 06));
+            var marketSummaryMessages = await _lookupClient.MarketSummary.GetEndOfDayFundamentalSummaryAsync(Security_Type, GroupId, new DateTime(2020, 04, 06));
             Assert.Greater(marketSummaryMessages.Count(), 0);
         }
 
