@@ -76,7 +76,9 @@ namespace IQFeed.CSharpApiClient.Lookup
                 timeout);
 
             // MarketSummary
-            var marketSummaryFacade = new MarketSummaryFacade(new MarketSummaryRequestFormatter(), lookupDispatcher, lookupRateLimiter, exceptionFactory, timeout);
+            var marketSummaryRequestFormatter = new MarketSummaryRequestFormatter();
+            var marketSummaryFileFacade = new MarketSummaryFileFacade(marketSummaryRequestFormatter, lookupMessageFileHandler);
+            var marketSummaryFacade = new MarketSummaryFacade(marketSummaryRequestFormatter, lookupDispatcher, lookupRateLimiter, exceptionFactory, marketSummaryFileFacade, timeout);
 
             return new LookupClient(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade, marketSummaryFacade);
         }

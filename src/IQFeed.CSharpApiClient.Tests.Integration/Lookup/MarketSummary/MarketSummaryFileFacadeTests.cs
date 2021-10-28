@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.MarketSummary
 {
-    public class MarketSummaryFacadeTests
+    public class MarketSummaryFacadeFileTests
     {
         private const int TimeoutMs = 30000;
         private const SecurityType Security_Type = SecurityType.FOPTION;
@@ -18,7 +18,7 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.MarketSummary
         private LookupClient _lookupClient;
         private int _groupId;
 
-        public MarketSummaryFacadeTests()
+        public MarketSummaryFacadeFileTests()
         {
             IQFeedLauncher.Start();
         }
@@ -38,25 +38,25 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Lookup.MarketSummary
             _lookupClient.Disconnect();
         }
 
-        [Test]
-        public async Task Should_Return_MarketSummaryMessages_When_GetEndOfDaySummaryAsync()
+        [Test, MaxTime(TimeoutMs)]
+        public async Task Should_Return_String_When_GetEndOfDaySummaryAsync()
         {
-            var marketSummaryMessages = await _lookupClient.MarketSummary.GetEndOfDaySummaryAsync(Security_Type, GroupId, DateTime.Today.AddDays(-2));
-            Assert.Greater(marketSummaryMessages.Count(), 0);
+            var tmpFilename = await _lookupClient.MarketSummary.File.GetEndOfDaySummaryAsync(Security_Type, GroupId, new DateTime(2021, 04, 01));
+            Assert.IsNotEmpty(tmpFilename);
         }
 
-        [Test]
-        public async Task Should_Return_MarketSummaryMessages_When_GetFundamentalSummaryAsync()
+        [Test, MaxTime(TimeoutMs)]
+        public async Task Should_Return_String_When_GetFundamentalSummaryAsync()
         {
-            var marketSummaryMessages = await _lookupClient.MarketSummary.GetEndOfDayFundamentalSummaryAsync(Security_Type, GroupId, new DateTime(2020, 04, 06));
-            Assert.Greater(marketSummaryMessages.Count(), 0);
+            var tmpFilename = await _lookupClient.MarketSummary.File.GetEndOfDayFundamentalSummaryAsync(Security_Type, GroupId, new DateTime(2020, 04, 06));
+            Assert.IsNotEmpty(tmpFilename);
         }
 
-        [Test]
-        public async Task Should_Return_MarketSummaryMessages_When_Get5MinuteSummaryAsync()
+        [Test, MaxTime(TimeoutMs)]
+        public async Task Should_Return_String_When_Get5MinuteSummaryAsync()
         {
-            var marketSummaryMessages = await _lookupClient.MarketSummary.Get5MinuteSnapshotSummaryAsync(Security_Type, _groupId);
-            Assert.Greater(marketSummaryMessages.Count(), 0);
+            var tmpFilename = await _lookupClient.MarketSummary.File.Get5MinuteSnapshotSummaryAsync(Security_Type, _groupId);
+            Assert.IsNotEmpty(tmpFilename);
         }
     }
 }
