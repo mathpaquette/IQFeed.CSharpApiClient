@@ -1,17 +1,18 @@
 # IQFeed CSharp Api Client
 
-[![Gitter](https://badges.gitter.im/IQFeed-CSharpApiClient/public.svg)](https://gitter.im/IQFeed-CSharpApiClient/public)
+<a href="https://join.slack.com/t/iqfeedcsharpapiclient/shared_invite/zt-115eobi6f-tQqVx9YFQxm3qHFUUH4A_A" target="_blank">![Join slack](https://img.shields.io/badge/join-slack-orange?logo=slack)<a/>
 
-IQFeed.CSharpApiClient is fastest and the most well designed C# DTN IQFeed socket API connector available to the open source community! Currently supporting the latest stable IQFeed protocol version 6.1.
+IQFeed.CSharpApiClient is fastest and the most well designed C# DTN IQFeed socket API connector available to the open source community! Currently supporting the latest stable IQFeed protocol version 6.2.
 
-IQFeed is an affordable and reputable Internet market data provider. For more [info](http://www.iqfeed.net/index.cfm?displayaction=developer&section=main).<br>
+IQFeed is an affordable and reputable Internet market data provider. For more [info](http://www.iqfeed.net/index.cfm?displayaction=developer&section=main).  
 **SPECIAL OFFER (Save \$50 - No Startup Fee)** [Get Free Trial Now](https://bit.ly/349vUCT)
 
 If you appreciate this project, please star :star: it now!
 
-## Table of Contents
+- [IQFeed CSharp Api Client](#iqfeed-csharp-api-client)
   - [Features](#features)
   - [Usage](#usage)
+    - [Compatibility](#compatibility)
     - [Packages](#packages)
     - [Installation](#installation)
     - [Configuration](#configuration)
@@ -37,7 +38,18 @@ If you appreciate this project, please star :star: it now!
 
 ## Usage
 
+### Compatibility
+
+IQFeed.CSharpApiClient does support only one real-time protocol at the time but remains backward compatible with historical data.
+
+| IQFeed.CSharpApiClient | IQFeed Protocol |
+| ---------------------- | --------------- |
+| v2.8.x                 | 6.2             |
+| v2.7.x                 | 6.1             |
+| v2.6.x                 | 6.0             |
+
 ### Packages
+
 MyGet Pre-release feed: https://www.myget.org/gallery/iqfeedcsharpapiclient
 
 | Package                                                                                                | NuGet Stable                                                                                                                                                                    | MyGet Pre-release                                                                                                                                                                                                                       | Downloads                                                                                                                                                                        |
@@ -98,14 +110,14 @@ var tickMessages = await lookupClient.Historical.GetHistoryTickDatapointsAsync("
 #### Lookup data
 
 - [x] Historical data
-- [x] News data :new:
+- [x] News data
 - [x] Symbol Lookup data
 - [x] Chains Lookup data
-- [x] Market Summary Data (new in protocol 6.1)
+- [x] Market Summary Data
 
 ## Support
 
-For support request, you can create an issue on GitHub or join our [Gitter](https://gitter.im/IQFeed-CSharpApiClient/public) chat.
+For support request, you can create an issue on GitHub or join our [Slack](https://iqfeedcsharpapiclient.slack.com/messages/general/) community.
 
 ## Sponsors
 
