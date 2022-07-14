@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29324.140
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient", "src\IQFeed.CSharpApiClient\IQFeed.CSharpApiClient.csproj", "{3AB9DC99-742D-40B6-9B87-5F03DE2C19E9}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient.Extensions.Tests", "src\IQFeed.CSharpApiClient.Extensions.Tests\IQFeed.CSharpApiClient.Extensions.Tests.csproj", "{3E15DEFF-B260-48E4-BA54-67112EB68EA0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQFeed.CSharpApiClient.Extensions.Tests.Integration", "src\IQFeed.CSharpApiClient.Extensions.Tests.Integration\IQFeed.CSharpApiClient.Extensions.Tests.Integration.csproj", "{5DCBEEF9-87B2-425C-8762-87363442C6D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQFeed.CSharpApiClient.Demo", "IQFeed.CSharpApiClient.Demo\IQFeed.CSharpApiClient.Demo.csproj", "{461B951B-5A87-45E3-B69F-7703F788C81A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{5DCBEEF9-87B2-425C-8762-87363442C6D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DCBEEF9-87B2-425C-8762-87363442C6D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DCBEEF9-87B2-425C-8762-87363442C6D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{461B951B-5A87-45E3-B69F-7703F788C81A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{461B951B-5A87-45E3-B69F-7703F788C81A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{461B951B-5A87-45E3-B69F-7703F788C81A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{461B951B-5A87-45E3-B69F-7703F788C81A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
