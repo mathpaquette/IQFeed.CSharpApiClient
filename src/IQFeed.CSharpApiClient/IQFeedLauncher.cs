@@ -14,7 +14,7 @@ namespace IQFeed.CSharpApiClient
     {
         public static void Start(string login = null, string password = null, string productId = null, string productVersion = null, int connectionTimeoutMs = 100, int retry = 50)
         {
-            var appSettings = ConfigurationManager.AppSettings;
+             var appSettings = ConfigurationManager.AppSettings;
 
             login = login ??
                     Environment.GetEnvironmentVariable("IQCONNECT_LOGIN") ??
