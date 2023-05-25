@@ -12,7 +12,7 @@
         <RepositoryUrl>https://github.com/mathpaquette/IQFeed.CSharpApiClient</RepositoryUrl>
         <PackageProjectUrl>https://github.com/mathpaquette/IQFeed.CSharpApiClient</PackageProjectUrl>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Copyright>Copyright © 2020 Mathieu Paquette</Copyright>
+        <Copyright>Copyright © 2023 Mathieu Paquette</Copyright>
         <Description>IQFeed.CSharpApiClient is fastest and the most well-designed C# DTN IQFeed socket API connector available to the open source community!</Description>
         <AssemblyVersion>1.0.0.0</AssemblyVersion>
         <FileVersion>1.0.0.0</FileVersion>
