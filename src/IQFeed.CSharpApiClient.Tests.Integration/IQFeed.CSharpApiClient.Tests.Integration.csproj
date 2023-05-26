@@ -13,7 +13,4 @@
     <ItemGroup>
       <Folder Include="Lookup\MarketSummary\" />
     </ItemGroup>
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="xcopy &quot;$(SolutionDir)data&quot; &quot;$(TargetDir)TestData&quot; /Y /I" />
-    </Target>
 </Project>
