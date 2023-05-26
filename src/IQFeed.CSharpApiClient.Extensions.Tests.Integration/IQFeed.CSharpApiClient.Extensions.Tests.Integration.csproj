@@ -12,7 +12,13 @@
       <ProjectReference Include="..\IQFeed.CSharpApiClient.Extensions\IQFeed.CSharpApiClient.Extensions.csproj" />
       <ProjectReference Include="..\IQFeed.CSharpApiClient\IQFeed.CSharpApiClient.csproj" />
     </ItemGroup>
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="xcopy &quot;$(SolutionDir)data&quot; &quot;$(TargetDir)TestData&quot; /Y /I" />
+    <Target Name="CopyData" AfterTargets="PostBuildEvent">
+	    <ItemGroup>
+		    <DataFile Include="$(SolutionDir)data\**\*.*" />
+	    </ItemGroup>
+	    <Copy
+		    SourceFiles="@(DataFile)"
+		    DestinationFolder="$(TargetDir)data\%(RecursiveDir)"
+		    SkipUnchangedFiles="true" />
     </Target>
 </Project>
