@@ -120,10 +120,17 @@ namespace IQFeed.CSharpApiClient.Socket
                 if (_disposed)
                     return;
 
-                var willRaiseEvent = _clientSocket.ReceiveAsync(e);
-                if (!willRaiseEvent)
+                try
                 {
-                    ProcessReceive(e);
+                    var willRaiseEvent = _clientSocket?.ReceiveAsync(e) ?? false;
+                    if (!willRaiseEvent)
+                    {
+                        ProcessReceive(e);
+                    }
+                }
+                catch(ObjectDisposedException)
+                {
+                    // don't care as the receive is closing anyway
                 }
             }
         }
