@@ -141,14 +141,14 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             _socketClient.Send(request);
         }
 
-        public void ReqWatchMarketByPrice(string symbol)
+        public void ReqWatchMarketByPrice(string symbol, int? maxPriceLevels = null)
         {
             if (GetProtocolVersionAsNumber() <= 6.1M)
             {
                 throw new Exception($"ReqWatchMarketByPrice is only supported in protocols 6.2 and above.");
             }
 
-            var request = _level2RequestFormatter.ReqWatchMarketByPrice(symbol);
+            var request = _level2RequestFormatter.ReqWatchMarketByPrice(symbol, maxPriceLevels);
             _socketClient.Send(request);
         }
 
