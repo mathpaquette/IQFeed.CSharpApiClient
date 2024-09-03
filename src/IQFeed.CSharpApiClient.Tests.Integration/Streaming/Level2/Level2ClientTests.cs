@@ -120,6 +120,23 @@ namespace IQFeed.CSharpApiClient.Tests.Integration.Streaming.Level2
         }
 
         [Test, MaxTime(TimeoutMs)]
+        public void Should_Receive_Summary_When_ReqWatchMarketByPrice_With_MaxPriceLevels()
+        {
+            // Arrange
+            var eventRaised = new ManualResetEvent(false);
+            _level2Client.PriceLevelSummary += message =>
+            {
+                eventRaised.Set();
+            };
+
+            // Act
+            _level2Client.ReqWatchMarketByPrice(Symbol, 10);
+
+            // Assert
+            Assert.IsTrue(eventRaised.WaitOne());
+        }
+
+        [Test, MaxTime(TimeoutMs)]
         [Description("Ignore the test if market closed")]
         public void Should_Receive_Update_When_ReqWatchMarketByPrice()
         {

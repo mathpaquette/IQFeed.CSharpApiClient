@@ -19,6 +19,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             add => _level2MessageHandler.SymbolNotFound += value;
             remove => _level2MessageHandler.SymbolNotFound -= value;
         }
+        public event Action<SymbolHasNoDepthAvailableMessage> SymbolHasNoDepthAvailable
+        {
+            add => _level2MessageHandler.SymbolHasNoDepthAvailable += value;
+            remove => _level2MessageHandler.SymbolHasNoDepthAvailable -= value;
+        }
         public event Action<ErrorMessage> Error
         {
             add => _level2MessageHandler.Error += value;
@@ -141,14 +146,14 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             _socketClient.Send(request);
         }
 
-        public void ReqWatchMarketByPrice(string symbol)
+        public void ReqWatchMarketByPrice(string symbol, int? maxPriceLevels = null)
         {
             if (GetProtocolVersionAsNumber() <= 6.1M)
             {
                 throw new Exception($"ReqWatchMarketByPrice is only supported in protocols 6.2 and above.");
             }
 
-            var request = _level2RequestFormatter.ReqWatchMarketByPrice(symbol);
+            var request = _level2RequestFormatter.ReqWatchMarketByPrice(symbol, maxPriceLevels);
             _socketClient.Send(request);
         }
 

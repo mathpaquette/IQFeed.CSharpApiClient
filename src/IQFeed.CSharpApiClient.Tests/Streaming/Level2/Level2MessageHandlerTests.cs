@@ -147,6 +147,26 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
         }
 
         [Test]
+        public void Should_Receive_SymbolHasNoDepthAvailable()
+        {
+            // Arrange
+            var message = TestHelper.GetMessageBytes("q,MSFT\r\n");
+            var expectedMessage = new SymbolHasNoDepthAvailableMessage("MSFT");
+
+            SymbolHasNoDepthAvailableMessage symbolHasNoDepthAvailableMessage = null;
+            _level2MessageHandler.SymbolHasNoDepthAvailable += msg =>
+            {
+              symbolHasNoDepthAvailableMessage = msg;
+            };
+
+            // Act
+            _level2MessageHandler.ProcessMessages(message, message.Length);
+
+            // Assert
+            Assert.AreEqual(symbolHasNoDepthAvailableMessage, expectedMessage);
+        }
+
+        [Test]
         public void Should_Receive_Error()
         {
             // Arrange
@@ -315,7 +335,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
             var message = TestHelper.GetMessageBytes("7,@ESM19,B,2938.25,65,11,2,20:31:04.876740,2019-04-23,\r\n");
             TimeSpan.TryParseExact("20:31:04.876740", PriceLevelUpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var time);
             DateTime.TryParseExact("2019-04-23", PriceLevelUpdateSummaryMessage.UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date);
-            var expectedMessage = new PriceLevelUpdateSummaryMessage(Level2MessageType.PriceLevelSummary, "@ESM19", Level2Side.Buy, 2938.25, 65, 10, 2, time, date);
+            var expectedMessage = new PriceLevelUpdateSummaryMessage(Level2MessageType.PriceLevelSummary, "@ESM19", Level2Side.Buy, 2938.25, 65, 11, 2, time, date);
 
             PriceLevelUpdateSummaryMessage receivedMessage = null;
             _level2MessageHandler.PriceLevelSummary += msg =>
@@ -337,7 +357,7 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
             var message = TestHelper.GetMessageBytes("8,@ESM19,B,2938.25,65,11,2,20:31:04.876740,2019-04-23,\r\n");
             TimeSpan.TryParseExact("20:31:04.876740", PriceLevelUpdateSummaryMessage.UpdateMessageTimeFormat, CultureInfo.InvariantCulture, TimeSpanStyles.None, out var time);
             DateTime.TryParseExact("2019-04-23", PriceLevelUpdateSummaryMessage.UpdateMessageDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date);
-            var expectedMessage = new PriceLevelUpdateSummaryMessage(Level2MessageType.PriceLevelUpdate, "@ESM19", Level2Side.Buy, 2938.25, 65, 10, 2, time, date);
+            var expectedMessage = new PriceLevelUpdateSummaryMessage(Level2MessageType.PriceLevelUpdate, "@ESM19", Level2Side.Buy, 2938.25, 65, 11, 2, time, date);
 
             PriceLevelUpdateSummaryMessage receivedMessage = null;
             _level2MessageHandler.PriceLevelUpdate += msg =>
