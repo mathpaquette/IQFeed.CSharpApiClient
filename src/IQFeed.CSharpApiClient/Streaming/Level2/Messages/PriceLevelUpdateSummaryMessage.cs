@@ -29,7 +29,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
             Side = side;
             Price = price;
             Size = size;
-            orderCount = orderCount;
+            OrderCount = orderCount;
             Precision = precision;
             Time = time;
             Date = date;
