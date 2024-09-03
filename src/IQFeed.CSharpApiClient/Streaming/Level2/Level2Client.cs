@@ -19,6 +19,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
             add => _level2MessageHandler.SymbolNotFound += value;
             remove => _level2MessageHandler.SymbolNotFound -= value;
         }
+        public event Action<SymbolHasNoDepthAvailableMessage> SymbolHasNoDepthAvailable
+        {
+            add => _level2MessageHandler.SymbolHasNoDepthAvailable += value;
+            remove => _level2MessageHandler.SymbolHasNoDepthAvailable -= value;
+        }
         public event Action<ErrorMessage> Error
         {
             add => _level2MessageHandler.Error += value;
