@@ -24,25 +24,37 @@ namespace IQFeed.CSharpApiClient.Lookup
         private readonly Task _releaseTask;
         
         private bool _disposed;
+        private volatile bool _started = false;
         private volatile bool _running = true;
 
         public LookupRateLimiter(int requestsPerSecond)
         {
             Interval = TimeSpan.FromTicks(TimeSpan.FromSeconds(1).Ticks / requestsPerSecond);
             RequestsPerSecond = requestsPerSecond;
-            MaxCount = requestsPerSecond / 2;
+            MaxCount = requestsPerSecond;
 
-            _semaphoreSlim = new SemaphoreSlim(0, MaxCount);
+            _semaphoreSlim = new SemaphoreSlim(MaxCount, MaxCount);
             _releaseTask = ReleaseSemaphoreAsync(Interval, MaxCount);
         }
 
         public Task WaitAsync()
         {
+            _started = true; // signal the start
             return _semaphoreSlim.WaitAsync();
         }
 
         private async Task ReleaseSemaphoreAsync(TimeSpan interval, int maxCount)
         {
+            // start only after the first request goes through
+            while (!_started)
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(10)).ConfigureAwait(false);
+            }
+
+            // calm down the initial burst by delaying leaky bucket operation for one second
+            // this allows gracefully consume the initial per second allowance without going over the limit
+            await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
+            
             var intervalTicks = (int)interval.Ticks;
             var remainderTicks = 0;
             var sw = new Stopwatch();
