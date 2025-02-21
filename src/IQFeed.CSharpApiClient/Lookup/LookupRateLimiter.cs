@@ -46,14 +46,17 @@ namespace IQFeed.CSharpApiClient.Lookup
         private async Task ReleaseSemaphoreAsync(TimeSpan interval, int maxCount)
         {
             // start only after the first request goes through
-            while (!_started)
+            while (!_started && _running)
             {
                 await Task.Delay(TimeSpan.FromMilliseconds(10)).ConfigureAwait(false);
             }
 
-            // calm down the initial burst by delaying leaky bucket operation for one second
-            // this allows gracefully consume the initial per second allowance without going over the limit
-            await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
+            if (_running) // if we dispose before the first request no need to wait
+            {
+                // calm down the initial burst by delaying leaky bucket operation for one second
+                // this allows gracefully consume the initial per second allowance without going over the limit
+                await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
+            }
             
             var intervalTicks = (int)interval.Ticks;
             var remainderTicks = 0;
