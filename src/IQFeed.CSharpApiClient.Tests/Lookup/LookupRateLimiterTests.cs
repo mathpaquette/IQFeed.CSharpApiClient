@@ -113,7 +113,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup
             var lookupRateLimiter = new LookupRateLimiter(requestsPerSecond);
 
             // Assert
-            var expectedMaxCount = 50;            
+            var expectedMaxCount = 50;
             Assert.AreEqual(lookupRateLimiter.MaxCount, expectedMaxCount);
         }
 
