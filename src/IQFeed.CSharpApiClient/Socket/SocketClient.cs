@@ -104,24 +104,24 @@ namespace IQFeed.CSharpApiClient.Socket
             // check if the remote host closed the connection
             if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
             {
-                _socketMessageHandler.Write(e.Buffer, e.Offset, e.BytesTransferred);
-                var count = _socketMessageHandler.TryRead(out var readBytes);
-
-                if (count > 0)
-                {
-                    _socketMessageEventArgs.Message = readBytes;
-                    _socketMessageEventArgs.Count = count;
-
-                    // inform that the socket just received complete message
-                    MessageReceived.RaiseEvent(this, _socketMessageEventArgs);
-                }
-
-                // don't attempt another receive if socket is already disposed
-                if (_disposed)
-                    return;
-
                 try
                 {
+                    _socketMessageHandler.Write(e.Buffer, e.Offset, e.BytesTransferred);
+                    var count = _socketMessageHandler.TryRead(out var readBytes);
+
+                    if (count > 0)
+                    {
+                        _socketMessageEventArgs.Message = readBytes;
+                        _socketMessageEventArgs.Count = count;
+
+                        // inform that the socket just received complete message
+                        MessageReceived.RaiseEvent(this, _socketMessageEventArgs);
+                    }
+                
+                    // don't attempt another receive if socket is already disposed
+                    if (_disposed)
+                        return;
+
                     var willRaiseEvent = _clientSocket?.ReceiveAsync(e) ?? false;
                     if (!willRaiseEvent)
                     {
@@ -130,7 +130,8 @@ namespace IQFeed.CSharpApiClient.Socket
                 }
                 catch(ObjectDisposedException)
                 {
-                    // don't care as the receive is closing anyway
+                    if(!_disposed) throw; // something wrong
+                    // otherwise don't care as the receive is closing anyway
                 }
             }
         }

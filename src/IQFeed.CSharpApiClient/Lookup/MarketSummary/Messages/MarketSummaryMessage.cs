@@ -284,7 +284,6 @@ namespace IQFeed.CSharpApiClient.Lookup.MarketSummary.Messages
                 return null;
             }
 
-            var index = 0;
             var values = message.SplitFeedMessage();
             return new MarketSummaryMessage(values, marketSummaryHandler);
         }
