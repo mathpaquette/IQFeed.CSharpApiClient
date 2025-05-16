@@ -54,7 +54,7 @@ deploy:
       branch: release
     server: https://www.nuget.org/api/v2/package
     api_key:
-      secure: zWdGIvNfTP1AU9/i1RnRIT3/Zi6pll/9MTWmr9Ur1iZWzzalEQ5RgyIfwammhm02
+      secure: LVcj56aqBOqfj6uavO70Bjxj6WwrXOH0kzoCfBFcZeZ+Xlmf3CEHIG7sa21TFCoq
     skip_symbols: true
     symbol_server: https://nuget.smbsrc.net/
     artifact: /.*\.nupkg/
