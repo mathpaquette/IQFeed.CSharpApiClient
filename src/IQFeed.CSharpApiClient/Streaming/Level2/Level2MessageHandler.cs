@@ -11,6 +11,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
         public event Action<UpdateSummaryMessage> Summary;
         public event Action<UpdateSummaryMessage> Update;
         public event Action<SymbolNotFoundMessage> SymbolNotFound;
+        public event Action<SymbolHasNoDepthAvailableMessage> SymbolHasNoDepthAvailable;
         public event Action<MarketMakerNameMessage> Query;
         public event Action<ErrorMessage> Error;
         public event Action<TimestampMessage> Timestamp;
@@ -76,6 +77,10 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
                         break;
                     case 'n': // Symbol not found message
                         ProcessSymbolNotFoundMessage(message);
+                        break;
+                    case 'q': // No depth available message. (protocol 6.2 and above)
+                              // This message is received when a symbol is valid but there is currently no depth available.  
+                        ProcessSymbolHasNoDepthAvailableMessage(message);
                         break;
                     case 'E': // An error message
                         ProcessErrorMessage(message);
@@ -170,6 +175,12 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
         {
             var symbolNotFoundMessage = SymbolNotFoundMessage.Parse(msg);
             SymbolNotFound?.Invoke(symbolNotFoundMessage);
+        }
+
+        private void ProcessSymbolHasNoDepthAvailableMessage(string msg)
+        {
+            var symbolHasNoDepthAvailableMessage = SymbolHasNoDepthAvailableMessage.Parse(msg);
+            SymbolHasNoDepthAvailable?.Invoke(symbolHasNoDepthAvailableMessage);
         }
 
         private void ProcessErrorMessage(string msg)
