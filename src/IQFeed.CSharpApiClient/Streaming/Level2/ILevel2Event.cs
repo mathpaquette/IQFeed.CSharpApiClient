@@ -9,6 +9,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2
         event Action<UpdateSummaryMessage> Summary;
         event Action<UpdateSummaryMessage> Update;
         event Action<SymbolNotFoundMessage> SymbolNotFound;
+        event Action<SymbolHasNoDepthAvailableMessage> SymbolHasNoDepthAvailable;
         event Action<MarketMakerNameMessage> Query;
         event Action<ErrorMessage> Error;
         event Action<TimestampMessage> Timestamp;

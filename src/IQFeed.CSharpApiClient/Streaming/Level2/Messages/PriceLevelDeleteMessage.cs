@@ -20,7 +20,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level2.Messages
         {
             MessageType = messageType;
             Symbol = symbol;
-            Side = Side;
+            Side = side;
             Price = price;
             Time = time;
             Date = date;

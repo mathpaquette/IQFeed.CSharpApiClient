@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using IQFeed.CSharpApiClient.Common;
 using IQFeed.CSharpApiClient.Extensions;
@@ -10,6 +11,7 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
     {
         private static readonly string EndMessagePattern = IQFeedDefault.ProtocolEndOfMessageCharacters + IQFeedDefault.ProtocolDelimiterCharacter;
         private static readonly char[] ValueDelimiter = { IQFeedDefault.ProtocolDelimiterCharacter };
+        private static readonly string FieldsDelimiter = IQFeedDefault.ProtocolDelimiterCharacter.ToString();
 
         public delegate T3 TryParseDelegate<in T1, T2, out T3>(T1 input, out T2 output);
 
@@ -96,11 +98,11 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
             if (possibleErrorValues[0][0] != IQFeedDefault.PrototolErrorCharacter)
                 return string.Empty;
 
-            // error message will be composed of two values (E and error)
-            if (possibleErrorValues.Length != 2)
+            // error message will be composed of two values or three (E and error)
+            if (possibleErrorValues.Length < 2 || possibleErrorValues.Length > 3)
                 return string.Empty;
 
-            return possibleErrorValues[1];
+            return string.Join(FieldsDelimiter, possibleErrorValues.Skip(1));
         }
 
         protected string ParseErrorMessageWithRequestId(string[] messages)
@@ -116,10 +118,10 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
                 return string.Empty;
 
             // error message will be composed of three values (requestId and E and error)
-            if (possibleErrorValues.Length != 3)
+            if (possibleErrorValues.Length < 3 || possibleErrorValues.Length > 4)
                 return string.Empty;
 
-            return possibleErrorValues[2];
+            return string.Join(FieldsDelimiter, possibleErrorValues.Skip(2));
         }
-    }
+  }
 }

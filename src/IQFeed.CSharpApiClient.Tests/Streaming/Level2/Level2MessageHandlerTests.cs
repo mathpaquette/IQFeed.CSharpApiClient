@@ -147,6 +147,26 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level2
         }
 
         [Test]
+        public void Should_Receive_SymbolHasNoDepthAvailable()
+        {
+            // Arrange
+            var message = TestHelper.GetMessageBytes("q,MSFT\r\n");
+            var expectedMessage = new SymbolHasNoDepthAvailableMessage("MSFT");
+
+            SymbolHasNoDepthAvailableMessage symbolHasNoDepthAvailableMessage = null;
+            _level2MessageHandler.SymbolHasNoDepthAvailable += msg =>
+            {
+              symbolHasNoDepthAvailableMessage = msg;
+            };
+
+            // Act
+            _level2MessageHandler.ProcessMessages(message, message.Length);
+
+            // Assert
+            Assert.AreEqual(symbolHasNoDepthAvailableMessage, expectedMessage);
+        }
+
+        [Test]
         public void Should_Receive_Error()
         {
             // Arrange
