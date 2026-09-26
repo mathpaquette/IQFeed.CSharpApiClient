@@ -194,8 +194,10 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
                 // Act
                 Assert.ThrowsAsync<TaskCanceledException>(() => WithinAsync(impatient.GetLinesAsync("FAST\r\n")));
 
-                // Assert: it gave up at its own timeout rather than the rate limit's, never reached IQFeed, and left the socket in the pool
-                Assert.That(stopwatch.Elapsed, Is.LessThan(TimeSpan.FromMilliseconds(900)));
+                // Assert: it gave up at its own timeout rather than at the rate limiter's next slot, which opens about 2s after the first
+                // request (a 1s start-up delay, then 1s per slot) - the margin absorbs a timer firing late on a busy CI machine. It never
+                // reached IQFeed and left the socket in the pool.
+                Assert.That(stopwatch.Elapsed, Is.LessThan(TimeSpan.FromMilliseconds(1800)));
                 Assert.That(server.RequestsReceived, Is.EqualTo(1));
                 Assert.That(server.ConnectionsAccepted, Is.EqualTo(1));
                 lookupDispatcher.DisconnectAll();
