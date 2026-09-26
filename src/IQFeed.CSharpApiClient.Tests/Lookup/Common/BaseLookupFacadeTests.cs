@@ -102,12 +102,13 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
         [Test]
         public async Task Should_Replace_Socket_When_Request_Times_Out_After_Send()
         {
-            // Arrange: the slow answer arrives after its request timed out, on the socket the next request would reuse
+            // Arrange: the slow answer is held back until its request has timed out, then sent on the socket the next request would reuse
+            var sendSlowAnswer = new TaskCompletionSource<bool>();
             using (var server = new FakeLookupServer(async request =>
             {
                 if (request.StartsWith("SLOW", StringComparison.Ordinal))
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(2)).ConfigureAwait(false);
+                    await sendSlowAnswer.Task.ConfigureAwait(false);
                     return $"STALE\r\n{IQFeedDefault.ProtocolEndOfMessageCharacters},\r\n";
                 }
 
@@ -120,6 +121,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
                 lookupDispatcher.ConnectAll();
                 await WithinAsync(patient.GetLinesAsync("FAST\r\n")); // the socket is confirmed, so the short timeout only covers the reply
                 Assert.ThrowsAsync<TaskCanceledException>(() => WithinAsync(impatient.GetLinesAsync("SLOW\r\n")));
+                sendSlowAnswer.SetResult(true);
 
                 // Act
                 var lines = string.Concat(await WithinAsync(patient.GetLinesAsync("FAST\r\n")));
@@ -180,24 +182,20 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
         [Test]
         public async Task Should_Not_Send_Request_That_Timed_Out_Before_It_Was_Sent()
         {
-            // Arrange: one request per second, and the only slot of this second is used up
-            using (var lookupRateLimiter = new LookupRateLimiter(1))
+            // Arrange: the impatient request waits for a rate-limit slot that never comes
+            using (var exhaustedRateLimiter = new FakeExhaustedLookupRateLimiter())
             using (var server = new FakeLookupServer(request => $"FRESH\r\n{IQFeedDefault.ProtocolEndOfMessageCharacters},\r\n"))
             {
                 var lookupDispatcher = CreateLookupDispatcher(server.Port, 1);
-                var patient = new BaseLookupFacadeTestClass(lookupDispatcher, lookupRateLimiter, TimeSpan.FromMinutes(1));
-                var impatient = new BaseLookupFacadeTestClass(lookupDispatcher, lookupRateLimiter, TimeSpan.FromMilliseconds(200));
+                var patient = new BaseLookupFacadeTestClass(lookupDispatcher, _lookupRateLimiter, TimeSpan.FromMinutes(1));
+                var impatient = new BaseLookupFacadeTestClass(lookupDispatcher, exhaustedRateLimiter, TimeSpan.FromMilliseconds(200));
                 lookupDispatcher.ConnectAll();
                 await WithinAsync(patient.GetLinesAsync("FAST\r\n"));
-                var stopwatch = Stopwatch.StartNew();
 
                 // Act
                 Assert.ThrowsAsync<TaskCanceledException>(() => WithinAsync(impatient.GetLinesAsync("FAST\r\n")));
 
-                // Assert: it gave up at its own timeout rather than at the rate limiter's next slot, which opens about 2s after the first
-                // request (a 1s start-up delay, then 1s per slot) - the margin absorbs a timer firing late on a busy CI machine. It never
-                // reached IQFeed and left the socket in the pool.
-                Assert.That(stopwatch.Elapsed, Is.LessThan(TimeSpan.FromMilliseconds(1800)));
+                // Assert: it never reached IQFeed and left the socket in the pool
                 Assert.That(server.RequestsReceived, Is.EqualTo(1));
                 Assert.That(server.ConnectionsAccepted, Is.EqualTo(1));
                 lookupDispatcher.DisconnectAll();

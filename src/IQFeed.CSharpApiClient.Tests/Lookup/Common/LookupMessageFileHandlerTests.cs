@@ -109,12 +109,13 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
         [Test]
         public async Task Should_Replace_Socket_When_Request_Times_Out_After_Send()
         {
-            // Arrange: the slow answer arrives after its request timed out, on the socket the next request would reuse
+            // Arrange: the slow answer is held back until its request has timed out, then sent on the socket the next request would reuse
+            var sendSlowAnswer = new TaskCompletionSource<bool>();
             using (var server = new FakeLookupServer(async request =>
             {
                 if (request.StartsWith("SLOW", StringComparison.Ordinal))
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(2)).ConfigureAwait(false);
+                    await sendSlowAnswer.Task.ConfigureAwait(false);
                     return $"STALE\r\n{IQFeedDefault.ProtocolEndOfMessageCharacters},\r\n";
                 }
 
@@ -129,6 +130,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
                 var filesBefore = Directory.GetFiles(Environment.CurrentDirectory).Length;
                 Assert.ThrowsAsync<TaskCanceledException>(() => WithinAsync(impatient.GetFilenameAsync("SLOW\r\n")));
                 Assert.That(Directory.GetFiles(Environment.CurrentDirectory).Length, Is.EqualTo(filesBefore), "the partial file must be deleted");
+                sendSlowAnswer.SetResult(true);
 
                 // Act
                 var filename = await WithinAsync(patient.GetFilenameAsync("FAST\r\n"));
@@ -181,13 +183,13 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
         [Test]
         public async Task Should_Not_Send_Request_That_Timed_Out_Before_It_Was_Sent()
         {
-            // Arrange: one request per second, and the only slot of this second is used up
-            using (var lookupRateLimiter = new LookupRateLimiter(1))
+            // Arrange: the impatient request waits for a rate-limit slot that never comes
+            using (var exhaustedRateLimiter = new FakeExhaustedLookupRateLimiter())
             using (var server = new FakeLookupServer(request => $"FRESH\r\n{IQFeedDefault.ProtocolEndOfMessageCharacters},\r\n"))
             {
                 var lookupDispatcher = CreateLookupDispatcher(server.Port);
-                var patient = new LookupMessageFileHandler(lookupDispatcher, lookupRateLimiter, new ExceptionFactory(), TimeSpan.FromMinutes(1));
-                var impatient = new LookupMessageFileHandler(lookupDispatcher, lookupRateLimiter, new ExceptionFactory(), TimeSpan.FromMilliseconds(200));
+                var patient = new LookupMessageFileHandler(lookupDispatcher, _lookupRateLimiter, new ExceptionFactory(), TimeSpan.FromMinutes(1));
+                var impatient = new LookupMessageFileHandler(lookupDispatcher, exhaustedRateLimiter, new ExceptionFactory(), TimeSpan.FromMilliseconds(200));
                 lookupDispatcher.ConnectAll();
                 File.Delete(await WithinAsync(patient.GetFilenameAsync("FAST\r\n")));
 

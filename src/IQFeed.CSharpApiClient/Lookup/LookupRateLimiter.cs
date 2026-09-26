@@ -47,7 +47,7 @@ namespace IQFeed.CSharpApiClient.Lookup
         /// Waits for the next request slot, giving up when the token is canceled first.
         /// </summary>
         /// <returns><c>true</c> when a slot was taken, <c>false</c> when the wait was canceled</returns>
-        public async Task<bool> TryWaitAsync(CancellationToken cancellationToken)
+        public virtual async Task<bool> TryWaitAsync(CancellationToken cancellationToken)
         {
             _started = true; // signal the start
             try
