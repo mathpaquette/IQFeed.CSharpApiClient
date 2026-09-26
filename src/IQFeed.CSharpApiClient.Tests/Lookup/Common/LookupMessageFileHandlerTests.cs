@@ -204,17 +204,18 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
         [Test]
         public void Should_Fail_And_Delete_File_When_Disconnected_While_Data_Streams()
         {
-            // Arrange: a large answer, so data is still being written to the file when the client disconnects
+            // Arrange: a large answer that never ends, so the request is still writing to its file when the client disconnects
             var line = "DATA,1,2,3,4,5,6,7,8,9\r\n";
-            var answer = string.Concat(Enumerable.Repeat(line, 200000)) + $"{IQFeedDefault.ProtocolEndOfMessageCharacters},\r\n";
+            var answer = string.Concat(Enumerable.Repeat(line, 200000));
             using (var server = new FakeLookupServer(request => answer))
             {
                 var lookupDispatcher = CreateLookupDispatcher(server.Port);
                 var handler = new LookupMessageFileHandler(lookupDispatcher, _lookupRateLimiter, new ExceptionFactory(), TimeSpan.FromMinutes(1));
                 lookupDispatcher.ConnectAll();
-                var filesBefore = Directory.GetFiles(Environment.CurrentDirectory).Length;
+                var filesBefore = Directory.GetFiles(Environment.CurrentDirectory);
                 var request = handler.GetFilenameAsync("TEST\r\n");
-                Assert.That(() => server.RequestsReceived, Is.EqualTo(1).After(10000, 1), "the request must be in flight");
+                Assert.That(() => Directory.GetFiles(Environment.CurrentDirectory).Except(filesBefore).Any(file => new FileInfo(file).Length > 0),
+                    Is.True.After(10000, 10), "data must be arriving into the file");
 
                 // Act
                 lookupDispatcher.DisconnectAll();
@@ -222,7 +223,7 @@ namespace IQFeed.CSharpApiClient.Tests.Lookup.Common
                 // Assert: the request fails cleanly and a late write into the closed file does not bring the process down
                 Assert.ThrowsAsync<ObjectDisposedException>(() => WithinAsync(request));
                 Thread.Sleep(500);
-                Assert.That(Directory.GetFiles(Environment.CurrentDirectory).Length, Is.EqualTo(filesBefore), "the partial file must be deleted");
+                Assert.That(Directory.GetFiles(Environment.CurrentDirectory).Except(filesBefore), Is.Empty, "the partial file must be deleted");
             }
         }
 
