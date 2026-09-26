@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,13 +36,21 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
         // TODO(mathip): add support for requestId parsing.
         public async Task<string> GetFilenameAsync(string request)
         {
-            var client = await _lookupDispatcher.TakeAsync();
-            var filename = Path.GetRandomFileName();
-            var binaryWriter = new BinaryWriter(File.Open(filename, FileMode.OpenOrCreate));
+            // the timeout covers waiting for a free socket as well as the reply
+            using (var ct = new CancellationTokenSource(_timeout))
+            {
+                var client = await _lookupDispatcher.TakeAsync(ct.Token).ConfigureAwait(false);
+                return await GetFilenameAsync(client, request, ct.Token).ConfigureAwait(false);
+            }
+        }
 
-            var ct = new CancellationTokenSource(_timeout);
-            var res = new TaskCompletionSource<string>();
-            ct.Token.Register(() => res.TrySetCanceled(), false);
+        private async Task<string> GetFilenameAsync(SocketClient client, string request, CancellationToken timeout)
+        {
+            var filename = Path.GetRandomFileName();
+            BinaryWriter binaryWriter = null;
+            var writerGate = new object(); // the socket thread writes while a timeout or a disconnect may be closing the file
+            // completed from timer, disconnect and socket threads, so callers' continuations must never run on them
+            var res = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             void SocketClientOnMessageReceived(object sender, SocketMessageEventArgs args)
             {
@@ -61,28 +70,80 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
                     }
                 }
                 
-                binaryWriter.Write(args.Message, 0, args.Count);
+                lock (writerGate)
+                {
+                    // null once the request is over: whatever still arrives belongs to nobody
+                    if (binaryWriter == null)
+                        return;
+
+                    binaryWriter.Write(args.Message, 0, args.Count);
+                }
 
                 // check if the message end
                 if (args.Message.EndsWith(args.Count, _endOfMsgBytes))
                     res.TrySetResult(filename);
             }
 
-            client.MessageReceived += SocketClientOnMessageReceived;
-            await _lookupRateLimiter.WaitAsync().ConfigureAwait(false);
-            client.Send(request);
-
-            await res.Task.ContinueWith(x =>
+            using (timeout.Register(() => res.TrySetCanceled(), false))
+            using (_lookupDispatcher.Disconnected.Register(() => res.TrySetException(new ObjectDisposedException(nameof(LookupDispatcher), "The lookup client is disconnected.")), false))
             {
-                binaryWriter.Close();
-                client.MessageReceived -= SocketClientOnMessageReceived;
-                _lookupDispatcher.Add(client);
-                ct.Dispose();
-                if (res.Task.IsFaulted)
-                    File.Delete(filename);
-            }, TaskContinuationOptions.None).ConfigureAwait(false);
+                var sent = false;
+                var replace = false;
+                var completed = false;
+                try
+                {
+                    lock (writerGate)
+                        binaryWriter = new BinaryWriter(File.Open(filename, FileMode.OpenOrCreate));
 
-            return await res.Task.ConfigureAwait(false);
+                    client.MessageReceived += SocketClientOnMessageReceived;
+
+                    // a request that timed out or was disconnected before it was sent leaves the socket clean
+                    bool slotTaken;
+                    using (var timeoutOrDisconnect = CancellationTokenSource.CreateLinkedTokenSource(timeout, _lookupDispatcher.Disconnected))
+                        slotTaken = await _lookupRateLimiter.TryWaitAsync(timeoutOrDisconnect.Token).ConfigureAwait(false);
+
+                    if (slotTaken && !res.Task.IsCompleted)
+                    {
+                        try
+                        {
+                            client.Send(request);
+                            sent = true;
+                        }
+                        catch (SocketException)
+                        {
+                            replace = true; // the socket is dead
+                            throw;
+                        }
+                    }
+
+                    var result = await res.Task.ConfigureAwait(false);
+                    completed = true;
+                    return result;
+                }
+                catch (TaskCanceledException) when (sent)
+                {
+                    // IQFeed may still send the rest of the abandoned response on this socket
+                    replace = true;
+                    throw;
+                }
+                finally
+                {
+                    client.MessageReceived -= SocketClientOnMessageReceived;
+                    if (replace)
+                        _lookupDispatcher.Replace(client);
+                    else
+                        _lookupDispatcher.Add(client);
+
+                    lock (writerGate)
+                    {
+                        binaryWriter?.Close();
+                        binaryWriter = null;
+                    }
+
+                    if (!completed && File.Exists(filename))
+                        File.Delete(filename);
+                }
+            }
         }
     }
 }
