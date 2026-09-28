@@ -43,6 +43,24 @@ namespace IQFeed.CSharpApiClient.Lookup
             return _semaphoreSlim.WaitAsync();
         }
 
+        /// <summary>
+        /// Waits for the next request slot, giving up when the token is canceled first.
+        /// </summary>
+        /// <returns><c>true</c> when a slot was taken, <c>false</c> when the wait was canceled</returns>
+        public virtual async Task<bool> TryWaitAsync(CancellationToken cancellationToken)
+        {
+            _started = true; // signal the start
+            try
+            {
+                await _semaphoreSlim.WaitAsync(cancellationToken).ConfigureAwait(false);
+                return true;
+            }
+            catch (OperationCanceledException)
+            {
+                return false;
+            }
+        }
+
         private async Task ReleaseSemaphoreAsync(TimeSpan interval, int maxCount)
         {
             // start only after the first request goes through

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using IQFeed.CSharpApiClient.Common;
@@ -28,13 +29,20 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
 
         protected async Task<IEnumerable<T>> GetMessagesAsync<T>(string request, Func<byte[], int, MessageContainer<T>> messageHandler)
         {
-            var client = await _lookupDispatcher.TakeAsync();
+            // the timeout covers waiting for a free socket as well as the reply
+            using (var ct = new CancellationTokenSource(_timeout))
+            {
+                var client = await _lookupDispatcher.TakeAsync(ct.Token).ConfigureAwait(false);
+                return await GetMessagesAsync(client, request, messageHandler, ct.Token).ConfigureAwait(false);
+            }
+        }
 
+        private async Task<IEnumerable<T>> GetMessagesAsync<T>(SocketClient client, string request, Func<byte[], int, MessageContainer<T>> messageHandler, CancellationToken timeout)
+        {
             var messages = new List<T>();
             var invalidMessages = new List<InvalidMessage<T>>();
-            var ct = new CancellationTokenSource(_timeout);
-            var res = new TaskCompletionSource<IEnumerable<T>>();
-            ct.Token.Register(() => res.TrySetCanceled(), false);
+            // completed from timer, disconnect and socket threads, so callers' continuations must never run on them
+            var res = new TaskCompletionSource<IEnumerable<T>>(TaskCreationOptions.RunContinuationsAsynchronously);
 
             void SocketClientOnMessageReceived(object sender, SocketMessageEventArgs args)
             {
@@ -62,18 +70,50 @@ namespace IQFeed.CSharpApiClient.Lookup.Common
                 res.TrySetResult(messages);
             }
 
-            client.MessageReceived += SocketClientOnMessageReceived;
-            await _lookupRateLimiter.WaitAsync().ConfigureAwait(false);
-            client.Send(request);
-
-            await res.Task.ContinueWith(x =>
+            using (timeout.Register(() => res.TrySetCanceled(), false))
+            using (_lookupDispatcher.Disconnected.Register(() => res.TrySetException(new ObjectDisposedException(nameof(LookupDispatcher), "The lookup client is disconnected.")), false))
             {
-                client.MessageReceived -= SocketClientOnMessageReceived;
-                _lookupDispatcher.Add(client);
-                ct.Dispose();
-            }, TaskContinuationOptions.None).ConfigureAwait(false);
+                client.MessageReceived += SocketClientOnMessageReceived;
+                var sent = false;
+                var replace = false;
+                try
+                {
+                    // a request that timed out or was disconnected before it was sent leaves the socket clean
+                    bool slotTaken;
+                    using (var timeoutOrDisconnect = CancellationTokenSource.CreateLinkedTokenSource(timeout, _lookupDispatcher.Disconnected))
+                        slotTaken = await _lookupRateLimiter.TryWaitAsync(timeoutOrDisconnect.Token).ConfigureAwait(false);
 
-            return await res.Task.ConfigureAwait(false);
+                    if (slotTaken && !res.Task.IsCompleted)
+                    {
+                        try
+                        {
+                            client.Send(request);
+                            sent = true;
+                        }
+                        catch (SocketException)
+                        {
+                            replace = true; // the socket is dead
+                            throw;
+                        }
+                    }
+
+                    return await res.Task.ConfigureAwait(false);
+                }
+                catch (TaskCanceledException) when (sent)
+                {
+                    // IQFeed may still send the rest of the abandoned response on this socket
+                    replace = true;
+                    throw;
+                }
+                finally
+                {
+                    client.MessageReceived -= SocketClientOnMessageReceived;
+                    if (replace)
+                        _lookupDispatcher.Replace(client);
+                    else
+                        _lookupDispatcher.Add(client);
+                }
+            }
         }
     }
 }
