@@ -15,49 +15,77 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
         public event Action<NewsMessage> News;
         public event Action<RegionalUpdateMessage> Regional;
         public event Action<TradeCorrectionMessage> TradeCorrection;
+        public event Action<UnhandledMessage> UnhandledMessage;
 
         public void ProcessMessages(byte[] messageBytes, int count)
         {
             string[] messages = Encoding.ASCII.GetString(messageBytes, 0, count - 1).Split(IQFeedDefault.ProtocolLineFeedCharacter);
 
+            // each line is processed on its own, so a line that can't be processed is reported and skipped without losing the lines after it;
+            // this runs on the socket's receive callback, where an escaping exception would terminate the process
             for (int i = 0; i < messages.Length; i++)
             {
                 var message = messages[i];
-                switch (messages[i][0])
+                if (message.Length == 0)
                 {
-                    case 'F': // A fundamental message
-                        ProcessFundamentalMessage(message);
-                        break;
-                    case 'P': // A summary message
-                        ProcessSummaryMessage(message);
-                        break;
-                    case 'Q': // An update message
-                        ProcessUpdateMessage(message);
-                        break;
-                    case 'R': // A regional update message
-                        ProcessRegionalUpdateMessage(message);
-                        break;
-                    case 'N': // A news headline message
-                        ProcessNewsMessage(message);
-                        break;
-                    case 'S': // A system message
-                        ProcessSystemMessage(message);
-                        break;
-                    case 'T': // A timestamp message
-                        ProcessTimestampMessage(message);
-                        break;
-                    case 'n': // Symbol not found message
-                        ProcessSymbolNotFoundMessage(message);
-                        break;
-                    case 'E': // An error message
-                        ProcessErrorMessage(message);
-                        break;
-                    case 'C': // A trade correction message
-                        ProcessTradeCorrectionMessage(message);
-                        break;
-                    default:
-                        throw new Exception("Unknown type of level 1 message received.");
+                    UnhandledMessage?.Invoke(new UnhandledMessage(message, UnhandledMessageReason.Empty, null));
+                    continue;
                 }
+
+                bool processed;
+                try
+                {
+                    processed = ProcessMessage(message);
+                }
+                catch (Exception ex)
+                {
+                    UnhandledMessage?.Invoke(new UnhandledMessage(message, UnhandledMessageReason.ProcessingFailed, ex));
+                    continue;
+                }
+
+                if (!processed)
+                {
+                    UnhandledMessage?.Invoke(new UnhandledMessage(message, UnhandledMessageReason.UnknownType, null));
+                }
+            }
+        }
+
+        private bool ProcessMessage(string message)
+        {
+            switch (message[0])
+            {
+                case 'F': // A fundamental message
+                    ProcessFundamentalMessage(message);
+                    return true;
+                case 'P': // A summary message
+                    ProcessSummaryMessage(message);
+                    return true;
+                case 'Q': // An update message
+                    ProcessUpdateMessage(message);
+                    return true;
+                case 'R': // A regional update message
+                    ProcessRegionalUpdateMessage(message);
+                    return true;
+                case 'N': // A news headline message
+                    ProcessNewsMessage(message);
+                    return true;
+                case 'S': // A system message
+                    ProcessSystemMessage(message);
+                    return true;
+                case 'T': // A timestamp message
+                    ProcessTimestampMessage(message);
+                    return true;
+                case 'n': // Symbol not found message
+                    ProcessSymbolNotFoundMessage(message);
+                    return true;
+                case 'E': // An error message
+                    ProcessErrorMessage(message);
+                    return true;
+                case 'C': // A trade correction message
+                    ProcessTradeCorrectionMessage(message);
+                    return true;
+                default:
+                    return false;
             }
         }
 
