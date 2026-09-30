@@ -55,6 +55,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Dynamic
             add => _level1DynamicMessageHandler.News += value;
             remove => _level1DynamicMessageHandler.News -= value;
         }
+        public event Action<UnhandledMessage> UnhandledMessage
+        {
+            add => _level1DynamicMessageHandler.UnhandledMessage += value;
+            remove => _level1DynamicMessageHandler.UnhandledMessage -= value;
+        }
 
         private readonly ILevel1DynamicMessageHandler _level1DynamicMessageHandler;
         private readonly ILevel1DynamicSnapshot _level1DynamicSnapshot;
