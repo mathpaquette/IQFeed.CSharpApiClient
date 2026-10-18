@@ -54,6 +54,11 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1
             add => _level1MessageHandler.News += value;
             remove => _level1MessageHandler.News -= value;
         }
+        public event Action<UnhandledMessage> UnhandledMessage
+        {
+            add => _level1MessageHandler.UnhandledMessage += value;
+            remove => _level1MessageHandler.UnhandledMessage -= value;
+        }
 
         private readonly ILevel1MessageHandler _level1MessageHandler;
         private readonly ILevel1Snapshot _level1Snapshot;

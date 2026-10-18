@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
@@ -15,49 +16,128 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
         public event Action<NewsMessage> News;
         public event Action<RegionalUpdateMessage> Regional;
         public event Action<TradeCorrectionMessage> TradeCorrection;
+        public event Action<UnhandledMessage> UnhandledMessage;
 
         public void ProcessMessages(byte[] messageBytes, int count)
         {
             string[] messages = Encoding.ASCII.GetString(messageBytes, 0, count - 1).Split(IQFeedDefault.ProtocolLineFeedCharacter);
 
+            // a line that can't be processed goes to ReportUnhandledMessage, which reports it to the subscribers or, with none, throws
             for (int i = 0; i < messages.Length; i++)
             {
                 var message = messages[i];
-                switch (messages[i][0])
+
+                // a CRLF-terminated empty line is left as a lone carriage return by the split on line feeds
+                if (message.Length == 0 || message == "\r")
                 {
-                    case 'F': // A fundamental message
-                        ProcessFundamentalMessage(message);
-                        break;
-                    case 'P': // A summary message
-                        ProcessSummaryMessage(message);
-                        break;
-                    case 'Q': // An update message
-                        ProcessUpdateMessage(message);
-                        break;
-                    case 'R': // A regional update message
-                        ProcessRegionalUpdateMessage(message);
-                        break;
-                    case 'N': // A news headline message
-                        ProcessNewsMessage(message);
-                        break;
-                    case 'S': // A system message
-                        ProcessSystemMessage(message);
-                        break;
-                    case 'T': // A timestamp message
-                        ProcessTimestampMessage(message);
-                        break;
-                    case 'n': // Symbol not found message
-                        ProcessSymbolNotFoundMessage(message);
-                        break;
-                    case 'E': // An error message
-                        ProcessErrorMessage(message);
-                        break;
-                    case 'C': // A trade correction message
-                        ProcessTradeCorrectionMessage(message);
-                        break;
-                    default:
-                        throw new Exception("Unknown type of level 1 message received.");
+                    ReportUnhandledMessage(
+                        new UnhandledMessage(message, UnhandledMessageReason.Empty, null),
+                        message.Length == 0 ? new IndexOutOfRangeException() : CreateUnknownTypeException(message));
+                    continue;
                 }
+
+                bool processed;
+                try
+                {
+                    processed = ProcessMessage(message);
+                }
+                catch (Exception ex)
+                {
+                    ReportUnhandledMessage(new UnhandledMessage(message, UnhandledMessageReason.ProcessingFailed, ex), ex);
+                    continue;
+                }
+
+                if (!processed)
+                {
+                    ReportUnhandledMessage(new UnhandledMessage(message, UnhandledMessageReason.UnknownType, null), CreateUnknownTypeException(message));
+                }
+            }
+        }
+
+        private static Exception CreateUnknownTypeException(string message)
+        {
+            // the line is cut short, so a garbage blob can't flood the log
+            const int maxShownLength = 100;
+            var shownLine = message.Length > maxShownLength ? message.Substring(0, maxShownLength) + "..." : message;
+            return new Exception($"Unknown type of level 1 message received: '{EscapeControlCharacters(message.Substring(0, 1))}' in \"{EscapeControlCharacters(shownLine)}\".");
+        }
+
+        private static string EscapeControlCharacters(string text)
+        {
+            // a control character, such as the carriage return of a CRLF line ending, would be invisible in a log
+            var escaped = new StringBuilder(text.Length);
+            foreach (var character in text)
+            {
+                if (char.IsControl(character))
+                {
+                    escaped.Append($"\\u{(int)character:X4}");
+                }
+                else
+                {
+                    escaped.Append(character);
+                }
+            }
+
+            return escaped.ToString();
+        }
+
+        private void ReportUnhandledMessage(UnhandledMessage unhandledMessage, Exception exceptionWithoutSubscribers)
+        {
+            var unhandledMessageHandler = UnhandledMessage;
+
+            // subscribing is the opt-in: without a subscriber the line fails the way it did before UnhandledMessage existed
+            if (unhandledMessageHandler == null)
+            {
+                ExceptionDispatchInfo.Capture(exceptionWithoutSubscribers).Throw();
+            }
+
+            try
+            {
+                unhandledMessageHandler(unhandledMessage);
+            }
+            catch (Exception)
+            {
+                // this runs on the socket's receive callback, where an escaping exception would terminate the process; a failing
+                // subscriber can't be reported through the event it just failed in, so it is ignored and the batch goes on
+            }
+        }
+
+        private bool ProcessMessage(string message)
+        {
+            switch (message[0])
+            {
+                case 'F': // A fundamental message
+                    ProcessFundamentalMessage(message);
+                    return true;
+                case 'P': // A summary message
+                    ProcessSummaryMessage(message);
+                    return true;
+                case 'Q': // An update message
+                    ProcessUpdateMessage(message);
+                    return true;
+                case 'R': // A regional update message
+                    ProcessRegionalUpdateMessage(message);
+                    return true;
+                case 'N': // A news headline message
+                    ProcessNewsMessage(message);
+                    return true;
+                case 'S': // A system message
+                    ProcessSystemMessage(message);
+                    return true;
+                case 'T': // A timestamp message
+                    ProcessTimestampMessage(message);
+                    return true;
+                case 'n': // Symbol not found message
+                    ProcessSymbolNotFoundMessage(message);
+                    return true;
+                case 'E': // An error message
+                    ProcessErrorMessage(message);
+                    return true;
+                case 'C': // A trade correction message
+                    ProcessTradeCorrectionMessage(message);
+                    return true;
+                default:
+                    return false;
             }
         }
 
