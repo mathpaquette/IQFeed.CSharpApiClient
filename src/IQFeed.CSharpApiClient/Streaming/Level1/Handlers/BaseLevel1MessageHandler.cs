@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using IQFeed.CSharpApiClient.Streaming.Common.Messages;
 using IQFeed.CSharpApiClient.Streaming.Level1.Messages;
@@ -21,14 +22,18 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
         {
             string[] messages = Encoding.ASCII.GetString(messageBytes, 0, count - 1).Split(IQFeedDefault.ProtocolLineFeedCharacter);
 
-            // each line is processed on its own, so a line that can't be processed is reported and skipped without losing the lines after it;
-            // this runs on the socket's receive callback, where an escaping exception would terminate the process
+            // with an UnhandledMessage subscriber, each line is processed on its own: a line that can't be processed is reported and skipped
+            // without losing the lines after it. Without one, such a line throws as it always has.
             for (int i = 0; i < messages.Length; i++)
             {
                 var message = messages[i];
-                if (message.Length == 0)
+
+                // a CRLF-terminated empty line is left as a lone carriage return by the split on line feeds
+                if (message.Length == 0 || message == "\r")
                 {
-                    UnhandledMessage?.Invoke(new UnhandledMessage(message, UnhandledMessageReason.Empty, null));
+                    ReportUnhandledMessage(
+                        new UnhandledMessage(message, UnhandledMessageReason.Empty, null),
+                        message.Length == 0 ? new IndexOutOfRangeException() : CreateUnknownTypeException());
                     continue;
                 }
 
@@ -39,14 +44,40 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
                 }
                 catch (Exception ex)
                 {
-                    UnhandledMessage?.Invoke(new UnhandledMessage(message, UnhandledMessageReason.ProcessingFailed, ex));
+                    ReportUnhandledMessage(new UnhandledMessage(message, UnhandledMessageReason.ProcessingFailed, ex), ex);
                     continue;
                 }
 
                 if (!processed)
                 {
-                    UnhandledMessage?.Invoke(new UnhandledMessage(message, UnhandledMessageReason.UnknownType, null));
+                    ReportUnhandledMessage(new UnhandledMessage(message, UnhandledMessageReason.UnknownType, null), CreateUnknownTypeException());
                 }
+            }
+        }
+
+        private static Exception CreateUnknownTypeException()
+        {
+            return new Exception("Unknown type of level 1 message received.");
+        }
+
+        private void ReportUnhandledMessage(UnhandledMessage unhandledMessage, Exception exceptionWithoutSubscribers)
+        {
+            var unhandledMessageHandler = UnhandledMessage;
+
+            // subscribing is the opt-in: without a subscriber the line fails the way it did before UnhandledMessage existed
+            if (unhandledMessageHandler == null)
+            {
+                ExceptionDispatchInfo.Capture(exceptionWithoutSubscribers).Throw();
+            }
+
+            try
+            {
+                unhandledMessageHandler(unhandledMessage);
+            }
+            catch (Exception)
+            {
+                // this runs on the socket's receive callback, where an escaping exception would terminate the process; a failing
+                // subscriber can't be reported through the event it just failed in, so it is ignored and the batch goes on
             }
         }
 

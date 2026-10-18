@@ -71,6 +71,20 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Handlers
         }
 
         [Test]
+        public void Should_Raise_UnhandledMessage_For_A_CRLF_Empty_Line_And_Process_The_Other_Lines()
+        {
+            // Act
+            Process(_level1MessageHandler, "S,KEY,abc\r\n\r\nT,20260929 19:25:16\r\n");
+
+            // Assert
+            Assert.AreEqual(1, _systemMessages.Count);
+            Assert.AreEqual(1, _timestampMessages.Count);
+            Assert.AreEqual(1, _unhandledMessages.Count);
+            Assert.AreEqual(UnhandledMessageReason.Empty, _unhandledMessages[0].Reason);
+            Assert.AreEqual("\r", _unhandledMessages[0].Message);
+        }
+
+        [Test]
         public void Should_Raise_UnhandledMessage_For_A_Lone_Line_Feed()
         {
             // Act
@@ -113,14 +127,66 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Handlers
             Assert.AreSame(subscriberException, _unhandledMessages[0].Exception);
         }
 
+        [TestCase("X,unknown,type\n", UnhandledMessageReason.UnknownType)]
+        [TestCase("\n", UnhandledMessageReason.Empty)]
+        [TestCase("\r\n", UnhandledMessageReason.Empty)]
+        [TestCase("S\n", UnhandledMessageReason.ProcessingFailed)]
+        public void Should_Process_The_Lines_After_It_When_An_UnhandledMessage_Subscriber_Throws(string unhandledLine, UnhandledMessageReason reason)
+        {
+            // Arrange
+            var level1MessageHandler = new Level1MessageHandler();
+            var reasons = new List<UnhandledMessageReason>();
+            var timestampMessages = new List<TimestampMessage>();
+            level1MessageHandler.UnhandledMessage += message =>
+            {
+                reasons.Add(message.Reason);
+                throw new InvalidOperationException("subscriber failed");
+            };
+            level1MessageHandler.Timestamp += timestampMessages.Add;
+
+            // Act
+            Assert.DoesNotThrow(() => Process(level1MessageHandler, unhandledLine + "T,20260929 19:25:16\n"));
+
+            // Assert
+            CollectionAssert.AreEqual(new[] { reason }, reasons);
+            Assert.AreEqual(1, timestampMessages.Count, "the line after the unhandled one must still be processed");
+        }
+
         [Test]
-        public void Should_Not_Throw_For_Unknown_Type_Without_Subscribers()
+        public void Should_Throw_For_Unknown_Type_Without_Subscribers()
         {
             // Arrange
             var level1MessageHandler = new Level1MessageHandler();
 
             // Act & Assert
-            Assert.DoesNotThrow(() => Process(level1MessageHandler, "X,unknown,type\n\n"));
+            var exception = Assert.Throws<Exception>(() => Process(level1MessageHandler, "X,unknown,type\n"));
+            Assert.AreEqual("Unknown type of level 1 message received.", exception.Message);
+        }
+
+        [Test]
+        public void Should_Throw_For_Empty_Line_Without_Subscribers()
+        {
+            // Arrange
+            var level1MessageHandler = new Level1MessageHandler();
+
+            // Act & Assert
+            Assert.Throws<IndexOutOfRangeException>(() => Process(level1MessageHandler, "\n"));
+        }
+
+        [Test]
+        public void Should_Throw_The_Processing_Exception_Without_Subscribers_And_Stop_The_Batch()
+        {
+            // Arrange
+            var level1MessageHandler = new Level1MessageHandler();
+            var subscriberException = new InvalidOperationException("subscriber failed");
+            var systemMessages = new List<SystemMessage>();
+            level1MessageHandler.Timestamp += message => throw subscriberException;
+            level1MessageHandler.System += systemMessages.Add;
+
+            // Act & Assert
+            var exception = Assert.Throws<InvalidOperationException>(() => Process(level1MessageHandler, "T,20260929 19:25:16\nS,KEY,abc\n"));
+            Assert.AreSame(subscriberException, exception);
+            Assert.IsEmpty(systemMessages, "without a subscriber the batch stops at the failing line, as before");
         }
 
         [Test]
