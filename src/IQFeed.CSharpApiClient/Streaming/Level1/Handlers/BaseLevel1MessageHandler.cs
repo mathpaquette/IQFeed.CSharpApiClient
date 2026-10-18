@@ -33,7 +33,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
                 {
                     ReportUnhandledMessage(
                         new UnhandledMessage(message, UnhandledMessageReason.Empty, null),
-                        message.Length == 0 ? new IndexOutOfRangeException() : CreateUnknownTypeException());
+                        message.Length == 0 ? new IndexOutOfRangeException() : CreateUnknownTypeException(message));
                     continue;
                 }
 
@@ -50,14 +50,36 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
 
                 if (!processed)
                 {
-                    ReportUnhandledMessage(new UnhandledMessage(message, UnhandledMessageReason.UnknownType, null), CreateUnknownTypeException());
+                    ReportUnhandledMessage(new UnhandledMessage(message, UnhandledMessageReason.UnknownType, null), CreateUnknownTypeException(message));
                 }
             }
         }
 
-        private static Exception CreateUnknownTypeException()
+        private static Exception CreateUnknownTypeException(string message)
         {
-            return new Exception("Unknown type of level 1 message received.");
+            // the line is cut short, so a garbage blob can't flood the log
+            const int maxShownLength = 100;
+            var shownLine = message.Length > maxShownLength ? message.Substring(0, maxShownLength) + "..." : message;
+            return new Exception($"Unknown type of level 1 message received: '{EscapeControlCharacters(message.Substring(0, 1))}' in \"{EscapeControlCharacters(shownLine)}\".");
+        }
+
+        private static string EscapeControlCharacters(string text)
+        {
+            // a control character, such as the carriage return of a CRLF line ending, would be invisible in a log
+            var escaped = new StringBuilder(text.Length);
+            foreach (var character in text)
+            {
+                if (char.IsControl(character))
+                {
+                    escaped.Append($"\\u{(int)character:X4}");
+                }
+                else
+                {
+                    escaped.Append(character);
+                }
+            }
+
+            return escaped.ToString();
         }
 
         private void ReportUnhandledMessage(UnhandledMessage unhandledMessage, Exception exceptionWithoutSubscribers)

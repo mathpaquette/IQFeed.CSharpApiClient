@@ -160,7 +160,30 @@ namespace IQFeed.CSharpApiClient.Tests.Streaming.Level1.Handlers
 
             // Act & Assert
             var exception = Assert.Throws<Exception>(() => Process(level1MessageHandler, "X,unknown,type\n"));
-            Assert.AreEqual("Unknown type of level 1 message received.", exception.Message);
+            Assert.AreEqual("Unknown type of level 1 message received: 'X' in \"X,unknown,type\".", exception.Message);
+        }
+
+        [Test]
+        public void Should_Show_A_Control_Character_Type_Escaped_Without_Subscribers()
+        {
+            // Arrange
+            var level1MessageHandler = new Level1MessageHandler();
+
+            // Act & Assert
+            var exception = Assert.Throws<Exception>(() => Process(level1MessageHandler, "\r\n"));
+            Assert.AreEqual("Unknown type of level 1 message received: '\\u000D' in \"\\u000D\".", exception.Message);
+        }
+
+        [Test]
+        public void Should_Show_A_Long_Unknown_Line_Cut_Short_Without_Subscribers()
+        {
+            // Arrange
+            var level1MessageHandler = new Level1MessageHandler();
+            var longLine = "X" + new string('a', 150);
+
+            // Act & Assert
+            var exception = Assert.Throws<Exception>(() => Process(level1MessageHandler, longLine + "\n"));
+            Assert.AreEqual($"Unknown type of level 1 message received: 'X' in \"{longLine.Substring(0, 100)}...\".", exception.Message);
         }
 
         [Test]
