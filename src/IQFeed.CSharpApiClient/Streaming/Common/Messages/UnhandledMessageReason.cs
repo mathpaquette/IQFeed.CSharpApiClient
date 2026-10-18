@@ -3,7 +3,7 @@
     public enum UnhandledMessageReason
     {
         /// <summary>
-        /// The line was empty.
+        /// The line was empty, or held only the carriage return of a CRLF line ending.
         /// </summary>
         Empty,
 

@@ -19,6 +19,9 @@ namespace IQFeed.CSharpApiClient.Streaming.Common.Messages
         /// </summary>
         public string Message { get; private set; }
 
+        /// <summary>
+        /// Why the line could not be processed.
+        /// </summary>
         public UnhandledMessageReason Reason { get; private set; }
 
         /// <summary>
