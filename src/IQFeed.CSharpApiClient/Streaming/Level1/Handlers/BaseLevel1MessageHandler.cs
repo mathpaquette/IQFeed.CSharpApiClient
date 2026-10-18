@@ -22,8 +22,7 @@ namespace IQFeed.CSharpApiClient.Streaming.Level1.Handlers
         {
             string[] messages = Encoding.ASCII.GetString(messageBytes, 0, count - 1).Split(IQFeedDefault.ProtocolLineFeedCharacter);
 
-            // with an UnhandledMessage subscriber, each line is processed on its own: a line that can't be processed is reported and skipped
-            // without losing the lines after it. Without one, such a line throws as it always has.
+            // a line that can't be processed goes to ReportUnhandledMessage, which reports it to the subscribers or, with none, throws
             for (int i = 0; i < messages.Length; i++)
             {
                 var message = messages[i];
