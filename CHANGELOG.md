@@ -1,3 +1,21 @@
+### IQFeed.CSharpApiClient 2.11.0 - October 31, 2026
+* Added support for IQFeed protocols 6.1 and 6.2
+* Improved the Level1 dynamic client and added backward-compatible Fundamental.Parse support for protocol 6.0
+* Added MarketSummaryFileFacade and support for parsing compressed lookup archives
+* Updated the expired-options URL
+* Updated the library targets to .NET Framework 4.7.2 and .NET Standard 2.1; tests and examples also target .NET 6
+* Added an opt-in UnhandledMessage event to Level1 clients to report empty, unknown, and unprocessable messages while allowing the receive batch to continue
+
+##### Issues Resolved
+* Improved invalid lookup-data handling and fixed duplicated VWAP size
+* Prevented the initial burst of lookup requests
+* Fixed socket receive disposal and race conditions
+* Improved lookup timeouts and disconnect handling, including requests waiting for a socket or rate-limit slot
+
+##### Breaking Changes
+* Custom implementations of ILevel1EventCommon must implement the new UnhandledMessage event
+
+
 ### IQFeed.CSharpApiClient 2.7.0 - May 03, 2021
 * Added IQFeed protocol 6.1 support
 * Improved Level1 dynamic client
