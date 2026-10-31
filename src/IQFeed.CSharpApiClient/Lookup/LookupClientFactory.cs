@@ -80,7 +80,7 @@ namespace IQFeed.CSharpApiClient.Lookup
             var marketSummaryFileFacade = new MarketSummaryFileFacade(marketSummaryRequestFormatter, lookupMessageFileHandler);
             var marketSummaryFacade = new MarketSummaryFacade(marketSummaryRequestFormatter, lookupDispatcher, lookupRateLimiter, exceptionFactory, marketSummaryFileFacade, timeout);
 
-            return new LookupClient(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade, marketSummaryFacade);
+            return new LookupClient(lookupDispatcher, historicalFacade, newsFacade, symbolFacade, chainsFacade, marketSummaryFacade, lookupRateLimiter);
         }
 
         public static LookupClient CreateNew()
