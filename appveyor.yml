@@ -3,21 +3,37 @@ image: Visual Studio 2022
 version: '{build}'
 
 install:
-  - ps: >-
-      $FileVersion = Get-Content $env:appveyor_build_folder\VERSION
-      
-      $Version = If ($env:appveyor_repo_branch -eq "release") {"$FileVersion"} Else {"$FileVersion.$env:appveyor_build_number"}
-      
-      Update-AppveyorBuild -Version $Version
+  - ps: |
+      $ErrorActionPreference = "Stop"
+      if ($env:APPVEYOR_REPO_TAG -eq "true") {
+        if ($env:APPVEYOR_REPO_TAG_NAME -match '^v(\d+\.\d+\.\d+)$') {
+          $PackageVersion = $Matches[1]
+          $AssemblyVersion = $PackageVersion
+        } else {
+          throw "Release tag '$env:APPVEYOR_REPO_TAG_NAME' must match vMAJOR.MINOR.PATCH"
+        }
+      } else {
+        $LatestVersion = git tag --list "v*" --merged HEAD |
+          Where-Object { $_ -match '^v\d+\.\d+\.\d+$' } |
+          ForEach-Object { [version]$_.Substring(1) } |
+          Sort-Object -Descending |
+          Select-Object -First 1
+        $NextVersion = if ($LatestVersion) { "$($LatestVersion.Major).$($LatestVersion.Minor).$($LatestVersion.Build + 1)" } else { "0.0.1" }
+        $PackageVersion = "$NextVersion-ci.$env:APPVEYOR_BUILD_NUMBER"
+        $AssemblyVersion = "$NextVersion.$env:APPVEYOR_BUILD_NUMBER"
+      }
+      Set-AppveyorBuildVariable -Name PACKAGE_VERSION -Value $PackageVersion
+      Set-AppveyorBuildVariable -Name ASSEMBLY_VERSION -Value $AssemblyVersion
+      Write-Host "Package version: $PackageVersion"
 
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
-  version: '{version}'
-  package_version: '{version}'
-  assembly_version: '{version}'
-  file_version: '{version}'
-  informational_version: '{version}'
+  version: '$(PACKAGE_VERSION)'
+  package_version: '$(PACKAGE_VERSION)'
+  assembly_version: '$(ASSEMBLY_VERSION)'
+  file_version: '$(ASSEMBLY_VERSION)'
+  informational_version: '$(PACKAGE_VERSION)'
 
 configuration: Release
 
@@ -51,7 +67,7 @@ deploy:
   - provider: NuGet
     name: NuGet
     on:
-      branch: release
+      appveyor_repo_tag: true
     server: https://www.nuget.org/api/v2/package
     api_key:
       secure: 5fQOqe+PO6WeHVsqBlVnNxK0FW1rJVhlbJ/8yW3pyIJGYBb3u+mICb4YS7U2ifFZ
