@@ -21,8 +21,9 @@ namespace IQFeed.CSharpApiClient.Lookup
         public bool IsRunning => !_releaseTask.IsCompleted;
 
         private readonly SemaphoreSlim _semaphoreSlim;
+        private readonly CancellationTokenSource _stopping = new CancellationTokenSource();
         private readonly Task _releaseTask;
-        
+
         private bool _disposed;
         private volatile bool _started = false;
         private volatile bool _running = true;
@@ -63,39 +64,48 @@ namespace IQFeed.CSharpApiClient.Lookup
 
         private async Task ReleaseSemaphoreAsync(TimeSpan interval, int maxCount)
         {
-            // start only after the first request goes through
-            while (!_started && _running)
+            // every delay ends early on dispose, so Dispose does not wait out the warm-up below
+            var stopping = _stopping.Token;
+            try
             {
-                await Task.Delay(TimeSpan.FromMilliseconds(10)).ConfigureAwait(false);
+                // start only after the first request goes through
+                while (!_started && _running)
+                {
+                    await Task.Delay(TimeSpan.FromMilliseconds(10), stopping).ConfigureAwait(false);
+                }
+
+                if (_running) // if we dispose before the first request no need to wait
+                {
+                    // calm down the initial burst by delaying leaky bucket operation for one second
+                    // this allows gracefully consume the initial per second allowance without going over the limit
+                    await Task.Delay(TimeSpan.FromSeconds(1), stopping).ConfigureAwait(false);
+                }
+
+                var intervalTicks = (int)interval.Ticks;
+                var remainderTicks = 0;
+                var sw = new Stopwatch();
+
+                while (_running)
+                {
+                    sw.Restart();
+                    await Task.Delay(interval, stopping).ConfigureAwait(false);
+                    sw.Stop();
+
+                    var totalTicks = remainderTicks + (int)sw.ElapsedTicks;
+                    remainderTicks = totalTicks % intervalTicks;
+                    var releaseCount = totalTicks / intervalTicks;
+                    var releaseCapacity = maxCount - _semaphoreSlim.CurrentCount;
+
+                    if (releaseCapacity == 0 || releaseCount == 0)
+                        continue;
+
+                    releaseCount = releaseCount > releaseCapacity ? releaseCapacity : releaseCount;
+                    _semaphoreSlim.Release(releaseCount);
+                }
             }
-
-            if (_running) // if we dispose before the first request no need to wait
+            catch (OperationCanceledException) when (stopping.IsCancellationRequested)
             {
-                // calm down the initial burst by delaying leaky bucket operation for one second
-                // this allows gracefully consume the initial per second allowance without going over the limit
-                await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
-            }
-            
-            var intervalTicks = (int)interval.Ticks;
-            var remainderTicks = 0;
-            var sw = new Stopwatch();
-
-            while (_running)
-            {
-                sw.Restart();
-                await Task.Delay(interval).ConfigureAwait(false);
-                sw.Stop();
-
-                var totalTicks = remainderTicks + (int)sw.ElapsedTicks;
-                remainderTicks = totalTicks % intervalTicks;
-                var releaseCount = totalTicks / intervalTicks;
-                var releaseCapacity = maxCount - _semaphoreSlim.CurrentCount;
-
-                if (releaseCapacity == 0 || releaseCount == 0)
-                    continue;
-
-                releaseCount = releaseCount > releaseCapacity ? releaseCapacity : releaseCount;
-                _semaphoreSlim.Release(releaseCount);
+                // disposed
             }
         }
 
@@ -115,9 +125,11 @@ namespace IQFeed.CSharpApiClient.Lookup
             if (disposing)
             {
                 _running = false;
+                _stopping.Cancel();
                 _releaseTask.Wait();
 
                 _semaphoreSlim?.Dispose();
+                _stopping.Dispose();
             }
 
             _disposed = true;
